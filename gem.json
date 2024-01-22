@@ -1,0 +1,28 @@
+{
+    "gem_name": "AICore",
+    "version": "1.0.0",
+    "display_name": "AI Core",
+    "license": "Apache-2.0",
+    "license_url": "https://opensource.org/licenses/Apache-2.0",
+    "origin": "Robotec.ai",
+    "origin_url": "https:://robotec.ai",
+    "type": "Code",
+    "summary": "A Gem enabling communication with and use of generative AI models with O3DE",
+    "canonical_tags": [
+        "Gem"
+    ],
+    "user_tags": [
+        "AICore"
+    ],
+    "icon_path": "preview.png",
+    "requirements": "This gem requires HttpRequestor",
+    "documentation_url": "https://development--o3deorg.netlify.app/docs/user-guide/interactivity/robotics",
+    "dependencies": [ "HttpRequestor"],
+    "repo_uri": "",
+    "compatible_engines": [
+        "o3de-sdk>=3.1.0",
+        "o3de>=3.1.0"
+    ],
+    "engine_api_dependencies": [],
+    "restricted": "AICore"
+}
