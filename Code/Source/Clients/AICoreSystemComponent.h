@@ -8,9 +8,11 @@
 
 #pragma once
 
+#include "AzCore/std/smart_ptr/shared_ptr.h"
+#include <AICore/AICoreBus.h>
+#include <AICore/Communication/Requester.h>
 #include <AzCore/Component/Component.h>
 #include <AzCore/Component/TickBus.h>
-#include <AICore/AICoreBus.h>
 
 namespace AICore
 {

@@ -6,10 +6,17 @@
 *
 */
 
-#include <AzCore/Serialization/SerializeContext.h>
 #include "AICoreEditorSystemComponent.h"
 
+#include "AzCore/std/smart_ptr/make_shared.h"
+// #include "Communication/JSONHttp/BasicJSONRequester.h"
+// #include "UI/AICoreWidget.h"
+#include <API/ViewPaneOptions.h>
+#include <AzCore/Serialization/SerializeContext.h>
+
 #include <AICore/AICoreTypeIds.h>
+
+// #include "AICoreSettingsRegistryManager/AICoreSettingsRegistryManager.h"
 
 namespace AICore
 {
@@ -55,12 +62,39 @@ namespace AICore
     {
         AICoreSystemComponent::Activate();
         AzToolsFramework::EditorEvents::Bus::Handler::BusConnect();
+
+        // m_requesters.push_back(AZStd::make_shared<BasicJSONRequester>());
+        // m_requesters.push_back(AZStd::make_shared<BasicJSONRequester>());
+
+        // m_setregManager.SaveSystemConfiguration<AZStd::vector<AZStd::shared_ptr<RequesterBase>>>(
+        //     m_requesters,
+        //     [](const AZStd::vector<AZStd::shared_ptr<RequesterBase>>& obj1, AICoreSettingsRegistryManager::Result result)
+        //     {
+        //         if (result == AICoreSettingsRegistryManager::Result::Success)
+        //         {
+        //             std::cout << "Good" << std::endl;
+        //         }
+        //         else
+        //         {
+        //             std::cout << "bad" << std::endl;
+        //         }
+        //     });
     }
 
     void AICoreEditorSystemComponent::Deactivate()
     {
         AzToolsFramework::EditorEvents::Bus::Handler::BusDisconnect();
         AICoreSystemComponent::Deactivate();
+    }
+
+    void AICoreEditorSystemComponent::NotifyRegisterViews()
+    {
+        // AzToolsFramework::ViewPaneOptions options;
+        // options.paneRect = QRect(100, 100, 500, 400);
+        // options.showOnToolsToolbar = true;
+        // options.isDeletable = false;
+
+        // AzToolsFramework::RegisterViewPane<AICoreWidget>("AICore", "AICore", options);
     }
 
 } // namespace AICore

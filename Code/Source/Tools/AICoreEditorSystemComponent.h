@@ -8,8 +8,11 @@
 
 #pragma once
 
+// #include "AICoreSettingsRegistryManager/AICoreSettingsRegistryManager.h"
 #include <AzToolsFramework/API/ToolsApplicationAPI.h>
 #include <Clients/AICoreSystemComponent.h>
+
+// #include <aws/core/utils/json/JsonSerializer.h>
 
 namespace AICore
 {
@@ -33,8 +36,15 @@ namespace AICore
         static void GetRequiredServices(AZ::ComponentDescriptor::DependencyArrayType& required);
         static void GetDependentServices(AZ::ComponentDescriptor::DependencyArrayType& dependent);
 
+        // AzToolsFramework::EditorEvents::Bus::Handler overrides ...
+        void NotifyRegisterViews() override;
+
         // AZ::Component
         void Activate() override;
         void Deactivate() override;
+
+        // AZStd::vector<AZStd::shared_ptr<RequesterBase>> m_requesters;
+        // AICoreSettingsRegistryManager m_setregManager;
     };
 } // namespace AICore
+

@@ -48,8 +48,11 @@ ly_add_target(
             Source
     BUILD_DEPENDENCIES
         PUBLIC
+            Gem::${gem_name}.API
             AZ::AzCore
             AZ::AzFramework
+            Gem::AWSCore
+            Gem::HttpRequestor
 )
 
 # Here add ${gem_name} target, it depends on the Private Object library and Public API interface
@@ -67,6 +70,8 @@ ly_add_target(
     BUILD_DEPENDENCIES
         PUBLIC
             Gem::${gem_name}.API
+            Gem::AWSCore
+            Gem::HttpRequestor
         PRIVATE
             Gem::${gem_name}.Private.Object
 )
@@ -118,9 +123,14 @@ if(PAL_TRAIT_BUILD_HOST_TOOLS)
             PRIVATE
                 Include
                 Source
+        COMPILE_DEFINITIONS
+            PUBLIC
+                AICoreEditor
         BUILD_DEPENDENCIES
             PUBLIC
                 AZ::AzToolsFramework
+                Gem::AWSCore
+                Gem::HttpRequestor
                 $<TARGET_OBJECTS:Gem::${gem_name}.Private.Object>
     )
 
@@ -135,9 +145,16 @@ if(PAL_TRAIT_BUILD_HOST_TOOLS)
                 Source
             PUBLIC
                 Include
+        COMPILE_DEFINITIONS
+            PUBLIC
+                AICoreEditor
         BUILD_DEPENDENCIES
             PUBLIC
                 Gem::${gem_name}.Editor.API
+                Gem::HttpRequestor
+                AZ::AzToolsFramework
+                Gem::AWSCore
+                3rdParty::AWSNativeSDK::Core
             PRIVATE
                 Gem::${gem_name}.Editor.Private.Object
     )
