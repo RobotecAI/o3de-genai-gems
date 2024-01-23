@@ -7,10 +7,16 @@
  */
 
 #include "AICoreEditorSystemComponent.h"
-#include <Action/ActionTools/AICoreEditorScriptExecutor.h>
-#include <AzCore/Serialization/SerializeContext.h>
+#include "AICoreSettingsRegistryManager/AICoreSettingsRegistryManager.h"
 
+#include <AICore/AICoreEditorBus.h>
 #include <AICore/AICoreTypeIds.h>
+#include <API/ViewPaneOptions.h>
+#include <Action/ActionTools/AICoreEditorScriptExecutor.h>
+#include <AzCore/Component/Entity.h>
+#include <AzCore/Serialization/SerializeContext.h>
+#include <AzCore/std/containers/vector.h>
+#include <AzCore/std/smart_ptr/make_shared.h>
 
 namespace AICore
 {
@@ -30,9 +36,21 @@ namespace AICore
         }
     }
 
-    AICoreEditorSystemComponent::AICoreEditorSystemComponent() = default;
+    AICoreEditorSystemComponent::AICoreEditorSystemComponent()
+    {
+        if (AICoreEditorInterface::Get() == nullptr)
+        {
+            AICoreEditorInterface::Register(this);
+        }
+    }
 
-    AICoreEditorSystemComponent::~AICoreEditorSystemComponent() = default;
+    AICoreEditorSystemComponent::~AICoreEditorSystemComponent()
+    {
+        if (AICoreEditorInterface::Get() == this)
+        {
+            AICoreEditorInterface::Unregister(this);
+        }
+    };
 
     void AICoreEditorSystemComponent::GetProvidedServices(AZ::ComponentDescriptor::DependencyArrayType& provided)
     {
@@ -54,6 +72,24 @@ namespace AICore
     void AICoreEditorSystemComponent::GetDependentServices([[maybe_unused]] AZ::ComponentDescriptor::DependencyArrayType& dependent)
     {
         BaseSystemComponent::GetDependentServices(dependent);
+    }
+
+    void AICoreEditorSystemComponent::SaveSystemConfiguration()
+    {
+        m_settingsRegistryManager.SaveSystemConfiguration(
+            m_configuration,
+            [](const AICoreSystemComponentConfiguration& obj, AICoreSettingsRegistryManager::Result result)
+            {
+                if (result != AICoreSettingsRegistryManager::Result::Success)
+                {
+                    AZ_Error("AICoreEditorSystemComponent", false, "Failed to save system configuration")
+                }
+            });
+    }
+
+    void AICoreEditorSystemComponent::Init()
+    {
+        BaseSystemComponent::Init();
     }
 
     void AICoreEditorSystemComponent::Activate()
@@ -79,4 +115,14 @@ namespace AICore
         AZ_Printf("AICoreEditorSystemComponent", "OnStopPlayInEditor");
         AICoreSystemComponent::Deactivate();
     }
+    void AICoreEditorSystemComponent::NotifyRegisterViews()
+    {
+        AzToolsFramework::ViewPaneOptions options;
+        options.paneRect = QRect(100, 100, 700, 400);
+        options.showOnToolsToolbar = true;
+        options.isDeletable = false;
+
+        AzToolsFramework::RegisterViewPane<AICoreWidget>("AICore", "AICore", options);
+    }
+
 } // namespace AICore

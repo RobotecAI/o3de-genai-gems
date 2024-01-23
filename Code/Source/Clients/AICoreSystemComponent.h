@@ -8,9 +8,15 @@
 
 #pragma once
 
+#include "AICoreSettingsRegistryManager/AICoreSettingsRegistryManager.h"
+#include "Clients/AICoreSystemComponentConfiguration.h"
+
 #include <AICore/AICoreBus.h>
 #include <AICore/AICoreScriptExecutor.h>
 #include <Action/AICoreActionRequestHandler.h>
+#include <AzCore/std/smart_ptr/shared_ptr.h>
+#include <AICore/AICoreBus.h>
+#include <AICore/SystemRegistrationContext/AICoreSystemRegistrationContext.h>
 #include <AzCore/Component/Component.h>
 #include <AzCore/Component/TickBus.h>
 
@@ -38,6 +44,16 @@ namespace AICore
         ////////////////////////////////////////////////////////////////////////
         // AICoreRequestBus interface implementation
         virtual AZStd::unique_ptr<AICoreScriptExecutor> MakeScriptExecutor(const AIContext& aiContext) override;
+        AICoreSystemRegistrationContext* GetSystemRegistrationContext() override;
+        AZStd::vector<AZStd::pair<AZStd::string, AZ::Uuid>> GetRegisteredGeneratorsNameAndComponentTypeId() override;
+        AZStd::vector<AZStd::pair<AZStd::string, AZ::Uuid>> GetRegisteredRequestersNameAndComponentTypeId() override;
+        AZStd::vector<AZ::Component*> GetActiveGenerators() override;
+        AZStd::vector<AZ::Component*> GetActiveRequesters() override;
+        AZ::Component* CreateNewGenerator(const AZStd::string& generatorName, const AZ::Uuid& componentTypeId) override;
+        AZ::Component* CreateNewRequester(const AZStd::string& requesterName, const AZ::Uuid& componentTypeId) override;
+        void RemoveComponent(AZ::Component* component) override;
+        void ActivateEntity(AZ::Entity* entity) override;
+        void DeactivateEntity(AZ::Entity* entity) override;
         ////////////////////////////////////////////////////////////////////////
 
         ////////////////////////////////////////////////////////////////////////
@@ -52,7 +68,20 @@ namespace AICore
         void OnTick(float deltaTime, AZ::ScriptTimePoint time) override;
         ////////////////////////////////////////////////////////////////////////
 
+        AICoreSystemComponentConfiguration m_configuration;
+        AICoreSettingsRegistryManager m_settingsRegistryManager;
+
     private:
+        void InitEntities(const AZStd::vector<AZ::Entity*>& entities);
+        void ActivateEntities(const AZStd::vector<AZ::Entity*>& entities);
+        void DeactivateEntities(const AZStd::vector<AZ::Entity*>& entities);
         AICoreActionRequestHandler m_actionRequestHandler;
+
+        AZStd::vector<AZStd::pair<AZStd::string, AZ::Uuid>> GetRegisteredComponentsNameAndComponentTypeId(
+            AZStd::vector<AZ::Uuid> componentTypeIds);
+        AZStd::vector<AZ::Component*> GetActiveComponents(AZStd::vector<AZ::Entity*> entities);
+        AZ::Component* CreateNewComponentEntity(
+            const AZStd::string& name, const AZ::Uuid& componentTypeId, AZStd::vector<AZ::Entity*>& entities);
+        ;
     };
 } // namespace AICore

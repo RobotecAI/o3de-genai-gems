@@ -2,6 +2,7 @@
 set(FILES
     Source/AICoreModuleInterface.cpp
     Source/AICoreModuleInterface.h
+    
     Source/Clients/AICoreSystemComponent.cpp
     Source/Clients/AICoreSystemComponent.h
     Source/Test/AICoreTestComponent.cpp
@@ -15,4 +16,9 @@ set(FILES
     Source/Action/AICoreActionRequestHandler.h
     Source/Action/AICoreLauncherScriptExecutor.cpp
     Source/Action/AICoreLauncherScriptExecutor.h
+    Source/Clients/AICoreSystemComponentConfiguration.cpp
+    Source/Clients/AICoreSystemComponentConfiguration.h
+
+    Source/AICoreSettingsRegistryManager/AICoreSettingsRegistryManager.cpp
+    Source/AICoreSettingsRegistryManager/AICoreSettingsRegistryManager.h
 )
