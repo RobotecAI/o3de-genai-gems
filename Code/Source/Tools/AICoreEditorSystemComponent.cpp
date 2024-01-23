@@ -10,7 +10,15 @@
 #include <Action/ActionTools/AICoreEditorScriptExecutor.h>
 #include <AzCore/Serialization/SerializeContext.h>
 
+#include "AzCore/std/smart_ptr/make_shared.h"
+// #include "Communication/JSONHttp/BasicJSONRequester.h"
+// #include "UI/AICoreWidget.h"
+#include <API/ViewPaneOptions.h>
+#include <AzCore/Serialization/SerializeContext.h>
+
 #include <AICore/AICoreTypeIds.h>
+
+// #include "AICoreSettingsRegistryManager/AICoreSettingsRegistryManager.h"
 
 namespace AICore
 {

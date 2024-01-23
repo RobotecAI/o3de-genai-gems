@@ -8,4 +8,11 @@ set(FILES
     Source/Test/CustomEditorRequests.h
     Source/Action/ActionTools/AICoreEditorScriptExecutor.cpp
     Source/Action/ActionTools/AICoreEditorScriptExecutor.h
+
+    Source/Communication/JSONHttp/BasicJSONRequesterEditorComponent.h
+    Source/Communication/JSONHttp/BasicJSONRequesterEditorComponent.cpp
+
+    Source/RequestGenerator/ollama/OllamaContextRequestGeneratorEditorComponent.h
+    Source/RequestGenerator/ollama/OllamaContextRequestGeneratorEditorComponent.cpp
 )
+

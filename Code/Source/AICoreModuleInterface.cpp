@@ -8,8 +8,11 @@
 
 #include "AICoreModuleInterface.h"
 #include "Test/AICoreTestComponent.h"
+#include "RequestGenerator/ollama/OllamaContextRequestGeneratorComponent.h"
 #include <AICore/AICoreTypeIds.h>
+#include <AzCore/Memory/Memory.h>
 #include <Clients/AICoreSystemComponent.h>
+#include <Communication/JSONHttp/BasicJSONRequesterComponent.h>
 
 namespace AICore
 {
@@ -28,6 +31,8 @@ namespace AICore
             {
                 AICoreSystemComponent::CreateDescriptor(),
                 AICoreTestComponent::CreateDescriptor()
+                BasicJSONRequesterComponent::CreateDescriptor(),
+                OllamaContextRequestGeneratorComponent::CreateDescriptor(),
             });
     }
 
