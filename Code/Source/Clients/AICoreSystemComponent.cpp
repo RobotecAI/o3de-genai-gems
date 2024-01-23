@@ -11,10 +11,8 @@
 #include <AzCore/Serialization/SerializeContext.h>
 #include <AzCore/std/smart_ptr/shared_ptr.h>
 
-#include "AzCore/std/smart_ptr/make_shared.h"
-#include "Communication/JSONHttp/JSONRequester.h"
-#include "Prompter/Prompter.h"
-#include "RequestGenerator/ollama/OllamaBasicRequestGenerator.h"
+#include <AICore/Prompter/BasicOllamaPrompter.h>
+#include <iostream>
 
 namespace AICore
 {
@@ -75,18 +73,26 @@ namespace AICore
         AICoreRequestBus::Handler::BusConnect();
         AZ::TickBus::Handler::BusConnect();
 
-        // OllamaBasicRequestGenerator ollamaRequestGenerator;
-        // JSONRequester jsonRequester("http://localhost:11434/api/generate");
-
-        auto ollamaRequestGenerator = AZStd::make_shared<OllamaBasicRequestGenerator>();
+        OllamaBasicRequestConfiguration config = { "mistral" };
         AZStd::string url = "http://localhost:11434/api/generate";
-        auto jsonRequester = AZStd::make_shared<JSONRequester>(url);
 
-        auto castJsonRequester = AZStd::static_pointer_cast<CommunicationInterface<Aws::Utils::Json::JsonView>>(jsonRequester);
-        auto castOllamaRequestGenerator =
-            AZStd::static_pointer_cast<RequestGenerator<Aws::Utils::Json::JsonView, AZStd::string>>(ollamaRequestGenerator);
+        BasicOllamaPrompter prompter(url, config);
 
-        Prompter prompter(castJsonRequester, castOllamaRequestGenerator);
+        AZStd::string prompt = "This is a test prompt";
+
+        prompter.Prompt(
+            prompt,
+            [](AZStd::string response, bool success)
+            {
+                // if (success)
+                // {
+                //     std::cout << std::endl << std::endl << "Response: " << response.c_str() << std::endl << std::endl;
+                // }
+                // else
+                // {
+                //     std::cout << std::endl << std::endl << "Failed to get response" << std::endl << std::endl;
+                // }
+            });
     }
 
     void AICoreSystemComponent::Deactivate()

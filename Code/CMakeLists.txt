@@ -50,9 +50,8 @@ ly_add_target(
         PUBLIC
             AZ::AzCore
             AZ::AzFramework
-            AZ::AWSNativeSDKInit
+            Gem::AWSCore
             Gem::HttpRequestor
-            3rdParty::AWSNativeSDK::Core
 )
 
 # Here add ${gem_name} target, it depends on the Private Object library and Public API interface
@@ -70,12 +69,9 @@ ly_add_target(
     BUILD_DEPENDENCIES
         PUBLIC
             Gem::${gem_name}.API
-            AZ::AWSNativeSDKInit
-            3rdParty::AWSNativeSDK::Core
+            Gem::AWSCore
             Gem::HttpRequestor
         PRIVATE
-            AZ::AzCore
-            AZ::AzFramework
             Gem::${gem_name}.Private.Object
 )
 
@@ -146,6 +142,8 @@ if(PAL_TRAIT_BUILD_HOST_TOOLS)
         BUILD_DEPENDENCIES
             PUBLIC
                 Gem::${gem_name}.Editor.API
+                Gem::HttpRequestor
+                3rdParty::AWSNativeSDK::Core
             PRIVATE
                 Gem::${gem_name}.Editor.Private.Object
     )
