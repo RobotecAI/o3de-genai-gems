@@ -9,6 +9,12 @@
 #include "AICoreSystemComponent.h"
 #include <AICore/AICoreTypeIds.h>
 #include <AzCore/Serialization/SerializeContext.h>
+#include <AzCore/std/smart_ptr/shared_ptr.h>
+
+#include "AzCore/std/smart_ptr/make_shared.h"
+#include "Communication/JSONHttp/JSONRequester.h"
+#include "Prompter/Prompter.h"
+#include "RequestGenerator/ollama/OllamaBasicRequestGenerator.h"
 
 namespace AICore
 {
@@ -37,6 +43,7 @@ namespace AICore
 
     void AICoreSystemComponent::GetRequiredServices([[maybe_unused]] AZ::ComponentDescriptor::DependencyArrayType& required)
     {
+        required.push_back(AZ_CRC_CE("HTTPRequestorService"));
     }
 
     void AICoreSystemComponent::GetDependentServices([[maybe_unused]] AZ::ComponentDescriptor::DependencyArrayType& dependent)
@@ -67,6 +74,19 @@ namespace AICore
     {
         AICoreRequestBus::Handler::BusConnect();
         AZ::TickBus::Handler::BusConnect();
+
+        // OllamaBasicRequestGenerator ollamaRequestGenerator;
+        // JSONRequester jsonRequester("http://localhost:11434/api/generate");
+
+        auto ollamaRequestGenerator = AZStd::make_shared<OllamaBasicRequestGenerator>();
+        AZStd::string url = "http://localhost:11434/api/generate";
+        auto jsonRequester = AZStd::make_shared<JSONRequester>(url);
+
+        auto castJsonRequester = AZStd::static_pointer_cast<CommunicationInterface<Aws::Utils::Json::JsonView>>(jsonRequester);
+        auto castOllamaRequestGenerator =
+            AZStd::static_pointer_cast<RequestGenerator<Aws::Utils::Json::JsonView, AZStd::string>>(ollamaRequestGenerator);
+
+        Prompter prompter(castJsonRequester, castOllamaRequestGenerator);
     }
 
     void AICoreSystemComponent::Deactivate()
