@@ -9,10 +9,6 @@
 #include "AICoreSystemComponent.h"
 #include <AICore/AICoreTypeIds.h>
 #include <AzCore/Serialization/SerializeContext.h>
-#include <AzCore/std/smart_ptr/shared_ptr.h>
-
-#include <AICore/Prompter/BasicOllamaPrompter.h>
-#include <iostream>
 
 namespace AICore
 {
@@ -41,7 +37,6 @@ namespace AICore
 
     void AICoreSystemComponent::GetRequiredServices([[maybe_unused]] AZ::ComponentDescriptor::DependencyArrayType& required)
     {
-        required.push_back(AZ_CRC_CE("HTTPRequestorService"));
     }
 
     void AICoreSystemComponent::GetDependentServices([[maybe_unused]] AZ::ComponentDescriptor::DependencyArrayType& dependent)
@@ -72,27 +67,6 @@ namespace AICore
     {
         AICoreRequestBus::Handler::BusConnect();
         AZ::TickBus::Handler::BusConnect();
-
-        OllamaBasicRequestConfiguration config = { "mistral" };
-        AZStd::string url = "http://localhost:11434/api/generate";
-
-        BasicOllamaPrompter prompter(url, config);
-
-        AZStd::string prompt = "This is a test prompt";
-
-        prompter.Prompt(
-            prompt,
-            [](AZStd::string response, bool success)
-            {
-                // if (success)
-                // {
-                //     std::cout << std::endl << std::endl << "Response: " << response.c_str() << std::endl << std::endl;
-                // }
-                // else
-                // {
-                //     std::cout << std::endl << std::endl << "Failed to get response" << std::endl << std::endl;
-                // }
-            });
     }
 
     void AICoreSystemComponent::Deactivate()

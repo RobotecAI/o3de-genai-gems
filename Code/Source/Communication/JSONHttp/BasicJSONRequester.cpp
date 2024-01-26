@@ -1,8 +1,9 @@
 
-#include <AICore/Communication/JSONHttp/BasicJSONRequester.h>
+#include "Communication/JSONHttp/BasicJSONRequester.h"
 
 #include <HttpRequestor/HttpRequestorBus.h>
 #include <HttpRequestor/HttpTypes.h>
+#include <aws/core/utils/json/JsonSerializer.h>
 
 namespace AICore
 {
@@ -11,29 +12,33 @@ namespace AICore
     {
     }
 
-    void BasicJSONRequester::Request(
-        const Aws::Utils::Json::JsonView& request, AZStd::function<void(const Aws::Utils::Json::JsonView&, bool)> callback)
+    void BasicJSONRequester::SendRequest(
+        Aws::Utils::Json::JsonValue request, AZStd::function<void(Aws::Utils::Json::JsonValue, AZStd::optional<AZStd::string>)> callback)
     {
         HttpRequestor::Headers headers;
-        // headers["Content-Type"] = "application/json";
+        headers["Content-Type"] = "application/json";
 
         HttpRequestor::Callback innerCallback =
             [callback](const Aws::Utils::Json::JsonView& jsonView, Aws::Http::HttpResponseCode responseCode)
         {
-            // callback(jsonView, responseCode == Aws::Http::HttpResponseCode::OK);
+            Aws::Utils::Json::JsonValue response(jsonView.WriteCompact());
+            if (responseCode != Aws::Http::HttpResponseCode::OK)
+            {
+                callback(response, AZStd::string("Request failed"));
+            }
+            else
+            {
+                callback(response, AZStd::optional<AZStd::string>());
+            }
         };
 
-        auto requestString = request.WriteReadable();
-        std::cout << std::endl << std::endl << "Request: " << requestString.c_str() << std::endl << std::endl;
-
-        // AZStd::string requestString(request.WriteReadable(false).c_str());
 
         HttpRequestor::HttpRequestorRequestBus::Broadcast(
             &HttpRequestor::HttpRequestorRequests::AddRequestWithHeadersAndBody,
             m_url,
             Aws::Http::HttpMethod::HTTP_POST,
             headers,
-            "",
+            request.View().WriteCompact().c_str(),
             innerCallback);
     };
 } // namespace AICore
