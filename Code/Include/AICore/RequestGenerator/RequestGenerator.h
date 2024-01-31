@@ -1,6 +1,9 @@
 
 #pragma once
 
+#include "AzCore/Memory/Memory_fwd.h"
+#include <AzCore/Memory/Memory.h>
+#include <AzCore/Memory/SystemAllocator.h>
 #include <AzCore/std/string/string.h>
 
 namespace AICore
