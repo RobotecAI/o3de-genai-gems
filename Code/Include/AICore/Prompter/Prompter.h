@@ -1,6 +1,8 @@
 
 #pragma once
 
+#include "AzCore/RTTI/RTTIMacros.h"
+#include "AzCore/RTTI/TemplateInfo.h"
 #include <AzCore/std/functional.h>
 #include <AzCore/std/string/string.h>
 #include <AzCore/std/typetraits/is_base_of.h>
@@ -8,9 +10,11 @@
 #include <AICore/Communication/Requester.h>
 #include <AICore/RequestGenerator/RequestGenerator.h>
 
+#include <iostream>
+
 namespace AICore
 {
-    template<typename RequesterType, typename GeneratorType>
+    template<class RequesterType, class GeneratorType>
     class Prompter
     {
     public:
@@ -59,5 +63,7 @@ namespace AICore
         RequesterType m_requester;
         GeneratorType m_generator;
     };
+
+    AZ_TYPE_INFO_TEMPLATE(Prompter, "{cd95b401-5aad-456f-9920-40bc543207b9}", AZ_TYPE_INFO_TYPENAME, AZ_TYPE_INFO_TYPENAME);
 
 } // namespace AICore

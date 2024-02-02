@@ -12,10 +12,9 @@ namespace AICore
     class OllamaContextRequestGenerator : public OllamaBasicRequestGenerator
     {
     public:
-        AZ_RTTI(OllamaContextRequestGenerator, "{5d67a8fb-5684-4e69-b382-9f130ae463b6}", OllamaBasicRequestGenerator);
-        AZ_CLASS_ALLOCATOR(OllamaContextRequestGenerator, AZ::SystemAllocator);
-
         OllamaContextRequestGenerator(OllamaBasicPromptConfiguration config);
+        OllamaContextRequestGenerator(const OllamaContextRequestGenerator& other) = default;
+
         ~OllamaContextRequestGenerator() = default;
 
         Aws::Utils::Json::JsonValue EncodePrompt(AZStd::string prompt);

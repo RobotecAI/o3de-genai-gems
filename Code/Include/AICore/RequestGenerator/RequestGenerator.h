@@ -1,9 +1,10 @@
 
 #pragma once
 
-#include "AzCore/Memory/Memory_fwd.h"
 #include <AzCore/Memory/Memory.h>
+#include <AzCore/Memory/Memory_fwd.h>
 #include <AzCore/Memory/SystemAllocator.h>
+#include <AzCore/RTTI/TemplateInfo.h>
 #include <AzCore/std/string/string.h>
 
 namespace AICore
@@ -26,4 +27,5 @@ namespace AICore
     protected:
         PromptConfiguration m_config;
     };
+
 } // namespace AICore

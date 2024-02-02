@@ -1,6 +1,9 @@
 
 #pragma once
 
+#include <AzCore/Memory/SystemAllocator.h>
+#include <AzCore/RTTI/RTTIMacros.h>
+#include <AzCore/RTTI/TypeInfo.h>
 #include <AzCore/std/functional.h>
 #include <AzCore/std/string/string.h>
 
@@ -10,6 +13,8 @@ namespace AICore
     class Requester
     {
     public:
+        AZ_CLASS_ALLOCATOR(Requester, AZ::SystemAllocator);
+
         Requester() = default;
         virtual ~Requester() = default;
 
@@ -17,4 +22,5 @@ namespace AICore
 
         using Request = RequestType;
     };
+
 } // namespace AICore
