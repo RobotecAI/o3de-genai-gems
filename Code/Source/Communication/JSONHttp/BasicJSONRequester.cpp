@@ -12,6 +12,14 @@ namespace AICore
     {
     }
 
+    void BasicJSONRequester::Reflect(AZ::ReflectContext* context)
+    {
+        if (auto serializeContext = azrtti_cast<AZ::SerializeContext*>(context))
+        {
+            serializeContext->Class<BasicJSONRequester, Requester<Aws::Utils::Json::JsonValue>>()->Version(0);
+        }
+    }
+
     void BasicJSONRequester::SendRequest(
         Aws::Utils::Json::JsonValue request, AZStd::function<void(Aws::Utils::Json::JsonValue, AZStd::optional<AZStd::string>)> callback)
     {

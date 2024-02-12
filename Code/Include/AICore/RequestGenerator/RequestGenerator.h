@@ -13,6 +13,8 @@ namespace AICore
     class RequestGenerator
     {
     public:
+        // AZ_RTTI()
+
         RequestGenerator(PromptConfigurationType config)
             : m_config(config){};
         virtual ~RequestGenerator() = default;

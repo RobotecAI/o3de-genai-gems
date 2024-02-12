@@ -33,6 +33,9 @@ namespace AICore
         static void GetRequiredServices(AZ::ComponentDescriptor::DependencyArrayType& required);
         static void GetDependentServices(AZ::ComponentDescriptor::DependencyArrayType& dependent);
 
+        // AzToolsFramework::EditorEvents::Bus::Handler overrides ...
+        void NotifyRegisterViews() override;
+
         // AZ::Component
         void Activate() override;
         void Deactivate() override;

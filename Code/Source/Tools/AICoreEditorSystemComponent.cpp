@@ -6,8 +6,11 @@
 *
 */
 
-#include <AzCore/Serialization/SerializeContext.h>
 #include "AICoreEditorSystemComponent.h"
+
+#include "UI/AICoreWidget.h"
+#include <API/ViewPaneOptions.h>
+#include <AzCore/Serialization/SerializeContext.h>
 
 #include <AICore/AICoreTypeIds.h>
 
@@ -61,6 +64,15 @@ namespace AICore
     {
         AzToolsFramework::EditorEvents::Bus::Handler::BusDisconnect();
         AICoreSystemComponent::Deactivate();
+    }
+
+    void AICoreEditorSystemComponent::NotifyRegisterViews()
+    {
+        AzToolsFramework::ViewPaneOptions options;
+        options.paneRect = QRect(100, 100, 500, 400);
+        options.showOnToolsToolbar = true;
+
+        AzToolsFramework::RegisterViewPane<AICoreWidget>("AICore", "AICore", options);
     }
 
 } // namespace AICore

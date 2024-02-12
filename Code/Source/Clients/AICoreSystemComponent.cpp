@@ -26,11 +26,10 @@ namespace AICore
 
     void AICoreSystemComponent::Reflect(AZ::ReflectContext* context)
     {
+        BasicJSONRequester::Reflect(context);
         if (auto serializeContext = azrtti_cast<AZ::SerializeContext*>(context))
         {
-            serializeContext->Class<AICoreSystemComponent, AZ::Component>()
-                ->Version(0)
-                ;
+            serializeContext->Class<AICoreSystemComponent, AZ::Component>()->Version(0)->Field("TestField", &AICoreSystemComponent::test);
         }
     }
 
@@ -138,29 +137,29 @@ namespace AICore
         //             std::cout << std::endl << std::endl << "Failed to get response" << std::endl << std::endl;
         //         }
         //     });
-        BasicJSONRequester requester("http://localhost:11434/api/generate");
-        OllamaContextRequestGenerator generator(OllamaBasicPromptConfiguration({ "mistral" }));
+        // BasicJSONRequester requester("http://localhost:11434/api/generate");
+        // OllamaContextRequestGenerator generator(OllamaBasicPromptConfiguration({ "mistral" }));
 
-        Prompter<BasicJSONRequester, OllamaContextRequestGenerator> prompter(AZStd::move(requester), AZStd::move(generator));
+        // Prompter<BasicJSONRequester, OllamaContextRequestGenerator> prompter(AZStd::move(requester), AZStd::move(generator));
 
-        AZStd::vector<int> testVector;
-        testVector.push_back(1);
+        // AZStd::vector<int> testVector;
+        // testVector.push_back(1);
 
-        prompter.Prompt(
-            "Hello world",
-            [prompter](AZStd::string response, AZStd::optional<AZStd::string> errorMsg)
-            {
-                if (!errorMsg.has_value())
-                {
-                    std::cout << std::endl << std::endl << "Response: " << response.c_str() << std::endl << std::endl;
-                }
-                else
-                {
-                    std::cout << std::endl << std::endl << "Failed to get response" << std::endl << std::endl;
-                }
-            });
+        // prompter.Prompt(
+        //     "Hello world",
+        //     [prompter](AZStd::string response, AZStd::optional<AZStd::string> errorMsg)
+        //     {
+        //         if (!errorMsg.has_value())
+        //         {
+        //             std::cout << std::endl << std::endl << "Response: " << response.c_str() << std::endl << std::endl;
+        //         }
+        //         else
+        //         {
+        //             std::cout << std::endl << std::endl << "Failed to get response" << std::endl << std::endl;
+        //         }
+        //     });
 
-        std::cout << testVector.size() << std::endl;
+        // std::cout << testVector.size() << std::endl;
         // generator.EncodePrompt("test");
     }
 

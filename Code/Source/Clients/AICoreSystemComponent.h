@@ -49,6 +49,8 @@ namespace AICore
         // AZTickBus interface implementation
         void OnTick(float deltaTime, AZ::ScriptTimePoint time) override;
         ////////////////////////////////////////////////////////////////////////
+
+        int test = 1234567890;
     };
 
 } // namespace AICore
