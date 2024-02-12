@@ -4,4 +4,6 @@ set(FILES
 
     Source/UI/AICoreWidget.h
     Source/UI/AICoreWidget.cpp
+    Source/UI/RequesterTab.h
+    Source/UI/RequesterTab.cpp
 )

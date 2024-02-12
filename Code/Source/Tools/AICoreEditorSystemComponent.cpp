@@ -14,6 +14,8 @@
 
 #include <AICore/AICoreTypeIds.h>
 
+#include "AICoreSettingsRegistryManager/AICoreSettingsRegistryManager.h"
+
 namespace AICore
 {
     AZ_COMPONENT_IMPL(AICoreEditorSystemComponent, "AICoreEditorSystemComponent",
@@ -71,6 +73,7 @@ namespace AICore
         AzToolsFramework::ViewPaneOptions options;
         options.paneRect = QRect(100, 100, 500, 400);
         options.showOnToolsToolbar = true;
+        options.isDeletable = false;
 
         AzToolsFramework::RegisterViewPane<AICoreWidget>("AICore", "AICore", options);
     }

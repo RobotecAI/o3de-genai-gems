@@ -11,6 +11,8 @@
 #include <AzToolsFramework/API/ToolsApplicationAPI.h>
 #include <Clients/AICoreSystemComponent.h>
 
+// #include <aws/core/utils/json/JsonSerializer.h>
+
 namespace AICore
 {
     /// System component for AICore editor
@@ -41,3 +43,4 @@ namespace AICore
         void Deactivate() override;
     };
 } // namespace AICore
+

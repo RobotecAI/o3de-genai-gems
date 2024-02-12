@@ -126,6 +126,7 @@ if(PAL_TRAIT_BUILD_HOST_TOOLS)
         BUILD_DEPENDENCIES
             PUBLIC
                 AZ::AzToolsFramework
+                Gem::AWSCore
                 $<TARGET_OBJECTS:Gem::${gem_name}.Private.Object>
     )
 
@@ -144,6 +145,8 @@ if(PAL_TRAIT_BUILD_HOST_TOOLS)
             PUBLIC
                 Gem::${gem_name}.Editor.API
                 Gem::HttpRequestor
+                AZ::AzToolsFramework
+                Gem::AWSCore
                 3rdParty::AWSNativeSDK::Core
             PRIVATE
                 Gem::${gem_name}.Editor.Private.Object

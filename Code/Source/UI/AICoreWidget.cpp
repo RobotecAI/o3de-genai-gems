@@ -1,31 +1,24 @@
 
 #include "AICoreWidget.h"
-
-#include <AzCore/Utils/Utils.h>
-#include <QLabel>
-#include <QVBoxLayout>
+#include "UI/RequesterTab.h"
+#include <qwidget.h>
 
 namespace AICore
 {
     AICoreWidget::AICoreWidget(QWidget* parent)
         : QWidget(parent)
     {
-        // QVBoxLayout* mainLayout = new QVBoxLayout(this);
+        QVBoxLayout* verticalLayout = new QVBoxLayout(this);
+        verticalLayout->setContentsMargins(0, 5, 0, 0);
+        verticalLayout->setSpacing(0);
 
-        // QLabel* introLabel = new QLabel(QObject::tr("Put your cool stuff here!"), this);
-        // mainLayout->addWidget(introLabel, 0, Qt::AlignCenter);
+        m_tabs = new AzQtComponents::TabWidget(this);
+        AzQtComponents::TabWidget::applySecondaryStyle(m_tabs, false);
 
-        // QString helpText = QString(
-        //     "For help getting started, visit the <a href=\"https://o3de.org/docs/tools-ui/\">UI Development</a> documentation<br/>or come
-        //     " "ask a question in the <a href=\"https://discord.gg/R77Wss3kHe\">sig-ui-ux channel</a> on Discord");
+        m_requesterTab = new RequesterTab();
 
-        // QLabel* helpLabel = new QLabel(this);
-        // helpLabel->setTextFormat(Qt::RichText);
-        // helpLabel->setText(helpText);
-        // helpLabel->setOpenExternalLinks(true);
+        m_tabs->addTab(m_requesterTab, "Requester Configuration");
 
-        // mainLayout->addWidget(helpLabel, 0, Qt::AlignCenter);
-
-        // setLayout(mainLayout);
+        verticalLayout->addWidget(m_tabs);
     }
 } // namespace AICore

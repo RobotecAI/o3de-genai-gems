@@ -7,13 +7,16 @@
 #include <AzCore/std/functional.h>
 #include <AzCore/std/string/string.h>
 
+#include <AzCore/RTTI/RTTI.h>
+#include <AzCore/RTTI/TemplateInfo.h>
+
 namespace AICore
 {
     template<typename RequestType>
     class Requester
     {
     public:
-        AZ_CLASS_ALLOCATOR(Requester, AZ::SystemAllocator);
+        // AZ_CLASS_ALLOCATOR(Requester, AZ::SystemAllocator);
 
         Requester() = default;
         virtual ~Requester() = default;
@@ -24,3 +27,8 @@ namespace AICore
     };
 
 } // namespace AICore
+
+namespace AZ
+{
+    AZ_TYPE_INFO_TEMPLATE(AICore::Requester, "{0bcac4e2-09a9-4702-98dd-ef37006664a7}", AZ_TYPE_INFO_TYPENAME);
+}

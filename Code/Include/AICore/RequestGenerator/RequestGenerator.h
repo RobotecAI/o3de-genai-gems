@@ -4,7 +4,10 @@
 #include <AzCore/Memory/Memory.h>
 #include <AzCore/Memory/Memory_fwd.h>
 #include <AzCore/Memory/SystemAllocator.h>
+#include <AzCore/RTTI/RTTI.h>
+#include <AzCore/RTTI/RTTIMacros.h>
 #include <AzCore/RTTI/TemplateInfo.h>
+#include <AzCore/RTTI/TypeInfo.h>
 #include <AzCore/std/string/string.h>
 
 namespace AICore
@@ -13,8 +16,6 @@ namespace AICore
     class RequestGenerator
     {
     public:
-        // AZ_RTTI()
-
         RequestGenerator(PromptConfigurationType config)
             : m_config(config){};
         virtual ~RequestGenerator() = default;
@@ -31,3 +32,13 @@ namespace AICore
     };
 
 } // namespace AICore
+
+// namespace AZ
+// {
+//     AZ_TYPE_INFO_TEMPLATE(
+//         AICore::RequestGenerator,
+//         "{0bcac4e2-09a9-4702-98dd-ef37006664a7}",
+//         AZ_TYPE_INFO_TYPENAME,
+//         AZ_TYPE_INFO_TYPENAME,
+//         AZ_TYPE_INFO_TYPENAME);
+// }
