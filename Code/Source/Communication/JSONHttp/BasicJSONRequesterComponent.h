@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include "Communication/JSONHttp/BasicJSONRequesterController.h"
+#include "BasicJSONRequesterController.h"
 #include <AzCore/Component/Component.h>
 #include <AzFramework/Components/ComponentAdapter.h>
 

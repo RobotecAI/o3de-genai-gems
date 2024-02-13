@@ -1,5 +1,5 @@
 
-#include "Communication/JSONHttp/BasicJSONRequesterEditorComponent.h"
+#include "BasicJSONRequesterEditorComponent.h"
 
 namespace AICore
 {

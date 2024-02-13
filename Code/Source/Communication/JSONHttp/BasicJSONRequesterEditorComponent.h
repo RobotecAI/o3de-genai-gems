@@ -1,11 +1,11 @@
 
 #pragma once
 
-#include "Communication/JSONHttp/BasicJSONRequesterComponent.h"
-#include "Communication/JSONHttp/BasicJSONRequesterController.h"
-#include "ToolsComponents/EditorComponentAdapter.h"
-#include "ToolsComponents/EditorComponentBase.h"
+#include "BasicJSONRequesterComponent.h"
+#include "BasicJSONRequesterController.h"
 #include <AzCore/RTTI/ReflectContext.h>
+#include <AzToolsFramework/ToolsComponents/EditorComponentAdapter.h>
+#include <AzToolsFramework/ToolsComponents/EditorComponentBase.h>
 
 namespace AICore
 {

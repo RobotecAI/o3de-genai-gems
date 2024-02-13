@@ -30,7 +30,7 @@ namespace AICore
             m_descriptors.end(),
             {
                 AICoreSystemComponent::CreateDescriptor(),
-                AICoreTestComponent::CreateDescriptor()
+                AICoreTestComponent::CreateDescriptor(),
                 BasicJSONRequesterComponent::CreateDescriptor(),
                 OllamaContextRequestGeneratorComponent::CreateDescriptor(),
             });

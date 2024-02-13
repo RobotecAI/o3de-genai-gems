@@ -4,7 +4,6 @@
 #include <AzCore/Serialization/SerializeContext.h>
 #include <HttpRequestor/HttpRequestorBus.h>
 #include <HttpRequestor/HttpTypes.h>
-#include <iostream>
 
 namespace AICore
 {
@@ -75,13 +74,11 @@ namespace AICore
     void BasicJSONRequesterController::Activate(AZ::EntityId entityId)
     {
         RequesterBus<Aws::Utils::Json::JsonValue>::Handler::BusConnect(entityId);
-        std::cout << "BasicJSONRequesterController activated" << std::endl;
     }
 
     void BasicJSONRequesterController::Deactivate()
     {
         RequesterBus<Aws::Utils::Json::JsonValue>::Handler::BusDisconnect();
-        std::cout << "BasicJSONRequesterController deactivated" << std::endl;
     }
 
     void BasicJSONRequesterController::SetConfiguration(const BasicJSONRequesterConfiguration& config)
@@ -95,23 +92,16 @@ namespace AICore
     }
 
     void BasicJSONRequesterController::SendRequest(
-        Aws::Utils::Json::JsonValue request, AZStd::function<void(Aws::Utils::Json::JsonValue, AZ::Outcome<void, AZStd::string>)> callback)
+        Aws::Utils::Json::JsonValue request, AZStd::function<void(Aws::Utils::Json::JsonValue, Aws::Http::HttpResponseCode)> callback)
     {
         HttpRequestor::Headers headers;
-        headers["Content-Type"] = "application/json";
+        headers["Content-Type"] = m_configuration.m_contentType.c_str();
 
         HttpRequestor::Callback innerCallback =
             [callback](const Aws::Utils::Json::JsonView& jsonView, Aws::Http::HttpResponseCode responseCode)
         {
             Aws::Utils::Json::JsonValue response(jsonView.WriteCompact());
-            if (responseCode != Aws::Http::HttpResponseCode::OK)
-            {
-                callback(response, AZ::Failure<AZStd::string>("Request failed"));
-            }
-            else
-            {
-                callback(response, AZ::Success());
-            }
+            callback(response, responseCode);
         };
 
         HttpRequestor::HttpRequestorRequestBus::Broadcast(

@@ -14,5 +14,8 @@ set(FILES
 
     Source/RequestGenerator/ollama/OllamaContextRequestGeneratorEditorComponent.h
     Source/RequestGenerator/ollama/OllamaContextRequestGeneratorEditorComponent.cpp
+
+    Source/PromptTestComponent/PromptTestComponent.h
+    Source/PromptTestComponent/PromptTestComponent.cpp
 )
 

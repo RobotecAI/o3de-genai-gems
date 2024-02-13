@@ -1,9 +1,9 @@
 
 #include "OllamaContextRequestGeneratorController.h"
-#include "AzCore/Outcome/Outcome.h"
-#include "AzCore/Serialization/EditContext.h"
-#include "AzCore/Serialization/SerializeContext.h"
 #include "OllamaBasicPromptConfiguration.h"
+#include <AzCore/Outcome/Outcome.h>
+#include <AzCore/Serialization/EditContext.h>
+#include <AzCore/Serialization/SerializeContext.h>
 
 namespace AICore
 {
@@ -39,12 +39,13 @@ namespace AICore
 
     void OllamaContextRequestGeneratorController::Activate(AZ::EntityId entityId)
     {
-        RequestGeneratorBus<Aws::Utils::Json::JsonValue, AZStd::pair<AZStd::string, AZStd::vector<int>>>::Handler::BusConnect(entityId);
+        RequestGeneratorBus<Aws::Utils::Json::JsonValue, AZStd::pair<AZStd::string, AZStd::vector<long long>>>::Handler::BusConnect(
+            entityId);
     }
 
     void OllamaContextRequestGeneratorController::Deactivate()
     {
-        RequestGeneratorBus<Aws::Utils::Json::JsonValue, AZStd::pair<AZStd::string, AZStd::vector<int>>>::Handler::BusDisconnect();
+        RequestGeneratorBus<Aws::Utils::Json::JsonValue, AZStd::pair<AZStd::string, AZStd::vector<long long>>>::Handler::BusDisconnect();
     }
 
     void OllamaContextRequestGeneratorController::SetConfiguration(const OllamaBasicPromptConfiguration& config)
@@ -58,7 +59,7 @@ namespace AICore
     }
 
     Aws::Utils::Json::JsonValue OllamaContextRequestGeneratorController::PrepareRequest(
-        AZStd::pair<AZStd::string, AZStd::vector<int>> prompt)
+        AZStd::pair<AZStd::string, AZStd::vector<long long>> prompt)
     {
         Aws::Utils::Json::JsonValue jsonValue;
 
@@ -78,8 +79,19 @@ namespace AICore
             jsonValue = jsonValue.WithString("template", m_configuration.m_template.c_str());
         }
 
+        if (m_configuration.m_keepAlive != "")
+        {
+            jsonValue = jsonValue.WithString("keep_alive", m_configuration.m_keepAlive.c_str());
+        }
+
+        if (m_configuration.m_system != "")
+        {
+            jsonValue = jsonValue.WithString("system", m_configuration.m_system.c_str());
+        }
+
         jsonValue.WithBool("stream", m_configuration.m_stream);
-        jsonValue.WithBool("raw", m_configuration.m_raw);
+        // Disabled as sending the raw produces an error
+        // jsonValue.WithBool("raw", m_configuration.m_raw);
 
         Aws::Utils::Array<Aws::Utils::Json::JsonValue> contextArray(prompt.second.size());
 
@@ -88,15 +100,18 @@ namespace AICore
             contextArray[i].AsInteger(prompt.second[i]);
         }
 
-        jsonValue.WithArray("context", contextArray);
+        if (contextArray.GetLength() > 0)
+        {
+            jsonValue.WithArray("context", contextArray);
+        }
 
         return jsonValue;
     }
 
-    AZ::Outcome<AZStd::pair<AZStd::string, AZStd::vector<int>>, AZStd::string> OllamaContextRequestGeneratorController::ProcessRequest(
-        Aws::Utils::Json::JsonValue request)
+    AZ::Outcome<AZStd::pair<AZStd::string, AZStd::vector<long long>>, AZStd::string> OllamaContextRequestGeneratorController::
+        ProcessRequest(Aws::Utils::Json::JsonValue request)
     {
-        AZStd::pair<AZStd::string, AZStd::vector<int>> response;
+        AZStd::pair<AZStd::string, AZStd::vector<long long>> response;
 
         Aws::Utils::Json::JsonView jsonView = request.View();
 

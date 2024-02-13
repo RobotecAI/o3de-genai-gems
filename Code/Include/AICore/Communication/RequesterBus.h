@@ -6,6 +6,7 @@
 #include <AzCore/Interface/Interface.h>
 #include <AzCore/Outcome/Outcome.h>
 #include <AzCore/RTTI/TemplateInfo.h>
+#include <aws/core/http/HttpResponse.h>
 
 namespace AICore
 {
@@ -22,7 +23,7 @@ namespace AICore
         //! @param callback The callback to be called when the request is complete. The callback will be called with the request and the
         //! result of the request. If the request was successful, the result will be a void. If the request failed, the error string will be
         //! returned.
-        virtual void SendRequest(RequestType request, AZStd::function<void(RequestType, AZ::Outcome<void, AZStd::string>)> callback) = 0;
+        virtual void SendRequest(RequestType request, AZStd::function<void(RequestType, Aws::Http::HttpResponseCode)> callback) = 0;
     };
 
     template<class RequestType>

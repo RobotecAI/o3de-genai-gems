@@ -8,16 +8,10 @@
 
 #include "AICoreSystemComponent.h"
 #include "AzCore/std/utility/move.h"
-// #include "Communication/JSONHttp/BasicJSONRequester.h"
-// #include "RequestGenerator/ollama/OllamaBasicPromptConfiguration.h"
-// #include "RequestGenerator/ollama/OllamaBasicRequestGenerator.h"
-// #include "RequestGenerator/ollama/OllamaContextRequestGenerator.h"
 
 #include <AICore/AICoreTypeIds.h>
 #include <Action/AICoreLauncherScriptExecutor.h>
 #include <AzCore/Serialization/SerializeContext.h>
-
-#include <iostream>
 
 namespace AICore
 {
@@ -30,11 +24,8 @@ namespace AICore
 
     void AICoreSystemComponent::Reflect(AZ::ReflectContext* context)
     {
-<<<<<<< HEAD
         AICoreLauncherScriptExecutor::Reflect(context);
-=======
-        // BasicJSONRequester::Reflect(context);
->>>>>>> dc597e8 (Component based ollama AI prompting)
+
         if (auto serializeContext = azrtti_cast<AZ::SerializeContext*>(context))
         {
             serializeContext->Class<AICoreSystemComponent, AZ::Component>()->Version(0);

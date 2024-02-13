@@ -27,5 +27,4 @@ set(FILES
     Source/RequestGenerator/ollama/OllamaContextRequestGeneratorController.cpp
     Source/RequestGenerator/ollama/OllamaBasicPromptConfiguration.h
     Source/RequestGenerator/ollama/OllamaBasicPromptConfiguration.cpp
-    Source/RequestGenerator/ollama/OllamaBasicRequestGenerator.h
 )
