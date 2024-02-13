@@ -1,10 +1,9 @@
 
 #pragma once
 
-#include "AzCore/Component/ComponentBus.h"
-#include "AzCore/RTTI/RTTIMacros.h"
+#include <AzCore/Component/ComponentBus.h>
+#include <AzCore/RTTI/RTTIMacros.h>
 #include <AzCore/std/string/string.h>
-#include <string>
 
 namespace AICore
 {
@@ -18,7 +17,7 @@ namespace AICore
         static void Reflect(AZ::ReflectContext* context);
 
         AZStd::string m_model = "";
-        AZStd::string m_format = "json";
+        AZStd::string m_format = "";
         AZStd::string m_options = "";
         AZStd::string m_system = "";
         AZStd::string m_template = "";

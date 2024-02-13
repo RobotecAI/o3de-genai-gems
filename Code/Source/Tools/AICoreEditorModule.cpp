@@ -11,6 +11,7 @@
 #include "AICoreEditorSystemComponent.h"
 
 #include "Communication/JSONHttp/BasicJSONRequesterEditorComponent.h"
+#include "PromptTestComponent/PromptTestComponent.h"
 #include "RequestGenerator/ollama/OllamaContextRequestGeneratorEditorComponent.h"
 
 namespace AICore
@@ -34,6 +35,7 @@ namespace AICore
                     AICoreEditorSystemComponent::CreateDescriptor(),
                     BasicJSONRequesterEditorComponent::CreateDescriptor(),
                     OllamaContextRequestGeneratorEditorComponent::CreateDescriptor(),
+                    PromptTestComponent::CreateDescriptor(),
                 });
         }
 

@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include "RequestGenerator/ollama/OllamaContextRequestGeneratorController.h"
+#include "OllamaContextRequestGeneratorController.h"
 #include <AzCore/Component/Component.h>
 #include <AzFramework/Components/ComponentAdapter.h>
 

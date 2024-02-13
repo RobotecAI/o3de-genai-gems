@@ -1,10 +1,10 @@
 
 #pragma once
 
-#include "RequestGenerator/ollama/OllamaContextRequestGeneratorComponent.h"
-#include "RequestGenerator/ollama/OllamaContextRequestGeneratorController.h"
-#include "ToolsComponents/EditorComponentAdapter.h"
-#include "ToolsComponents/EditorComponentBase.h"
+#include "OllamaContextRequestGeneratorComponent.h"
+#include "OllamaContextRequestGeneratorController.h"
+#include <AzToolsFramework/ToolsComponents/EditorComponentAdapter.h>
+#include <AzToolsFramework/ToolsComponents/EditorComponentBase.h>
 
 namespace AICore
 {

@@ -1,7 +1,8 @@
 
 #include "OllamaBasicPromptConfiguration.h"
-#include "AzCore/Serialization/EditContext.h"
-#include "AzCore/Serialization/SerializeContext.h"
+#include "AzCore/Serialization/EditContextConstants.inl"
+#include <AzCore/Serialization/EditContext.h>
+#include <AzCore/Serialization/SerializeContext.h>
 
 namespace AICore
 {
@@ -34,32 +35,34 @@ namespace AICore
                         "Format",
                         "The format to return a response in. Currently the only accepted value is json")
                     ->DataElement(
-                        AZ::Edit::UIHandlers::Default,
+                        AZ::Edit::UIHandlers::MultiLineEdit,
                         &OllamaBasicPromptConfiguration::m_options,
                         "Options",
                         "Additional model parameters listed in the documentation for the Modelfile such as temperature")
                     ->DataElement(
-                        AZ::Edit::UIHandlers::Default,
+                        AZ::Edit::UIHandlers::MultiLineEdit,
                         &OllamaBasicPromptConfiguration::m_system,
                         "System",
                         "System message to (overrides what is defined in the Modelfile)")
                     ->DataElement(
-                        AZ::Edit::UIHandlers::Default,
+                        AZ::Edit::UIHandlers::MultiLineEdit,
                         &OllamaBasicPromptConfiguration::m_template,
                         "Template",
                         "The prompt template to use (overrides what is defined in the Modelfile)")
                     ->DataElement(
                         AZ::Edit::UIHandlers::Default,
                         &OllamaBasicPromptConfiguration::m_stream,
-                        "Stream",
+                        "Stream (disabled as only false is supported)",
                         "If false the response will be returned as a single response object, rather than a stream of objects. Currently "
                         "the only accepted value is false")
+                    ->Attribute(AZ::Edit::Attributes::ReadOnly, true)
                     ->DataElement(
                         AZ::Edit::UIHandlers::Default,
                         &OllamaBasicPromptConfiguration::m_raw,
-                        "Raw",
+                        "Raw (disabled)",
                         "If true no formatting will be applied to the prompt. You may choose to use the raw parameter if you are "
                         "specifying a full templated prompt in your request to the API")
+                    ->Attribute(AZ::Edit::Attributes::ReadOnly, true)
                     ->DataElement(
                         AZ::Edit::UIHandlers::Default,
                         &OllamaBasicPromptConfiguration::m_keepAlive,

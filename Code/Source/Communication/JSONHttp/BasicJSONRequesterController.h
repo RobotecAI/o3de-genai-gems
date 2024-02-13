@@ -50,7 +50,7 @@ namespace AICore
         // RequesterBus<Aws::Utils::Json::JsonValue> overrides
         void SendRequest(
             Aws::Utils::Json::JsonValue request,
-            AZStd::function<void(Aws::Utils::Json::JsonValue, AZ::Outcome<void, AZStd::string>)> callback) override;
+            AZStd::function<void(Aws::Utils::Json::JsonValue, Aws::Http::HttpResponseCode)> callback) override;
         //////////////////////////////////////////////////////////////////////////
 
     private:
