@@ -29,7 +29,8 @@ namespace AICore
         BasicJSONRequester::Reflect(context);
         if (auto serializeContext = azrtti_cast<AZ::SerializeContext*>(context))
         {
-            serializeContext->Class<AICoreSystemComponent, AZ::Component>()->Version(0)->Field("TestField", &AICoreSystemComponent::test);
+            serializeContext->Class<AICoreSystemComponent, AZ::Component>()->Version(0)->Field(
+                "Requesters", &AICoreSystemComponent::m_requesters);
         }
     }
 

@@ -8,9 +8,11 @@
 
 #pragma once
 
+#include "AzCore/std/smart_ptr/shared_ptr.h"
+#include <AICore/AICoreBus.h>
+#include <AICore/Communication/Requester.h>
 #include <AzCore/Component/Component.h>
 #include <AzCore/Component/TickBus.h>
-#include <AICore/AICoreBus.h>
 
 namespace AICore
 {
@@ -50,7 +52,7 @@ namespace AICore
         void OnTick(float deltaTime, AZ::ScriptTimePoint time) override;
         ////////////////////////////////////////////////////////////////////////
 
-        int test = 1234567890;
+        AZStd::vector<AZStd::shared_ptr<RequesterBase>> m_requesters;
     };
 
 } // namespace AICore

@@ -14,6 +14,9 @@ namespace AICore
     RequesterTab::RequesterTab(QWidget* parent)
         : QWidget(parent)
     {
+        m_requester_test.push_back(BasicJSONRequester());
+        m_requester_test.push_back(BasicJSONRequester());
+
         m_segmentControl = new AzQtComponents::SegmentControl(this);
         m_segmentControl->setTabPosition(AzQtComponents::SegmentControl::West);
         m_segmentControl->setTabOrientation(Qt::Vertical);
@@ -24,8 +27,8 @@ namespace AICore
         blockSignals(true);
         m_propertyEditor->ClearInstances();
 
-        m_propertyEditor->AddInstance(&m_requester_test.second);
-        m_propertyEditor->AddInstance(&m_requester_test2.second);
+        m_propertyEditor->AddInstance(&m_requester_test[0]);
+        m_propertyEditor->AddInstance(&m_requester_test[1]);
 
         m_propertyEditor->InvalidateAll();
         blockSignals(false);
@@ -67,35 +70,34 @@ namespace AICore
 
     void RequesterTab::SetPropertyEditingComplete(AzToolsFramework::InstanceDataNode* /*node*/)
     {
-        m_setregManager.SaveSystemConfiguration<BasicJSONRequester>(
-            m_requester_test.second,
-            m_requester_test.first,
-            [](const BasicJSONRequester& obj1, AICoreSettingsRegistryManager::Result result)
-            {
-                if (result == AICoreSettingsRegistryManager::Result::Success)
-                {
-                    std::cout << "Good" << std::endl;
-                }
-                else
-                {
-                    std::cout << "bad" << std::endl;
-                }
-            });
+        // m_setregManager.SaveSystemConfiguration<AZStd::vector<BasicJSONRequester>>(
+        //     m_requester_test,
+        //     [](const AZStd::vector<BasicJSONRequester>& obj1, AICoreSettingsRegistryManager::Result result)
+        //     {
+        //         if (result == AICoreSettingsRegistryManager::Result::Success)
+        //         {
+        //             std::cout << "Good" << std::endl;
+        //         }
+        //         else
+        //         {
+        //             std::cout << "bad" << std::endl;
+        //         }
+        //     });
 
-        m_setregManager.SaveSystemConfiguration<BasicJSONRequester>(
-            m_requester_test2.second,
-            m_requester_test2.first,
-            [](const BasicJSONRequester& obj1, AICoreSettingsRegistryManager::Result result)
-            {
-                if (result == AICoreSettingsRegistryManager::Result::Success)
-                {
-                    std::cout << "Good" << std::endl;
-                }
-                else
-                {
-                    std::cout << "bad" << std::endl;
-                }
-            });
+        // m_setregManager.SaveSystemConfiguration<BasicJSONRequester>(
+        //     m_requester_test2.second,
+        //     m_requester_test2.first,
+        //     [](const BasicJSONRequester& obj1, AICoreSettingsRegistryManager::Result result)
+        //     {
+        //         if (result == AICoreSettingsRegistryManager::Result::Success)
+        //         {
+        //             std::cout << "Good" << std::endl;
+        //         }
+        //         else
+        //         {
+        //             std::cout << "bad" << std::endl;
+        //         }
+        //     });
     }
 
     void RequesterTab::SealUndoStack()

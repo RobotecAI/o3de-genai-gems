@@ -34,9 +34,7 @@ namespace AICore
 
         AzToolsFramework::ReflectedPropertyEditor* m_propertyEditor;
 
-        AZStd::pair<AZStd::string, BasicJSONRequester> m_requester_test = { "Requester 1", BasicJSONRequester() };
-        AZStd::pair<AZStd::string, BasicJSONRequester> m_requester_test2 = { "Requester 2", BasicJSONRequester() };
-
-        AICoreSettingsRegistryManager m_setregManager;
+        // AZStd::pair<AZStd::string, BasicJSONRequester> m_requester_test = { "Requester 1", BasicJSONRequester() };
+        AZStd::vector<BasicJSONRequester> m_requester_test;
     };
 } // namespace AICore

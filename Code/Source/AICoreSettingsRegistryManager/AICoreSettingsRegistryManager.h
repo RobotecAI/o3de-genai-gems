@@ -1,8 +1,8 @@
 
 #pragma once
 
+#include "AzCore/Serialization/Json/ArraySerializer.h"
 #include "AzCore/std/smart_ptr/shared_ptr.h"
-#include "AzCore/std/string/string.h"
 #include "Communication/JSONHttp/BasicJSONRequester.h"
 #include <AzCore/IO/ByteContainerStream.h>
 #include <AzCore/IO/Path/Path.h>
@@ -89,8 +89,9 @@ namespace AICore
         using OnConfigSaveComplete = AZStd::function<void(const Object&, Result)>;
 
         template<typename Object>
-        void SaveSystemConfiguration(const Object& object, const AZStd::string& id, const OnConfigSaveComplete<Object>& saveCallback)
+        void SaveSystemConfiguration(const Object& object, const OnConfigSaveComplete<Object>& saveCallback)
         {
+            std::cout << object.size() << std::endl;
             bool sourceControlActive = false;
             AzToolsFramework::SourceControlConnectionRequestBus::BroadcastResult(
                 sourceControlActive, &AzToolsFramework::SourceControlConnectionRequests::IsActive);
@@ -114,10 +115,8 @@ namespace AICore
             AZStd::string settingsRegistryPath = AZStd::string::format(
                 "%s/Gems/"
                 "AICore"
-                "/Requester"
-                "/%s",
-                "/Robotec.ai",
-                id.c_str());
+                "/Requester",
+                "/Robotec.ai");
 
             rapidjson::Document aiCoreConfigurationDocument;
             rapidjson::Value& aiCoreConfigurationValue =
