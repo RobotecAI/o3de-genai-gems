@@ -1,6 +1,5 @@
 
 #include "OllamaContextRequestGeneratorEditorComponent.h"
-#include "AzCore/Serialization/EditContext.h"
 
 namespace AICore
 {

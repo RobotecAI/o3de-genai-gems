@@ -75,13 +75,11 @@ namespace AICore
     void BasicJSONRequesterController::Activate(AZ::EntityId entityId)
     {
         RequesterBus<Aws::Utils::Json::JsonValue>::Handler::BusConnect(entityId);
-        std::cout << "BasicJSONRequesterController activated" << std::endl;
     }
 
     void BasicJSONRequesterController::Deactivate()
     {
         RequesterBus<Aws::Utils::Json::JsonValue>::Handler::BusDisconnect();
-        std::cout << "BasicJSONRequesterController deactivated" << std::endl;
     }
 
     void BasicJSONRequesterController::SetConfiguration(const BasicJSONRequesterConfiguration& config)
