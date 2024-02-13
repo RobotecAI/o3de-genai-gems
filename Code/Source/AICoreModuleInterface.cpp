@@ -7,9 +7,11 @@
 */
 
 #include "AICoreModuleInterface.h"
-#include <AzCore/Memory/Memory.h>
+#include "RequestGenerator/ollama/OllamaContextRequestGeneratorComponent.h"
 #include <AICore/AICoreTypeIds.h>
+#include <AzCore/Memory/Memory.h>
 #include <Clients/AICoreSystemComponent.h>
+#include <Communication/JSONHttp/BasicJSONRequesterComponent.h>
 
 namespace AICore
 {
@@ -24,8 +26,12 @@ namespace AICore
         // Add ALL components descriptors associated with this gem to m_descriptors.
         // This will associate the AzTypeInfo information for the components with the the SerializeContext, BehaviorContext and EditContext.
         // This happens through the [MyComponent]::Reflect() function.
-        m_descriptors.insert(m_descriptors.end(), {
-            AICoreSystemComponent::CreateDescriptor(),
+        m_descriptors.insert(
+            m_descriptors.end(),
+            {
+                AICoreSystemComponent::CreateDescriptor(),
+                BasicJSONRequesterComponent::CreateDescriptor(),
+                OllamaContextRequestGeneratorComponent::CreateDescriptor(),
             });
     }
 

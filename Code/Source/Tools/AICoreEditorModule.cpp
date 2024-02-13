@@ -10,6 +10,9 @@
 #include <AICoreModuleInterface.h>
 #include "AICoreEditorSystemComponent.h"
 
+#include "Communication/JSONHttp/BasicJSONRequesterEditorComponent.h"
+#include "RequestGenerator/ollama/OllamaContextRequestGeneratorEditorComponent.h"
+
 namespace AICore
 {
     class AICoreEditorModule
@@ -25,9 +28,13 @@ namespace AICore
             // Add ALL components descriptors associated with this gem to m_descriptors.
             // This will associate the AzTypeInfo information for the components with the the SerializeContext, BehaviorContext and EditContext.
             // This happens through the [MyComponent]::Reflect() function.
-            m_descriptors.insert(m_descriptors.end(), {
-                AICoreEditorSystemComponent::CreateDescriptor(),
-            });
+            m_descriptors.insert(
+                m_descriptors.end(),
+                {
+                    AICoreEditorSystemComponent::CreateDescriptor(),
+                    BasicJSONRequesterEditorComponent::CreateDescriptor(),
+                    OllamaContextRequestGeneratorEditorComponent::CreateDescriptor(),
+                });
         }
 
         /**

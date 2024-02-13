@@ -25,7 +25,6 @@ namespace AICore
 
         using Request = RequestType;
         using Prompt = PromptType;
-        using PromptConfiguration = PromptConfigurationType;
 
     protected:
         PromptConfiguration m_config;

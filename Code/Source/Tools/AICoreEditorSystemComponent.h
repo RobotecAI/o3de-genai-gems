@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "AICoreSettingsRegistryManager/AICoreSettingsRegistryManager.h"
+// #include "AICoreSettingsRegistryManager/AICoreSettingsRegistryManager.h"
 #include <AzToolsFramework/API/ToolsApplicationAPI.h>
 #include <Clients/AICoreSystemComponent.h>
 
@@ -43,8 +43,8 @@ namespace AICore
         void Activate() override;
         void Deactivate() override;
 
-        AZStd::vector<AZStd::shared_ptr<RequesterBase>> m_requesters;
-        AICoreSettingsRegistryManager m_setregManager;
+        // AZStd::vector<AZStd::shared_ptr<RequesterBase>> m_requesters;
+        // AICoreSettingsRegistryManager m_setregManager;
     };
 } // namespace AICore
 

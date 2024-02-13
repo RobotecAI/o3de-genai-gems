@@ -1,17 +1,29 @@
 
 #pragma once
 
+#include "AzCore/Component/ComponentBus.h"
+#include "AzCore/RTTI/RTTIMacros.h"
 #include <AzCore/std/string/string.h>
+#include <string>
 
 namespace AICore
 {
-    struct OllamaBasicPromptConfiguration
+    class OllamaBasicPromptConfiguration : public AZ::ComponentConfig
     {
-        AZStd::string m_model;
-        AZStd::optional<AZStd::string> m_format = {};
-        AZStd::optional<AZStd::string> m_options = {};
-        AZStd::optional<AZStd::string> m_template = {};
-        AZStd::optional<bool> m_stream = { false };
-        AZStd::optional<bool> m_raw = { false };
+    public:
+        AZ_RTTI(OllamaBasicPromptConfiguration, "{c5fa34ff-2bbb-4df4-9aa2-c27320b57f93}");
+        OllamaBasicPromptConfiguration() = default;
+        ~OllamaBasicPromptConfiguration() = default;
+
+        static void Reflect(AZ::ReflectContext* context);
+
+        AZStd::string m_model = "";
+        AZStd::string m_format = "json";
+        AZStd::string m_options = "";
+        AZStd::string m_system = "";
+        AZStd::string m_template = "";
+        bool m_stream = false;
+        bool m_raw = false;
+        AZStd::string m_keepAlive = "5m";
     };
 } // namespace AICore

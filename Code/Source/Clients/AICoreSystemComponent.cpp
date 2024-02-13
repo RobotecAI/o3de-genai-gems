@@ -8,13 +8,13 @@
 
 #include "AICoreSystemComponent.h"
 #include "AzCore/std/utility/move.h"
-#include "Communication/JSONHttp/BasicJSONRequester.h"
-#include "RequestGenerator/ollama/OllamaBasicPromptConfiguration.h"
-#include "RequestGenerator/ollama/OllamaBasicRequestGenerator.h"
-#include "RequestGenerator/ollama/OllamaContextRequestGenerator.h"
+// #include "Communication/JSONHttp/BasicJSONRequester.h"
+// #include "RequestGenerator/ollama/OllamaBasicPromptConfiguration.h"
+// #include "RequestGenerator/ollama/OllamaBasicRequestGenerator.h"
+// #include "RequestGenerator/ollama/OllamaContextRequestGenerator.h"
 
 #include <AICore/AICoreTypeIds.h>
-#include <AICore/Prompter/Prompter.h>
+// #include <AICore/Prompter/Prompter.h>
 #include <AzCore/Serialization/SerializeContext.h>
 
 #include <iostream>
@@ -26,11 +26,10 @@ namespace AICore
 
     void AICoreSystemComponent::Reflect(AZ::ReflectContext* context)
     {
-        BasicJSONRequester::Reflect(context);
+        // BasicJSONRequester::Reflect(context);
         if (auto serializeContext = azrtti_cast<AZ::SerializeContext*>(context))
         {
-            serializeContext->Class<AICoreSystemComponent, AZ::Component>()->Version(0)->Field(
-                "Requesters", &AICoreSystemComponent::m_requesters);
+            serializeContext->Class<AICoreSystemComponent, AZ::Component>()->Version(0);
         }
     }
 

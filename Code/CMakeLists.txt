@@ -123,10 +123,14 @@ if(PAL_TRAIT_BUILD_HOST_TOOLS)
             PRIVATE
                 Include
                 Source
+        COMPILE_DEFINITIONS
+            PUBLIC
+                AICoreEditor
         BUILD_DEPENDENCIES
             PUBLIC
                 AZ::AzToolsFramework
                 Gem::AWSCore
+                Gem::HttpRequestor
                 $<TARGET_OBJECTS:Gem::${gem_name}.Private.Object>
     )
 
@@ -141,6 +145,9 @@ if(PAL_TRAIT_BUILD_HOST_TOOLS)
                 Source
             PUBLIC
                 Include
+        COMPILE_DEFINITIONS
+            PUBLIC
+                AICoreEditor
         BUILD_DEPENDENCIES
             PUBLIC
                 Gem::${gem_name}.Editor.API

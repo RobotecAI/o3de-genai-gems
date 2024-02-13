@@ -1,31 +1,67 @@
 
 #pragma once
 
-#include <AICore/Communication/RequesterBase.h>
+#include <AICore/Communication/RequesterBus.h>
+#include <AzCore/Component/Component.h>
 #include <AzCore/Memory/SystemAllocator.h>
 #include <AzCore/RTTI/RTTIMacros.h>
 #include <AzCore/RTTI/TypeInfo.h>
+#include <AzCore/Serialization/SerializeContext.h>
 #include <AzCore/std/functional.h>
-#include <AzCore/std/string/string.h>
 
 #include <AzCore/RTTI/RTTI.h>
 #include <AzCore/RTTI/TemplateInfo.h>
 
+#ifdef AICoreEditor
+#include <AzToolsFramework/ToolsComponents/EditorComponentBase.h>
+#endif
+
 namespace AICore
 {
     template<typename RequestType>
-    class Requester : public RequesterBase
+    class Requester
+#ifdef AICoreEditor
+        : public AzToolsFramework::Components::EditorComponentBase
+#else
+        : public AZ::Component
+#endif
+        , public RequesterBus<RequestType>::Handler
     {
     public:
         AZ_CLASS_ALLOCATOR(Requester, AZ::SystemAllocator);
-        AZ_RTTI((Requester, "{0bcac4e2-09a9-4702-98dd-ef37006664a7}", RequestType), AICore::RequesterBase);
+#ifdef AICoreEditor
+        AZ_RTTI((Requester, "{b036ab75-d5d4-47c5-8b59-fd7b9ec4b056}", RequestType), AzToolsFramework::Components::EditorComponentBase);
+#else
+        AZ_RTTI((Requester, "{0bcac4e2-09a9-4702-98dd-ef37006664a7}", RequestType), AZ::Component);
+#endif
 
         Requester() = default;
         virtual ~Requester() = default;
 
-        virtual void SendRequest(RequestType request, AZStd::function<void(RequestType, AZStd::optional<AZStd::string>)> callback) = 0;
-
         using Request = RequestType;
+
+        static void Reflect(AZ::ReflectContext* context)
+        {
+            if (auto serializeContext = azrtti_cast<AZ::SerializeContext*>(context))
+            {
+                serializeContext->Class<Requester<RequestType>, AZ::Component>()->Version(0);
+            }
+        }
+
+        void Activate() override
+        {
+            RequesterBus<RequestType>::Handler::BusConnect(GetEntityId());
+        };
+
+        void Deactivate() override
+        {
+            RequesterBus<RequestType>::Handler::BusDisconnect();
+        };
+
+        static void GetProvidedServices(AZ::ComponentDescriptor::DependencyArrayType& provided)
+        {
+            provided.push_back(AZ_CRC_CE("AICoreRequesterService"));
+        };
     };
 
 } // namespace AICore

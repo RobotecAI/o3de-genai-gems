@@ -1,19 +1,20 @@
 
 #pragma once
 
-#include "AzCore/Interface/Interface.h"
 #include <AzCore/Component/ComponentBus.h>
 #include <AzCore/EBus/EBus.h>
+#include <AzCore/Interface/Interface.h>
 #include <AzCore/Outcome/Outcome.h>
+#include <AzCore/RTTI/TemplateInfo.h>
 
 namespace AICore
 {
     template<class RequestType>
-    class RequesterRequests : public AZ::EBusTraits
+    class RequesterRequests : public AZ::ComponentBus
     {
     public:
         static const AZ::EBusHandlerPolicy HandlerPolicy = AZ::EBusHandlerPolicy::Single;
-        static const AZ::EBusAddressPolicy AddressPolicy = AZ::EBusAddressPolicy::Single;
+        static const AZ::EBusAddressPolicy AddressPolicy = AZ::EBusAddressPolicy::ById;
         using BusIdType = AZ::EntityId;
 
         //! Send a request to a specified endpoint
@@ -26,7 +27,9 @@ namespace AICore
 
     template<class RequestType>
     using RequesterBus = AZ::EBus<RequesterRequests<RequestType>>;
-
-    template<class RequestType>
-    using RequesterInterface = AZ::Interface<RequesterRequests<RequestType>>;
 } // namespace AICore
+
+namespace AZ
+{
+    AZ_TYPE_INFO_TEMPLATE(AICore::RequesterRequests, "{0bcac4e2-09a9-4702-98dd-ef37006664a7}", AZ_TYPE_INFO_CLASS);
+}
