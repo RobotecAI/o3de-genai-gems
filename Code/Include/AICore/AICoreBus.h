@@ -35,5 +35,4 @@ namespace AICore
 
     using AICoreRequestBus = AZ::EBus<AICoreRequests, AICoreBusTraits>;
     using AICoreInterface = AZ::Interface<AICoreRequests>;
-
 } // namespace AICore

@@ -50,5 +50,4 @@ namespace AICore
         void OnTick(float deltaTime, AZ::ScriptTimePoint time) override;
         ////////////////////////////////////////////////////////////////////////
     };
-
 } // namespace AICore

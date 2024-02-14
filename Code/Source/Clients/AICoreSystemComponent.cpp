@@ -78,5 +78,4 @@ namespace AICore
     void AICoreSystemComponent::OnTick([[maybe_unused]] float deltaTime, [[maybe_unused]] AZ::ScriptTimePoint time)
     {
     }
-
 } // namespace AICore

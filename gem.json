@@ -20,8 +20,8 @@
     "dependencies": [ "HttpRequestor"],
     "repo_uri": "",
     "compatible_engines": [
-        "o3de-sdk>=3.1.0",
-        "o3de>=3.1.0"
+        "o3de-sdk>=2.1.0",
+        "o3de>=2.1.0"
     ],
     "engine_api_dependencies": [],
     "restricted": "AICore"
