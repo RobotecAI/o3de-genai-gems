@@ -7,6 +7,8 @@
  */
 
 #include <AICore/AICoreActionBus.h>
+#include <AzCore/RTTI/AttributeReader.h>
+#include <AzCore/RTTI/BehaviorContext.h>
 #include <AzCore/Script/ScriptContext.h>
 #include <AzCore/Serialization/SerializeContext.h>
 #include <AzCore/std/containers/set.h>
@@ -16,77 +18,93 @@
 
 namespace AICore
 {
-    class AICoreActionTest : public AICoreActionRequestBus::Handler
+    class AICoreActionTest
     {
     public:
-        AZ_RTTI(AICoreActionTest, "{1F4A2598-DF69-4CE1-A766-8C94988D27A1}");
-
-        static void Reflect(AZ::ReflectContext* context)
+        void HackEditorBuses(AZ::BehaviorContext* behaviorContext, const AZStd::string& filter)
         {
-            if (auto serializeContext = azrtti_cast<AZ::SerializeContext*>(context))
+            AZStd::unordered_set<AZ::Crc32> busesToHack;
+            for (auto& busesIter : behaviorContext->m_ebuses)
             {
-                serializeContext->Class<AICoreActionTest>();
+                auto behaviorEbus = busesIter.second;
+                if (!behaviorEbus)
+                {
+                    continue;
+                }
+
+                if (!filter.empty() && !behaviorEbus->m_name.contains(filter))
+                {
+                    continue;
+                }
+                // AZ_Printf("HackEditorBuses", "Hacking ebus %s", behaviorEbus->m_name.c_str());
+
+                AZ::Attribute* scopeAttribute = FindAttribute(AZ::Script::Attributes::Scope, behaviorEbus->m_attributes);
+                AZ::Script::Attributes::ScopeFlags launcherScope = AZ::Script::Attributes::ScopeFlags::Launcher;
+                AZ::Script::Attributes::ScopeFlags currentScope = AZ::Script::Attributes::ScopeFlags::Launcher;
+                if (scopeAttribute)
+                {
+                    AZ::AttributeReader scopeAttributeReader(nullptr, scopeAttribute);
+                    scopeAttributeReader.Read<AZ::Script::Attributes::ScopeFlags>(currentScope);
+                }
+
+                auto scopeAttributePair = AZStd::find_if(
+                    behaviorEbus->m_attributes.begin(),
+                    behaviorEbus->m_attributes.end(),
+                    [](const AZ::AttributePair& pair)
+                    {
+                        return pair.first == AZ::Script::Attributes::Scope;
+                    });
+                if (scopeAttributePair != behaviorEbus->m_attributes.end())
+                {
+                    if (scopeAttributePair->second)
+                    {
+                        delete scopeAttributePair->second;
+                    }
+                    behaviorEbus->m_attributes.erase(scopeAttributePair);
+
+                    /*AZ::Script::Attributes::ScopeFlags newFlags = static_cast<AZ::Script::Attributes::ScopeFlags>(
+                        static_cast<AZ::u64>(launcherScope) & static_cast<AZ::u64>(currentScope));*/
+                    behaviorEbus->m_attributes.push_back(AZStd::make_pair(
+                        AZ::Script::Attributes::Scope,
+                        scopeAttributePair->second = aznew AZ::AttributeData<AZ::Script::Attributes::ScopeFlags>(launcherScope)));
+                    AZ_Printf("HackEditorBuses", "Hacking bus %s done", behaviorEbus->m_name.c_str());
+                }
             }
-
-            if (auto behaviorContext = azrtti_cast<AZ::BehaviorContext*>(context))
-            {
-                behaviorContext->Class<AICoreActionTest>()
-                    ->Constructor()
-                    ->Attribute(AZ::Script::Attributes::Storage, AZ::Script::Attributes::StorageType::Value)
-                    ->Method("StaticPrintResult", &AICoreActionTest::StaticPrintResult)
-                    ->Method("PrintResult", &AICoreActionTest::PrintResult);
-            }
         }
 
-        // TODO - this is temp, replace with proper non-static object / context handling
-        static void StaticPrintResult(const AZStd::string& result)
+        bool ScriptCall(const AZStd::string& script, AZStd::string& response)
         {
-            AZ_Printf("PrintResult", "Returned result is %s", result.c_str());
-        }
-
-        void PrintResult(const AZStd::string& result)
-        {
-            StaticPrintResult(result);
-        }
-
-        void RegisterBehaviorMethod(const AZ::BehaviorMethod* method, const AIContext& aiContext) override
-        {
-            AZ_Error("RegisterBehaviorMethod", method, "Null method provided");
-            if (m_registeredMethods.find(method->m_name) == m_registeredMethods.end())
-            {
-                m_registeredMethods.insert(method->m_name);
-            }
-        }
-
-        void ScriptCall(const AZStd::string& script)
-        {
-            // TODO - only Launcher scope buses are callable. This can be regulated through attributes.
-
+            /*
             auto behaviorContext = AZ::Interface<AZ::ComponentApplicationRequests>::Get()->GetBehaviorContext();
             AZ_Warning("ScriptCall", behaviorContext, "Failed to get behaviorContext");
             if (!behaviorContext)
             {
                 return;
             }
-            // TODO - don't use global context. Instead, have a custom behavior context only with registered methods
-            // TODO - instead, persist the context
-            AZ::ScriptContext sc;
-            sc.BindTo(behaviorContext);
-            sc.SetErrorHook( // TODO - this should be communicated back as feedback in some cases.
-                [script]([[maybe_unused]] AZ::ScriptContext* context, AZ::ScriptContext::ErrorType error, const char* msg)
+            // TODO - only Launcher scope buses are callable. This can be regulated through attributes.
+            HackEditorBuses(behaviorContext, "PrefabPublicRequest");
+            */
+            if (!m_init)
+            {
+                m_aiContext.m_key = "Test";
+                auto* aicoreinterface = AICoreActionInterface::Get();
+                if (!aicoreinterface)
                 {
-                    AZ_Printf("ScriptCall", "%s:", BehaviorContextDump::ScriptErrorDump(script, error, msg).c_str());
-                });
-            sc.Execute(AZStd::string::format(
-                           "%s\n%s\n%s", "aicore = AICoreActionTest()", script.c_str(), "aicore.PrintResult(aicore, tostring(result))")
-                           .c_str());
+                    AZ_Warning("ScriptCall", false, "No AICore Interface!");
+                    return false;
+                }
+                aicoreinterface->RegisterAIContext(m_aiContext);
+                m_init = true;
+            }
+
+            return AICoreActionInterface::Get()->ScriptCall(script, response, m_aiContext);
         }
 
         AZStd::string CallRegisteredMethod(
             const AZ::BehaviorMethod* method,
             AZStd::span<AZ::BehaviorArgument> arguments,
             const AIContext& aiContext,
-            AZ::BehaviorArgument* result = nullptr) override
+            AZ::BehaviorArgument* result = nullptr)
         {
             if (!method)
             {
@@ -155,7 +173,6 @@ namespace AICore
             {
                 return;
             }
-            RegisterBehaviorMethod(method, m_aiContext);
 
             size_t numArguments = method->GetNumArguments();
             AZ::BehaviorArgument arguments[numArguments];
@@ -192,7 +209,6 @@ namespace AICore
             {
                 return;
             }
-            RegisterBehaviorMethod(method, m_aiContext);
 
             size_t numArguments = method->GetNumArguments();
             AZ::BehaviorArgument arguments[numArguments];
@@ -245,6 +261,7 @@ namespace AICore
         }
 
     private:
+        bool m_init{ false };
         AIContext m_aiContext;
         AZStd::set<AZStd::string> m_registeredMethods;
     };

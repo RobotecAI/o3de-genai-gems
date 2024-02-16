@@ -1,13 +1,15 @@
 /*
-* Copyright (c) Contributors to the Open 3D Engine Project.
-* For complete copyright and license terms please see the LICENSE at the root of this distribution.
-*
-* SPDX-License-Identifier: Apache-2.0 OR MIT
-*
-*/
+ * Copyright (c) Contributors to the Open 3D Engine Project.
+ * For complete copyright and license terms please see the LICENSE at the root of this distribution.
+ *
+ * SPDX-License-Identifier: Apache-2.0 OR MIT
+ *
+ */
 
 #pragma once
 
+#include <AICore/AIContext.h>
+#include <AICore/AICoreScriptExecutor.h>
 #include <AICore/AICoreTypeIds.h>
 #include <AzCore/EBus/EBus.h>
 #include <AzCore/Interface/Interface.h>
@@ -19,11 +21,11 @@ namespace AICore
     public:
         AZ_RTTI(AICoreRequests, AICoreRequestsTypeId);
         virtual ~AICoreRequests() = default;
-        // Put your public methods here
+
+        virtual AZStd::unique_ptr<AICoreScriptExecutor> MakeScriptExecutor(const AIContext& aiContext) = 0;
     };
 
-    class AICoreBusTraits
-        : public AZ::EBusTraits
+    class AICoreBusTraits : public AZ::EBusTraits
     {
     public:
         //////////////////////////////////////////////////////////////////////////

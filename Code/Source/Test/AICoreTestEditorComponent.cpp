@@ -22,7 +22,6 @@ namespace AICore
 
     void AICoreTestEditorComponent::Reflect(AZ::ReflectContext* context)
     {
-        AICoreActionTest::Reflect(context);
         if (auto serializeContext = azrtti_cast<AZ::SerializeContext*>(context))
         {
             serializeContext->Class<AICoreTestEditorComponent, AzToolsFramework::Components::EditorComponentBase>()
@@ -86,6 +85,8 @@ namespace AICore
     void AICoreTestEditorComponent::CommandTest()
     {
         AZ_Printf("AICoreTestEditorComponent", "CommandTest\n");
-        m_aiCoreActionTest.ScriptCall(m_commandText);
+        AZStd::string response;
+        bool success = m_aiCoreActionTest.ScriptCall(m_commandText, response);
+        AZ_Printf("AICoreTestEditorComponent", "[%s]: %s\n", success ? "succeeded" : "failed", response.c_str());
     }
 } // namespace AICore

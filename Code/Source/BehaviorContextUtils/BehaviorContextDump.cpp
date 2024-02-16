@@ -208,7 +208,8 @@ namespace AICore
                 {
                     continue;
                 }
-                ebusDump += MethodDump(ebusName, eventIter.first, method);
+                auto interfaceName = AZStd::string::format("%s.%s", ebusName.c_str(), eventIter.second.m_event ? "Event" : "Broadcast");
+                ebusDump += MethodDump(interfaceName, eventIter.first, method);
             }
 
             return ebusDump;

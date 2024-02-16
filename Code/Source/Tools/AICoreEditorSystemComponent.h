@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include <AICore/AICoreActionBus.h>
+#include <Action/AICoreActionRequestHandler.h>
 #include <AzToolsFramework/API/ToolsApplicationAPI.h>
 #include <AzToolsFramework/Entity/EditorEntityContextBus.h>
 #include <Clients/AICoreSystemComponent.h>
@@ -37,6 +37,9 @@ namespace AICore
         static void GetRequiredServices(AZ::ComponentDescriptor::DependencyArrayType& required);
         static void GetDependentServices(AZ::ComponentDescriptor::DependencyArrayType& dependent);
 
+        // AICoreRequestBus
+        AZStd::unique_ptr<AICoreScriptExecutor> MakeScriptExecutor(const AIContext& aiContext) override;
+
         // EditorEntityContextNotificationBus overrides
         void OnStartPlayInEditorBegin() override;
         void OnStopPlayInEditor() override;
@@ -44,5 +47,7 @@ namespace AICore
         // AZ::Component
         void Activate() override;
         void Deactivate() override;
+
+        AICoreActionRequestHandler m_actionRequestHandler;
     };
 } // namespace AICore

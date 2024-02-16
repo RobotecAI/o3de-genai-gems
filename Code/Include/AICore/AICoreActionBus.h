@@ -22,13 +22,11 @@ namespace AICore
         AZ_RTTI(AICoreActionRequests, AICoreActionRequestsTypeId);
         virtual ~AICoreActionRequests() = default;
 
+        virtual void RegisterAIContext(const AIContext& context) = 0;
+        virtual void UnregisterAIContext(const AZStd::string& key) = 0;
+
         virtual void RegisterBehaviorMethod(const AZ::BehaviorMethod* method, const AIContext& aiContext) = 0;
-        virtual void ScriptCall(const AZStd::string& script) = 0;
-        virtual AZStd::string CallRegisteredMethod(
-            const AZ::BehaviorMethod* method,
-            AZStd::span<AZ::BehaviorArgument> arguments,
-            const AIContext& aiContext,
-            AZ::BehaviorArgument* result = nullptr) = 0;
+        virtual bool ScriptCall(const AZStd::string& script, AZStd::string& response, const AIContext& aiContext) = 0;
     };
 
     class AICoreActionBusTraits : public AZ::EBusTraits
@@ -37,7 +35,6 @@ namespace AICore
         //////////////////////////////////////////////////////////////////////////
         // EBusTraits overrides
         static constexpr AZ::EBusHandlerPolicy HandlerPolicy = AZ::EBusHandlerPolicy::Single;
-        static constexpr AZ::EBusAddressPolicy AddressPolicy = AZ::EBusAddressPolicy::Single;
         //////////////////////////////////////////////////////////////////////////
     };
 
