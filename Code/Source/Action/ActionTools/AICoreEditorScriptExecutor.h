@@ -6,6 +6,7 @@
  *
  */
 
+#include "PythonScriptResults/PythonScriptResults.h"
 #include <AICore/AICoreScriptExecutor.h>
 
 #pragma once
@@ -17,5 +18,7 @@ namespace AICore
     private:
         bool ScriptCall(const AZStd::string& script, AZStd::string& response) override;
         bool SupportsCurrentScope() const override;
+
+        PythonScriptResults m_pythonScriptResults;
     };
 } // namespace AICore

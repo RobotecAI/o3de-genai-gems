@@ -16,6 +16,19 @@ namespace AICore
         AzToolsFramework::EditorPythonRunnerRequestBus::Broadcast(
             &AzToolsFramework::EditorPythonRunnerRequestBus::Events::ExecuteByString, script, true);
         // TODO - get response (error or human-readable return value).
+
+        auto variableStringOutcome = m_pythonScriptResults.GetVariableAsString("result");
+        if (variableStringOutcome.IsSuccess())
+        {
+            response = variableStringOutcome.GetValue();
+            return true;
+        }
+        else
+        {
+            response = variableStringOutcome.GetError();
+            return false;
+        }
+
         response = "OK";
         return true;
     }
