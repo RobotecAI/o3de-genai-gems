@@ -13,6 +13,7 @@ namespace AZ
 {
     class BehaviorContext;
     class BehaviorMethod;
+    class BehaviorEBus;
 }
 
 namespace AICore

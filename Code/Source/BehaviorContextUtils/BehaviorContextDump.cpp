@@ -7,6 +7,7 @@
  */
 
 #include "BehaviorContextDump.h"
+#include <AzCore/RTTI/BehaviorContext.h>
 
 namespace AICore
 { // TODO - consider reusing (modifying) NodeListDumpAction. This needs to be AI-readable and fully documented.
@@ -67,12 +68,12 @@ namespace AICore
                     else if (i == 0 && method->IsMember())
                     {
                         argumentsDump += "_this";
-                        documentation += AZStd::string::format("@param _this: a pointer to this class object\n");
+                        documentation += "@param _this: a pointer to this class object\n";
                     }
                     else if (i == 0 && method->HasBusId())
                     {
                         argumentsDump += " _EBusID";
-                        documentation += AZStd::string::format("@param _EBusID: ID of the bus to call\n");
+                        documentation += "@param _EBusID: ID of the bus to call\n";
                     }
                 }
             }

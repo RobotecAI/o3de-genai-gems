@@ -8,6 +8,7 @@
 
 #include "AICoreActionHandler.h"
 #include <AICore/AICoreBus.h>
+#include <AzCore/RTTI/BehaviorContext.h>
 
 namespace AICore
 {
