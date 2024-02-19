@@ -28,9 +28,6 @@ namespace AICore
             response = variableStringOutcome.GetError();
             return false;
         }
-
-        response = "OK";
-        return true;
     }
 
     bool AICoreEditorScriptExecutor::SupportsCurrentScope() const
