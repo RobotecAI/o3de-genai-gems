@@ -10,7 +10,7 @@
 
 #include "AICoreTest.h"
 #include <AzCore/Component/Component.h>
-#include <AzCore/Serialization/SerializeContext.h>
+#include <AzCore/Serialization/SerializeContext_fwd.h>
 
 namespace AICore
 {

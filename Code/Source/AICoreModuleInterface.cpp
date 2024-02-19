@@ -9,7 +9,6 @@
 #include "AICoreModuleInterface.h"
 #include "Test/AICoreTestComponent.h"
 #include <AICore/AICoreTypeIds.h>
-#include <AzCore/Memory/Memory.h>
 #include <Clients/AICoreSystemComponent.h>
 
 namespace AICore

@@ -6,9 +6,9 @@
  *
  */
 
-#include <AzCore/std/string/string.h>
-
 #pragma once
+
+#include <AzCore/std/string/string.h>
 
 namespace AICore
 {   // TODO - API to pass / modify behavior context

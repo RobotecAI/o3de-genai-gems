@@ -5,11 +5,15 @@
  * SPDX-License-Identifier: Apache-2.0 OR MIT
  *
  */
+#pragma once
 
-#include <AzCore/RTTI/BehaviorContext.h>
 #include <AzCore/Script/ScriptContext.h>
 
-#pragma once
+namespace AZ
+{
+    class BehaviorContext;
+    class BehaviorMethod;
+}
 
 namespace AICore
 { // TODO - consider reusing (modifying) NodeListDumpAction. This needs to be AI-readable and fully documented.

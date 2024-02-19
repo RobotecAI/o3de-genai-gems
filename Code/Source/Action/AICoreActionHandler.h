@@ -5,16 +5,18 @@
  * SPDX-License-Identifier: Apache-2.0 OR MIT
  *
  */
+#pragma once
 
 #include <AICore/AIContext.h>
-#include <AICore/AICoreActionBus.h>
 #include <AICore/AICoreScriptExecutor.h>
-#include <AzCore/RTTI/BehaviorContext.h>
-#include <AzCore/RTTI/TypeInfo.h>
 #include <AzCore/std/containers/set.h>
 #include <AzCore/std/string/string.h>
+#include <AzCore/std/smart_ptr/unique_ptr.h>
 
-#pragma once
+namespace AZ
+{
+    class BehaviorMethod;
+}
 
 namespace AICore
 {

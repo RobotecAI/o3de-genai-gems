@@ -12,7 +12,12 @@
 #include <AICore/AICoreTypeIds.h>
 #include <AzCore/EBus/EBus.h>
 #include <AzCore/Interface/Interface.h>
-#include <AzCore/RTTI/BehaviorContext.h>
+
+namespace AZ
+{
+    class BehaviorContext;
+    class BehaviorMethod;
+}
 
 namespace AICore
 {

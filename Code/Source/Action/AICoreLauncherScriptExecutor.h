@@ -5,12 +5,11 @@
  * SPDX-License-Identifier: Apache-2.0 OR MIT
  *
  */
+#pragma once
 
 #include <AICore/AICoreScriptExecutor.h>
 #include <AzCore/Script/ScriptContext.h>
-#include <AzCore/RTTI/BehaviorContext.h>
 
-#pragma once
 
 namespace AICore
 {

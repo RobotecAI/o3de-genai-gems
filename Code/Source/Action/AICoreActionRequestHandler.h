@@ -5,16 +5,15 @@
  * SPDX-License-Identifier: Apache-2.0 OR MIT
  *
  */
+#pragma once
 
 #include "AICoreActionHandler.h"
 #include <AICore/AIContext.h>
 #include <AICore/AICoreActionBus.h>
-#include <AzCore/RTTI/BehaviorContext.h>
+#include <AzCore/Memory/SystemAllocator.h>
 #include <AzCore/RTTI/TypeInfo.h>
 #include <AzCore/std/containers/unordered_map.h>
 #include <AzCore/std/string/string.h>
-
-#pragma once
 
 namespace AICore
 {
