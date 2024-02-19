@@ -28,8 +28,8 @@ namespace AICore
                     return "Error";
                 }
             };
-            AZStd::string result = AZStd::string::format(
-                "Script (%s) call had the following [%s]: %s", script.c_str(), verboseType(error).c_str(), errorMessage);
+            const AZStd::string result{ AZStd::string::format(
+                "Script (%s) call had the following [%s]: %s", script.c_str(), verboseType(error).c_str(), errorMessage) };
             return result;
         }
 
@@ -110,7 +110,6 @@ namespace AICore
         AZStd::string MethodDump(const AZStd::string& className, const AZStd::string& methodName, const AZ::BehaviorMethod* method)
         {
             AZStd::string methodDump;
-            //AZ_Printf("MethodDump", "Dumping method: %s\n", methodName.c_str());
             if (!method || methodName.starts_with("ScriptCanvas"))
             {
                 return methodDump;
@@ -145,15 +144,20 @@ namespace AICore
         }
 
         // Produce a signature for calling the ebus event including documentation (format: returnType Ebus.Event(arg1, arg2))
-        AZStd::string EbusDump(const AZStd::string& ebusName, const AZ::BehaviorEBus* ebus)
+        AZStd::string EbusDump(const AZStd::string& ebusName, const AZ::BehaviorEBus* ebus, const AZStd::set<AZStd::string>& exclude)
         {
             AZStd::string ebusDump;
-            if (!ebus || ebusName.starts_with("ScriptCanvas"))
+            if (!ebus)
             {
                 return ebusDump;
             }
-
-            //AZ_Printf("EbusDump", "Dumping ebus: %s\n", ebusName.c_str());
+            for (const auto& excluded : exclude)
+            {
+                if (ebusName.starts_with(excluded))
+                {
+                    return ebusDump;
+                }
+            }
 
             // Dump handlers
             AZ::BehaviorEBusHandler* handler;

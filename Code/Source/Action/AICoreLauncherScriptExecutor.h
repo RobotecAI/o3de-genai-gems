@@ -26,7 +26,7 @@ namespace AICore
 
         void StoreStringResult(const AZStd::string& result);
 
-        AZ::ScriptContext sc;
+        AZ::ScriptContext m_scriptContext;
         AZStd::string m_currentScript;
         AZStd::string m_response;
     };

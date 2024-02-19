@@ -28,9 +28,11 @@ namespace AICore
         virtual ~AICoreActionRequests() = default;
 
         virtual void RegisterAIContext(const AIContext& context) = 0;
+        virtual void UnregisterAIContext(const AIContext& context) = 0;
         virtual void UnregisterAIContext(const AZStd::string& key) = 0;
 
         virtual void RegisterBehaviorMethod(const AZ::BehaviorMethod* method, const AIContext& aiContext) = 0;
+
         virtual bool ScriptCall(const AZStd::string& script, AZStd::string& response, const AIContext& aiContext) = 0;
     };
 

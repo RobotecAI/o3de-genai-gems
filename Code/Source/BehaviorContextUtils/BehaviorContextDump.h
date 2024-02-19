@@ -8,6 +8,7 @@
 #pragma once
 
 #include <AzCore/Script/ScriptContext.h>
+#include <AzCore/std/containers/set.h>
 
 namespace AZ
 {
@@ -28,11 +29,12 @@ namespace AICore
         AZStd::string MethodsDump(const AZStd::string& className, const AZStd::string& filter, const AZ::BehaviorContext* ctx = nullptr);
         AZStd::string EbusesDump(const AZStd::string& filter, const AZ::BehaviorContext* ctx = nullptr);
 
-        // Produce a signature for calling the method including documentation (format: returnType Class.Method(arg1, arg2))
+        //! Produce a signature for calling the method including documentation (format: returnType Class.Method(arg1, arg2))
         AZStd::string MethodDump(const AZStd::string& className, const AZStd::string& methodName, const AZ::BehaviorMethod* method);
 
-        // Produce a signature for calling the ebus event including documentation (format: returnType Ebus.Event(arg1, arg2))
-        AZStd::string EbusDump(const AZStd::string& ebusName, const AZ::BehaviorEBus* ebus);
+        //! Produce a signature for calling the ebus event including documentation (format: returnType Ebus.Event(arg1, arg2))
+        AZStd::string EbusDump(
+            const AZStd::string& ebusName, const AZ::BehaviorEBus* ebus, const AZStd::set<AZStd::string>& exclude = { "ScriptCanvas" });
 
     } // namespace BehaviorContextDump
 } // namespace AICore

@@ -21,7 +21,7 @@ namespace AICore
     void AICoreActionHandler::RegisterBehaviorMethod(const AZ::BehaviorMethod* method)
     {
         AZ_Error("RegisterBehaviorMethod", method, "Null method provided");
-        if (m_registeredMethods.find(method->m_name) == m_registeredMethods.end())
+        if (!m_registeredMethods.contains(method->m_name))
         {
             m_registeredMethods.insert(method->m_name);
         }

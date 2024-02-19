@@ -6,8 +6,8 @@
  *
  */
 
-#include "../Test/AICoreTestEditorComponent.h"
 #include "AICoreEditorSystemComponent.h"
+#include "Test/AICoreTestEditorComponent.h"
 #include <AICore/AICoreTypeIds.h>
 #include <AICoreModuleInterface.h>
 

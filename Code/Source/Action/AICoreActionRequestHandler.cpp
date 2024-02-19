@@ -12,10 +12,16 @@
 
 namespace AICore
 {
+
     void AICoreActionRequestHandler::RegisterAIContext(const AIContext& context)
     {
-        AZ_Warning("AICoreActionRequestHandler", m_handlers.find(context.m_key) == m_handlers.end(), "handler for context exists!");
+        AZ_Warning("AICoreActionRequestHandler", !m_handlers.contains(context.m_key), "handler for context exists!");
         m_handlers.emplace(AZStd::make_pair(context.m_key, AZStd::make_shared<AICoreActionHandler>(context)));
+    }
+
+    void AICoreActionRequestHandler::UnregisterAIContext(const AIContext& context)
+    {
+        UnregisterAIContext(context.m_key);
     }
 
     void AICoreActionRequestHandler::UnregisterAIContext(const AZStd::string& key)
@@ -31,13 +37,21 @@ namespace AICore
 
     void AICoreActionRequestHandler::RegisterBehaviorMethod(const AZ::BehaviorMethod* method, const AIContext& aiContext)
     {
-        AZ_Error("AICoreActionRequestHandler", m_handlers.find(aiContext.m_key) != m_handlers.end(), "handler for context not registered!");
+        if (!m_handlers.contains(aiContext.m_key))
+        {
+            AZ_Error("AICoreActionRequestHandler", true, "handler for context not registered!");
+            return;
+        }
         m_handlers[aiContext.m_key]->RegisterBehaviorMethod(method);
     }
 
     bool AICoreActionRequestHandler::ScriptCall(const AZStd::string& script, AZStd::string& response, const AIContext& aiContext)
     {
-        AZ_Error("AICoreActionRequestHandler", m_handlers.find(aiContext.m_key) != m_handlers.end(), "handler for context not registered!");
+        if (!m_handlers.contains(aiContext.m_key))
+        {
+            AZ_Error("AICoreActionRequestHandler", false, "handler for context not registered!");
+            return false;
+        }
         return m_handlers[aiContext.m_key]->ScriptCall(script, response);
     }
 

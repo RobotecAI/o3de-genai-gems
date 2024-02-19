@@ -41,20 +41,19 @@ namespace AICore
             return;
         }
 
-        AZ::ScriptContext sc;
-        sc.SetErrorHook( // TODO - this should be communicated back as feedback in some cases.
+        m_scriptContext.SetErrorHook( // TODO - this should be communicated back as feedback in some cases.
             [this]([[maybe_unused]] AZ::ScriptContext* context, AZ::ScriptContext::ErrorType error, const char* msg)
             {
                 m_response = BehaviorContextDump::ScriptErrorDump(m_currentScript, error, msg).c_str();
             });
-        sc.BindTo(behaviorContext);
-        sc.Execute("aiexecutor = AICoreLauncherScriptExecutor()"); // TODO - think about how to return results
+        m_scriptContext.BindTo(behaviorContext);
+        m_scriptContext.Execute("aiexecutor = AICoreLauncherScriptExecutor()"); // TODO - think about how to return results
     }
 
     bool AICoreLauncherScriptExecutor::ScriptCall(const AZStd::string& script, AZStd::string& response)
     {
         m_response = "";
-        sc.Execute(script.c_str());
+        m_scriptContext.Execute(script.c_str());
         response = m_response;
         return response.empty();
     }

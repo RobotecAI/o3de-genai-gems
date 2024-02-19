@@ -25,6 +25,7 @@ namespace AICore
         AZ_RTTI(AICoreActionRequestHandler, "{CC8AB7A7-C852-47A0-84CA-F142D9108337}");
 
         void RegisterAIContext(const AIContext& context) override;
+        void UnregisterAIContext(const AIContext& context) override;
         void UnregisterAIContext(const AZStd::string& key) override;
 
         void RegisterBehaviorMethod(const AZ::BehaviorMethod* method, const AIContext& aiContext) override;

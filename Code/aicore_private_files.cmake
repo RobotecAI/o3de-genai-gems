@@ -6,6 +6,7 @@ set(FILES
     Source/Clients/AICoreSystemComponent.h
     Source/Test/AICoreTestComponent.cpp
     Source/Test/AICoreTestComponent.h
+    Source/Test/AICoreTest.cpp
     Source/BehaviorContextUtils/BehaviorContextDump.cpp
     Source/BehaviorContextUtils/BehaviorContextDump.h
     Source/Action/AICoreActionHandler.cpp
