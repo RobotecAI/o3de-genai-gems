@@ -59,7 +59,6 @@ namespace AICore
     void AICoreEditorSystemComponent::Activate()
     {
         AZ_Printf("AICoreEditorSystemComponent", "Activate");
-        AICoreSystemComponent::Activate();
         AzToolsFramework::EditorEvents::Bus::Handler::BusConnect();
         m_actionRequestHandler.Connect();
     }
@@ -68,14 +67,16 @@ namespace AICore
     {
         m_actionRequestHandler.Disconnect();
         AzToolsFramework::EditorEvents::Bus::Handler::BusDisconnect();
-        AICoreSystemComponent::Deactivate();
     }
 
     void AICoreEditorSystemComponent::OnStartPlayInEditorBegin()
     {
+        AICoreSystemComponent::Activate();
         AZ_Printf("AICoreEditorSystemComponent", "OnStartPlayInEditorBegin");
     }
     void AICoreEditorSystemComponent::OnStopPlayInEditor()
     {
+        AZ_Printf("AICoreEditorSystemComponent", "OnStopPlayInEditor");
+        AICoreSystemComponent::Deactivate();
     }
 } // namespace AICore

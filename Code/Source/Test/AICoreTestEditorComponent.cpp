@@ -22,6 +22,7 @@ namespace AICore
 
     void AICoreTestEditorComponent::Reflect(AZ::ReflectContext* context)
     {
+        CustomEditorTest::Reflect(context);
         if (auto serializeContext = azrtti_cast<AZ::SerializeContext*>(context))
         {
             serializeContext->Class<AICoreTestEditorComponent, AzToolsFramework::Components::EditorComponentBase>()
@@ -56,6 +57,28 @@ namespace AICore
                     ->Attribute(AZ::Edit::Attributes::ButtonText, "API Test");
             }
         }
+    }
+
+    void AICoreTestEditorComponent::Activate()
+    {
+        AZ_Printf("AICoreTestEditorComponent", "Activate\n");
+        AzToolsFramework::Components::EditorComponentBase::Activate();
+        if (CustomEditorInterface::Get() == nullptr)
+        {
+            CustomEditorInterface::Register(&m_customEditorTest);
+        }
+        m_customEditorTest.Connect();
+    }
+
+    void AICoreTestEditorComponent::Deactivate()
+    {
+        AZ_Printf("AICoreTestEditorComponent", "Deactivate\n");
+        m_customEditorTest.Disconnect();
+        if (CustomEditorInterface::Get() == &m_customEditorTest)
+        {
+            CustomEditorInterface::Unregister(&m_customEditorTest);
+        }
+        AzToolsFramework::Components::EditorComponentBase::Deactivate();
     }
 
     void AICoreTestEditorComponent::ListClasses()
