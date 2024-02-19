@@ -1,5 +1,6 @@
 
 #include "PromptTestComponent.h"
+#include <AICore/AICoreActionBus.h>
 #include <AICore/Communication/RequesterBus.h>
 #include <AICore/RequestGenerator/RequestGeneratorBus.h>
 #include <AzCore/Debug/Trace.h>
@@ -94,6 +95,20 @@ namespace AICore
                         }
 
                         AZ_Info("AICore", "%s", prompt.GetValue().first.c_str());
+                        AZ_Info("AICore", "Calling script");
+
+                        AZStd::string response;
+                        AZStd::string script = prompt.GetValue().first;
+
+                        bool wasCallSuccessful = AICoreActionInterface::Get()->ScriptCall(script, response, m_aiContext);
+                        if (wasCallSuccessful)
+                        {
+                            AZ_Info("AICore", "Script call successful");
+                        }
+                        else
+                        {
+                            AZ_Warning("AICore", false, "Script call unsuccessful");
+                        }
                     }
                     else
                     {
@@ -110,6 +125,17 @@ namespace AICore
 
     void PromptTestComponent::Activate()
     {
+        if (!m_init)
+        {
+            m_aiContext.m_key = "Test";
+            auto* aicoreinterface = AICoreActionInterface::Get();
+            if (!aicoreinterface)
+            {
+                AZ_Warning("PromptTestComponent", false, "No AICore Interface!");
+            }
+            aicoreinterface->RegisterAIContext(m_aiContext);
+            m_init = true;
+        }
     }
 
     void PromptTestComponent::Deactivate()

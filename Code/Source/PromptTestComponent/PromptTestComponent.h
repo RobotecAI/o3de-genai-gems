@@ -1,6 +1,7 @@
 
 #pragma once
 
+#include "AICore/AIContext.h"
 #include <AzCore/Math/Crc.h>
 #include <AzCore/Serialization/EditContext.h>
 #include <AzCore/Serialization/EditContextConstants.inl>
@@ -27,10 +28,13 @@ namespace AICore
         void Activate() override;
         void Deactivate() override;
 
+    private:
         AZ::Crc32 TestPrompt();
 
         AZStd::string m_promptText;
         AZStd::vector<long long> m_context;
         bool m_saveContext = false;
+        bool m_init = false;
+        AIContext m_aiContext;
     };
 } // namespace AICore
