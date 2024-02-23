@@ -2,6 +2,7 @@
 #include "OllamaContextRequestGeneratorController.h"
 #include "OllamaBasicPromptConfiguration.h"
 #include <AzCore/Outcome/Outcome.h>
+#include <AzCore/RTTI/BehaviorContext.h>
 #include <AzCore/Serialization/EditContext.h>
 #include <AzCore/Serialization/SerializeContext.h>
 
@@ -34,6 +35,10 @@ namespace AICore
                         "Configuration for the Ollama context request generator")
                     ->Attribute(AZ::Edit::Attributes::Visibility, AZ::Edit::PropertyVisibility::ShowChildrenOnly);
             }
+        }
+
+        if (auto behaviorContext = azrtti_cast<AZ::BehaviorContext*>(context))
+        {
         }
     }
 

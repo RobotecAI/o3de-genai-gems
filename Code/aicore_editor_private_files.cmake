@@ -21,5 +21,6 @@ set(FILES
 
     Source/PromptTestComponent/PromptTestComponent.h
     Source/PromptTestComponent/PromptTestComponent.cpp
+    Source/PromptTestComponent/PromptTestBus.h
 )
 

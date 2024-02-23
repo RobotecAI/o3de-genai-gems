@@ -1,5 +1,6 @@
 
 #include "BasicJSONRequesterController.h"
+#include <AzCore/RTTI/BehaviorContext.h>
 #include <AzCore/Serialization/EditContext.h>
 #include <AzCore/Serialization/SerializeContext.h>
 #include <HttpRequestor/HttpRequestorBus.h>
@@ -59,6 +60,15 @@ namespace AICore
                         "Configuration for the basic JSON requester")
                     ->Attribute(AZ::Edit::Attributes::Visibility, AZ::Edit::PropertyVisibility::ShowChildrenOnly);
             }
+        }
+
+        if (auto behaviorContext = azrtti_cast<AZ::BehaviorContext*>(context))
+        {
+            behaviorContext->EBus<RequesterBus<Aws::Utils::Json::JsonValue>>("RequesterBus")
+                ->Attribute(AZ::Script::Attributes::Scope, AZ::Script::Attributes::ScopeFlags::Automation)
+                ->Attribute(AZ::Script::Attributes::Category, "AICore")
+                ->Attribute(AZ::Script::Attributes::Module, "aicore")
+                ->Event("SendRequest", &RequesterBus<Aws::Utils::Json::JsonValue>::Events::SendRequest);
         }
     }
 

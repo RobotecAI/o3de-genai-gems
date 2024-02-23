@@ -1,5 +1,6 @@
 
 #include "PromptTestComponent.h"
+#include "PromptTestComponent/PromptTestBus.h"
 #include <AICore/AICoreActionBus.h>
 #include <AICore/Communication/RequesterBus.h>
 #include <AICore/RequestGenerator/RequestGeneratorBus.h>
@@ -55,9 +56,55 @@ namespace AICore
                         });
             }
         }
+        if (auto behaviorContext = azrtti_cast<AZ::BehaviorContext*>(context))
+        {
+            behaviorContext->EBus<PromptTestBus>("PromptTestBus")
+                ->Attribute(AZ::Script::Attributes::Scope, AZ::Script::Attributes::ScopeFlags::Automation)
+                ->Attribute(AZ::Script::Attributes::Category, "AICore")
+                ->Attribute(AZ::Script::Attributes::Module, "aicore")
+                ->Event("PromptExecute", &PromptTestBus::Events::PromptExecute)
+                ->Event("PromptNoExecute", &PromptTestBus::Events::PromptNoExecute)
+                ->Event("Execute", &PromptTestBus::Events::Execute)
+                ->Event("SetSaveContext", &PromptTestBus::Events::SetSaveContext)
+                ->Event("ResetContext", &PromptTestBus::Events::ResetContext)
+                ->Event("TestBus", &PromptTestBus::Events::TestBus);
+        }
     }
 
-    AZ::Crc32 PromptTestComponent::TestPrompt()
+    void PromptTestComponent::TestBus()
+    {
+        std::cout << "test" << std::endl;
+    }
+
+    void PromptTestComponent::PromptExecute(AZStd::string prompt)
+    {
+        m_promptText = prompt;
+        TestPrompt();
+    }
+
+    void PromptTestComponent::SetSaveContext(bool saveContext)
+    {
+        m_saveContext = saveContext;
+    }
+
+    void PromptTestComponent::ResetContext()
+    {
+        m_context.clear();
+    }
+
+    void PromptTestComponent::PromptNoExecute(AZStd::string prompt)
+    {
+        m_promptText = prompt;
+        TestPrompt(false);
+    }
+
+    void PromptTestComponent::Execute(AZStd::string pythonScript)
+    {
+        AZStd::string response;
+        AICoreActionInterface::Get()->ScriptCall(pythonScript, response, m_aiContext);
+    }
+
+    AZ::Crc32 PromptTestComponent::TestPrompt(bool execute)
     {
         AZ_Info("AICore", "Sending prompt: %s", m_promptText.c_str());
         Aws::Utils::Json::JsonValue json_prompt;
@@ -72,7 +119,7 @@ namespace AICore
             GetEntityId(),
             &RequesterBus<Aws::Utils::Json::JsonValue>::Events::SendRequest,
             json_prompt,
-            [this](Aws::Utils::Json::JsonValue response, Aws::Http::HttpResponseCode resultCode)
+            [this, execute](Aws::Utils::Json::JsonValue response, Aws::Http::HttpResponseCode resultCode)
             {
                 if (resultCode == Aws::Http::HttpResponseCode::OK)
                 {
@@ -95,19 +142,22 @@ namespace AICore
                         }
 
                         AZ_Info("AICore", "%s", prompt.GetValue().first.c_str());
-                        AZ_Info("AICore", "Calling script");
-
-                        AZStd::string response;
-                        AZStd::string script = prompt.GetValue().first;
-
-                        bool wasCallSuccessful = AICoreActionInterface::Get()->ScriptCall(script, response, m_aiContext);
-                        if (wasCallSuccessful)
+                        if (execute)
                         {
-                            AZ_Info("AICore", "Script call successful");
-                        }
-                        else
-                        {
-                            AZ_Warning("AICore", false, "Script call unsuccessful");
+                            AZ_Info("AICore", "Calling script");
+
+                            AZStd::string response;
+                            AZStd::string script = prompt.GetValue().first;
+
+                            bool wasCallSuccessful = AICoreActionInterface::Get()->ScriptCall(script, response, m_aiContext);
+                            if (wasCallSuccessful)
+                            {
+                                AZ_Info("AICore", "Script call successful");
+                            }
+                            else
+                            {
+                                AZ_Warning("AICore", false, "Script call unsuccessful");
+                            }
                         }
                     }
                     else
@@ -125,6 +175,7 @@ namespace AICore
 
     void PromptTestComponent::Activate()
     {
+        PromptTestBus::Handler::BusConnect(GetEntityId());
         if (!m_init)
         {
             m_aiContext.m_key = "Test";
@@ -140,6 +191,7 @@ namespace AICore
 
     void PromptTestComponent::Deactivate()
     {
+        PromptTestBus::Handler::BusDisconnect();
     }
 
 } // namespace AICore

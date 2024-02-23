@@ -2,6 +2,7 @@
 #pragma once
 
 #include "AICore/AIContext.h"
+#include "PromptTestComponent/PromptTestBus.h"
 #include <AzCore/Math/Crc.h>
 #include <AzCore/Serialization/EditContext.h>
 #include <AzCore/Serialization/EditContextConstants.inl>
@@ -10,7 +11,9 @@
 
 namespace AICore
 {
-    class PromptTestComponent : public AzToolsFramework::Components::EditorComponentBase
+    class PromptTestComponent
+        : public AzToolsFramework::Components::EditorComponentBase
+        , public PromptTestBus::Handler
     {
     public:
         AZ_COMPONENT(PromptTestComponent, "{9922e2d3-37c9-4100-b749-154a8bf37030}", AzToolsFramework::Components::EditorComponentBase);
@@ -28,8 +31,16 @@ namespace AICore
         void Activate() override;
         void Deactivate() override;
 
+        void PromptExecute(AZStd::string prompt) override;
+        void SetSaveContext(bool saveContext) override;
+        void ResetContext() override;
+        void PromptNoExecute(AZStd::string prompt) override;
+        void Execute(AZStd::string pythonScript) override;
+
+        void TestBus() override;
+
     private:
-        AZ::Crc32 TestPrompt();
+        AZ::Crc32 TestPrompt(bool execute = true);
 
         AZStd::string m_promptText;
         AZStd::vector<long long> m_context;
