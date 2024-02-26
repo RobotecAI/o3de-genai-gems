@@ -19,13 +19,12 @@ namespace AICore
     void AICoreTestComponent::Activate()
     {
         AZ_Printf("AICoreTestComponent", "Activate\n");
-        m_aiCoreActionTest.Test();
+        //m_aiCoreActionTest.Test();
     }
 
     void AICoreTestComponent::Deactivate()
     {
         AZ_Printf("AICoreTestComponent", "Deactivate\n");
-        m_aiCoreActionTest.Test();
     }
 
     void AICoreTestComponent::Reflect(AZ::ReflectContext* context)

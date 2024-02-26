@@ -51,10 +51,7 @@ namespace AICore
                     ->DataElement(AZ::Edit::UIHandlers::MultiLineEdit, &AICoreTestEditorComponent::m_commandText, "", "Command text")
                     ->UIElement(AZ::Edit::UIHandlers::Button, "", "Trigger command test")
                     ->Attribute(AZ::Edit::Attributes::ChangeNotify, &AICoreTestEditorComponent::CommandTest)
-                    ->Attribute(AZ::Edit::Attributes::ButtonText, "Command Test")
-                    ->UIElement(AZ::Edit::UIHandlers::Button, "", "Trigger API test")
-                    ->Attribute(AZ::Edit::Attributes::ChangeNotify, &AICoreTestEditorComponent::APITest)
-                    ->Attribute(AZ::Edit::Attributes::ButtonText, "API Test");
+                    ->Attribute(AZ::Edit::Attributes::ButtonText, "Command Test");
             }
         }
     }
@@ -83,26 +80,20 @@ namespace AICore
 
     void AICoreTestEditorComponent::ListClasses()
     {
-        AZ_Printf("AICoreTestEditorComponent", "ListClasses\n");
-        AZ_Printf("AICoreTestEditorComponent", "\n%s", BehaviorContextDump::ClassesDump(m_className).c_str());
+        BehaviorContextDump b(true, m_className);
+        AZ_Printf("AICoreTestEditorComponent", "\n%s", b.ClassesDump().c_str());
     }
 
     void AICoreTestEditorComponent::ListMethods()
     {
-        AZ_Printf("AICoreTestEditorComponent", "ListMethods\n");
-        AZ_Printf("AICoreTestEditorComponent", "\n%s", BehaviorContextDump::MethodsDump(m_className, m_methodName).c_str());
+        BehaviorContextDump b(true, m_methodName);
+        AZ_Printf("AICoreTestEditorComponent", "\n%s", b.MethodsDump(m_className).c_str());
     }
 
     void AICoreTestEditorComponent::ListEbuses()
     {
-        AZ_Printf("AICoreTestEditorComponent", "ListEbuses\n");
-        AZ_Printf("AICoreTestEditorComponent", "\n%s", BehaviorContextDump::EbusesDump(m_methodName).c_str());
-    }
-
-    void AICoreTestEditorComponent::APITest()
-    {
-        AZ_Printf("AICoreTestEditorComponent", "Test\n");
-        m_aiCoreActionTest.Test();
+        BehaviorContextDump b(true, m_methodName);
+        AZ_Printf("AICoreTestEditorComponent", "\n%s", b.EbusesDump().c_str());
     }
 
     void AICoreTestEditorComponent::CommandTest()

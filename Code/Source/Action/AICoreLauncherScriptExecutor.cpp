@@ -14,6 +14,29 @@
 
 namespace AICore
 {
+    namespace Internal
+    {
+        AZStd::string ScriptErrorString(const AZStd::string& script, AZ::ScriptContext::ErrorType error, const char* errorMessage)
+        {
+            auto verboseType = [](AZ::ScriptContext::ErrorType error) -> AZStd::string
+            {
+                switch (error)
+                {
+                case AZ::ScriptContext::ErrorType::Log:
+                    return "Log";
+                case AZ::ScriptContext::ErrorType::Warning:
+                    return "Warning";
+                case AZ::ScriptContext::ErrorType::Error:
+                default:
+                    return "Error";
+                }
+            };
+            const AZStd::string result{ AZStd::string::format(
+                "Script (%s) call had the following [%s]: %s", script.c_str(), verboseType(error).c_str(), errorMessage) };
+            return result;
+        }
+    } // namespace Internal
+
     void AICoreLauncherScriptExecutor::Reflect(AZ::ReflectContext* context)
     {
         if (auto serializeContext = azrtti_cast<AZ::SerializeContext*>(context))
@@ -44,7 +67,7 @@ namespace AICore
         m_scriptContext.SetErrorHook( // TODO - this should be communicated back as feedback in some cases.
             [this]([[maybe_unused]] AZ::ScriptContext* context, AZ::ScriptContext::ErrorType error, const char* msg)
             {
-                m_response = BehaviorContextDump::ScriptErrorDump(m_currentScript, error, msg).c_str();
+                m_response = Internal::ScriptErrorString(m_currentScript, error, msg).c_str();
             });
         m_scriptContext.BindTo(behaviorContext);
         m_scriptContext.Execute("aiexecutor = AICoreLauncherScriptExecutor()"); // TODO - think about how to return results

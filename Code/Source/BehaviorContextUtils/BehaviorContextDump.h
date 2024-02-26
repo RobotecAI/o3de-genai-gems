@@ -7,6 +7,7 @@
  */
 #pragma once
 
+#include <AzCore/RTTI/ReflectContext.h>
 #include <AzCore/Script/ScriptContext.h>
 #include <AzCore/std/containers/set.h>
 
@@ -15,26 +16,29 @@ namespace AZ
     class BehaviorContext;
     class BehaviorMethod;
     class BehaviorEBus;
-}
+} // namespace AZ
 
 namespace AICore
-{ // TODO - consider reusing (modifying) NodeListDumpAction. This needs to be AI-readable and fully documented.
-    namespace BehaviorContextDump
+{ // TODO - consider reusing (modifying) NodeListDumpAction and PythonEditorFunc.cpp GetExposedPythonClasses.
+    struct BehaviorContextDump
     {
-        AZStd::string ScriptErrorDump(const AZStd::string& script, AZ::ScriptContext::ErrorType error, const char* errorMessage);
+    public:
+        BehaviorContextDump(bool editorOnly, const AZStd::string& filter, const AZ::BehaviorContext* behaviorContext = nullptr);
+
+        AZStd::string ClassesDump();
+        AZStd::string MethodsDump(const AZStd::string& className);
+        AZStd::string EbusesDump();
+
+    private:
+        AZStd::string EbusDump(const AZStd::string& ebusName, const AZ::BehaviorEBus* ebus);
+        AZStd::string MethodDump(const AZStd::string& className, const AZStd::string& methodName, const AZ::BehaviorMethod* method);
+
         AZStd::string ArgumentsDump(const AZStd::span<AZ::BehaviorArgument>& arguments);
         AZStd::string ArgumentsDump(const AZ::BehaviorMethod* method, AZStd::string& documentation);
 
-        AZStd::string ClassesDump(const AZStd::string& filter, const AZ::BehaviorContext* ctx = nullptr);
-        AZStd::string MethodsDump(const AZStd::string& className, const AZStd::string& filter, const AZ::BehaviorContext* ctx = nullptr);
-        AZStd::string EbusesDump(const AZStd::string& filter, const AZ::BehaviorContext* ctx = nullptr);
-
-        //! Produce a signature for calling the method including documentation (format: returnType Class.Method(arg1, arg2))
-        AZStd::string MethodDump(const AZStd::string& className, const AZStd::string& methodName, const AZ::BehaviorMethod* method);
-
-        //! Produce a signature for calling the ebus event including documentation (format: returnType Ebus.Event(arg1, arg2))
-        AZStd::string EbusDump(
-            const AZStd::string& ebusName, const AZ::BehaviorEBus* ebus, const AZStd::set<AZStd::string>& exclude = { "ScriptCanvas" });
-
-    } // namespace BehaviorContextDump
+        const AZStd::set<AZStd::string> m_exclude = { "ScriptCanvas" };
+        AZStd::string m_filter;
+        bool m_editorOnly;
+        const AZ::BehaviorContext* m_context;
+    };
 } // namespace AICore
