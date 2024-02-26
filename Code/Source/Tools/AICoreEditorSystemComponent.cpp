@@ -1,27 +1,32 @@
 /*
-* Copyright (c) Contributors to the Open 3D Engine Project.
-* For complete copyright and license terms please see the LICENSE at the root of this distribution.
-*
-* SPDX-License-Identifier: Apache-2.0 OR MIT
-*
-*/
+ * Copyright (c) Contributors to the Open 3D Engine Project.
+ * For complete copyright and license terms please see the LICENSE at the root of this distribution.
+ *
+ * SPDX-License-Identifier: Apache-2.0 OR MIT
+ *
+ */
 
-#include <AzCore/Serialization/SerializeContext.h>
 #include "AICoreEditorSystemComponent.h"
+#include <Action/ActionTools/AICoreEditorScriptExecutor.h>
+#include <AzCore/Serialization/SerializeContext.h>
 
 #include <AICore/AICoreTypeIds.h>
 
 namespace AICore
 {
-    AZ_COMPONENT_IMPL(AICoreEditorSystemComponent, "AICoreEditorSystemComponent",
-        AICoreEditorSystemComponentTypeId, BaseSystemComponent);
+    AZ_COMPONENT_IMPL(AICoreEditorSystemComponent, "AICoreEditorSystemComponent", AICoreEditorSystemComponentTypeId, BaseSystemComponent);
+
+    AZStd::unique_ptr<AICoreScriptExecutor> AICoreEditorSystemComponent::MakeScriptExecutor([[maybe_unused]] const AIContext& aiContext)
+    {
+        return AZStd::make_unique<AICoreEditorScriptExecutor>();
+    }
 
     void AICoreEditorSystemComponent::Reflect(AZ::ReflectContext* context)
     {
+        //AICoreEditorScriptExecutor::Reflect(context);
         if (auto serializeContext = azrtti_cast<AZ::SerializeContext*>(context))
         {
-            serializeContext->Class<AICoreEditorSystemComponent, AICoreSystemComponent>()
-                ->Version(0);
+            serializeContext->Class<AICoreEditorSystemComponent, AICoreSystemComponent>()->Version(0);
         }
     }
 
@@ -53,14 +58,25 @@ namespace AICore
 
     void AICoreEditorSystemComponent::Activate()
     {
-        AICoreSystemComponent::Activate();
+        AZ_Printf("AICoreEditorSystemComponent", "Activate");
         AzToolsFramework::EditorEvents::Bus::Handler::BusConnect();
+        m_actionRequestHandler.Connect();
     }
 
     void AICoreEditorSystemComponent::Deactivate()
     {
+        m_actionRequestHandler.Disconnect();
         AzToolsFramework::EditorEvents::Bus::Handler::BusDisconnect();
-        AICoreSystemComponent::Deactivate();
     }
 
+    void AICoreEditorSystemComponent::OnStartPlayInEditorBegin()
+    {
+        AICoreSystemComponent::Activate();
+        AZ_Printf("AICoreEditorSystemComponent", "OnStartPlayInEditorBegin");
+    }
+    void AICoreEditorSystemComponent::OnStopPlayInEditor()
+    {
+        AZ_Printf("AICoreEditorSystemComponent", "OnStopPlayInEditor");
+        AICoreSystemComponent::Deactivate();
+    }
 } // namespace AICore
