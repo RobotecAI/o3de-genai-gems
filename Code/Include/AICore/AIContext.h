@@ -16,7 +16,7 @@ namespace AICore
     { // Could be vendor-dependent. Expected to capture persistent, possibly multi-instance context.
         AZStd::string m_key;
         AZ::EntityId m_contextEntityId; // May be invalid if in global context
-        bool m_isEditorScope{ false };
-        bool m_isLauncherScope{ true };
+        bool m_isEditorScope{ true };
+        bool m_isLauncherScope{ false };
     };
 } // namespace AICore

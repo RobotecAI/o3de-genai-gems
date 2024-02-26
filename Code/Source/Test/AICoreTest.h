@@ -18,6 +18,7 @@ namespace AICore
     {
     public:
         bool ScriptCall(const AZStd::string& script, AZStd::string& response);
+        AIContext GetAIContext() const;
 
     private:
         bool m_init{ false };

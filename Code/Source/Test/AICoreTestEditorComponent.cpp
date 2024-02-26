@@ -12,9 +12,23 @@
 #include <AzCore/Serialization/EditContextConstants.inl>
 #include <AzCore/Serialization/SerializeContext.h>
 #include <BehaviorContextUtils/BehaviorContextDump.h>
+#include <sstream>
 
 namespace AICore
 {
+    namespace Internal
+    {
+        void LinePrint(const AZStd::string& input)
+        {
+            std::istringstream stream(input.c_str());
+            std::string line;
+            while (std::getline(stream, line))
+            {
+                AZ_Printf("", "%s", line.c_str());
+            }
+        }
+    }
+
     void AICoreTestEditorComponent::BuildGameEntity(AZ::Entity* gameEntity)
     {
         gameEntity->CreateComponent<AICore::AICoreTestComponent>(m_aiCoreActionTest);
@@ -80,20 +94,20 @@ namespace AICore
 
     void AICoreTestEditorComponent::ListClasses()
     {
-        BehaviorContextDump b(true, m_className);
-        AZ_Printf("AICoreTestEditorComponent", "\n%s", b.ClassesDump().c_str());
+        BehaviorContextDump b(m_aiCoreActionTest.GetAIContext(), m_className);
+        Internal::LinePrint(b.ClassesDump());
     }
 
     void AICoreTestEditorComponent::ListMethods()
     {
-        BehaviorContextDump b(true, m_methodName);
-        AZ_Printf("AICoreTestEditorComponent", "\n%s", b.MethodsDump(m_className).c_str());
+        BehaviorContextDump b(m_aiCoreActionTest.GetAIContext(), m_methodName);
+        Internal::LinePrint(b.MethodsDump(m_className));
     }
 
     void AICoreTestEditorComponent::ListEbuses()
     {
-        BehaviorContextDump b(true, m_methodName);
-        AZ_Printf("AICoreTestEditorComponent", "\n%s", b.EbusesDump().c_str());
+        BehaviorContextDump b(m_aiCoreActionTest.GetAIContext(), m_methodName);
+        Internal::LinePrint(b.EbusesDump());
     }
 
     void AICoreTestEditorComponent::CommandTest()

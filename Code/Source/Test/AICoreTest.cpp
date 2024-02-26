@@ -73,4 +73,9 @@ namespace AICore
 
         return AICoreActionInterface::Get()->ScriptCall(script, response, m_aiContext);
     }
+
+    AIContext AICoreActionTest::GetAIContext() const
+    {
+        return m_aiContext;
+    }
 } // namespace AICore

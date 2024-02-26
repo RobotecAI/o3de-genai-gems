@@ -7,9 +7,11 @@
  */
 #pragma once
 
-#include <AzCore/RTTI/ReflectContext.h>
-#include <AzCore/Script/ScriptContext.h>
+#include <AICore/AIContext.h>
+#include <AICore/APIFormatterStructs.h>
 #include <AzCore/std/containers/set.h>
+#include <AzCore/std/containers/vector.h>
+#include <AzCore/std/string/string.h>
 
 namespace AZ
 {
@@ -23,22 +25,25 @@ namespace AICore
     struct BehaviorContextDump
     {
     public:
-        BehaviorContextDump(bool editorOnly, const AZStd::string& filter, const AZ::BehaviorContext* behaviorContext = nullptr);
+        BehaviorContextDump(
+            const AIContext& aiContext, const AZStd::string& filter = "", const AZ::BehaviorContext* behaviorContext = nullptr);
 
-        AZStd::string ClassesDump();
+        AZStd::string APIDump();
+        AZStd::string ClassesDump(bool dumpMethods = true);
         AZStd::string MethodsDump(const AZStd::string& className);
         AZStd::string EbusesDump();
 
     private:
-        AZStd::string EbusDump(const AZStd::string& ebusName, const AZ::BehaviorEBus* ebus);
-        AZStd::string MethodDump(const AZStd::string& className, const AZStd::string& methodName, const AZ::BehaviorMethod* method);
+        AZStd::string DumpFormattedMethod(const MethodFormatterHelper& method);
+        AZStd::string DumpFormattedEbus(const EbusFormatterHelper& method);
 
-        AZStd::string ArgumentsDump(const AZStd::span<AZ::BehaviorArgument>& arguments);
-        AZStd::string ArgumentsDump(const AZ::BehaviorMethod* method, AZStd::string& documentation);
+        EbusFormatterHelper EbusDump(const AZStd::string& ebusName, const AZ::BehaviorEBus* ebus);
+        MethodFormatterHelper MethodDump(const AZStd::string& className, const AZStd::string& methodName, const AZ::BehaviorMethod* method);
+        AZStd::vector<ArgumentFormatterHelper> ArgumentsDump(const AZ::BehaviorMethod* method);
 
         const AZStd::set<AZStd::string> m_exclude = { "ScriptCanvas" };
         AZStd::string m_filter;
-        bool m_editorOnly;
+        AIContext m_aiContext;
         const AZ::BehaviorContext* m_context;
     };
 } // namespace AICore
