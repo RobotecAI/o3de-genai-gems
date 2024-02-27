@@ -17,6 +17,7 @@ namespace AICore
         AZStd::string FormatMethod(const MethodFormatterHelper& methodHelper) override
         {
             AZStd::string methodDump = AZStd::string::format("def %s(", methodHelper.m_method.c_str());
+            AZStd::string argumentsDocumentation;
             bool subsequent = false;
             for (const auto& argument : methodHelper.m_arguments)
             {
@@ -42,6 +43,12 @@ namespace AICore
                     argumentString = ", " + argumentString;
                 }
                 subsequent = true;
+
+                if (!argument.m_documentation.empty())
+                {
+                    argumentsDocumentation += AZStd::string::format("\t'''arg: %s'''\n", argument.m_documentation.c_str());
+                }
+
                 methodDump += argumentString;
             }
             methodDump += AZStd::string::format(") -> %s:\n", methodHelper.m_result.empty() ? "None" : methodHelper.m_result.c_str());
@@ -49,13 +56,19 @@ namespace AICore
             {
                 methodDump += AZStd::string::format("\t'''%s'''\n", methodHelper.m_documentation.c_str());
             }
+            if (!argumentsDocumentation.empty())
+            {
+                methodDump += argumentsDocumentation;
+            }
+
             methodDump += "\tpass\n";
             return methodDump;
         }
 
         AZStd::string FormatEbus(const EbusFormatterHelper& ebusHelper) override
         {
-            AZStd::string ebusDump = AZStd::string::format("Module %s, EBus %s\n", ebusHelper.m_module.c_str(), ebusHelper.m_ebus.c_str());
+            AZStd::string ebusDump = AZStd::string::format(
+                "Module %s, EBus %s\n%s\n", ebusHelper.m_module.c_str(), ebusHelper.m_ebus.c_str(), ebusHelper.m_documentation.c_str());
             for (const auto& event : ebusHelper.m_events)
             {
                 ebusDump += FormatMethod(event) + "\n";
@@ -65,8 +78,10 @@ namespace AICore
 
         AZStd::string FormatClass(const ClassFormatterHelper& classHelper) override
         {
-            AZStd::string classDump =
-                AZStd::string::format("Module %s, Class %s\n", classHelper.m_module.c_str(), classHelper.m_class.c_str());
+            AZStd::string classDump = AZStd::string::format(
+                "Module %s, Class %s\n",
+                classHelper.m_module.c_str(),
+                classHelper.m_class.c_str());
             for (const auto& method : classHelper.m_methods)
             {
                 classDump += FormatMethod(method) + "\n";

@@ -37,6 +37,7 @@ namespace AICore
     {
         AZStd::string m_ebus;
         AZStd::string m_module;
+        AZStd::string m_documentation;
         AZStd::vector<MethodFormatterHelper> m_events;
     };
 

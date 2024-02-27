@@ -80,6 +80,24 @@ namespace AICore
             return editorOnly ? MatchesEditorScope(behaviorBus->m_attributes) : MatchesLauncherScope(behaviorBus->m_attributes);
         }
 
+        // TODO - instead, expose this from TranslationGeneration to utils
+        AZStd::string ReadStringAttribute(const AZ::AttributeArray& attributes, const AZ::Crc32& attribute)
+        {
+            AZStd::string attributeValue = "";
+            if (auto attributeItem = azrtti_cast<AZ::AttributeData<AZStd::string>*>(AZ::FindAttribute(attribute, attributes)))
+            {
+                attributeValue = attributeItem->Get(nullptr);
+                return attributeValue;
+            }
+
+            if (auto attributeItem = azrtti_cast<AZ::AttributeData<const char*>*>(AZ::FindAttribute(attribute, attributes)))
+            {
+                attributeValue = attributeItem->Get(nullptr);
+                return attributeValue;
+            }
+            return {};
+        }
+
         AZStd::string DumpLuaMethod(const MethodFormatterHelper& method)
         { // TODO implement
             AZStd::string methodDump = AZStd::string::format("Method %s dump (not implemented)", method.m_method.c_str());
@@ -119,9 +137,7 @@ namespace AICore
                 ArgumentFormatterHelper argumentFormatter;
                 argumentFormatter.m_argumentType = argument->m_name;
                 AzFramework::StringFunc::Replace(
-                    argumentFormatter.m_argumentType,
-                    "AZStd::basic_string<char, AZStd::char_traits<char>, allocator>",
-                    "AZStd::string");
+                    argumentFormatter.m_argumentType, "AZStd::basic_string<char, AZStd::char_traits<char>, allocator>", "AZStd::string");
                 const AZStd::string* argName = method->GetArgumentName(i);
                 if (argName && !argName->empty())
                 {
@@ -161,14 +177,14 @@ namespace AICore
 
             if (dumpMethods)
             {
-                classesDump += MethodsDump(className);
-                if (!classesDump.empty())
+                auto methodsDump = MethodsDump(className);
+                if (!methodsDump.empty())
                 {
-                    classesDump = AZStd::string::format(
+                    classesDump += AZStd::string::format(
                         "Module %s Class %s\n%s\n",
                         Internal::GetModuleName(behaviorClass->m_attributes).c_str(),
                         className.c_str(),
-                        classesDump.c_str());
+                        methodsDump.c_str());
                 }
             }
         }
@@ -205,6 +221,16 @@ namespace AICore
             methodFormatter.m_documentation = debugDesc;
         }
 
+        AZStd::string methodTooltip = Internal::ReadStringAttribute(method->m_attributes, AZ::Script::Attributes::ToolTip);
+        if (!methodTooltip.empty())
+        {
+            if (!methodFormatter.m_documentation.empty())
+            {
+                methodFormatter.m_documentation += "\n";
+            }
+            methodFormatter.m_documentation += methodTooltip;
+        }
+
         if (!className.empty())
         {
             methodFormatter.m_class = className;
@@ -232,6 +258,8 @@ namespace AICore
 
         ebusFormatter.m_module = Internal::GetModuleName(ebus->m_attributes);
         ebusFormatter.m_ebus = ebus->m_name;
+        ebusFormatter.m_documentation =
+            ebus->m_toolTip.empty() ? Internal::ReadStringAttribute(ebus->m_attributes, AZ::Script::Attributes::ToolTip) : ebus->m_toolTip;
 
         // Dump handlers
         AZ::BehaviorEBusHandler* handler;
