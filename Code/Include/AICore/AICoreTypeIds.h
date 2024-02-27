@@ -23,4 +23,5 @@ namespace AICore
 
     // Interface TypeIds
     inline constexpr const char* AICoreRequestsTypeId = "{3C39C889-9AA7-43F9-820A-DAF53095BAAD}";
+    inline constexpr const char* AICoreActionRequestsTypeId = "{D2D195A2-C720-4961-9AEF-C00FCB0AA70D}";
 } // namespace AICore
