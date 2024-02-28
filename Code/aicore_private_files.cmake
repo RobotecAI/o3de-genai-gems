@@ -21,4 +21,12 @@ set(FILES
 
     Source/AICoreSettingsRegistryManager/AICoreSettingsRegistryManager.cpp
     Source/AICoreSettingsRegistryManager/AICoreSettingsRegistryManager.h
+
+    Source/Communication/AwsSdk/AwsSdkBedrockRequesterComponent.h
+    Source/Communication/AwsSdk/AwsSdkBedrockRequesterComponent.cpp
+
+    Source/RequestGenerator/Claude/ClaudePromptConfiguration.h
+    Source/RequestGenerator/Claude/ClaudePromptConfiguration.cpp
+    Source/RequestGenerator/Claude/ClaudePromptGeneratorComponent.h
+    Source/RequestGenerator/Claude/ClaudePromptGeneratorComponent.cpp
 )

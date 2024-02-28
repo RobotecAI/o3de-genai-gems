@@ -8,6 +8,8 @@
 
 #include "AICoreModuleInterface.h"
 #include "Test/AICoreTestComponent.h"
+#include "Communication/AwsSdk/AwsSdkBedrockRequesterComponent.h"
+#include "RequestGenerator/Claude/ClaudePromptGeneratorComponent.h"
 #include <AICore/AICoreTypeIds.h>
 #include <AICore/SystemRegistrationContext/AICoreSystemRegistrationContext.h>
 #include <AzCore/Component/ComponentApplication.h>
@@ -30,7 +32,9 @@ namespace AICore
             m_descriptors.end(),
             {
                 AICoreSystemComponent::CreateDescriptor(),
-                AICoreTestComponent::CreateDescriptor()
+                AICoreTestComponent::CreateDescriptor(),
+                AwsSdkBedrockRequesterComponent::CreateDescriptor(),
+                ClaudePromptGeneratorComponent::CreateDescriptor(),
             });
 
         // Create a new reflection context for reflecting requesters/generators

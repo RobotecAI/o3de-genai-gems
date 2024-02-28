@@ -18,6 +18,10 @@
 #include <AzCore/Serialization/SerializeContext.h>
 #include <AzCore/std/utility/move.h>
 
+#include <aws/core/Aws.h>
+#include <aws/core/auth/AWSCredentialsProviderChain.h>
+#include <aws/core/utils/json/JsonSerializer.h>
+
 namespace AICore
 {
     AZ_COMPONENT_IMPL(AICoreSystemComponent, "AICoreSystemComponent", AICoreSystemComponentTypeId);
@@ -252,6 +256,10 @@ namespace AICore
         }
         InitEntities(m_configuration.m_requesters);
         InitEntities(m_configuration.m_generators);
+        
+        // Enable the AWS SDK
+        Aws::SDKOptions options;
+        Aws::InitAPI(options);
     }
 
     void AICoreSystemComponent::Activate()
