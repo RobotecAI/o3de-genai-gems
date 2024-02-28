@@ -16,8 +16,6 @@
 #include <aws/core/utils/memory/stl/AWSStreamFwd.h>
 #include <aws/core/utils/memory/stl/AWSStringStream.h>
 #include <memory>
-#include <ostream>
-#include <string>
 
 namespace AICore
 {
