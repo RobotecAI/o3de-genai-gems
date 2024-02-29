@@ -11,8 +11,15 @@
 
 namespace AICore
 {
+    ClaudePromptGeneratorComponent::ClaudePromptGeneratorComponent(const ClaudePromptInputConfiguration& config)
+        : m_defaultConfiguration(config)
+    {
+    }
+
     void ClaudePromptGeneratorComponent::Reflect(AZ::ReflectContext* context)
     {
+        ClaudePromptInputConfiguration::Reflect(context);
+
         if (auto* serializeContext = azrtti_cast<AZ::SerializeContext*>(context))
         {
             serializeContext->Class<ClaudePromptGeneratorComponent, AZ::Component>()->Version(1)->Field(
@@ -60,25 +67,24 @@ namespace AICore
         Aws::Utils::Json::JsonValue jsonPrompt;
         jsonPrompt.WithString("prompt", prompt.m_prompt.c_str());
         ClaudePromptInputConfiguration configuration = prompt.m_configuration.value_or(m_defaultConfiguration);
-        if (configuration.m_maxTokensToSample.has_value())
+
+        jsonPrompt.WithInteger("max_tokens", configuration.m_maxTokensToSample);
+
+        if (!configuration.m_useDefaultTemperature)
         {
-            jsonPrompt.WithInteger("max_tokens", configuration.m_maxTokensToSample.value());
+            jsonPrompt.WithDouble("temperature", configuration.m_temperature);
         }
-        if (configuration.m_temperature.has_value())
+        if (!configuration.m_useDefaultTopP)
         {
-            jsonPrompt.WithDouble("temperature", configuration.m_temperature.value());
+            jsonPrompt.WithDouble("top_p", configuration.m_topP);
         }
-        if (configuration.m_topP.has_value())
+        if (!configuration.m_useDefaultTopK)
         {
-            jsonPrompt.WithDouble("top_p", configuration.m_topP.value());
+            jsonPrompt.WithInteger("top_k", configuration.m_topK);
         }
-        if (configuration.m_topK.has_value())
+        if (!configuration.m_useDefaultStopSequence)
         {
-            jsonPrompt.WithInteger("top_k", configuration.m_topK.value());
-        }
-        if (configuration.m_stopSequence.has_value())
-        {
-            jsonPrompt.WithString("stop_sequence", configuration.m_stopSequence.value().c_str());
+            jsonPrompt.WithString("stop_sequence", configuration.m_stopSequence.c_str());
         }
         return jsonPrompt;
     }

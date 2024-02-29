@@ -1,27 +1,51 @@
 
 #pragma once
 
-#include "AzCore/RTTI/RTTIMacros.h"
-#include "AzCore/std/string/string.h"
+#include <AzCore/Component/Component.h>
+#include <AzCore/Memory/Memory_fwd.h>
+#include <AzCore/RTTI/RTTIMacros.h>
 #include <AzCore/RTTI/ReflectContext.h>
+#include <AzCore/std/string/string.h>
 
 namespace AICore
 {
-    class ClaudePromptInputConfiguration
+    class ClaudePromptInputConfiguration : public AZ::ComponentConfig
     {
     public:
         AZ_RTTI(ClaudePromptInputConfiguration, "{5a478ab3-8ac6-4c23-8768-03c2791d6b11}");
+        AZ_CLASS_ALLOCATOR(ClaudePromptInputConfiguration, AZ::SystemAllocator);
 
         ClaudePromptInputConfiguration() = default;
-        virtual ~ClaudePromptInputConfiguration() = default;
+        ~ClaudePromptInputConfiguration() = default;
 
         static void Reflect(AZ::ReflectContext* context);
 
-        AZStd::optional<int> m_maxTokensToSample;
-        AZStd::optional<float> m_temperature;
-        AZStd::optional<float> m_topP;
-        AZStd::optional<int> m_topK;
-        AZStd::optional<AZStd::string> m_stopSequence;
+        int m_maxTokensToSample = 200;
+        float m_temperature = 0.5f;
+        bool m_useDefaultTemperature = true;
+        float m_topP = 1.f;
+        bool m_useDefaultTopP = true;
+        int m_topK = 250;
+        bool m_useDefaultTopK = true;
+        AZStd::string m_stopSequence = "";
+        bool m_useDefaultStopSequence = true;
+
+        bool IsDefaultTemperature() const
+        {
+            return m_useDefaultTemperature;
+        }
+        bool IsDefaultTopP() const
+        {
+            return m_useDefaultTopP;
+        }
+        bool IsDefaultTopK() const
+        {
+            return m_useDefaultTopK;
+        }
+        bool IsDefaultStopSequence() const
+        {
+            return m_useDefaultStopSequence;
+        }
     };
 
     class ClaudePromptInput

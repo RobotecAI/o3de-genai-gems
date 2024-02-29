@@ -19,6 +19,7 @@ namespace AICore
     {
     public:
         AZ_RTTI(AwsSdkBedrockRequesterConfiguration, "{769166cb-bd18-4fb0-b9ff-93dbaaaf82a8}");
+        AZ_CLASS_ALLOCATOR(AwsSdkBedrockRequesterConfiguration, AZ::SystemAllocator);
 
         AwsSdkBedrockRequesterConfiguration();
         ~AwsSdkBedrockRequesterConfiguration() = default;
