@@ -1,12 +1,12 @@
 
 #include "ClaudePromptGeneratorComponent.h"
-#include "AICore/SystemRegistrationContext/AICoreSystemRegistrationContext.h"
-#include "AzCore/RTTI/RTTIMacros.h"
-#include "AzCore/Serialization/EditContext.h"
-#include "AzCore/Serialization/SerializeContext.h"
 #include "RequestGenerator/Claude/ClaudePromptConfiguration.h"
 #include <AICore/RequestGenerator/RequestGeneratorBus.h>
+#include <AICore/SystemRegistrationContext/AICoreSystemRegistrationContext.h>
 #include <AzCore/Component/Component.h>
+#include <AzCore/RTTI/RTTIMacros.h>
+#include <AzCore/Serialization/EditContext.h>
+#include <AzCore/Serialization/SerializeContext.h>
 #include <aws/core/utils/json/JsonSerializer.h>
 
 namespace AICore
@@ -68,7 +68,7 @@ namespace AICore
         jsonPrompt.WithString("prompt", prompt.m_prompt.c_str());
         ClaudePromptInputConfiguration configuration = prompt.m_configuration.value_or(m_defaultConfiguration);
 
-        jsonPrompt.WithInteger("max_tokens", configuration.m_maxTokensToSample);
+        jsonPrompt.WithInteger("max_tokens_to_sample", configuration.m_maxTokensToSample);
 
         if (!configuration.m_useDefaultTemperature)
         {

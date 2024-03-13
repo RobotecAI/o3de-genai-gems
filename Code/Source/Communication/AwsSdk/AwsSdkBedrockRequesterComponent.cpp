@@ -16,6 +16,8 @@
 #include <aws/core/utils/memory/stl/AWSStreamFwd.h>
 #include <aws/core/utils/memory/stl/AWSStringStream.h>
 #include <memory>
+#include <ostream>
+#include <string>
 
 namespace AICore
 {
@@ -132,11 +134,15 @@ namespace AICore
         {
             if (outcome.IsSuccess())
             {
-                std::string result;
-                outcome.GetResult().GetBody() >> result;
-                AZStd::string azStringResult(result.c_str());
-                AZ::Outcome<AZStd::string, Aws::BedrockRuntime::BedrockRuntimeError> outcomeResult = AZ::Success(azStringResult);
-                callback(outcomeResult);
+                if (outcome.IsSuccess())
+                {
+                    auto* resultStream = &outcome.GetResult().GetBody();
+                    std::string result(std::istreambuf_iterator<char>(*resultStream), {});
+
+                    AZStd::string azStringResult(result.c_str());
+                    AZ::Outcome<AZStd::string, Aws::BedrockRuntime::BedrockRuntimeError> outcomeResult = AZ::Success(azStringResult);
+                    callback(outcomeResult);
+                }
             }
             else
             {
