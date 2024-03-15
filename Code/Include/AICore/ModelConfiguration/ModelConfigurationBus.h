@@ -25,18 +25,18 @@ namespace AICore
         //! Prepare a request from a specified prompt
         //! @param prompt The full json for the prompt (with the configuration)
         //! @return The request to send
-        virtual AZStd::string PrepareRequest(AZStd::string prompt) = 0;
+        virtual AZStd::string PrepareRequest(const AZStd::string& prompt) = 0;
 
         //! Prepare a request from a specified prompt
         //! This creates a prompt with all the necessary configuration. Ready for sending.
         //! @param prompt The string prompt to use
         //! @return The request to send
-        virtual AZStd::string PrepareRequestWithStringPrompt(AZStd::string prompt) = 0;
+        virtual AZStd::string PrepareRequestWithStringPrompt(const AZStd::string& prompt) = 0;
 
         //! Process a request and return the result
         //! @param request The request to process
         //! @return The result of the request
-        virtual AZ::Outcome<AZStd::string, AZStd::string> ProcessRequest(AZStd::string request) = 0;
+        virtual AZ::Outcome<AZStd::string, AZStd::string> ProcessRequest(const AZStd::string& request) = 0;
     };
 
     using ModelConfigurationBus = AZ::EBus<ModelConfigurationRequests>;
