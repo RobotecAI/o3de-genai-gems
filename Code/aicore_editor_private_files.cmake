@@ -11,5 +11,8 @@ set(FILES
 
     Source/AICoreSettingsRegistryManager/Editor/AICoreEditorSettingsRegistryManager.h
     Source/AICoreSettingsRegistryManager/Editor/AICoreEditorSettingsRegistryManager.cpp
+    
+    Source/PythonScriptResults/PythonScriptResults.h
+    Source/PythonScriptResults/PythonScriptResults.cpp
 )
 
