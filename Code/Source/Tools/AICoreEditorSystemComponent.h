@@ -8,10 +8,17 @@
 
 #pragma once
 
+#include "AICoreSettingsRegistryManager/Editor/AICoreEditorSettingsRegistryManager.h"
+#include <AICore/AICoreBus.h>
+#include <AICore/AICoreEditorBus.h>
 #include <Action/AICoreActionRequestHandler.h>
+#include <AzCore/Math/Uuid.h>
+#include <AzCore/std/string/string_view.h>
 #include <AzToolsFramework/API/ToolsApplicationAPI.h>
 #include <AzToolsFramework/Entity/EditorEntityContextBus.h>
 #include <Clients/AICoreSystemComponent.h>
+
+#include "UI/AICoreWidget.h"
 
 namespace AICore
 {
@@ -20,6 +27,7 @@ namespace AICore
         : public AICoreSystemComponent
         , protected AzToolsFramework::EditorEvents::Bus::Handler
         , private AzToolsFramework::EditorEntityContextNotificationBus::Handler
+        , protected AICoreEditorRequestBus::Handler
     {
         using BaseSystemComponent = AICoreSystemComponent;
 
@@ -43,11 +51,19 @@ namespace AICore
         // EditorEntityContextNotificationBus overrides
         void OnStartPlayInEditorBegin() override;
         void OnStopPlayInEditor() override;
+        // AICoreEditorRequestBus::Handler overrides ...
+        void SaveSystemConfiguration() override;
+
+        // AzToolsFramework::EditorEvents::Bus::Handler overrides ...
+        void NotifyRegisterViews() override;
 
         // AZ::Component
+        void Init() override;
         void Activate() override;
         void Deactivate() override;
 
         AICoreActionRequestHandler m_actionRequestHandler;
+        AICoreEditorSettingsRegistryManager m_settingsRegistryManager;
     };
 } // namespace AICore
+
