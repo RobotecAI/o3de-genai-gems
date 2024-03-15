@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include <AzCore/RTTI/BehaviorContext.h>
 #include <AzCore/std/containers/vector.h>
 #include <AzCore/std/string/string.h>
 
@@ -26,25 +27,26 @@ namespace AICore
     {
         bool m_isEbus{ false };
         AZStd::string m_method;
-        AZStd::string m_class;
-        AZStd::string m_eventType;
-        AZStd::string m_result; // empty means void or none or whatever no result signifier is
-        AZStd::string m_documentation;
-        AZStd::vector<ArgumentFormatterHelper> m_arguments;
+        AZ::BehaviorMethod* m_behaviourMethod;
+        AZ::BehaviorClass* m_behaviourClass;
+        bool m_dumpTooltips{ true };
+        bool m_dumpDebugDescription{ true };
     };
 
     struct EbusFormatterHelper
     {
-        AZStd::string m_ebus;
+        AZStd::string m_busName;
+        AZ::BehaviorEBus* m_behaviourEBus;
         AZStd::string m_module;
-        AZStd::string m_documentation;
-        AZStd::vector<MethodFormatterHelper> m_events;
     };
 
     struct ClassFormatterHelper
     {
         AZStd::string m_class;
         AZStd::string m_module;
-        AZStd::vector<MethodFormatterHelper> m_methods;
+        AZ::BehaviorClass* m_behaviourClass;
+        bool m_dumpMethods{ true };
+        bool m_dumpProperties{ true };
+        bool m_dumpTooltips{ true };
     };
 } // namespace AICore

@@ -30,6 +30,7 @@ ly_add_target(
     BUILD_DEPENDENCIES
         INTERFACE
            AZ::AzCore
+           Gem::EditorPythonBindings.Static
 )
 
 # The ${gem_name}.Private.Object target is an internal target
@@ -50,6 +51,7 @@ ly_add_target(
         PUBLIC
             AZ::AzCore
             AZ::AzFramework
+            Gem::EditorPythonBindings.Static
 )
 
 # Here add ${gem_name} target, it depends on the Private Object library and Public API interface
@@ -67,6 +69,7 @@ ly_add_target(
     BUILD_DEPENDENCIES
         PUBLIC
             Gem::${gem_name}.API
+            Gem::EditorPythonBindings.Static
         PRIVATE
             Gem::${gem_name}.Private.Object
 )
@@ -122,6 +125,7 @@ if(PAL_TRAIT_BUILD_HOST_TOOLS)
             PUBLIC
                 AZ::AzToolsFramework
                 Gem::EditorPythonBindings.Editor
+                Gem::EditorPythonBindings.Static
                 $<TARGET_OBJECTS:Gem::${gem_name}.Private.Object>
     )
 

@@ -7,6 +7,7 @@
  */
 
 #include "BehaviorContextDump.h"
+#include "AICore/APIFormatterStructs.h"
 #include "PythonFormatter.h"
 #include <AzCore/RTTI/AttributeReader.h>
 #include <AzCore/RTTI/BehaviorContext.h>
@@ -98,6 +99,12 @@ namespace AICore
             return {};
         }
 
+        AZStd::string DumpLuaClass(const ClassFormatterHelper& classHelper)
+        { // TODO implement
+            AZStd::string classDump = AZStd::string::format("Class %s dump (not implemented)", classHelper.m_class.c_str());
+            return classDump;
+        }
+
         AZStd::string DumpLuaMethod(const MethodFormatterHelper& method)
         { // TODO implement
             AZStd::string methodDump = AZStd::string::format("Method %s dump (not implemented)", method.m_method.c_str());
@@ -106,7 +113,7 @@ namespace AICore
 
         AZStd::string DumpLuaEbus(const EbusFormatterHelper& ebus)
         { // TODO implement
-            AZStd::string ebusDump = AZStd::string::format("Ebus %s dump (not implemented)", ebus.m_ebus.c_str());
+            AZStd::string ebusDump = AZStd::string::format("Lua Ebus dump (not implemented)");
             return ebusDump;
         }
     } // namespace Internal
@@ -175,68 +182,40 @@ namespace AICore
                 continue;
             }
 
-            if (dumpMethods)
-            {
-                auto methodsDump = MethodsDump(className);
-                if (!methodsDump.empty())
-                {
-                    classesDump += AZStd::string::format(
-                        "Module %s Class %s\n%s\n",
-                        Internal::GetModuleName(behaviorClass->m_attributes).c_str(),
-                        className.c_str(),
-                        methodsDump.c_str());
-                }
-            }
+            ClassFormatterHelper classFormatter = ClassDump(className, behaviorClass, dumpMethods);
+            classesDump += DumpFormattedClass(classFormatter);
         }
         return classesDump;
     }
 
+    ClassFormatterHelper BehaviorContextDump::ClassDump(
+        const AZStd::string& className, const AZ::BehaviorClass* behaviorClass, bool dumpMethods)
+    {
+        ClassFormatterHelper classFormatter;
+        if (!behaviorClass)
+        {
+            return classFormatter;
+        }
+
+        classFormatter.m_class = className;
+        classFormatter.m_behaviourClass = const_cast<AZ::BehaviorClass*>(behaviorClass);
+        classFormatter.m_module = Internal::GetModuleName(behaviorClass->m_attributes);
+        classFormatter.m_dumpMethods = dumpMethods;
+        return classFormatter;
+    }
+
     MethodFormatterHelper BehaviorContextDump::MethodDump(
-        const AZStd::string& className, const AZStd::string& methodName, const AZ::BehaviorMethod* method)
+        const AZStd::string& className,
+        const AZStd::string& methodName,
+        const AZ::BehaviorMethod* method,
+        const AZ::BehaviorClass* behaviorClass)
     {
         MethodFormatterHelper methodFormatter;
-        if (!method)
-        {
-            return methodFormatter;
-        }
-        for (const auto& excluded : m_exclude)
-        {
-            if (methodName.starts_with(excluded))
-            {
-                return methodFormatter;
-            }
-        }
 
         methodFormatter.m_method = methodName;
-        const auto result = method->HasResult() ? method->GetResult() : nullptr;
-        if (result)
-        {
-            methodFormatter.m_result = result->m_name;
-        }
+        methodFormatter.m_behaviourMethod = const_cast<AZ::BehaviorMethod*>(method);
+        methodFormatter.m_behaviourClass = const_cast<AZ::BehaviorClass*>(behaviorClass);
 
-        AZStd::string documentation;
-        const char* debugDesc = method->m_debugDescription;
-        if (debugDesc && strlen(debugDesc) > 0)
-        {
-            methodFormatter.m_documentation = debugDesc;
-        }
-
-        AZStd::string methodTooltip = Internal::ReadStringAttribute(method->m_attributes, AZ::Script::Attributes::ToolTip);
-        if (!methodTooltip.empty())
-        {
-            if (!methodFormatter.m_documentation.empty())
-            {
-                methodFormatter.m_documentation += "\n";
-            }
-            methodFormatter.m_documentation += methodTooltip;
-        }
-
-        if (!className.empty())
-        {
-            methodFormatter.m_class = className;
-        }
-
-        methodFormatter.m_arguments = ArgumentsDump(method);
         return methodFormatter;
     }
 
@@ -257,68 +236,8 @@ namespace AICore
         }
 
         ebusFormatter.m_module = Internal::GetModuleName(ebus->m_attributes);
-        ebusFormatter.m_ebus = ebus->m_name;
-        ebusFormatter.m_documentation =
-            ebus->m_toolTip.empty() ? Internal::ReadStringAttribute(ebus->m_attributes, AZ::Script::Attributes::ToolTip) : ebus->m_toolTip;
-
-        // Dump handlers
-        AZ::BehaviorEBusHandler* handler;
-        if (ebus->m_createHandler && ebus->m_destroyHandler && ebus->m_createHandler->InvokeResult(handler))
-        {
-            for (const AZ::BehaviorEBusHandler::BusForwarderEvent& event : handler->GetEvents())
-            {
-                MethodFormatterHelper eventFormatter;
-                eventFormatter.m_method = event.m_name;
-                eventFormatter.m_isEbus = true;
-                if (event.HasResult())
-                {
-                    const AZ::BehaviorParameter& resultParam = event.m_parameters[AZ::eBehaviorBusForwarderEventIndices::Result];
-                    eventFormatter.m_result = resultParam.m_name; // type
-                }
-                else
-                {
-                    eventFormatter.m_result = "void";
-                }
-
-                for (size_t i = AZ::eBehaviorBusForwarderEventIndices::ParameterFirst; i < event.m_parameters.size(); ++i)
-                {
-                    ArgumentFormatterHelper argumentFormatter;
-                    const AZ::BehaviorParameter& argParam = event.m_parameters[i];
-                    argumentFormatter.m_argumentType = argParam.m_name;
-                    AzFramework::StringFunc::Replace(
-                        argumentFormatter.m_argumentType,
-                        "AZStd::basic_string<char, AZStd::char_traits<char>, allocator>",
-                        "AZStd::string");
-
-                    if (event.m_metadataParameters.size() > i)
-                    {
-                        auto argName = event.m_metadataParameters[i].m_name;
-                        if (!argName.empty())
-                        {
-                            argumentFormatter.m_argumentName = argName;
-                            argumentFormatter.m_documentation = event.m_metadataParameters[i].m_toolTip;
-                        }
-                    }
-                    eventFormatter.m_arguments.push_back(argumentFormatter);
-                }
-            }
-            ebus->m_destroyHandler->Invoke(handler);
-        }
-
-        // Dump events (as methods)
-        for (const auto& eventIter : ebus->m_events)
-        {
-            const AZ::BehaviorMethod* const method = eventIter.second.m_event ? eventIter.second.m_event : eventIter.second.m_broadcast;
-            if (!method)
-            {
-                continue;
-            }
-            AZStd::string interfaceName = eventIter.second.m_event ? "Event" : "Broadcast";
-            MethodFormatterHelper eventFormatter = MethodDump(interfaceName, eventIter.first, method);
-            eventFormatter.m_isEbus = true;
-            eventFormatter.m_eventType = interfaceName;
-            ebusFormatter.m_events.push_back(eventFormatter);
-        }
+        ebusFormatter.m_busName = ebus->m_name;
+        ebusFormatter.m_behaviourEBus = const_cast<AZ::BehaviorEBus*>(ebus);
 
         return ebusFormatter;
     }
@@ -327,13 +246,14 @@ namespace AICore
     {
         AZStd::string methodsString;
         AZStd::unordered_map<AZStd::string, AZ::BehaviorMethod*> methods;
+        AZ::BehaviorClass* reflectedClass = nullptr;
         if (className.empty())
         { // print only global methods
             methods = m_context->m_methods;
         }
         else
         {
-            auto* reflectedClass = m_context->FindClassByReflectedName(className);
+            reflectedClass = const_cast<AZ::BehaviorClass*>(m_context->FindClassByReflectedName(className));
             if (!reflectedClass)
             {
                 AZ_Printf("MethodsDump", "Invalid class name: %s\n", className.c_str());
@@ -349,7 +269,7 @@ namespace AICore
                 continue;
             }
 
-            methodsString += DumpFormattedMethod(MethodDump(className, methodName, method));
+            methodsString += DumpFormattedMethod(MethodDump(className, methodName, method, reflectedClass));
             methodsString += "\n";
         }
         return methodsString;
@@ -360,6 +280,11 @@ namespace AICore
         AZStd::string ebusesString;
         for (const auto& [ebusName, ebus] : m_context->m_ebuses)
         {
+            if (!ebus)
+            {
+                continue;
+            }
+
             if (!m_filter.empty() && !ebusName.contains(m_filter))
             {
                 continue;
@@ -371,9 +296,14 @@ namespace AICore
             }
 
             ebusesString += DumpFormattedEbus(EbusDump(ebusName, ebus));
-            ebusesString += "\n";
         }
         return ebusesString;
+    }
+
+    AZStd::string BehaviorContextDump::DumpFormattedClass(const ClassFormatterHelper& classHelper)
+    {
+        PythonFormatter pf;
+        return m_aiContext.m_isEditorScope ? pf.FormatClass(classHelper) : Internal::DumpLuaClass(classHelper);
     }
 
     AZStd::string BehaviorContextDump::DumpFormattedMethod(const MethodFormatterHelper& method)
