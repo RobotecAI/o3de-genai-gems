@@ -43,17 +43,17 @@ namespace AICore
     protected:
         ////////////////////////////////////////////////////////////////////////
         // AICoreRequestBus interface implementation
-        virtual AZStd::unique_ptr<AICoreScriptExecutor> MakeScriptExecutor(const AIContext& aiContext) override;
+        AZStd::unique_ptr<AICoreScriptExecutor> MakeScriptExecutor(const AIContext& aiContext) override;
         AICoreSystemRegistrationContext* GetSystemRegistrationContext() override;
-        AZStd::vector<AZStd::pair<AZStd::string, AZ::Uuid>> GetRegisteredGeneratorsNameAndComponentTypeId() override;
-        AZStd::vector<AZStd::pair<AZStd::string, AZ::Uuid>> GetRegisteredRequestersNameAndComponentTypeId() override;
-        AZStd::vector<AZ::Component*> GetActiveGenerators() override;
-        AZStd::vector<AZ::Component*> GetActiveRequesters() override;
-        AZ::Component* CreateNewGenerator(const AZStd::string& generatorName, const AZ::Uuid& componentTypeId) override;
-        AZ::Component* CreateNewRequester(const AZStd::string& requesterName, const AZ::Uuid& componentTypeId) override;
+        AZStd::vector<AZStd::pair<AZStd::string, AZ::Uuid>> GetRegisteredModelConfigurationsNameAndComponentTypeId() override;
+        AZStd::vector<AZStd::pair<AZStd::string, AZ::Uuid>> GetRegisteredServiceRequestersNameAndComponentTypeId() override;
+        AZStd::vector<AZ::Component*> GetActiveModelConfigurations() override;
+        AZStd::vector<AZ::Component*> GetActiveServiceRequesters() override;
+        AZ::Component* CreateNewModelConfiguration(const AZStd::string& modelConfigurationName, const AZ::Uuid& componentTypeId) override;
+        AZ::Component* CreateNewServiceRequester(const AZStd::string& requesterName, const AZ::Uuid& componentTypeId) override;
         void RemoveComponent(AZ::Component* component) override;
-        void ActivateEntity(AZ::Entity* entity) override;
-        void DeactivateEntity(AZ::Entity* entity) override;
+        void ActivateEntity(AZStd::shared_ptr<AZ::Entity> entity) override;
+        void DeactivateEntity(AZStd::shared_ptr<AZ::Entity> entity) override;
         ////////////////////////////////////////////////////////////////////////
 
         ////////////////////////////////////////////////////////////////////////
@@ -72,16 +72,16 @@ namespace AICore
         AICoreSettingsRegistryManager m_settingsRegistryManager;
 
     private:
-        void InitEntities(const AZStd::vector<AZ::Entity*>& entities);
-        void ActivateEntities(const AZStd::vector<AZ::Entity*>& entities);
-        void DeactivateEntities(const AZStd::vector<AZ::Entity*>& entities);
+        void InitEntities(const AZStd::vector<AZStd::shared_ptr<AZ::Entity>>& entities);
+        void ActivateEntities(const AZStd::vector<AZStd::shared_ptr<AZ::Entity>>& entities);
+        void DeactivateEntities(const AZStd::vector<AZStd::shared_ptr<AZ::Entity>>& entities);
         AICoreActionRequestHandler m_actionRequestHandler;
 
         AZStd::vector<AZStd::pair<AZStd::string, AZ::Uuid>> GetRegisteredComponentsNameAndComponentTypeId(
             AZStd::vector<AZ::Uuid> componentTypeIds);
-        AZStd::vector<AZ::Component*> GetActiveComponents(AZStd::vector<AZ::Entity*> entities);
+        AZStd::vector<AZ::Component*> GetActiveComponents(AZStd::vector<AZStd::shared_ptr<AZ::Entity>> entities);
         AZ::Component* CreateNewComponentEntity(
-            const AZStd::string& name, const AZ::Uuid& componentTypeId, AZStd::vector<AZ::Entity*>& entities);
+            const AZStd::string& name, const AZ::Uuid& componentTypeId, AZStd::vector<AZStd::shared_ptr<AZ::Entity>>& entities);
         ;
     };
 } // namespace AICore

@@ -6,34 +6,35 @@
  *
  */
 
-#include "NewGeneratorSegment.h"
+#include "NewModelConfigurationSegment.h"
 #include <AICore/AICoreBus.h>
 
 namespace AICore
 {
-    NewGeneratorSegment::NewGeneratorSegment(QWidget* parent)
+    NewModelConfigurationSegment::NewModelConfigurationSegment(QWidget* parent)
         : NewSegment(GetRegisteredNameAndComponentTypeId(), parent)
     {
     }
 
-    AZStd::vector<AZStd::pair<AZStd::string, AZ::Uuid>> NewGeneratorSegment::GetRegisteredNameAndComponentTypeId()
+    AZStd::vector<AZStd::pair<AZStd::string, AZ::Uuid>> NewModelConfigurationSegment::GetRegisteredNameAndComponentTypeId()
     {
         auto interface = AICoreInterface::Get();
         if (!interface)
         {
             return {};
         }
-        return interface->GetRegisteredGeneratorsNameAndComponentTypeId();
+        return interface->GetRegisteredModelConfigurationsNameAndComponentTypeId();
     }
 
-    AZ::Component* NewGeneratorSegment::CreateNewComponentEntity(const AZStd::string& name, const AZ::Uuid& selectedComponentTypeId)
+    AZ::Component* NewModelConfigurationSegment::CreateNewComponentEntity(
+        const AZStd::string& name, const AZ::Uuid& selectedComponentTypeId)
     {
         auto interface = AICoreInterface::Get();
         if (!interface)
         {
             return nullptr;
         }
-        return interface->CreateNewGenerator(name, selectedComponentTypeId);
+        return interface->CreateNewModelConfiguration(name, selectedComponentTypeId);
     }
 
 } // namespace AICore

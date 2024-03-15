@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "AzCore/std/smart_ptr/shared_ptr.h"
 #include <AzCore/Component/Entity.h>
 #include <AzCore/Memory/Memory_fwd.h>
 #include <AzCore/RTTI/RTTIMacros.h>
@@ -25,13 +26,10 @@ namespace AICore
 
         static void Reflect(AZ::ReflectContext* context);
 
-        AICoreSystemComponentConfiguration();
-        virtual ~AICoreSystemComponentConfiguration();
+        AICoreSystemComponentConfiguration() = default;
+        virtual ~AICoreSystemComponentConfiguration() = default;
 
-        AZStd::vector<AZ::Entity*> m_requesters;
-        AZStd::vector<AZ::Entity*> m_generators;
-
-    private:
-        static int m_instanceCount;
+        AZStd::vector<AZStd::shared_ptr<AZ::Entity>> m_serviceRequesters;
+        AZStd::vector<AZStd::shared_ptr<AZ::Entity>> m_modelConfigurations;
     };
 } // namespace AICore

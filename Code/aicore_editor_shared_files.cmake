@@ -11,8 +11,8 @@ set(FILES
     Source/UI/Segment.cpp
     Source/UI/Segment.h
 
-    Source/UI/Requester/NewRequesterSegment.cpp
-    Source/UI/Requester/NewRequesterSegment.h
-    Source/UI/Generator/NewGeneratorSegment.cpp
-    Source/UI/Generator/NewGeneratorSegment.h
+    Source/UI/ServiceRequester/NewServiceRequesterSegment.cpp
+    Source/UI/ServiceRequester/NewServiceRequesterSegment.h
+    Source/UI/ModelConfiguration/NewModelConfigurationSegment.cpp
+    Source/UI/ModelConfiguration/NewModelConfigurationSegment.h
 )

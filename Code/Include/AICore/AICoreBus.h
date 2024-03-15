@@ -29,19 +29,20 @@ namespace AICore
 
         virtual AICoreSystemRegistrationContext* GetSystemRegistrationContext() = 0;
 
-        virtual AZStd::vector<AZStd::pair<AZStd::string, AZ::Uuid>> GetRegisteredGeneratorsNameAndComponentTypeId() = 0;
-        virtual AZStd::vector<AZStd::pair<AZStd::string, AZ::Uuid>> GetRegisteredRequestersNameAndComponentTypeId() = 0;
+        virtual AZStd::vector<AZStd::pair<AZStd::string, AZ::Uuid>> GetRegisteredModelConfigurationsNameAndComponentTypeId() = 0;
+        virtual AZStd::vector<AZStd::pair<AZStd::string, AZ::Uuid>> GetRegisteredServiceRequestersNameAndComponentTypeId() = 0;
 
-        virtual AZStd::vector<AZ::Component*> GetActiveGenerators() = 0;
-        virtual AZStd::vector<AZ::Component*> GetActiveRequesters() = 0;
+        virtual AZStd::vector<AZ::Component*> GetActiveModelConfigurations() = 0;
+        virtual AZStd::vector<AZ::Component*> GetActiveServiceRequesters() = 0;
 
-        virtual AZ::Component* CreateNewGenerator(const AZStd::string& generatorName, const AZ::Uuid& componentTypeId) = 0;
-        virtual AZ::Component* CreateNewRequester(const AZStd::string& requesterName, const AZ::Uuid& componentTypeId) = 0;
+        virtual AZ::Component* CreateNewModelConfiguration(
+            const AZStd::string& modelConfigurationName, const AZ::Uuid& componentTypeId) = 0;
+        virtual AZ::Component* CreateNewServiceRequester(const AZStd::string& requesterName, const AZ::Uuid& componentTypeId) = 0;
 
         virtual void RemoveComponent(AZ::Component* component) = 0;
 
-        virtual void ActivateEntity(AZ::Entity* entity) = 0;
-        virtual void DeactivateEntity(AZ::Entity* entity) = 0;
+        virtual void ActivateEntity(AZStd::shared_ptr<AZ::Entity> entity) = 0;
+        virtual void DeactivateEntity(AZStd::shared_ptr<AZ::Entity> entity) = 0;
     };
 
     class AICoreBusTraits : public AZ::EBusTraits

@@ -7,6 +7,9 @@
  */
 
 #include "AICoreSystemComponent.h"
+#include "AzCore/Component/Entity.h"
+#include "AzCore/std/smart_ptr/make_shared.h"
+#include "AzCore/std/smart_ptr/shared_ptr.h"
 #include "Clients/AICoreSystemComponentConfiguration.h"
 
 #include <AICore/AICoreTypeIds.h>
@@ -111,22 +114,22 @@ namespace AICore
         return result;
     }
 
-    AZStd::vector<AZStd::pair<AZStd::string, AZ::Uuid>> AICoreSystemComponent::GetRegisteredGeneratorsNameAndComponentTypeId()
+    AZStd::vector<AZStd::pair<AZStd::string, AZ::Uuid>> AICoreSystemComponent::GetRegisteredModelConfigurationsNameAndComponentTypeId()
     {
-        auto registeredGenerators = GetSystemRegistrationContext()->GetRegisteredGenerators();
-        return GetRegisteredComponentsNameAndComponentTypeId(registeredGenerators);
+        auto modelConfigurations = GetSystemRegistrationContext()->GetRegisteredModelConfigurations();
+        return GetRegisteredComponentsNameAndComponentTypeId(modelConfigurations);
     }
 
-    AZStd::vector<AZStd::pair<AZStd::string, AZ::Uuid>> AICoreSystemComponent::GetRegisteredRequestersNameAndComponentTypeId()
+    AZStd::vector<AZStd::pair<AZStd::string, AZ::Uuid>> AICoreSystemComponent::GetRegisteredServiceRequestersNameAndComponentTypeId()
     {
-        auto registeredRequesters = GetSystemRegistrationContext()->GetRegisteredRequesters();
+        auto registeredRequesters = GetSystemRegistrationContext()->GetRegisteredServiceRequesters();
         return GetRegisteredComponentsNameAndComponentTypeId(registeredRequesters);
     }
 
-    AZStd::vector<AZ::Component*> AICoreSystemComponent::GetActiveComponents(AZStd::vector<AZ::Entity*> entities)
+    AZStd::vector<AZ::Component*> AICoreSystemComponent::GetActiveComponents(AZStd::vector<AZStd::shared_ptr<AZ::Entity>> entities)
     {
         AZStd::vector<AZ::Component*> result;
-        for (auto* entity : entities)
+        for (auto entity : entities)
         {
             if (entity)
             {
@@ -137,21 +140,21 @@ namespace AICore
         return result;
     }
 
-    AZStd::vector<AZ::Component*> AICoreSystemComponent::GetActiveGenerators()
+    AZStd::vector<AZ::Component*> AICoreSystemComponent::GetActiveModelConfigurations()
     {
-        return GetActiveComponents(m_configuration.m_generators);
+        return GetActiveComponents(m_configuration.m_modelConfigurations);
     }
 
-    AZStd::vector<AZ::Component*> AICoreSystemComponent::GetActiveRequesters()
+    AZStd::vector<AZ::Component*> AICoreSystemComponent::GetActiveServiceRequesters()
     {
-        return GetActiveComponents(m_configuration.m_requesters);
+        return GetActiveComponents(m_configuration.m_serviceRequesters);
     }
 
     AZ::Component* AICoreSystemComponent::CreateNewComponentEntity(
-        const AZStd::string& name, const AZ::Uuid& componentTypeId, AZStd::vector<AZ::Entity*>& entities)
+        const AZStd::string& name, const AZ::Uuid& componentTypeId, AZStd::vector<AZStd::shared_ptr<AZ::Entity>>& entities)
     {
-        AZ::Entity* newEntity = nullptr;
-        newEntity = aznew AZ::Entity(name);
+        AZStd::shared_ptr<AZ::Entity> newEntity = nullptr;
+        newEntity = AZStd::make_shared<AZ::Entity>(name);
         entities.push_back(newEntity);
         newEntity->Init();
         auto component = newEntity->CreateComponent(componentTypeId);
@@ -159,42 +162,43 @@ namespace AICore
         return component;
     }
 
-    AZ::Component* AICoreSystemComponent::CreateNewGenerator(const AZStd::string& generatorName, const AZ::Uuid& componentTypeId)
+    AZ::Component* AICoreSystemComponent::CreateNewModelConfiguration(
+        const AZStd::string& configurationName, const AZ::Uuid& componentTypeId)
     {
-        return CreateNewComponentEntity(generatorName, componentTypeId, m_configuration.m_generators);
+        return CreateNewComponentEntity(configurationName, componentTypeId, m_configuration.m_modelConfigurations);
     }
 
-    AZ::Component* AICoreSystemComponent::CreateNewRequester(const AZStd::string& requesterName, const AZ::Uuid& componentTypeId)
+    AZ::Component* AICoreSystemComponent::CreateNewServiceRequester(const AZStd::string& requesterName, const AZ::Uuid& componentTypeId)
     {
-        return CreateNewComponentEntity(requesterName, componentTypeId, m_configuration.m_requesters);
+        return CreateNewComponentEntity(requesterName, componentTypeId, m_configuration.m_serviceRequesters);
     }
 
     void AICoreSystemComponent::RemoveComponent(AZ::Component* component)
     {
         if (component)
         {
-            auto entity = component->GetEntity();
+            AZStd::shared_ptr<AZ::Entity> entity;
+            entity.reset(component->GetEntity());
             if (entity)
             {
                 entity->Deactivate();
-                delete entity;
 
-                auto it = AZStd::find(m_configuration.m_requesters.begin(), m_configuration.m_requesters.end(), entity);
-                if (it != m_configuration.m_requesters.end())
+                auto it = AZStd::find(m_configuration.m_serviceRequesters.begin(), m_configuration.m_serviceRequesters.end(), entity);
+                if (it != m_configuration.m_serviceRequesters.end())
                 {
-                    m_configuration.m_requesters.erase(it);
+                    m_configuration.m_serviceRequesters.erase(it);
                 }
 
-                it = AZStd::find(m_configuration.m_generators.begin(), m_configuration.m_generators.end(), entity);
-                if (it != m_configuration.m_generators.end())
+                it = AZStd::find(m_configuration.m_modelConfigurations.begin(), m_configuration.m_modelConfigurations.end(), entity);
+                if (it != m_configuration.m_modelConfigurations.end())
                 {
-                    m_configuration.m_generators.erase(it);
+                    m_configuration.m_modelConfigurations.erase(it);
                 }
             }
         }
     }
 
-    void AICoreSystemComponent::ActivateEntity(AZ::Entity* entity)
+    void AICoreSystemComponent::ActivateEntity(AZStd::shared_ptr<AZ::Entity> entity)
     {
         if (entity)
         {
@@ -202,7 +206,7 @@ namespace AICore
         }
     }
 
-    void AICoreSystemComponent::DeactivateEntity(AZ::Entity* entity)
+    void AICoreSystemComponent::DeactivateEntity(AZStd::shared_ptr<AZ::Entity> entity)
     {
         if (entity)
         {
@@ -210,9 +214,9 @@ namespace AICore
         }
     }
 
-    void AICoreSystemComponent::InitEntities(const AZStd::vector<AZ::Entity*>& entities)
+    void AICoreSystemComponent::InitEntities(const AZStd::vector<AZStd::shared_ptr<AZ::Entity>>& entities)
     {
-        for (auto* entity : entities)
+        for (auto entity : entities)
         {
             if (entity)
             {
@@ -221,9 +225,9 @@ namespace AICore
         }
     }
 
-    void AICoreSystemComponent::ActivateEntities(const AZStd::vector<AZ::Entity*>& entities)
+    void AICoreSystemComponent::ActivateEntities(const AZStd::vector<AZStd::shared_ptr<AZ::Entity>>& entities)
     {
-        for (auto* entity : entities)
+        for (auto entity : entities)
         {
             if (entity)
             {
@@ -232,9 +236,9 @@ namespace AICore
         }
     }
 
-    void AICoreSystemComponent::DeactivateEntities(const AZStd::vector<AZ::Entity*>& entities)
+    void AICoreSystemComponent::DeactivateEntities(const AZStd::vector<AZStd::shared_ptr<AZ::Entity>>& entities)
     {
-        for (auto* entity : entities)
+        for (auto entity : entities)
         {
             if (entity)
             {
@@ -250,8 +254,8 @@ namespace AICore
         {
             m_configuration = *result;
         }
-        InitEntities(m_configuration.m_requesters);
-        InitEntities(m_configuration.m_generators);
+        InitEntities(m_configuration.m_serviceRequesters);
+        InitEntities(m_configuration.m_modelConfigurations);
     }
 
     void AICoreSystemComponent::Activate()
@@ -260,18 +264,12 @@ namespace AICore
         AZ::TickBus::Handler::BusConnect();
         m_actionRequestHandler.Connect();
 
-        ActivateEntities(m_configuration.m_requesters);
-        ActivateEntities(m_configuration.m_generators);
+        ActivateEntities(m_configuration.m_serviceRequesters);
+        ActivateEntities(m_configuration.m_modelConfigurations);
 
-        auto registeredGenerators = GetSystemRegistrationContext()->GetRegisteredGenerators();
+        auto registeredGenerators = GetSystemRegistrationContext()->GetRegisteredModelConfigurations();
         AZ::SerializeContext* serializeContext = nullptr;
         AZ::ComponentApplicationBus::BroadcastResult(serializeContext, &AZ::ComponentApplicationBus::Events::GetSerializeContext);
-
-        // for (auto& generator : registeredGenerators)
-        // {
-        //     std::cout << serializeContext->FindClassData(generator)->m_editData->m_name << std::endl << std::endl << std::endl <<
-        //     std::endl;
-        // }
     }
 
     void AICoreSystemComponent::Deactivate()
@@ -280,8 +278,8 @@ namespace AICore
         AZ::TickBus::Handler::BusDisconnect();
         AICoreRequestBus::Handler::BusDisconnect();
 
-        DeactivateEntities(m_configuration.m_requesters);
-        DeactivateEntities(m_configuration.m_generators);
+        DeactivateEntities(m_configuration.m_serviceRequesters);
+        DeactivateEntities(m_configuration.m_modelConfigurations);
     }
 
     void AICoreSystemComponent::OnTick([[maybe_unused]] float deltaTime, [[maybe_unused]] AZ::ScriptTimePoint time)
