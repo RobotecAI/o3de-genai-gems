@@ -9,8 +9,8 @@
 #pragma once
 
 #if !defined(Q_MOC_RUN)
-#include "UI/Generator/NewGeneratorSegment.h"
-#include "UI/Requester/NewRequesterSegment.h"
+#include "UI/ModelConfiguration/NewModelConfigurationSegment.h"
+#include "UI/ServiceRequester/NewServiceRequesterSegment.h"
 #include "UI/Tab.h"
 #include <qwindowdefs.h>
 
@@ -29,9 +29,9 @@ namespace AICore
 
     private:
         AzQtComponents::TabWidget* m_tabs;
-        Tab* m_generatorsTab;
-        NewGeneratorSegment* m_newGeneratorSegment;
-        Tab* m_requestersTab;
-        NewRequesterSegment* m_newRequesterSegment;
+        Tab* m_modelsConfigurationTab;
+        NewModelConfigurationSegment* m_newModelConfigurationSegment;
+        Tab* m_serviceRequestersTab;
+        NewServiceRequesterSegment* m_newServiceRequesterSegment;
     };
 } // namespace AICore

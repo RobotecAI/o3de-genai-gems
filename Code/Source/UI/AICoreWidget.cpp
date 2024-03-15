@@ -7,8 +7,8 @@
  */
 
 #include "AICoreWidget.h"
-#include "UI/Generator/NewGeneratorSegment.h"
-#include "UI/Requester/NewRequesterSegment.h"
+#include "UI/ModelConfiguration/NewModelConfigurationSegment.h"
+#include "UI/ServiceRequester/NewServiceRequesterSegment.h"
 #include <AICore/AICoreBus.h>
 
 namespace AICore
@@ -26,15 +26,15 @@ namespace AICore
         auto interface = AICoreInterface::Get();
         if (interface)
         {
-            AZStd::vector<AZ::Component*> activeGenerators = interface->GetActiveGenerators();
-            m_newGeneratorSegment = new NewGeneratorSegment();
-            m_generatorsTab = new Tab(activeGenerators, m_newGeneratorSegment, "Generator", m_tabs);
-            m_tabs->addTab(m_generatorsTab, "Generators");
+            AZStd::vector<AZ::Component*> activeModelConfigurations = interface->GetActiveModelConfigurations();
+            m_newModelConfigurationSegment = new NewModelConfigurationSegment();
+            m_modelsConfigurationTab = new Tab(activeModelConfigurations, m_newModelConfigurationSegment, "Model configurations", m_tabs);
+            m_tabs->addTab(m_modelsConfigurationTab, "Model configurations");
 
-            AZStd::vector<AZ::Component*> activeRequesters = interface->GetActiveRequesters();
-            m_newRequesterSegment = new NewRequesterSegment();
-            m_requestersTab = new Tab(activeRequesters, m_newRequesterSegment, "Requester", m_tabs);
-            m_tabs->addTab(m_requestersTab, "Requesters");
+            AZStd::vector<AZ::Component*> activeRequesters = interface->GetActiveServiceRequesters();
+            m_newServiceRequesterSegment = new NewServiceRequesterSegment();
+            m_serviceRequestersTab = new Tab(activeRequesters, m_newServiceRequesterSegment, "AI service requesters", m_tabs);
+            m_tabs->addTab(m_serviceRequestersTab, "AI service requesters");
         }
 
         verticalLayout->addWidget(m_tabs);

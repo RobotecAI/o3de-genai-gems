@@ -8,7 +8,6 @@
 
 #include "Tab.h"
 #include "UI/NewSegment.h"
-#include "UI/Requester/NewRequesterSegment.h"
 #include <AzCore/std/algorithm.h>
 #include <qwidget.h>
 

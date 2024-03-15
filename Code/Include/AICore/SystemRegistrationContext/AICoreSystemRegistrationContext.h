@@ -28,29 +28,29 @@ namespace AICore
         AZ_RTTI(AICoreSystemRegistrationContext, "{e162937c-0177-4ced-87b3-3b037a44c394}", AZ::ReflectContext);
 
         template<class C>
-        void RegisterAICoreRequester()
+        void RegisterAICoreServiceRequester()
         {
-            m_registeredRequesters.push_back(C::RTTI_Type());
+            m_registeredServiceRequesters.push_back(C::RTTI_Type());
         }
 
         template<class C>
-        void RegisterAICoreGenerator()
+        void RegisterModelConfiguration()
         {
-            m_registeredGenerators.push_back(C::RTTI_Type());
+            m_registeredModelConfigurations.push_back(C::RTTI_Type());
         }
 
-        inline AZStd::vector<AZ::Uuid> GetRegisteredRequesters() const
+        inline AZStd::vector<AZ::Uuid> GetRegisteredServiceRequesters() const
         {
-            return m_registeredRequesters;
+            return m_registeredServiceRequesters;
         }
 
-        inline AZStd::vector<AZ::Uuid> GetRegisteredGenerators() const
+        inline AZStd::vector<AZ::Uuid> GetRegisteredModelConfigurations() const
         {
-            return m_registeredGenerators;
+            return m_registeredModelConfigurations;
         }
 
     private:
-        AZStd::vector<AZ::Uuid> m_registeredRequesters;
-        AZStd::vector<AZ::Uuid> m_registeredGenerators;
+        AZStd::vector<AZ::Uuid> m_registeredServiceRequesters;
+        AZStd::vector<AZ::Uuid> m_registeredModelConfigurations;
     };
 } // namespace AICore

@@ -15,11 +15,11 @@
 
 namespace AICore
 {
-    class NewRequesterSegment : public NewSegment
+    class NewModelConfigurationSegment : public NewSegment
     {
     public:
-        explicit NewRequesterSegment(QWidget* parent = nullptr);
-        ~NewRequesterSegment() = default;
+        explicit NewModelConfigurationSegment(QWidget* parent = nullptr);
+        ~NewModelConfigurationSegment() = default;
 
         AZStd::vector<AZStd::pair<AZStd::string, AZ::Uuid>> GetRegisteredNameAndComponentTypeId() override;
         AZ::Component* CreateNewComponentEntity(const AZStd::string& name, const AZ::Uuid& selectedComponentTypeId) override;

@@ -6,34 +6,34 @@
  *
  */
 
-#include "NewRequesterSegment.h"
+#include "NewServiceRequesterSegment.h"
 #include <AICore/AICoreBus.h>
 
 namespace AICore
 {
-    NewRequesterSegment::NewRequesterSegment(QWidget* parent)
+    NewServiceRequesterSegment::NewServiceRequesterSegment(QWidget* parent)
         : NewSegment(GetRegisteredNameAndComponentTypeId(), parent)
     {
     }
 
-    AZStd::vector<AZStd::pair<AZStd::string, AZ::Uuid>> NewRequesterSegment::GetRegisteredNameAndComponentTypeId()
+    AZStd::vector<AZStd::pair<AZStd::string, AZ::Uuid>> NewServiceRequesterSegment::GetRegisteredNameAndComponentTypeId()
     {
         auto interface = AICoreInterface::Get();
         if (!interface)
         {
             return {};
         }
-        return interface->GetRegisteredRequestersNameAndComponentTypeId();
+        return interface->GetRegisteredServiceRequestersNameAndComponentTypeId();
     }
 
-    AZ::Component* NewRequesterSegment::CreateNewComponentEntity(const AZStd::string& name, const AZ::Uuid& selectedComponentTypeId)
+    AZ::Component* NewServiceRequesterSegment::CreateNewComponentEntity(const AZStd::string& name, const AZ::Uuid& selectedComponentTypeId)
     {
         auto interface = AICoreInterface::Get();
         if (!interface)
         {
             return nullptr;
         }
-        return interface->CreateNewRequester(name, selectedComponentTypeId);
+        return interface->CreateNewServiceRequester(name, selectedComponentTypeId);
     }
 
 } // namespace AICore
