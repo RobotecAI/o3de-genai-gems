@@ -17,7 +17,7 @@
     "icon_path": "preview.png",
     "requirements": "This gem requires HttpRequestor",
     "documentation_url": "https://development--o3deorg.netlify.app/docs/user-guide/interactivity/robotics",
-    "dependencies": [ "HttpRequestor", "AWSCore"],
+    "dependencies": [ "HttpRequestor", "AWSCore", "EditorPythonBindings"],
     "repo_uri": "",
     "compatible_engines": [
         "o3de-sdk>=2.1.0",

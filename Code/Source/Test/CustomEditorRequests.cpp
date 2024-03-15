@@ -16,10 +16,15 @@ namespace AICore
         if (auto behaviorContext = azrtti_cast<AZ::BehaviorContext*>(context))
         {
             behaviorContext->EBus<CustomEditorRequestBus>("CustomEditorRequestBus")
+                ->Attribute(AZ::Script::Attributes::ToolTip, "Custom request bus documentation")
                 ->Attribute(AZ::Script::Attributes::Scope, AZ::Script::Attributes::ScopeFlags::Automation)
                 ->Attribute(AZ::Script::Attributes::Category, "AI")
                 ->Attribute(AZ::Script::Attributes::Module, "test")
-                ->Event("DoTheTestThing", &CustomEditorRequests::DoTheTestThing);
+                ->Event(
+                    "DoTheTestThing",
+                    &CustomEditorRequests::DoTheTestThing,
+                    { AZ::BehaviorParameterOverrides("testParameter", "documentation for test parameter") })
+                ->Attribute(AZ::Script::Attributes::ToolTip, "Custom event documentation. Logs and returns its own parameter");
         }
     }
 

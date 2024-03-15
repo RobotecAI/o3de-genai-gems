@@ -12,9 +12,23 @@
 #include <AzCore/Serialization/EditContextConstants.inl>
 #include <AzCore/Serialization/SerializeContext.h>
 #include <BehaviorContextUtils/BehaviorContextDump.h>
+#include <sstream>
 
 namespace AICore
 {
+    namespace Internal
+    {
+        void LinePrint(const AZStd::string& input)
+        {
+            std::istringstream stream(input.c_str());
+            std::string line;
+            while (std::getline(stream, line))
+            {
+                AZ_Printf("", "%s", line.c_str());
+            }
+        }
+    }
+
     void AICoreTestEditorComponent::BuildGameEntity(AZ::Entity* gameEntity)
     {
         gameEntity->CreateComponent<AICore::AICoreTestComponent>(m_aiCoreActionTest);
@@ -51,10 +65,7 @@ namespace AICore
                     ->DataElement(AZ::Edit::UIHandlers::MultiLineEdit, &AICoreTestEditorComponent::m_commandText, "", "Command text")
                     ->UIElement(AZ::Edit::UIHandlers::Button, "", "Trigger command test")
                     ->Attribute(AZ::Edit::Attributes::ChangeNotify, &AICoreTestEditorComponent::CommandTest)
-                    ->Attribute(AZ::Edit::Attributes::ButtonText, "Command Test")
-                    ->UIElement(AZ::Edit::UIHandlers::Button, "", "Trigger API test")
-                    ->Attribute(AZ::Edit::Attributes::ChangeNotify, &AICoreTestEditorComponent::APITest)
-                    ->Attribute(AZ::Edit::Attributes::ButtonText, "API Test");
+                    ->Attribute(AZ::Edit::Attributes::ButtonText, "Command Test");
             }
         }
     }
@@ -83,26 +94,20 @@ namespace AICore
 
     void AICoreTestEditorComponent::ListClasses()
     {
-        AZ_Printf("AICoreTestEditorComponent", "ListClasses\n");
-        AZ_Printf("AICoreTestEditorComponent", "\n%s", BehaviorContextDump::ClassesDump(m_className).c_str());
+        BehaviorContextDump b(m_aiCoreActionTest.GetAIContext(), m_className);
+        Internal::LinePrint(b.ClassesDump());
     }
 
     void AICoreTestEditorComponent::ListMethods()
     {
-        AZ_Printf("AICoreTestEditorComponent", "ListMethods\n");
-        AZ_Printf("AICoreTestEditorComponent", "\n%s", BehaviorContextDump::MethodsDump(m_className, m_methodName).c_str());
+        BehaviorContextDump b(m_aiCoreActionTest.GetAIContext(), m_methodName);
+        Internal::LinePrint(b.MethodsDump(m_className));
     }
 
     void AICoreTestEditorComponent::ListEbuses()
     {
-        AZ_Printf("AICoreTestEditorComponent", "ListEbuses\n");
-        AZ_Printf("AICoreTestEditorComponent", "\n%s", BehaviorContextDump::EbusesDump(m_methodName).c_str());
-    }
-
-    void AICoreTestEditorComponent::APITest()
-    {
-        AZ_Printf("AICoreTestEditorComponent", "Test\n");
-        m_aiCoreActionTest.Test();
+        BehaviorContextDump b(m_aiCoreActionTest.GetAIContext(), m_methodName);
+        Internal::LinePrint(b.EbusesDump());
     }
 
     void AICoreTestEditorComponent::CommandTest()
