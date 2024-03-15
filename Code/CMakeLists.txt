@@ -48,6 +48,7 @@ ly_add_target(
             Source
     BUILD_DEPENDENCIES
         PUBLIC
+            Gem::${gem_name}.API
             AZ::AzCore
             AZ::AzFramework
 )

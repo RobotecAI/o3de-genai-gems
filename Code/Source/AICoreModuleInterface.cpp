@@ -9,6 +9,9 @@
 #include "AICoreModuleInterface.h"
 #include "Test/AICoreTestComponent.h"
 #include <AICore/AICoreTypeIds.h>
+#include <AICore/SystemRegistrationContext/AICoreSystemRegistrationContext.h>
+#include <AzCore/Component/ComponentApplication.h>
+#include <AzCore/Memory/Memory.h>
 #include <Clients/AICoreSystemComponent.h>
 
 namespace AICore
@@ -29,6 +32,9 @@ namespace AICore
                 AICoreSystemComponent::CreateDescriptor(),
                 AICoreTestComponent::CreateDescriptor()
             });
+
+        // Create a new reflection context for reflecting serviceRequesters and modelConfigurations
+        AZ::ReflectionEnvironment::GetReflectionManager()->AddReflectContext<AICoreSystemRegistrationContext>();
     }
 
     AZ::ComponentTypeList AICoreModuleInterface::GetRequiredSystemComponents() const
