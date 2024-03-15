@@ -1,18 +1,18 @@
 
 #pragma once
 
-#include "AzCore/RTTI/RTTIMacros.h"
-#include "AzCore/std/string/string.h"
 #include <AzCore/Component/ComponentBus.h>
 #include <AzCore/EBus/EBus.h>
 #include <AzCore/Outcome/Outcome.h>
+#include <AzCore/RTTI/RTTIMacros.h>
+#include <AzCore/std/string/string.h>
 
 namespace AICore
 {
-    class RequestGeneratorRequests : public AZ::ComponentBus
+    class ModelConfigurationRequests : public AZ::ComponentBus
     {
     public:
-        AZ_RTTI(RequestGeneratorRequests, "{8c140e10-e3a2-478b-9886-c7c24eb16816}", AZ::ComponentBus);
+        AZ_RTTI(ModelConfigurationRequests, "{8c140e10-e3a2-478b-9886-c7c24eb16816}", AZ::ComponentBus);
 
         static const AZ::EBusHandlerPolicy HandlerPolicy = AZ::EBusHandlerPolicy::Single;
         static const AZ::EBusAddressPolicy AddressPolicy = AZ::EBusAddressPolicy::ById;
@@ -39,5 +39,5 @@ namespace AICore
         virtual AZ::Outcome<AZStd::string, AZStd::string> ProcessRequest(AZStd::string request) = 0;
     };
 
-    using RequestGeneratorBus = AZ::EBus<RequestGeneratorRequests>;
+    using ModelConfigurationBus = AZ::EBus<ModelConfigurationRequests>;
 } // namespace AICore

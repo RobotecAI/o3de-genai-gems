@@ -5,4 +5,7 @@ set(FILES
     Include/AICore/AIContext.h
     Include/AICore/AICoreScriptExecutor.h
     Include/AICore/AICoreActionBus.h
+
+    Include/AICore/Communication/AIServiceRequesterBus.h
+    Include/AICore/ModelConfiguration/ModelConfigurationBus.h
 )

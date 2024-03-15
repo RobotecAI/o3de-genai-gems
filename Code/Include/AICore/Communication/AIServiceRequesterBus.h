@@ -6,14 +6,13 @@
 #include <AzCore/Interface/Interface.h>
 #include <AzCore/Outcome/Outcome.h>
 #include <AzCore/RTTI/TemplateInfo.h>
-#include <aws/core/http/HttpResponse.h>
 
 namespace AICore
 {
-    class RequesterRequests : public AZ::ComponentBus
+    class AIServiceRequesterRequests : public AZ::ComponentBus
     {
     public:
-        AZ_RTTI(RequesterRequests, "{0bcac4e2-09a9-4702-98dd-ef37006664a7}", AZ::ComponentBus);
+        AZ_RTTI(AIServiceRequesterRequests, "{0bcac4e2-09a9-4702-98dd-ef37006664a7}", AZ::ComponentBus);
 
         static const AZ::EBusHandlerPolicy HandlerPolicy = AZ::EBusHandlerPolicy::Single;
         static const AZ::EBusAddressPolicy AddressPolicy = AZ::EBusAddressPolicy::ById;
@@ -27,5 +26,5 @@ namespace AICore
         virtual void SendRequest(AZStd::string request, AZStd::function<void(AZ::Outcome<AZStd::string, AZStd::string>)> callback) = 0;
     };
 
-    using RequesterBus = AZ::EBus<RequesterRequests>;
+    using AIServiceRequesterBus = AZ::EBus<AIServiceRequesterRequests>;
 } // namespace AICore
