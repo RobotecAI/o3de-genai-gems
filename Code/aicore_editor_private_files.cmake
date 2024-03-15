@@ -9,7 +9,12 @@ set(FILES
     Source/Action/ActionTools/AICoreEditorScriptExecutor.cpp
     Source/Action/ActionTools/AICoreEditorScriptExecutor.h
 
+
     Source/AICoreSettingsRegistryManager/Editor/AICoreEditorSettingsRegistryManager.h
     Source/AICoreSettingsRegistryManager/Editor/AICoreEditorSettingsRegistryManager.cpp
+
+    Source/PythonScriptResults/PythonScriptResults.h
+    Source/PythonScriptResults/PythonScriptResults.cpp
+
 )
 
