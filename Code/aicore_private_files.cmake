@@ -25,8 +25,8 @@ set(FILES
     Source/Communication/AwsSdk/AwsSdkBedrockRequesterComponent.h
     Source/Communication/AwsSdk/AwsSdkBedrockRequesterComponent.cpp
 
-    Source/RequestGenerator/Claude/ClaudePromptConfiguration.h
-    Source/RequestGenerator/Claude/ClaudePromptConfiguration.cpp
-    Source/RequestGenerator/Claude/ClaudePromptGeneratorComponent.h
-    Source/RequestGenerator/Claude/ClaudePromptGeneratorComponent.cpp
+    Source/ModelConfigurations/Claude/ClaudePromptConfiguration.h
+    Source/ModelConfigurations/Claude/ClaudePromptConfiguration.cpp
+    Source/ModelConfigurations/Claude/ClaudePromptGeneratorComponent.h
+    Source/ModelConfigurations/Claude/ClaudePromptGeneratorComponent.cpp
 )

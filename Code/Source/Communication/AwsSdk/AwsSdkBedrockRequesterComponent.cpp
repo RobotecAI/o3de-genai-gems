@@ -70,7 +70,7 @@ namespace AICore
 
         if (auto registrationContext = azrtti_cast<AICoreSystemRegistrationContext*>(context))
         {
-            registrationContext->RegisterAICoreRequester<AwsSdkBedrockRequesterComponent>();
+            registrationContext->RegisterAICoreServiceRequester<AwsSdkBedrockRequesterComponent>();
         }
     }
 

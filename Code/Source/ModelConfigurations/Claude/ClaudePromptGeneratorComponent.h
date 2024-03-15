@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include "RequestGenerator/Claude/ClaudePromptConfiguration.h"
+#include "ModelConfigurations/Claude/ClaudePromptConfiguration.h"
 #include <AICore/RequestGenerator/RequestGeneratorBus.h>
 #include <AzCore/Component/Component.h>
 #include <aws/core/utils/json/JsonSerializer.h>

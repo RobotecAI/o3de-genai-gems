@@ -7,9 +7,9 @@
  */
 
 #include "AICoreModuleInterface.h"
-#include "Test/AICoreTestComponent.h"
 #include "Communication/AwsSdk/AwsSdkBedrockRequesterComponent.h"
-#include "RequestGenerator/Claude/ClaudePromptGeneratorComponent.h"
+#include "ModelConfigurations/Claude/ClaudePromptGeneratorComponent.h"
+#include "Test/AICoreTestComponent.h"
 #include <AICore/AICoreTypeIds.h>
 #include <AICore/SystemRegistrationContext/AICoreSystemRegistrationContext.h>
 #include <AzCore/Component/ComponentApplication.h>

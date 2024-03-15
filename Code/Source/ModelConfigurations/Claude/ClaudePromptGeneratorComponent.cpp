@@ -1,6 +1,6 @@
 
 #include "ClaudePromptGeneratorComponent.h"
-#include "RequestGenerator/Claude/ClaudePromptConfiguration.h"
+#include "ModelConfigurations/Claude/ClaudePromptConfiguration.h"
 #include <AICore/RequestGenerator/RequestGeneratorBus.h>
 #include <AICore/SystemRegistrationContext/AICoreSystemRegistrationContext.h>
 #include <AzCore/Component/Component.h>
@@ -41,7 +41,7 @@ namespace AICore
 
         if (auto registrationContext = azrtti_cast<AICoreSystemRegistrationContext*>(context))
         {
-            registrationContext->RegisterAICoreGenerator<ClaudePromptGeneratorComponent>();
+            registrationContext->RegisterModelConfiguration<ClaudePromptGeneratorComponent>();
         }
     }
 
