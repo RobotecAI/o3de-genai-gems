@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "AzCore/std/string/string_view.h"
 #include "Clients/AICoreSystemComponentConfiguration.h"
 #include <AzCore/Component/Entity.h>
 #include <AzCore/std/containers/map.h>
@@ -18,23 +19,17 @@ namespace AICore
     class AICoreSettingsRegistryManager
     {
     public:
-        AICoreSettingsRegistryManager();
+        AICoreSettingsRegistryManager() = default;
         ~AICoreSettingsRegistryManager() = default;
 
-        enum class Result : AZ::u8
-        {
-            Success,
-            Failed
-        };
-
         using SaveObject = AICoreSystemComponentConfiguration;
-        using OnConfigSaveComplete = AZStd::function<void(const SaveObject&, Result)>;
+        using OnConfigSaveComplete = AZStd::function<void(AZ::Outcome<void, void>)>;
 
         void SaveSystemConfiguration(const SaveObject& saveObject, const OnConfigSaveComplete& saveCallback);
         AZStd::optional<SaveObject> LoadSystemConfiguration() const;
 
     protected:
-        AZStd::string m_AICoreSettingsRegistryPath;
+        constexpr static AZStd::string_view m_AICoreSettingsRegistryPath = "/Robotec.ai/Gems/GenAIFramework";
     };
 
 } // namespace AICore

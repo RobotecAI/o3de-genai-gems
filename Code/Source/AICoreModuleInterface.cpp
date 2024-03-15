@@ -33,7 +33,7 @@ namespace AICore
                 AICoreTestComponent::CreateDescriptor()
             });
 
-        // Create a new reflection context for reflecting requesters/generators
+        // Create a new reflection context for reflecting serviceRequesters and modelConfigurations
         AZ::ReflectionEnvironment::GetReflectionManager()->AddReflectContext<AICoreSystemRegistrationContext>();
     }
 

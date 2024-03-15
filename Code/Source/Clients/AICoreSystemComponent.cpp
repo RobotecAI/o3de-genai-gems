@@ -93,7 +93,7 @@ namespace AICore
     }
 
     AZStd::vector<AZStd::pair<AZStd::string, AZ::Uuid>> AICoreSystemComponent::GetRegisteredComponentsNameAndComponentTypeId(
-        AZStd::vector<AZ::Uuid> componentTypeIds)
+        const AZStd::vector<AZ::Uuid>& componentTypeIds)
     {
         AZStd::vector<AZStd::pair<AZStd::string, AZ::Uuid>> result;
         auto registeredComponents = componentTypeIds;
@@ -183,14 +183,14 @@ namespace AICore
             {
                 entity->Deactivate();
 
-                auto it = AZStd::find(m_configuration.m_serviceRequesters.begin(), m_configuration.m_serviceRequesters.end(), entity);
-                if (it != m_configuration.m_serviceRequesters.end())
+                if (auto it = AZStd::find(m_configuration.m_serviceRequesters.begin(), m_configuration.m_serviceRequesters.end(), entity);
+                    it != m_configuration.m_serviceRequesters.end())
                 {
                     m_configuration.m_serviceRequesters.erase(it);
                 }
-
-                it = AZStd::find(m_configuration.m_modelConfigurations.begin(), m_configuration.m_modelConfigurations.end(), entity);
-                if (it != m_configuration.m_modelConfigurations.end())
+                if (auto it =
+                        AZStd::find(m_configuration.m_modelConfigurations.begin(), m_configuration.m_modelConfigurations.end(), entity);
+                    it != m_configuration.m_modelConfigurations.end())
                 {
                     m_configuration.m_modelConfigurations.erase(it);
                 }

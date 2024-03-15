@@ -7,6 +7,7 @@
  */
 
 #include "AICoreEditorSettingsRegistryManager.h"
+#include "AzCore/Outcome/Outcome.h"
 
 namespace AICore
 {
@@ -45,7 +46,7 @@ namespace AICore
 
         rapidjson::Document aiCoreConfigurationDocument;
         rapidjson::Value& aiCoreConfigurationValue =
-            rapidjson::CreateValueByPointer(aiCoreConfigurationDocument, rapidjson::Pointer(m_AICoreSettingsRegistryPath.c_str()));
+            rapidjson::CreateValueByPointer(aiCoreConfigurationDocument, rapidjson::Pointer(m_AICoreSettingsRegistryPath.data()));
 
         AZ::JsonSerialization::Store(aiCoreConfigurationValue, aiCoreConfigurationDocument.GetAllocator(), saveObject);
 
@@ -53,7 +54,14 @@ namespace AICore
         {
             if (saveCallback)
             {
-                saveCallback(saveObject, result ? Result::Success : Result::Failed);
+                if (result)
+                {
+                    saveCallback(AZ::Success());
+                }
+                else
+                {
+                    saveCallback(AZ::Failure());
+                }
             }
         };
 

@@ -7,23 +7,16 @@
  */
 
 #include "AICoreSettingsRegistryManager.h"
+#include "AzCore/Outcome/Outcome.h"
 #include <AzCore/Settings/SettingsRegistry.h>
 
 namespace AICore
 {
-    AICoreSettingsRegistryManager::AICoreSettingsRegistryManager()
-    {
-        m_AICoreSettingsRegistryPath = AZStd::string::format(
-            "%s/Gems/"
-            "AICore",
-            "/Robotec.ai");
-    }
-
     void AICoreSettingsRegistryManager::SaveSystemConfiguration(const SaveObject& saveObject, const OnConfigSaveComplete& saveCallback)
     {
         if (saveCallback)
         {
-            saveCallback(saveObject, Result::Failed);
+            saveCallback(AZ::Failure());
         }
     }
 

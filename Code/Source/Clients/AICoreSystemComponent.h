@@ -78,10 +78,9 @@ namespace AICore
         AICoreActionRequestHandler m_actionRequestHandler;
 
         AZStd::vector<AZStd::pair<AZStd::string, AZ::Uuid>> GetRegisteredComponentsNameAndComponentTypeId(
-            AZStd::vector<AZ::Uuid> componentTypeIds);
+            const AZStd::vector<AZ::Uuid>& componentTypeIds);
         AZStd::vector<AZ::Component*> GetActiveComponents(AZStd::vector<AZStd::shared_ptr<AZ::Entity>> entities);
         AZ::Component* CreateNewComponentEntity(
             const AZStd::string& name, const AZ::Uuid& componentTypeId, AZStd::vector<AZStd::shared_ptr<AZ::Entity>>& entities);
-        ;
     };
 } // namespace AICore

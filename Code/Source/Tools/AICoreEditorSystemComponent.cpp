@@ -78,9 +78,9 @@ namespace AICore
     {
         m_settingsRegistryManager.SaveSystemConfiguration(
             m_configuration,
-            [](const AICoreSystemComponentConfiguration& obj, AICoreSettingsRegistryManager::Result result)
+            [](AZ::Outcome<void, void> result)
             {
-                if (result != AICoreSettingsRegistryManager::Result::Success)
+                if (result.IsSuccess() == false)
                 {
                     AZ_Error("AICoreEditorSystemComponent", false, "Failed to save system configuration")
                 }
@@ -94,7 +94,6 @@ namespace AICore
 
     void AICoreEditorSystemComponent::Activate()
     {
-        AZ_Printf("AICoreEditorSystemComponent", "Activate");
         AzToolsFramework::EditorEvents::Bus::Handler::BusConnect();
         m_actionRequestHandler.Connect();
     }
