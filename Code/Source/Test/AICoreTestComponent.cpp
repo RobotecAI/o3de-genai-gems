@@ -19,7 +19,6 @@ namespace AICore
     void AICoreTestComponent::Activate()
     {
         AZ_Printf("AICoreTestComponent", "Activate\n");
-        //m_aiCoreActionTest.Test();
     }
 
     void AICoreTestComponent::Deactivate()
