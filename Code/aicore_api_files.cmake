@@ -8,4 +8,6 @@ set(FILES
 
     Include/AICore/Communication/AIServiceRequesterBus.h
     Include/AICore/ModelConfiguration/ModelConfigurationBus.h
+    
+    Include/AICore/SystemRegistrationContext/AICoreSystemRegistrationContext.h
 )
