@@ -1,7 +1,7 @@
 {
     "gem_name": "GenAIFramework",
     "version": "1.0.0",
-    "display_name": "AI Core",
+    "display_name": "Generative AI Framework",
     "license": "Apache-2.0",
     "license_url": "https://opensource.org/licenses/Apache-2.0",
     "origin": "Robotec.ai",
