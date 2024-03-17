@@ -13,7 +13,7 @@
 
 #endif
 
-namespace AICore
+namespace GenAIFramework
 {
     class NewServiceRequesterSegment : public NewSegment
     {
@@ -24,4 +24,4 @@ namespace AICore
         AZStd::vector<AZStd::pair<AZStd::string, AZ::Uuid>> GetRegisteredNameAndComponentTypeId() override;
         AZ::Component* CreateNewComponentEntity(const AZStd::string& name, const AZ::Uuid& selectedComponentTypeId) override;
     };
-} // namespace AICore
+} // namespace GenAIFramework

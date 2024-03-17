@@ -1,5 +1,5 @@
 {
-    "gem_name": "AICore",
+    "gem_name": "GenAIFramework",
     "version": "1.0.0",
     "display_name": "AI Core",
     "license": "Apache-2.0",
@@ -12,7 +12,7 @@
         "Gem"
     ],
     "user_tags": [
-        "AICore"
+        "GenAIFramework"
     ],
     "icon_path": "preview.png",
     "requirements": "This gem requires HttpRequestor",
@@ -24,5 +24,5 @@
         "o3de>=2.1.0"
     ],
     "engine_api_dependencies": [],
-    "restricted": "AICore"
+    "restricted": "GenAIFramework"
 }

@@ -7,10 +7,10 @@
  */
 #pragma once
 
-#include <AICore/APIFormatter.h>
+#include <GenAIFramework/APIFormatter.h>
 #include <EditorPythonBindings/PythonUtility.h>
 
-namespace AICore
+namespace GenAIFramework
 {
     class PythonFormatter : public APIFormatter
     {
@@ -52,4 +52,4 @@ namespace AICore
     private:
         EditorPythonBindings::Text::PythonBehaviorDescription m_pythonBehaviorDescription;
     };
-} // namespace AICore
+} // namespace GenAIFramework

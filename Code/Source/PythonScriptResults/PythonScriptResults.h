@@ -8,7 +8,7 @@
 #include <AzCore/std/string/string_view.h>
 #include <AzToolsFramework/API/EditorPythonConsoleBus.h>
 
-namespace AICore
+namespace GenAIFramework
 {
     class PythonScriptResults : public AzToolsFramework::EditorPythonConsoleNotificationBus::Handler
     {
@@ -35,4 +35,4 @@ namespace AICore
         void ConnectToPythonConsole();
         void DisconnectFromPythonConsole();
     };
-} // namespace AICore
+} // namespace GenAIFramework

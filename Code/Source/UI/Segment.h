@@ -20,7 +20,7 @@
 
 #endif
 
-namespace AICore
+namespace GenAIFramework
 {
     class Segment
         : public QWidget
@@ -51,4 +51,4 @@ namespace AICore
         QPushButton* m_removeButton;
     };
 
-} // namespace AICore
+} // namespace GenAIFramework

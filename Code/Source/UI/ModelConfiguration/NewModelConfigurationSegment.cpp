@@ -7,9 +7,9 @@
  */
 
 #include "NewModelConfigurationSegment.h"
-#include <AICore/AICoreBus.h>
+#include <GenAIFramework/GenAIFrameworkBus.h>
 
-namespace AICore
+namespace GenAIFramework
 {
     NewModelConfigurationSegment::NewModelConfigurationSegment(QWidget* parent)
         : NewSegment(GetRegisteredNameAndComponentTypeId(), parent)
@@ -18,7 +18,7 @@ namespace AICore
 
     AZStd::vector<AZStd::pair<AZStd::string, AZ::Uuid>> NewModelConfigurationSegment::GetRegisteredNameAndComponentTypeId()
     {
-        auto interface = AICoreInterface::Get();
+        auto interface = GenAIFrameworkInterface::Get();
         if (!interface)
         {
             return {};
@@ -29,7 +29,7 @@ namespace AICore
     AZ::Component* NewModelConfigurationSegment::CreateNewComponentEntity(
         const AZStd::string& name, const AZ::Uuid& selectedComponentTypeId)
     {
-        auto interface = AICoreInterface::Get();
+        auto interface = GenAIFrameworkInterface::Get();
         if (!interface)
         {
             return nullptr;
@@ -37,4 +37,4 @@ namespace AICore
         return interface->CreateNewModelConfiguration(name, selectedComponentTypeId);
     }
 
-} // namespace AICore
+} // namespace GenAIFramework

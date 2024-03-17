@@ -7,11 +7,11 @@
  */
 
 #include "NewSegment.h"
-#include <AICore/AICoreBus.h>
+#include <GenAIFramework/GenAIFrameworkBus.h>
 #include <AzCore/Math/Uuid.h>
 #include <AzCore/std/string/string.h>
 
-namespace AICore
+namespace GenAIFramework
 {
     NewSegment::NewSegment(AZStd::vector<AZStd::pair<AZStd::string, AZ::Uuid>> registeredNameAndComponentTypeId, QWidget* parent)
         : QWidget(parent)
@@ -56,4 +56,4 @@ namespace AICore
         }
     }
 
-} // namespace AICore
+} // namespace GenAIFramework

@@ -11,7 +11,7 @@
 #if !defined(Q_MOC_RUN)
 #include "NewSegment.h"
 #include "Segment.h"
-#include <AICoreSettingsRegistryManager/AICoreSettingsRegistryManager.h>
+#include <GenAIFrameworkSettingsRegistryManager/GenAIFrameworkSettingsRegistryManager.h>
 #include <AzQtComponents/Components/Widgets/SegmentControl.h>
 #include <AzToolsFramework/API/ToolsApplicationAPI.h>
 #include <QWidget>
@@ -21,7 +21,7 @@
 
 #endif
 
-namespace AICore
+namespace GenAIFramework
 {
     class Tab : public QWidget
     {
@@ -39,4 +39,4 @@ namespace AICore
         NewSegment* m_newSegment;
         AZStd::vector<Segment*> m_segments;
     };
-} // namespace AICore
+} // namespace GenAIFramework

@@ -7,13 +7,13 @@
  */
 
 #include "BehaviorContextDump.h"
-#include "AICore/APIFormatterStructs.h"
+#include "GenAIFramework/APIFormatterStructs.h"
 #include "PythonFormatter.h"
 #include <AzCore/RTTI/AttributeReader.h>
 #include <AzCore/RTTI/BehaviorContext.h>
 #include <AzFramework/StringFunc/StringFunc.h>
 
-namespace AICore
+namespace GenAIFramework
 { // TODO - consider reusing (modifying) NodeListDumpAction. This needs to be AI-readable and fully documented.
     namespace Internal
     {
@@ -317,4 +317,4 @@ namespace AICore
         PythonFormatter pf;
         return m_aiContext.m_isEditorScope ? pf.FormatEbus(ebus) : Internal::DumpLuaEbus(ebus);
     }
-} // namespace AICore
+} // namespace GenAIFramework
