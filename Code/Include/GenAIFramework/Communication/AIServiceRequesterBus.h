@@ -7,7 +7,7 @@
 #include <AzCore/Outcome/Outcome.h>
 #include <AzCore/RTTI/TemplateInfo.h>
 
-namespace AICore
+namespace GenAIFramework
 {
     class AIServiceRequesterRequests : public AZ::ComponentBus
     {
@@ -21,11 +21,11 @@ namespace AICore
         //! Send a request to a specified endpoint
         //! @param request The request to send
         //! @param callback The callback to be called when the request is complete. The callback will be called with the request and the
-        //! result of the request. If the request was successful, the result will be a string. If the request failed, the error string will be
-        //! returned.
+        //! result of the request. If the request was successful, the result will be a string. If the request failed, the error string will
+        //! be returned.
         virtual void SendRequest(
             const AZStd::string& request, AZStd::function<void(AZ::Outcome<AZStd::string, AZStd::string>)> callback) = 0;
     };
 
     using AIServiceRequesterBus = AZ::EBus<AIServiceRequesterRequests>;
-} // namespace AICore
+} // namespace GenAIFramework

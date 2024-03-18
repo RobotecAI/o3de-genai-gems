@@ -7,7 +7,7 @@
 #include <AzCore/RTTI/RTTIMacros.h>
 #include <AzCore/std/string/string.h>
 
-namespace AICore
+namespace GenAIFramework
 {
     class ModelConfigurationRequests : public AZ::ComponentBus
     {
@@ -40,4 +40,4 @@ namespace AICore
     };
 
     using ModelConfigurationBus = AZ::EBus<ModelConfigurationRequests>;
-} // namespace AICore
+} // namespace GenAIFramework
