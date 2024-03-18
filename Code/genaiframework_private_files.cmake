@@ -20,6 +20,9 @@ set(FILES
     Source/Clients/GenAIFrameworkSystemComponentConfiguration.cpp
     Source/Clients/GenAIFrameworkSystemComponentConfiguration.h
     
+    Source/Communication/Mock/MockRequesterComponent.cpp
+    Source/Communication/Mock/MockRequesterComponent.h
+    
     Source/Test/GenAIFrameworkTest.cpp
     Source/Test/GenAIFrameworkTestComponent.cpp
     Source/Test/GenAIFrameworkTestComponent.h

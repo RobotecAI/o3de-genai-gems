@@ -8,11 +8,12 @@
 
 #include "GenAIFrameworkModuleInterface.h"
 #include "Test/GenAIFrameworkTestComponent.h"
-#include <GenAIFramework/GenAIFrameworkTypeIds.h>
-#include <GenAIFramework/SystemRegistrationContext/GenAIFrameworkSystemRegistrationContext.h>
 #include <AzCore/Component/ComponentApplication.h>
 #include <AzCore/Memory/Memory.h>
 #include <Clients/GenAIFrameworkSystemComponent.h>
+#include <Communication/Mock/MockRequesterComponent.h>
+#include <GenAIFramework/GenAIFrameworkTypeIds.h>
+#include <GenAIFramework/SystemRegistrationContext/GenAIFrameworkSystemRegistrationContext.h>
 
 namespace GenAIFramework
 {
@@ -28,10 +29,9 @@ namespace GenAIFramework
         // This happens through the [MyComponent]::Reflect() function.
         m_descriptors.insert(
             m_descriptors.end(),
-            {
-                GenAIFrameworkSystemComponent::CreateDescriptor(),
-                GenAIFrameworkTestComponent::CreateDescriptor()
-            });
+            { GenAIFrameworkSystemComponent::CreateDescriptor(),
+              GenAIFrameworkTestComponent::CreateDescriptor(),
+              MockRequesterComponentComponent::CreateDescriptor() });
 
         // Create a new reflection context for reflecting serviceRequesters and modelConfigurations
         AZ::ReflectionEnvironment::GetReflectionManager()->AddReflectContext<GenAIFrameworkSystemRegistrationContext>();
