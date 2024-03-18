@@ -1,9 +1,9 @@
 
 # Query the gem name from the gem.json file if possible
-# otherwise fallback to using AICore
+# otherwise fallback to using GenAIFramework
 o3de_find_ancestor_gem_root(gem_path gem_name "${CMAKE_CURRENT_SOURCE_DIR}")
 if (NOT gem_name)
-    set(gem_name "AICore")
+    set(gem_name "GenAIFramework")
 endif()
 
 # Fallback to using the current source CMakeLists.txt directory as the gem root path

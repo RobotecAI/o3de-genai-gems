@@ -11,7 +11,7 @@
 #include <AzCore/std/algorithm.h>
 #include <qwidget.h>
 
-namespace AICore
+namespace GenAIFramework
 {
     Tab::Tab(AZStd::vector<AZ::Component*> existingComponents, NewSegment* newSegment, AZStd::string name, QWidget* parent)
         : QWidget(parent)
@@ -56,4 +56,4 @@ namespace AICore
         m_segments.erase(AZStd::find(m_segments.begin(), m_segments.end(), segment));
         delete segment;
     }
-} // namespace AICore
+} // namespace GenAIFramework

@@ -7,11 +7,11 @@
  */
 
 #include "Segment.h"
-#include <AICore/AICoreBus.h>
-#include <AICore/AICoreEditorBus.h>
+#include <GenAIFramework/GenAIFrameworkBus.h>
+#include <GenAIFramework/GenAIFrameworkEditorBus.h>
 #include <AzCore/Math/Uuid.h>
 
-namespace AICore
+namespace GenAIFramework
 {
     Segment::Segment(AZ::Component* component, AZ::Uuid componentTypeId, QWidget* parent)
         : QWidget(parent)
@@ -70,7 +70,7 @@ namespace AICore
 
     void Segment::SaveConfiguration()
     {
-        auto interfaceEditor = AICoreEditorInterface::Get();
+        auto interfaceEditor = GenAIFrameworkEditorInterface::Get();
         if (interfaceEditor)
         {
             interfaceEditor->SaveSystemConfiguration();
@@ -86,7 +86,7 @@ namespace AICore
         reply = QMessageBox::question(this, "Confirmation", question.c_str(), QMessageBox::Yes | QMessageBox::No);
         if (reply == QMessageBox::Yes)
         {
-            auto interface = AICoreInterface::Get();
+            auto interface = GenAIFrameworkInterface::Get();
             if (interface)
             {
                 interface->RemoveComponent(m_component);
@@ -96,4 +96,4 @@ namespace AICore
         }
     }
 
-} // namespace AICore
+} // namespace GenAIFramework

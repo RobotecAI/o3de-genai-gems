@@ -8,8 +8,8 @@
 #pragma once
 
 #include "AzCore/RTTI/BehaviorContext.h"
-#include <AICore/AIContext.h>
-#include <AICore/APIFormatterStructs.h>
+#include <GenAIFramework/AIContext.h>
+#include <GenAIFramework/APIFormatterStructs.h>
 #include <AzCore/std/containers/set.h>
 #include <AzCore/std/containers/vector.h>
 #include <AzCore/std/string/string.h>
@@ -21,7 +21,7 @@ namespace AZ
     class BehaviorEBus;
 } // namespace AZ
 
-namespace AICore
+namespace GenAIFramework
 { // TODO - consider reusing (modifying) NodeListDumpAction and PythonEditorFunc.cpp GetExposedPythonClasses.
     struct BehaviorContextDump
     {
@@ -53,4 +53,4 @@ namespace AICore
         AIContext m_aiContext;
         const AZ::BehaviorContext* m_context;
     };
-} // namespace AICore
+} // namespace GenAIFramework

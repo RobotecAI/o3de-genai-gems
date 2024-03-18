@@ -9,7 +9,7 @@
 #include "CustomEditorRequests.h"
 #include <AzCore/RTTI/BehaviorContext.h>
 
-namespace AICore
+namespace GenAIFramework
 {
     void CustomEditorTest::Reflect(AZ::ReflectContext* context)
     {
@@ -43,4 +43,4 @@ namespace AICore
         AZ_Printf("CustomEditorTest", "Bus event called with %s", entityId.ToString().c_str());
         return entityId;
     }
-} // namespace AICore
+} // namespace GenAIFramework

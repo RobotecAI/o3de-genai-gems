@@ -24,7 +24,7 @@
 
 Q_DECLARE_METATYPE(AZ::Uuid)
 
-namespace AICore
+namespace GenAIFramework
 {
     class NewSegment : public QWidget
     {
@@ -48,4 +48,4 @@ namespace AICore
         QLineEdit* m_nameInput;
     };
 
-} // namespace AICore
+} // namespace GenAIFramework

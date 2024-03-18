@@ -14,7 +14,7 @@
 
 #pragma once
 
-namespace AICore
+namespace GenAIFramework
 {
     class CustomEditorRequests
     {
@@ -46,4 +46,4 @@ namespace AICore
         static void Reflect(AZ::ReflectContext* context);
         AZ::EntityId DoTheTestThing(const AZ::EntityId& entityId) override;
     };
-} // namespace AICore
+} // namespace GenAIFramework

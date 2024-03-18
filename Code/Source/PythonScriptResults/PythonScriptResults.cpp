@@ -3,7 +3,7 @@
 #include <API/EditorPythonRunnerRequestsBus.h>
 #include <AzCore/std/string/string.h>
 
-namespace AICore
+namespace GenAIFramework
 {
     void PythonScriptResults::ConnectToPythonConsole()
     {
@@ -66,4 +66,4 @@ namespace AICore
     {
         OnErrorMessage(message);
     }
-} // namespace AICore
+} // namespace GenAIFramework
