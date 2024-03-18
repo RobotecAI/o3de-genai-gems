@@ -36,7 +36,7 @@ namespace GenAIFramework
         void CommandTest();
 
         CustomEditorTest m_customEditorTest;
-        GenAIFrameworkActionTest m_GenAIFrameworkActionTest;
+        GenAIFrameworkActionTest m_genAIFrameworkActionTest;
         AZStd::string m_className{ "" };
         AZStd::string m_methodName{ "" };
         AZStd::string m_commandText{ "" };

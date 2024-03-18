@@ -31,7 +31,7 @@ namespace GenAIFramework
 
     void GenAIFrameworkTestEditorComponent::BuildGameEntity(AZ::Entity* gameEntity)
     {
-        gameEntity->CreateComponent<GenAIFramework::GenAIFrameworkTestComponent>(m_GenAIFrameworkActionTest);
+        gameEntity->CreateComponent<GenAIFramework::GenAIFrameworkTestComponent>(m_genAIFrameworkActionTest);
     }
 
     void GenAIFrameworkTestEditorComponent::Reflect(AZ::ReflectContext* context)
@@ -94,19 +94,19 @@ namespace GenAIFramework
 
     void GenAIFrameworkTestEditorComponent::ListClasses()
     {
-        BehaviorContextDump b(m_GenAIFrameworkActionTest.GetAIContext(), m_className);
+        BehaviorContextDump b(m_genAIFrameworkActionTest.GetAIContext(), m_className);
         Internal::LinePrint(b.ClassesDump());
     }
 
     void GenAIFrameworkTestEditorComponent::ListMethods()
     {
-        BehaviorContextDump b(m_GenAIFrameworkActionTest.GetAIContext(), m_methodName);
+        BehaviorContextDump b(m_genAIFrameworkActionTest.GetAIContext(), m_methodName);
         Internal::LinePrint(b.MethodsDump(m_className));
     }
 
     void GenAIFrameworkTestEditorComponent::ListEbuses()
     {
-        BehaviorContextDump b(m_GenAIFrameworkActionTest.GetAIContext(), m_methodName);
+        BehaviorContextDump b(m_genAIFrameworkActionTest.GetAIContext(), m_methodName);
         Internal::LinePrint(b.EbusesDump());
     }
 
@@ -114,7 +114,7 @@ namespace GenAIFramework
     {
         AZ_Printf("GenAIFrameworkTestEditorComponent", "CommandTest\n");
         AZStd::string response;
-        bool success = m_GenAIFrameworkActionTest.ScriptCall(m_commandText, response);
+        bool success = m_genAIFrameworkActionTest.ScriptCall(m_commandText, response);
         AZ_Printf("GenAIFrameworkTestEditorComponent", "[%s]: %s\n", success ? "succeeded" : "failed", response.c_str());
     }
 } // namespace GenAIFramework

@@ -13,7 +13,7 @@ o3de_pal_dir(pal_dir ${CMAKE_CURRENT_LIST_DIR}/Platform/${PAL_PLATFORM_NAME} "${
 include(${pal_dir}/PAL_${PAL_PLATFORM_NAME_LOWERCASE}.cmake)
 
 # Check to see if building the Gem Modules are supported for the current platform
-if(NOT PAL_TRAIT_GenAIFramework_SUPPORTED)
+if(NOT PAL_TRAIT_GENAIFRAMEWORK_SUPPORTED)
     return()
 endif()
 

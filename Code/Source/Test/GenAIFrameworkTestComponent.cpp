@@ -12,7 +12,7 @@
 namespace GenAIFramework
 {
     GenAIFrameworkTestComponent::GenAIFrameworkTestComponent(GenAIFrameworkActionTest GenAIFrameworkTest)
-        : m_GenAIFrameworkActionTest(GenAIFrameworkTest)
+        : m_genAIFrameworkActionTest(GenAIFrameworkTest)
     {
     }
 

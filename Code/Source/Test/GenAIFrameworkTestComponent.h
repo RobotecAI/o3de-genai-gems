@@ -17,7 +17,7 @@ namespace GenAIFramework
     class GenAIFrameworkTestComponent : public AZ::Component
     {
     private:
-        GenAIFrameworkActionTest m_GenAIFrameworkActionTest;
+        GenAIFrameworkActionTest m_genAIFrameworkActionTest;
 
     public:
         AZ_COMPONENT(GenAIFrameworkTestComponent, "{B7EC169D-55AB-458D-AB89-1714C79B3803}", AZ::Component);
