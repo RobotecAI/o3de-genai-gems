@@ -9,6 +9,10 @@ set(FILES
     Source/GenAIFrameworkModuleInterface.cpp
     Source/GenAIFrameworkModuleInterface.h
 
+    Source/AIComponentBase/AIComponentBase.cpp
+    Source/Test/PromptComponent.cpp
+    Source/Test/PromptComponent.h
+
     Source/GenAIFrameworkSettingsRegistryManager/GenAIFrameworkSettingsRegistryManager.cpp
     Source/GenAIFrameworkSettingsRegistryManager/GenAIFrameworkSettingsRegistryManager.h
 

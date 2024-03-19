@@ -7,4 +7,5 @@ set(FILES
     Include/GenAIFramework/GenAIFrameworkTypeIds.h
     Include/GenAIFramework/ModelConfiguration/ModelConfigurationBus.h
     Include/GenAIFramework/SystemRegistrationContext/GenAIFrameworkSystemRegistrationContext.h
+    Include/GenAIFramework/AIComponentBase/AIComponentBase.h
 )

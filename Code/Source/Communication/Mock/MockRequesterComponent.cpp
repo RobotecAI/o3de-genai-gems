@@ -97,12 +97,14 @@ namespace GenAIFramework
     {
         if (request == "test")
         {
+            AZ_Warning("JHDEBUG", false, "request == test");
             AZStd::string azStringResult("tested test");
             AZ::Outcome<AZStd::string, AZStd::string> outcomeResult = AZ::Success(azStringResult);
             callback(outcomeResult);
         }
         else
         {
+            AZ_Warning("JHDEBUG", false, "request != test");
             AZStd::string azStringResult("not tested test");
             AZ::Outcome<AZStd::string, AZStd::string> outcomeError = AZ::Failure(azStringResult);
             callback(outcomeError);
