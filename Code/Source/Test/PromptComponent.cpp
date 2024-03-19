@@ -12,7 +12,7 @@
 #include <AzCore/std/string/string.h>
 
 #include <GenAIFramework/Communication/AIServiceRequesterBus.h>
-
+#include <GenAIFramework/ModelConfiguration/ModelConfigurationBus.h>
 namespace GenAIFramework
 {
     void PromptComponent::Reflect(AZ::ReflectContext* context)
@@ -52,6 +52,8 @@ namespace GenAIFramework
 
     AZ::Crc32 PromptComponent::PromptInput()
     {
+        UpdateNamedServiceRequestorId();
+        UpdateNamedModelConfigurationId();
         AZ_Printf("PromptComponent", "Test button pressed");
         AZ_Printf(
             "PromptComponent",
@@ -64,9 +66,17 @@ namespace GenAIFramework
             m_selectedModelConfigurationName.c_str(),
             m_selectedModelConfigurationId.ToString().c_str());
 
+        AZStd::mutex mutex;
+        // prepare the request
+        AZStd::string preparedRequest;
+        GenAIFramework::ModelConfigurationBus::EventResult(preparedRequest,
+            m_selectedModelConfigurationId, &GenAIFramework::ModelConfigurationBus::Events::PrepareRequestWithStringPrompt, m_modelInput);
+        // send the request
+        mutex.lock();
         AZStd::function<void(AZ::Outcome<AZStd::string, AZStd::string>)> callback =
-            [this](AZ::Outcome<AZStd::string, AZStd::string> outcome)
+            [this, &mutex](AZ::Outcome<AZStd::string, AZStd::string> outcome)
         {
+            mutex.unlock();
             if (outcome.IsSuccess())
             {
                 AZ_Warning("PromptComponent", false, "Got a response from the model!");
@@ -77,11 +87,12 @@ namespace GenAIFramework
                 AZ_Warning("PromptComponent", false, "Cannot get a response from the model: %s", outcome.GetError().c_str());
             }
         };
+        AZ_Error("PromptComponent", m_selectedServiceRequestorId.IsValid(), "m_selectedServiceRequestorId is not valid!");
 
-        AZ_Warning("PromptComponent", m_selectedServiceRequestorId.IsValid(), "m_selectedServiceRequestorId is not valid!");
-        AIServiceRequesterBus::Event(m_selectedServiceRequestorId, &AIServiceRequesterBus::Events::SendRequest, m_modelInput, callback);
+        AZ_Printf("PromptComponent", "Prepared request: %s", preparedRequest.c_str());
 
-        AZ_Warning("PromptComponent", false, "Current output: %s", m_modelOutput.c_str());
+        AIServiceRequesterBus::Event(m_selectedServiceRequestorId, &AIServiceRequesterBus::Events::SendRequest, preparedRequest, callback);
+        mutex.lock();
 
         return AZ::Edit::PropertyRefreshLevels::EntireTree;
     }

@@ -44,11 +44,11 @@ namespace GenAIFramework
         AZStd::vector<AZStd::string> GetNames(AZStd::vector<AZ::Component*> components) const;
         AZStd::vector<AZ::Component*> GetServiceRequestors() const;
         AZStd::vector<AZ::Component*> GetModelConfigurations() const;
-
-        void GetNamedId(const AZStd::string& name, AZStd::vector<AZ::Component*> components, AZ::EntityId& id);
-        void UpdateNamedServiceRequestorId();
-        void UpdateNamedModelConfigurationId();
-
         bool UseSystemComponents();
+
+    protected:
+        void GetNamedId(const AZStd::string& name, AZStd::vector<AZ::Component*> components, AZ::EntityId& id);
+        void UpdateNamedModelConfigurationId();
+        void UpdateNamedServiceRequestorId();
     };
 } // namespace GenAIFramework
