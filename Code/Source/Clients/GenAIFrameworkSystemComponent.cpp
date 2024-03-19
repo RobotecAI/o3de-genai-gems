@@ -260,6 +260,8 @@ namespace GenAIFramework
 
     void GenAIFrameworkSystemComponent::Activate()
     {
+        AZ_Printf("GenAIFrameworkSystemComponent", "Activating GenAIFrameworkSystemComponent with %d service requesters and %d model configurations\n",
+            m_configuration.m_serviceRequesters.size(), m_configuration.m_modelConfigurations.size());
         GenAIFrameworkRequestBus::Handler::BusConnect();
         AZ::TickBus::Handler::BusConnect();
         m_actionRequestHandler.Connect();
