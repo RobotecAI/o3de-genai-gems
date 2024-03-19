@@ -95,12 +95,12 @@ namespace GenAIFramework
     void GenAIFrameworkEditorSystemComponent::Activate()
     {
         AzToolsFramework::EditorEvents::Bus::Handler::BusConnect();
-        m_actionRequestHandler.Connect();
+        BaseSystemComponent::Activate();
     }
 
     void GenAIFrameworkEditorSystemComponent::Deactivate()
     {
-        m_actionRequestHandler.Disconnect();
+        BaseSystemComponent::Deactivate();
         AzToolsFramework::EditorEvents::Bus::Handler::BusDisconnect();
     }
 
