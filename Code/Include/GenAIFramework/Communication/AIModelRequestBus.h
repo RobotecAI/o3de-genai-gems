@@ -3,6 +3,7 @@
 
 #include <AzCore/Component/ComponentBus.h>
 #include <AzCore/EBus/EBus.h>
+#include <AzCore/Name/Name.h>
 #include <AzCore/Outcome/Outcome.h>
 #include <AzCore/RTTI/RTTIMacros.h>
 #include <AzCore/std/string/string.h>
@@ -25,7 +26,7 @@ namespace GenAIFramework
 
         //! Generates a ready-to-send request to the Language Model created from the prompt.
         //! The request is any string that can be sent to the model to generate a response.
-        //! @param prompt The prompt to use
+        //! @param prompt The prompt to use.
         //! @return The request to send to the model - it should be ready to use the model's API request.
         virtual ModelAPIRequest PrepareRequest(const AZStd::string& prompt) = 0;
 
@@ -35,7 +36,7 @@ namespace GenAIFramework
         virtual AZ::Outcome<AZStd::string, AZStd::string> ExtractResult(const ModelAPIResponse& modelAPIResponse) = 0;
 
         //! Optional method to set custom model parameters (e.g. stop sequence)
-        //! @param parameterName The name of the parameter to set
+        //! @param parameterName The name of the parameter to set.
         //! @param parameterValue The value to set the parameter.
         //! @return True if the parameter was set, false otherwise.
         //! @note This method is optional and can be implemented by the model configuration component - if the model configuration

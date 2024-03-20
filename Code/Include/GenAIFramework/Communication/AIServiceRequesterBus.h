@@ -6,7 +6,7 @@
 #include <AzCore/Interface/Interface.h>
 #include <AzCore/Outcome/Outcome.h>
 #include <AzCore/RTTI/TemplateInfo.h>
-#include <GenAIFramework/ModelConfiguration/AIModelRequestBus.h>
+#include <GenAIFramework/Communication/AIModelRequestBus.h>
 namespace GenAIFramework
 {
     class AIServiceRequesterRequests : public AZ::ComponentBus
