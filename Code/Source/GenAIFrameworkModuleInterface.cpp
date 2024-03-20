@@ -12,7 +12,7 @@
 #include <AzCore/Memory/Memory.h>
 #include <Clients/GenAIFrameworkSystemComponent.h>
 #include <GenAIFramework/GenAIFrameworkTypeIds.h>
-#include <GenAIFramework/SystemRegistrationContext/GenAIFrameworkSystemRegistrationContext.h>
+#include <GenAIFramework/SystemRegistrationContext/SystemRegistrationContext.h>
 namespace GenAIFramework
 {
     AZ_TYPE_INFO_WITH_NAME_IMPL(GenAIFrameworkModuleInterface, "GenAIFrameworkModuleInterface", GenAIFrameworkModuleInterfaceTypeId);
@@ -33,7 +33,7 @@ namespace GenAIFramework
             });
 
         // Create a new reflection context for reflecting serviceRequesters and modelConfigurations
-        AZ::ReflectionEnvironment::GetReflectionManager()->AddReflectContext<GenAIFrameworkSystemRegistrationContext>();
+        AZ::ReflectionEnvironment::GetReflectionManager()->AddReflectContext<SystemRegistrationContext>();
     }
 
     AZ::ComponentTypeList GenAIFrameworkModuleInterface::GetRequiredSystemComponents() const

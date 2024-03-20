@@ -8,14 +8,14 @@
 
 #pragma once
 
-#include <GenAIFramework/AIContext.h>
-#include <GenAIFramework/GenAIFrameworkScriptExecutor.h>
-#include <GenAIFramework/GenAIFrameworkTypeIds.h>
-#include <GenAIFramework/SystemRegistrationContext/GenAIFrameworkSystemRegistrationContext.h>
 #include <AzCore/Component/Component.h>
 #include <AzCore/EBus/EBus.h>
 #include <AzCore/Interface/Interface.h>
 #include <AzCore/Math/Uuid.h>
+#include <GenAIFramework/AIContext.h>
+#include <GenAIFramework/GenAIFrameworkScriptExecutor.h>
+#include <GenAIFramework/GenAIFrameworkTypeIds.h>
+#include <GenAIFramework/SystemRegistrationContext/SystemRegistrationContext.h>
 
 namespace GenAIFramework
 {
@@ -27,7 +27,7 @@ namespace GenAIFramework
 
         virtual AZStd::unique_ptr<GenAIFrameworkScriptExecutor> MakeScriptExecutor(const AIContext& aiContext) = 0;
 
-        virtual GenAIFrameworkSystemRegistrationContext* GetSystemRegistrationContext() = 0;
+        virtual SystemRegistrationContext* GetSystemRegistrationContext() = 0;
 
         virtual AZStd::vector<AZStd::pair<AZStd::string, AZ::Uuid>> GetRegisteredModelConfigurationsNameAndComponentTypeId() = 0;
         virtual AZStd::vector<AZStd::pair<AZStd::string, AZ::Uuid>> GetRegisteredServiceRequestersNameAndComponentTypeId() = 0;

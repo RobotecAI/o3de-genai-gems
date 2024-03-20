@@ -2,8 +2,8 @@ set(FILES
     Source/Action/ActionTools/GenAIFrameworkEditorScriptExecutor.cpp
     Source/Action/ActionTools/GenAIFrameworkEditorScriptExecutor.h
     
-    Source/GenAIFrameworkSettingsRegistryManager/Editor/GenAIFrameworkEditorSettingsRegistryManager.cpp
-    Source/GenAIFrameworkSettingsRegistryManager/Editor/GenAIFrameworkEditorSettingsRegistryManager.h
+    Source/SettingsRegistryManager/Editor/EditorSettingsRegistryManager.cpp
+    Source/SettingsRegistryManager/Editor/EditorSettingsRegistryManager.h
 
     Source/PythonScriptResults/PythonScriptResults.cpp
     Source/PythonScriptResults/PythonScriptResults.h

@@ -6,14 +6,13 @@
  *
  */
 
-#include "GenAIFrameworkSettingsRegistryManager.h"
+#include "SettingsRegistryManager.h"
 #include "AzCore/Outcome/Outcome.h"
 #include <AzCore/Settings/SettingsRegistry.h>
 
 namespace GenAIFramework
 {
-    void GenAIFrameworkSettingsRegistryManager::SaveSystemConfiguration(
-        const SaveObject& saveObject, const OnConfigSaveComplete& saveCallback)
+    void SettingsRegistryManager::SaveSystemConfiguration(const SaveObject& saveObject, const OnConfigSaveComplete& saveCallback)
     {
         if (saveCallback)
         {
@@ -21,8 +20,7 @@ namespace GenAIFramework
         }
     }
 
-    AZStd::optional<GenAIFrameworkSettingsRegistryManager::SaveObject> GenAIFrameworkSettingsRegistryManager::LoadSystemConfiguration()
-        const
+    AZStd::optional<SettingsRegistryManager::SaveObject> SettingsRegistryManager::LoadSystemConfiguration() const
     {
         SaveObject saveObject;
 
@@ -39,11 +37,11 @@ namespace GenAIFramework
         {
             for (const auto& [id, e] : saveObject.m_serviceRequesters)
             {
-                AZ_Printf("GenAIFrameworkSettingsRegistryManager", "Service Requester: %s, %llu\n", e->GetName().c_str(), id);
+                AZ_Printf("SettingsRegistryManager", "Service Requester: %s, %llu\n", e->GetName().c_str(), id);
             }
             for (const auto& [id, e] : saveObject.m_modelConfigurations)
             {
-                AZ_Printf("GenAIFrameworkSettingsRegistryManager", "Model configuration: %s, %llu\n", e->GetName().c_str(), id);
+                AZ_Printf("SettingsRegistryManager", "Model configuration: %s, %llu\n", e->GetName().c_str(), id);
             }
             return saveObject;
         }

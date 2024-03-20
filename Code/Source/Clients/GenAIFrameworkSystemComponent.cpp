@@ -87,10 +87,10 @@ namespace GenAIFramework
         }
     }
 
-    GenAIFrameworkSystemRegistrationContext* GenAIFrameworkSystemComponent::GetSystemRegistrationContext()
+    SystemRegistrationContext* GenAIFrameworkSystemComponent::GetSystemRegistrationContext()
     {
         return AZ::ReflectionEnvironment::GetReflectionManager()
-            ? AZ::ReflectionEnvironment::GetReflectionManager()->GetReflectContext<GenAIFrameworkSystemRegistrationContext>()
+            ? AZ::ReflectionEnvironment::GetReflectionManager()->GetReflectContext<SystemRegistrationContext>()
             : nullptr;
     }
 

@@ -16,11 +16,11 @@
 
 namespace GenAIFramework
 {
-    class GenAIFrameworkSettingsRegistryManager
+    class SettingsRegistryManager
     {
     public:
-        GenAIFrameworkSettingsRegistryManager() = default;
-        ~GenAIFrameworkSettingsRegistryManager() = default;
+        SettingsRegistryManager() = default;
+        ~SettingsRegistryManager() = default;
 
         using SaveObject = GenAIFrameworkSystemComponentConfiguration;
         using OnConfigSaveComplete = AZStd::function<void(AZ::Outcome<void, void>)>;
