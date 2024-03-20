@@ -1,0 +1,18 @@
+{
+    "Amazon": {
+        "AssetProcessor": {
+            "Settings": {
+                "ScanFolder GenAIMock/Assets": {
+                    "watch": "@GEMROOT:GenAIMock@/Assets",
+                    "recursive": 1,
+                    "order": 101
+                },
+                "ScanFolder GenAIMock/Registry": {
+                    "watch": "@GEMROOT:GenAIMock@/Registry",
+                    "recursive": 1,
+                    "order": 102
+                }
+            }
+        }
+    }
+}
