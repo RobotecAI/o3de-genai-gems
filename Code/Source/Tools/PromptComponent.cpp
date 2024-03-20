@@ -11,6 +11,8 @@
 #include <AzCore/Serialization/SerializeContext.h>
 #include <AzCore/std/string/string.h>
 
+#include <AzCore/Component/TickBus.h>
+#include <AzToolsFramework/UI/UICore/WidgetHelpers.h>
 #include <GenAIFramework/Communication/AIModelRequestBus.h>
 #include <GenAIFramework/Communication/AIServiceRequesterBus.h>
 #include <QMessageBox>
@@ -80,19 +82,24 @@ namespace GenAIFramework
             if (extractedResponse.IsSuccess())
             {
                 m_modelOutput = extractedResponse.GetValue();
+                AZ::SystemTickBus::QueueFunction(
+                    [=]()
+                    {
+                        QMessageBox::information(
+                            AzToolsFramework::GetActiveWindow(), "PromptComponent", QString(m_modelOutput.c_str()), QMessageBox::Ok);
+                    });
             }
             else
             {
                 m_modelOutput = "Error: " + extractedResponse.GetError();
                 AZ_Warning("PromptComponent", false, "Cannot get a response from the model: %s", m_modelOutput.c_str());
+                AZ::SystemTickBus::QueueFunction(
+                    [=]()
+                    {
+                        QMessageBox::warning(
+                            AzToolsFramework::GetActiveWindow(), "PromptComponent", QString(m_modelOutput.c_str()), QMessageBox::Ok);
+                    });
             }
-            AZStd::thread t{ [=]
-                             {
-                                 QMessageBox msgBox;
-                                 msgBox.setText(m_modelOutput.c_str());
-                                 msgBox.exec();
-                             } };
-            t.detach();
         };
 
         AIServiceRequesterBus::Event(m_selectedServiceRequestorId, &AIServiceRequesterBus::Events::SendRequest, preparedRequest, callback);
