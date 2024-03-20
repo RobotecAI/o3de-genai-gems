@@ -120,21 +120,7 @@ namespace GenAIFramework
     }
     void AIComponentBase::UpdateNamedServiceRequestorId()
     {
-        AZ_Warning(
-            "PromptComponent",
-            false,
-            "Before - Requestor: %s, Requestor Id: %s, Is valid? %s",
-            m_selectedServiceRequestorName.c_str(),
-            m_selectedServiceRequestorId.ToString().c_str(),
-            (m_selectedServiceRequestorId.IsValid() ? "true" : "false"));
         GetNamedId(m_selectedServiceRequestorName, GetServiceRequestors(), m_selectedServiceRequestorId);
-        AZ_Warning(
-            "PromptComponent",
-            false,
-            "After - Requestor: %s, Requestor Id: %s, Is valid? %s",
-            m_selectedServiceRequestorName.c_str(),
-            m_selectedServiceRequestorId.ToString().c_str(),
-            (m_selectedServiceRequestorId.IsValid() ? "true" : "false"));
     }
     void AIComponentBase::UpdateNamedModelConfigurationId()
     {
