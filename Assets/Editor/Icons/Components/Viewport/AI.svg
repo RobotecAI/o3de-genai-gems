@@ -2,47 +2,11 @@
 <svg
    width="25"
    height="25"
-   viewBox="0 0 25 25"
    fill="none"
    version="1.1"
    id="svg26"
-   sodipodi:docname="AI.svg"
-   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg">
-  <sodipodi:namedview
-     id="namedview28"
-     pagecolor="#ffffff"
-     bordercolor="#666666"
-     borderopacity="1.0"
-     inkscape:pageshadow="2"
-     inkscape:pageopacity="0.0"
-     inkscape:pagecheckerboard="0"
-     showgrid="false"
-     inkscape:zoom="33.76"
-     inkscape:cx="8.8418246"
-     inkscape:cy="12.174171"
-     inkscape:window-width="2560"
-     inkscape:window-height="1403"
-     inkscape:window-x="0"
-     inkscape:window-y="0"
-     inkscape:window-maximized="1"
-     inkscape:current-layer="svg26" />
-  <g
-     mask="url(#mask0_3280_31773)"
-     id="g9"
-     style="fill:#be0712;fill-opacity:1">
-    <rect
-       x="0.422363"
-       y="0.552246"
-       width="24"
-       height="24"
-       fill="#65C9C9"
-       id="rect7"
-       style="fill:#be0712;fill-opacity:1" />
-  </g>
   <mask
      id="mask0_3280_31773"
      style="mask-type:luminance"
@@ -55,9 +19,16 @@
        fill-rule="evenodd"
        clip-rule="evenodd"
        d="M21.3472 0.552246C23.5245 0.552246 24.379 2.33071 24.379 3.5709C24.379 4.81108 24.379 19.3338 24.379 21.1943C24.379 22.9452 23.1505 24.5089 21.3472 24.5089C19.5439 24.5089 5.07166 24.5089 3.23165 24.5089C1.80898 24.5089 0.422363 23.067 0.422363 21.7109C0.422363 20.3548 0.422363 4.58758 0.422363 3.2248C0.422363 1.86202 1.78776 0.552246 3.03192 0.552246C4.27608 0.552246 19.3825 0.552246 21.3472 0.552246Z"
-       fill="white"
-       id="path4" />
+       fill="white" />
   </mask>
+  <g mask="url(#mask0_3280_31773)">
+    <rect
+       x="0.422363"
+       y="0.552246"
+       width="24"
+       height="24"
+       fill="#be0712"/>
+  </g>
   <path
      class="st1"
      d="m 23.997483,12.530573 c 0,6.399405 -5.182222,11.626643 -11.596801,11.626643 -6.382981,0 -11.596802,-5.195557 -11.596802,-11.626643 0,-6.4310866 5.182221,-11.6266434 11.596802,-11.6266434 6.414579,0 11.596801,5.1955568 11.596801,11.6266434"
@@ -73,23 +44,4 @@
      d="m 16.22415,7.6518185 c 0,-0.665286 0.537182,-1.2038494 1.200759,-1.2038494 0.663577,0 1.200758,0.5385634 1.200758,1.2038494 V 16.36388 c 0,0.665284 -0.537181,1.203848 -1.200758,1.203848 -0.663577,0 -1.200759,-0.538564 -1.200759,-1.203848 z"
      id="path24"
      style="fill:#be0712;fill-opacity:1;stroke-width:0.316395" />
-  <defs
-     id="defs24">
-    <linearGradient
-       id="paint0_linear_3280_31773"
-       x1="0.422363"
-       y1="0.552246"
-       x2="0.422363"
-       y2="24.5089"
-       gradientUnits="userSpaceOnUse">
-      <stop
-         stop-color="#ADADAD"
-         stop-opacity="0.01"
-         id="stop19" />
-      <stop
-         offset="1"
-         stop-color="#9D9D9D"
-         id="stop21" />
-    </linearGradient>
-  </defs>
 </svg>
