@@ -15,4 +15,6 @@ set(FILES
 
     Source/Tools/GenAIFrameworkEditorSystemComponent.cpp
     Source/Tools/GenAIFrameworkEditorSystemComponent.h
+    Source/Tools/PromptComponent.cpp
+    Source/Tools/PromptComponent.h
 )

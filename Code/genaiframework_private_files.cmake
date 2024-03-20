@@ -5,7 +5,7 @@ set(FILES
     Source/Action/GenAIFrameworkActionRequestHandler.h
     Source/Action/GenAIFrameworkLauncherScriptExecutor.cpp
     Source/Action/GenAIFrameworkLauncherScriptExecutor.h
-
+    Source/AIComponentBase/AIComponentBase.cpp
     Source/GenAIFrameworkModuleInterface.cpp
     Source/GenAIFrameworkModuleInterface.h
 
