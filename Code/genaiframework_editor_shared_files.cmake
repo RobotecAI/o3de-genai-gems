@@ -1,6 +1,5 @@
 set(FILES
     Source/Tools/GenAIFrameworkEditorModule.cpp
-    
     Source/UI/GenAIFrameworkWidget.cpp
     Source/UI/GenAIFrameworkWidget.h
     Source/UI/ModelConfiguration/NewModelConfigurationSegment.cpp

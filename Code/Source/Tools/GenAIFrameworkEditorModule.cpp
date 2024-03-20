@@ -10,7 +10,7 @@
 #include "Test/GenAIFrameworkTestEditorComponent.h"
 #include <GenAIFramework/GenAIFrameworkTypeIds.h>
 #include <GenAIFrameworkModuleInterface.h>
-
+#include "PromptComponent.h"
 namespace GenAIFramework
 {
     class GenAIFrameworkEditorModule : public GenAIFrameworkModuleInterface
@@ -26,7 +26,9 @@ namespace GenAIFramework
             // This will associate the AzTypeInfo information for the components with the the SerializeContext, BehaviorContext and
             // EditContext. This happens through the [MyComponent]::Reflect() function.
             m_descriptors.insert(
-                m_descriptors.end(), { GenAIFrameworkEditorSystemComponent::CreateDescriptor(), GenAIFrameworkTestEditorComponent::CreateDescriptor() });
+                m_descriptors.end(), { GenAIFrameworkEditorSystemComponent::CreateDescriptor(),
+                                       GenAIFrameworkTestEditorComponent::CreateDescriptor(),
+                                       PromptComponent::CreateDescriptor()});
         }
 
         /**
