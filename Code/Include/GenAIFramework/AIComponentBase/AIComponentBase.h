@@ -40,15 +40,15 @@ namespace GenAIFramework
 
         bool m_useNonSystemComponents = false;
 
-    protected:
+        void UpdateNamedServiceRequestorId();
+        void UpdateNamedModelConfigurationId();
+        bool UseSystemComponents();
+
+    private:
         AZStd::vector<AZStd::string> GetNames(AZStd::vector<AZ::Component*> components) const;
         AZStd::vector<AZ::Component*> GetServiceRequestors() const;
         AZStd::vector<AZ::Component*> GetModelConfigurations() const;
 
         void GetNamedId(const AZStd::string& name, AZStd::vector<AZ::Component*> components, AZ::EntityId& id);
-        void UpdateNamedServiceRequestorId();
-        void UpdateNamedModelConfigurationId();
-
-        bool UseSystemComponents();
     };
 } // namespace GenAIFramework
