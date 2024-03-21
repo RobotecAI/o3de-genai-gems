@@ -1,4 +1,6 @@
 set(FILES
+    ../Assets/Editor/Icons/Toolbar/GenAIFramework.qrc
+    ../Assets/Editor/Icons/Toolbar/AI.svg
     Source/Tools/GenAIFrameworkEditorModule.cpp
     Source/UI/GenAIFrameworkWidget.cpp
     Source/UI/GenAIFrameworkWidget.h

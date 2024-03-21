@@ -124,7 +124,9 @@ namespace GenAIFramework
         AzToolsFramework::ViewPaneOptions options;
         options.paneRect = QRect(100, 100, 700, 400);
         options.showOnToolsToolbar = true;
+        options.canHaveMultipleInstances = false;
         options.isDeletable = false;
+        options.toolbarIcon = ":/GenAIFramework/AI.svg";
 
         AzToolsFramework::RegisterViewPane<GenAIFrameworkWidget>("GenAIFramework", "GenAIFramework", options);
     }

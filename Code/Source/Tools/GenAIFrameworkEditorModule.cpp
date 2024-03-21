@@ -11,6 +11,14 @@
 #include "Test/GenAIFrameworkTestEditorComponent.h"
 #include <GenAIFramework/GenAIFrameworkTypeIds.h>
 #include <GenAIFrameworkModuleInterface.h>
+#include <QtCore/qglobal.h>
+
+void InitQtResources()
+{
+    // Registration of Qt (GenAIFramework.qrc) resources
+    Q_INIT_RESOURCE(GenAIFramework);
+}
+
 namespace GenAIFramework
 {
     class GenAIFrameworkEditorModule : public GenAIFrameworkModuleInterface
@@ -21,6 +29,8 @@ namespace GenAIFramework
 
         GenAIFrameworkEditorModule()
         {
+            InitQtResources();
+
             // Push results of [MyComponent]::CreateDescriptor() into m_descriptors here.
             // Add ALL components descriptors associated with this gem to m_descriptors.
             // This will associate the AzTypeInfo information for the components with the the SerializeContext, BehaviorContext and
