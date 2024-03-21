@@ -7,16 +7,13 @@
 
 namespace GenAIMock
 {
-    AZ_COMPONENT_IMPL(GenAIMockSystemComponent, "GenAIMockSystemComponent",
-        GenAIMockSystemComponentTypeId);
+    AZ_COMPONENT_IMPL(GenAIMockSystemComponent, "GenAIMockSystemComponent", GenAIMockSystemComponentTypeId);
 
     void GenAIMockSystemComponent::Reflect(AZ::ReflectContext* context)
     {
         if (auto serializeContext = azrtti_cast<AZ::SerializeContext*>(context))
         {
-            serializeContext->Class<GenAIMockSystemComponent, AZ::Component>()
-                ->Version(0)
-                ;
+            serializeContext->Class<GenAIMockSystemComponent, AZ::Component>()->Version(0);
         }
     }
 
@@ -38,39 +35,11 @@ namespace GenAIMock
     {
     }
 
-    GenAIMockSystemComponent::GenAIMockSystemComponent()
-    {
-        if (GenAIMockInterface::Get() == nullptr)
-        {
-            GenAIMockInterface::Register(this);
-        }
-    }
-
-    GenAIMockSystemComponent::~GenAIMockSystemComponent()
-    {
-        if (GenAIMockInterface::Get() == this)
-        {
-            GenAIMockInterface::Unregister(this);
-        }
-    }
-
-    void GenAIMockSystemComponent::Init()
-    {
-    }
-
     void GenAIMockSystemComponent::Activate()
     {
-        GenAIMockRequestBus::Handler::BusConnect();
-        AZ::TickBus::Handler::BusConnect();
     }
 
     void GenAIMockSystemComponent::Deactivate()
-    {
-        AZ::TickBus::Handler::BusDisconnect();
-        GenAIMockRequestBus::Handler::BusDisconnect();
-    }
-
-    void GenAIMockSystemComponent::OnTick([[maybe_unused]] float deltaTime, [[maybe_unused]] AZ::ScriptTimePoint time)
     {
     }
 
