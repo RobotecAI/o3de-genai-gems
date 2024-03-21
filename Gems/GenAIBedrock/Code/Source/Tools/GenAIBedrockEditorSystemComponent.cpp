@@ -1,20 +1,22 @@
 
-#include <AzCore/Serialization/SerializeContext.h>
 #include "GenAIBedrockEditorSystemComponent.h"
+#include <AzCore/Serialization/SerializeContext.h>
 
 #include <GenAIBedrock/GenAIBedrockTypeIds.h>
 
 namespace GenAIBedrock
 {
-    AZ_COMPONENT_IMPL(GenAIBedrockEditorSystemComponent, "GenAIBedrockEditorSystemComponent",
-        GenAIBedrockEditorSystemComponentTypeId, BaseSystemComponent);
+    AZ_COMPONENT_IMPL(
+        GenAIBedrockEditorSystemComponent,
+        "GenAIBedrockEditorSystemComponent",
+        GenAIBedrockEditorSystemComponentTypeId,
+        BaseSystemComponent);
 
     void GenAIBedrockEditorSystemComponent::Reflect(AZ::ReflectContext* context)
     {
         if (auto serializeContext = azrtti_cast<AZ::SerializeContext*>(context))
         {
-            serializeContext->Class<GenAIBedrockEditorSystemComponent, GenAIBedrockSystemComponent>()
-                ->Version(0);
+            serializeContext->Class<GenAIBedrockEditorSystemComponent, GenAIBedrockSystemComponent>()->Version(0);
         }
     }
 

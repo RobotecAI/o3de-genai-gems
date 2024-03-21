@@ -16,8 +16,7 @@ namespace GenAIBedrock
         // Put your public methods here
     };
 
-    class GenAIBedrockBusTraits
-        : public AZ::EBusTraits
+    class GenAIBedrockBusTraits : public AZ::EBusTraits
     {
     public:
         //////////////////////////////////////////////////////////////////////////

@@ -18,9 +18,9 @@
         ""
     ],
     "icon_path": "preview.png",
-    "requirements": "Notice of any requirements for this Gem i.e. This requires X other gem",
+    "requirements": "This gem requires AWSCore and GenAIFramework",
     "documentation_url": "Link to any documentation of your Gem",
-    "dependencies": [],
+    "dependencies": ["AWSCore", "GenAIFramework"],
     "repo_uri": "",
     "compatible_engines": [],
     "engine_api_dependencies": [],

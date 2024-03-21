@@ -50,6 +50,13 @@ ly_add_target(
         PUBLIC
             AZ::AzCore
             AZ::AzFramework
+            Gem::GenAIFramework
+            Gem::AWSCore
+            Gem::HttpRequestor
+            3rdParty::AWSNativeSDK::Bedrock
+            3rdParty::AWSNativeSDK::BedrockAgent
+            3rdParty::AWSNativeSDK::BedrockRuntime
+            3rdParty::AWSNativeSDK::BedrockAgentRuntime
 )
 
 # Here add ${gem_name} target, it depends on the Private Object library and Public API interface
@@ -67,6 +74,13 @@ ly_add_target(
     BUILD_DEPENDENCIES
         PUBLIC
             Gem::${gem_name}.API
+            Gem::GenAIFramework
+            Gem::AWSCore
+            Gem::HttpRequestor
+            3rdParty::AWSNativeSDK::Bedrock
+            3rdParty::AWSNativeSDK::BedrockAgent
+            3rdParty::AWSNativeSDK::BedrockRuntime
+            3rdParty::AWSNativeSDK::BedrockAgentRuntime
         PRIVATE
             Gem::${gem_name}.Private.Object
 )
@@ -135,6 +149,14 @@ if(PAL_TRAIT_BUILD_HOST_TOOLS)
             PUBLIC
                 AZ::AzToolsFramework
                 $<TARGET_OBJECTS:Gem::${gem_name}.Private.Object>
+                Gem::GenAIFramework
+                Gem::AWSCore
+                Gem::HttpRequestor
+                3rdParty::AWSNativeSDK::Core
+                3rdParty::AWSNativeSDK::Bedrock
+                3rdParty::AWSNativeSDK::BedrockAgent
+                3rdParty::AWSNativeSDK::BedrockRuntime
+                3rdParty::AWSNativeSDK::BedrockAgentRuntime
     )
 
     ly_add_target(

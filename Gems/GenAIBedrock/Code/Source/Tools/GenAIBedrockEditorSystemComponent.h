@@ -13,6 +13,7 @@ namespace GenAIBedrock
         , protected AzToolsFramework::EditorEvents::Bus::Handler
     {
         using BaseSystemComponent = GenAIBedrockSystemComponent;
+
     public:
         AZ_COMPONENT_DECL(GenAIBedrockEditorSystemComponent);
 
