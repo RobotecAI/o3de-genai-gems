@@ -27,7 +27,7 @@ namespace GenAIFramework
                 AZ_Printf("", "%s", line.c_str());
             }
         }
-    }
+    } // namespace Internal
 
     void GenAIFrameworkTestEditorComponent::BuildGameEntity(AZ::Entity* gameEntity)
     {
@@ -55,14 +55,16 @@ namespace GenAIFramework
                     ->UIElement(AZ::Edit::UIHandlers::Button, "", "List classes matching filter")
                     ->Attribute(AZ::Edit::Attributes::ChangeNotify, &GenAIFrameworkTestEditorComponent::ListClasses)
                     ->Attribute(AZ::Edit::Attributes::ButtonText, "List Classes")
-                    ->DataElement(AZ::Edit::UIHandlers::Default, &GenAIFrameworkTestEditorComponent::m_methodName, "", "Method or ebus name")
+                    ->DataElement(
+                        AZ::Edit::UIHandlers::Default, &GenAIFrameworkTestEditorComponent::m_methodName, "", "Method or ebus name")
                     ->UIElement(AZ::Edit::UIHandlers::Button, "", "Print behavior methods matching filter")
                     ->Attribute(AZ::Edit::Attributes::ChangeNotify, &GenAIFrameworkTestEditorComponent::ListMethods)
                     ->Attribute(AZ::Edit::Attributes::ButtonText, "List Methods")
                     ->UIElement(AZ::Edit::UIHandlers::Button, "", "Print all ebuses matching filter")
                     ->Attribute(AZ::Edit::Attributes::ChangeNotify, &GenAIFrameworkTestEditorComponent::ListEbuses)
                     ->Attribute(AZ::Edit::Attributes::ButtonText, "List Ebuses")
-                    ->DataElement(AZ::Edit::UIHandlers::MultiLineEdit, &GenAIFrameworkTestEditorComponent::m_commandText, "", "Command text")
+                    ->DataElement(
+                        AZ::Edit::UIHandlers::MultiLineEdit, &GenAIFrameworkTestEditorComponent::m_commandText, "", "Command text")
                     ->UIElement(AZ::Edit::UIHandlers::Button, "", "Trigger command test")
                     ->Attribute(AZ::Edit::Attributes::ChangeNotify, &GenAIFrameworkTestEditorComponent::CommandTest)
                     ->Attribute(AZ::Edit::Attributes::ButtonText, "Command Test");

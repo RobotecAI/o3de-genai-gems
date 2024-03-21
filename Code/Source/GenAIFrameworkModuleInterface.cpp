@@ -8,11 +8,11 @@
 
 #include "GenAIFrameworkModuleInterface.h"
 #include "Test/GenAIFrameworkTestComponent.h"
-#include <GenAIFramework/GenAIFrameworkTypeIds.h>
-#include <GenAIFramework/SystemRegistrationContext/GenAIFrameworkSystemRegistrationContext.h>
 #include <AzCore/Component/ComponentApplication.h>
 #include <AzCore/Memory/Memory.h>
 #include <Clients/GenAIFrameworkSystemComponent.h>
+#include <GenAIFramework/GenAIFrameworkTypeIds.h>
+#include <GenAIFramework/SystemRegistrationContext/GenAIFrameworkSystemRegistrationContext.h>
 namespace GenAIFramework
 {
     AZ_TYPE_INFO_WITH_NAME_IMPL(GenAIFrameworkModuleInterface, "GenAIFrameworkModuleInterface", GenAIFrameworkModuleInterfaceTypeId);

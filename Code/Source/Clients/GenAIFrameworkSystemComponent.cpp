@@ -12,7 +12,6 @@
 #include "AzCore/std/smart_ptr/shared_ptr.h"
 #include "Clients/GenAIFrameworkSystemComponentConfiguration.h"
 
-#include <GenAIFramework/GenAIFrameworkTypeIds.h>
 #include <Action/GenAIFrameworkLauncherScriptExecutor.h>
 #include <AzCore/Component/ComponentApplication.h>
 #include <AzCore/Component/ComponentApplicationBus.h>
@@ -21,11 +20,13 @@
 #include <AzCore/Serialization/SerializeContext.h>
 #include <AzCore/std/utility/move.h>
 #include <GenAIFramework/AIComponentBase/AIComponentBase.h>
+#include <GenAIFramework/GenAIFrameworkTypeIds.h>
 namespace GenAIFramework
 {
     AZ_COMPONENT_IMPL(GenAIFrameworkSystemComponent, "GenAIFrameworkSystemComponent", GenAIFrameworkSystemComponentTypeId);
 
-    AZStd::unique_ptr<GenAIFrameworkScriptExecutor> GenAIFrameworkSystemComponent::MakeScriptExecutor([[maybe_unused]] const AIContext& aiContext)
+    AZStd::unique_ptr<GenAIFrameworkScriptExecutor> GenAIFrameworkSystemComponent::MakeScriptExecutor(
+        [[maybe_unused]] const AIContext& aiContext)
     {
         return AZStd::make_unique<GenAIFrameworkLauncherScriptExecutor>();
     }
@@ -115,13 +116,15 @@ namespace GenAIFramework
         return result;
     }
 
-    AZStd::vector<AZStd::pair<AZStd::string, AZ::Uuid>> GenAIFrameworkSystemComponent::GetRegisteredModelConfigurationsNameAndComponentTypeId()
+    AZStd::vector<AZStd::pair<AZStd::string, AZ::Uuid>> GenAIFrameworkSystemComponent::
+        GetRegisteredModelConfigurationsNameAndComponentTypeId()
     {
         auto modelConfigurations = GetSystemRegistrationContext()->GetRegisteredModelConfigurations();
         return GetRegisteredComponentsNameAndComponentTypeId(modelConfigurations);
     }
 
-    AZStd::vector<AZStd::pair<AZStd::string, AZ::Uuid>> GenAIFrameworkSystemComponent::GetRegisteredServiceRequestersNameAndComponentTypeId()
+    AZStd::vector<AZStd::pair<AZStd::string, AZ::Uuid>> GenAIFrameworkSystemComponent::
+        GetRegisteredServiceRequestersNameAndComponentTypeId()
     {
         auto registeredRequesters = GetSystemRegistrationContext()->GetRegisteredServiceRequesters();
         return GetRegisteredComponentsNameAndComponentTypeId(registeredRequesters);
@@ -130,7 +133,7 @@ namespace GenAIFramework
     AZStd::vector<AZ::Component*> GenAIFrameworkSystemComponent::GetActiveComponents(const EntityIdToEntityMap& entities)
     {
         AZStd::vector<AZ::Component*> result;
-        for (auto &[_,entity] : entities)
+        for (auto& [_, entity] : entities)
         {
             if (entity)
             {
@@ -152,7 +155,9 @@ namespace GenAIFramework
     }
 
     AZ::Component* GenAIFrameworkSystemComponent::CreateNewComponentEntity(
-        const AZStd::string& name, const AZ::Uuid& componentTypeId, AZStd::unordered_map<AZ::EntityId,AZStd::shared_ptr<AZ::Entity>>& entities)
+        const AZStd::string& name,
+        const AZ::Uuid& componentTypeId,
+        AZStd::unordered_map<AZ::EntityId, AZStd::shared_ptr<AZ::Entity>>& entities)
     {
         AZStd::shared_ptr<AZ::Entity> newEntity = nullptr;
         newEntity = AZStd::make_shared<AZ::Entity>(name);
@@ -169,7 +174,8 @@ namespace GenAIFramework
         return CreateNewComponentEntity(configurationName, componentTypeId, m_configuration.m_modelConfigurations);
     }
 
-    AZ::Component* GenAIFrameworkSystemComponent::CreateNewServiceRequester(const AZStd::string& requesterName, const AZ::Uuid& componentTypeId)
+    AZ::Component* GenAIFrameworkSystemComponent::CreateNewServiceRequester(
+        const AZStd::string& requesterName, const AZ::Uuid& componentTypeId)
     {
         return CreateNewComponentEntity(requesterName, componentTypeId, m_configuration.m_serviceRequesters);
     }
@@ -213,7 +219,7 @@ namespace GenAIFramework
 
     void GenAIFrameworkSystemComponent::InitEntities(const EntityIdToEntityMap& entities)
     {
-        for (auto &[_,entity] : entities)
+        for (auto& [_, entity] : entities)
         {
             if (entity)
             {
@@ -224,7 +230,7 @@ namespace GenAIFramework
 
     void GenAIFrameworkSystemComponent::ActivateEntities(const EntityIdToEntityMap& entities)
     {
-        for (auto& [_,entity] : entities)
+        for (auto& [_, entity] : entities)
         {
             if (entity)
             {
@@ -235,7 +241,7 @@ namespace GenAIFramework
 
     void GenAIFrameworkSystemComponent::DeactivateEntities(const EntityIdToEntityMap& entities)
     {
-        for (auto& [_,entity] : entities)
+        for (auto& [_, entity] : entities)
         {
             if (entity)
             {
@@ -257,8 +263,11 @@ namespace GenAIFramework
 
     void GenAIFrameworkSystemComponent::Activate()
     {
-        AZ_Printf("GenAIFrameworkSystemComponent", "Activating GenAIFrameworkSystemComponent with %d service requesters and %d model configurations\n",
-            m_configuration.m_serviceRequesters.size(), m_configuration.m_modelConfigurations.size());
+        AZ_Printf(
+            "GenAIFrameworkSystemComponent",
+            "Activating GenAIFrameworkSystemComponent with %d service requesters and %d model configurations\n",
+            m_configuration.m_serviceRequesters.size(),
+            m_configuration.m_modelConfigurations.size());
         GenAIFrameworkRequestBus::Handler::BusConnect();
         m_actionRequestHandler.Connect();
 

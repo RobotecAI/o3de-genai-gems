@@ -7,9 +7,9 @@
  */
 
 #include "NewSegment.h"
-#include <GenAIFramework/GenAIFrameworkBus.h>
 #include <AzCore/Math/Uuid.h>
 #include <AzCore/std/string/string.h>
+#include <GenAIFramework/GenAIFrameworkBus.h>
 
 namespace GenAIFramework
 {
