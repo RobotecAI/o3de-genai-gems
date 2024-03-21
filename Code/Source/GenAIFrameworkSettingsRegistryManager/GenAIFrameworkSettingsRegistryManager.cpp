@@ -35,13 +35,13 @@ namespace GenAIFramework
         AZ_Assert(configurationRead, "Failed to read GenAIFramework settings from the Settings Registry");
         if (configurationRead)
         {
-            for (const auto &e : saveObject.m_serviceRequesters)
+            for (const auto &[id,e] : saveObject.m_serviceRequesters)
             {
-                AZ_Printf("GenAIFrameworkSettingsRegistryManager", "Service Requester: %s, %llu\n", e->GetName().c_str(), e->GetId());
+                AZ_Printf("GenAIFrameworkSettingsRegistryManager", "Service Requester: %s, %llu\n", e->GetName().c_str(), id);
             }
-            for (const auto &e : saveObject.m_modelConfigurations)
+            for (const auto &[id,e] : saveObject.m_modelConfigurations)
             {
-                AZ_Printf("GenAIFrameworkSettingsRegistryManager", "Model configuration: %s, %llu\n", e->GetName().c_str(), e->GetId());
+                AZ_Printf("GenAIFrameworkSettingsRegistryManager", "Model configuration: %s, %llu\n", e->GetName().c_str(), id);
             }
             return saveObject;
         }

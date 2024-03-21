@@ -25,7 +25,6 @@ namespace GenAIFramework
     class GenAIFrameworkSystemComponent
         : public AZ::Component
         , protected GenAIFrameworkRequestBus::Handler
-        , public AZ::TickBus::Handler
     {
     public:
         AZ_COMPONENT_DECL(GenAIFrameworkSystemComponent);
@@ -63,24 +62,19 @@ namespace GenAIFramework
         void Deactivate() override;
         ////////////////////////////////////////////////////////////////////////
 
-        ////////////////////////////////////////////////////////////////////////
-        // AZTickBus interface implementation
-        void OnTick(float deltaTime, AZ::ScriptTimePoint time) override;
-        ////////////////////////////////////////////////////////////////////////
-
         GenAIFrameworkSystemComponentConfiguration m_configuration;
         GenAIFrameworkSettingsRegistryManager m_settingsRegistryManager;
 
     private:
-        void InitEntities(const AZStd::vector<AZStd::shared_ptr<AZ::Entity>>& entities);
-        void ActivateEntities(const AZStd::vector<AZStd::shared_ptr<AZ::Entity>>& entities);
-        void DeactivateEntities(const AZStd::vector<AZStd::shared_ptr<AZ::Entity>>& entities);
+        static void InitEntities(const EntityIdToEntityMap& entities);
+        static void ActivateEntities(const EntityIdToEntityMap& entities);
+        static void DeactivateEntities(const EntityIdToEntityMap& entities);
         GenAIFrameworkActionRequestHandler m_actionRequestHandler;
 
         AZStd::vector<AZStd::pair<AZStd::string, AZ::Uuid>> GetRegisteredComponentsNameAndComponentTypeId(
             const AZStd::vector<AZ::Uuid>& componentTypeIds);
-        AZStd::vector<AZ::Component*> GetActiveComponents(AZStd::vector<AZStd::shared_ptr<AZ::Entity>> entities);
+        AZStd::vector<AZ::Component*> GetActiveComponents(const EntityIdToEntityMap& entities);
         AZ::Component* CreateNewComponentEntity(
-            const AZStd::string& name, const AZ::Uuid& componentTypeId, AZStd::vector<AZStd::shared_ptr<AZ::Entity>>& entities);
+            const AZStd::string& name, const AZ::Uuid& componentTypeId, EntityIdToEntityMap& entities);
     };
 } // namespace GenAIFramework
