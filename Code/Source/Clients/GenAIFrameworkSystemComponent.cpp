@@ -157,7 +157,7 @@ namespace GenAIFramework
     AZ::Component* GenAIFrameworkSystemComponent::CreateNewComponentEntity(
         const AZStd::string& name,
         const AZ::Uuid& componentTypeId,
-        AZStd::unordered_map<AZ::EntityId, AZStd::shared_ptr<AZ::Entity>>& entities)
+        EntityIdToEntityMap& entities)
     {
         AZStd::shared_ptr<AZ::Entity> newEntity = nullptr;
         newEntity = AZStd::make_shared<AZ::Entity>(name);
@@ -281,7 +281,6 @@ namespace GenAIFramework
 
     void GenAIFrameworkSystemComponent::Deactivate()
     {
-        m_actionRequestHandler.Disconnect();
         m_actionRequestHandler.Disconnect();
         GenAIFrameworkRequestBus::Handler::BusDisconnect();
 

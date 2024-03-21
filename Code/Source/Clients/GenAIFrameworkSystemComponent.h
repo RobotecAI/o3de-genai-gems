@@ -18,7 +18,6 @@
 #include <GenAIFramework/GenAIFrameworkBus.h>
 #include <GenAIFramework/SystemRegistrationContext/GenAIFrameworkSystemRegistrationContext.h>
 #include <AzCore/Component/Component.h>
-#include <AzCore/Component/TickBus.h>
 
 namespace GenAIFramework
 {
