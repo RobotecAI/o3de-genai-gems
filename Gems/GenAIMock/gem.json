@@ -2,12 +2,12 @@
     "gem_name": "GenAIMock",
     "version": "1.0.0",
     "display_name": "GenAIMock",
-    "license": "License used i.e. Apache-2.0 or MIT",
-    "license_url": "Link to the license web site i.e. https://opensource.org/licenses/Apache-2.0",
-    "origin": "The name of the originator or creator",
-    "origin_url": "The website for this Gem",
+    "license": "Apache-2.0",
+    "license_url": "https://opensource.org/licenses/Apache-2.0",
+    "origin": "RobotecAI",
+    "origin_url": "https://robotec.ai",
     "type": "Code",
-    "summary": "A short description of this Gem",
+    "summary": "Mock gem that can be used instead of a vendor LLM gem",
     "canonical_tags": [
         "Gem"
     ],
@@ -18,11 +18,14 @@
         ""
     ],
     "icon_path": "preview.png",
-    "requirements": "Notice of any requirements for this Gem i.e. This requires X other gem",
+    "requirements": "This gem requires GenAIFramework gem",
     "documentation_url": "Link to any documentation of your Gem",
-    "dependencies": [],
+    "dependencies": [
+        "GenAIFramework"
+    ],
     "repo_uri": "",
     "compatible_engines": [],
     "engine_api_dependencies": [],
     "restricted": "GenAIMock"
 }
+
