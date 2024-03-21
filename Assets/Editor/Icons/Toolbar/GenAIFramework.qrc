@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/GenAIFramework">
+     <file>AI.svg</file>
+    </qresource>
+</RCC>
+

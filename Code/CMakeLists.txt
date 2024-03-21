@@ -134,6 +134,7 @@ if(PAL_TRAIT_BUILD_HOST_TOOLS)
         NAME ${gem_name}.Editor GEM_MODULE
         NAMESPACE Gem
         AUTOMOC
+        AUTORCC
         FILES_CMAKE
             genaiframework_editor_shared_files.cmake
         INCLUDE_DIRECTORIES
@@ -146,6 +147,7 @@ if(PAL_TRAIT_BUILD_HOST_TOOLS)
                 Gem::${gem_name}.Editor.API
             PRIVATE
                 Gem::${gem_name}.Editor.Private.Object
+                AZ::AssetBuilderSDK
     )
 
     # By default, we will specify that the above target ${gem_name} would be used by
