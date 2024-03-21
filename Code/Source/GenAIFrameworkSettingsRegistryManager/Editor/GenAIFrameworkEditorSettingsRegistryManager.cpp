@@ -45,8 +45,8 @@ namespace GenAIFramework
         };
 
         rapidjson::Document GenAIFrameworkConfigurationDocument;
-        rapidjson::Value& GenAIFrameworkConfigurationValue =
-            rapidjson::CreateValueByPointer(GenAIFrameworkConfigurationDocument, rapidjson::Pointer(m_GenAIFrameworkSettingsRegistryPath.data()));
+        rapidjson::Value& GenAIFrameworkConfigurationValue = rapidjson::CreateValueByPointer(
+            GenAIFrameworkConfigurationDocument, rapidjson::Pointer(m_GenAIFrameworkSettingsRegistryPath.data()));
 
         AZ::JsonSerialization::Store(GenAIFrameworkConfigurationValue, GenAIFrameworkConfigurationDocument.GetAllocator(), saveObject);
 

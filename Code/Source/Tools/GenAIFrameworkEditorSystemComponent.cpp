@@ -9,27 +9,32 @@
 #include "GenAIFrameworkEditorSystemComponent.h"
 #include "GenAIFrameworkSettingsRegistryManager/GenAIFrameworkSettingsRegistryManager.h"
 
-#include <GenAIFramework/GenAIFrameworkEditorBus.h>
-#include <GenAIFramework/GenAIFrameworkTypeIds.h>
 #include <API/ViewPaneOptions.h>
 #include <Action/ActionTools/GenAIFrameworkEditorScriptExecutor.h>
 #include <AzCore/Component/Entity.h>
 #include <AzCore/Serialization/SerializeContext.h>
 #include <AzCore/std/containers/vector.h>
 #include <AzCore/std/smart_ptr/make_shared.h>
+#include <GenAIFramework/GenAIFrameworkEditorBus.h>
+#include <GenAIFramework/GenAIFrameworkTypeIds.h>
 
 namespace GenAIFramework
 {
-    AZ_COMPONENT_IMPL(GenAIFrameworkEditorSystemComponent, "GenAIFrameworkEditorSystemComponent", GenAIFrameworkEditorSystemComponentTypeId, BaseSystemComponent);
+    AZ_COMPONENT_IMPL(
+        GenAIFrameworkEditorSystemComponent,
+        "GenAIFrameworkEditorSystemComponent",
+        GenAIFrameworkEditorSystemComponentTypeId,
+        BaseSystemComponent);
 
-    AZStd::unique_ptr<GenAIFrameworkScriptExecutor> GenAIFrameworkEditorSystemComponent::MakeScriptExecutor([[maybe_unused]] const AIContext& aiContext)
+    AZStd::unique_ptr<GenAIFrameworkScriptExecutor> GenAIFrameworkEditorSystemComponent::MakeScriptExecutor(
+        [[maybe_unused]] const AIContext& aiContext)
     {
         return AZStd::make_unique<GenAIFrameworkEditorScriptExecutor>();
     }
 
     void GenAIFrameworkEditorSystemComponent::Reflect(AZ::ReflectContext* context)
     {
-        //GenAIFrameworkEditorScriptExecutor::Reflect(context);
+        // GenAIFrameworkEditorScriptExecutor::Reflect(context);
         if (auto serializeContext = azrtti_cast<AZ::SerializeContext*>(context))
         {
             serializeContext->Class<GenAIFrameworkEditorSystemComponent, GenAIFrameworkSystemComponent>()->Version(0);

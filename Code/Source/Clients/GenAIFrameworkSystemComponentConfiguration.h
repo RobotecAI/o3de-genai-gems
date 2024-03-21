@@ -16,11 +16,13 @@
 
 namespace GenAIFramework
 {
+    using EntityIdToEntityMap = AZStd::unordered_map<AZ::EntityId, AZStd::shared_ptr<AZ::Entity>>;
     //! Configuration for the GenAIFrameworkSystemComponent
     //! There should be only one instance of this class in existence. All other classes must be copies of the main one.
     class GenAIFrameworkSystemComponentConfiguration
     {
     public:
+
         AZ_RTTI(GenAIFrameworkSystemComponentConfiguration, "{6ab6e636-60dc-4377-bd45-2326cf6a0069}");
         AZ_CLASS_ALLOCATOR(GenAIFrameworkSystemComponentConfiguration, AZ::SystemAllocator);
 
@@ -29,7 +31,7 @@ namespace GenAIFramework
         GenAIFrameworkSystemComponentConfiguration() = default;
         virtual ~GenAIFrameworkSystemComponentConfiguration() = default;
 
-        AZStd::vector<AZStd::shared_ptr<AZ::Entity>> m_serviceRequesters;
-        AZStd::vector<AZStd::shared_ptr<AZ::Entity>> m_modelConfigurations;
+        EntityIdToEntityMap m_serviceRequesters;
+        EntityIdToEntityMap m_modelConfigurations;
     };
 } // namespace GenAIFramework

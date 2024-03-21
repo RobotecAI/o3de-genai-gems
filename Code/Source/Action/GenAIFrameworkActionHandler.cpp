@@ -7,8 +7,8 @@
  */
 
 #include "GenAIFrameworkActionHandler.h"
-#include <GenAIFramework/GenAIFrameworkBus.h>
 #include <AzCore/RTTI/BehaviorContext.h>
+#include <GenAIFramework/GenAIFrameworkBus.h>
 
 namespace GenAIFramework
 {
