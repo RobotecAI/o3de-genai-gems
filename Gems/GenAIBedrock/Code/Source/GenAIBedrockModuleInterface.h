@@ -6,8 +6,7 @@
 
 namespace GenAIBedrock
 {
-    class GenAIBedrockModuleInterface
-        : public AZ::Module
+    class GenAIBedrockModuleInterface : public AZ::Module
     {
     public:
         AZ_TYPE_INFO_WITH_NAME_DECL(GenAIBedrockModuleInterface)
@@ -21,4 +20,4 @@ namespace GenAIBedrock
          */
         AZ::ComponentTypeList GetRequiredSystemComponents() const override;
     };
-}// namespace GenAIBedrock
+} // namespace GenAIBedrock

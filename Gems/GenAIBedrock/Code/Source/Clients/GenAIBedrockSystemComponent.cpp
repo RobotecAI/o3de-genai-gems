@@ -7,16 +7,13 @@
 
 namespace GenAIBedrock
 {
-    AZ_COMPONENT_IMPL(GenAIBedrockSystemComponent, "GenAIBedrockSystemComponent",
-        GenAIBedrockSystemComponentTypeId);
+    AZ_COMPONENT_IMPL(GenAIBedrockSystemComponent, "GenAIBedrockSystemComponent", GenAIBedrockSystemComponentTypeId);
 
     void GenAIBedrockSystemComponent::Reflect(AZ::ReflectContext* context)
     {
         if (auto serializeContext = azrtti_cast<AZ::SerializeContext*>(context))
         {
-            serializeContext->Class<GenAIBedrockSystemComponent, AZ::Component>()
-                ->Version(0)
-                ;
+            serializeContext->Class<GenAIBedrockSystemComponent, AZ::Component>()->Version(0);
         }
     }
 
@@ -32,45 +29,10 @@ namespace GenAIBedrock
 
     void GenAIBedrockSystemComponent::GetRequiredServices([[maybe_unused]] AZ::ComponentDescriptor::DependencyArrayType& required)
     {
+        required.push_back(AZ_CRC_CE("AWSCoreService"));
     }
 
     void GenAIBedrockSystemComponent::GetDependentServices([[maybe_unused]] AZ::ComponentDescriptor::DependencyArrayType& dependent)
-    {
-    }
-
-    GenAIBedrockSystemComponent::GenAIBedrockSystemComponent()
-    {
-        if (GenAIBedrockInterface::Get() == nullptr)
-        {
-            GenAIBedrockInterface::Register(this);
-        }
-    }
-
-    GenAIBedrockSystemComponent::~GenAIBedrockSystemComponent()
-    {
-        if (GenAIBedrockInterface::Get() == this)
-        {
-            GenAIBedrockInterface::Unregister(this);
-        }
-    }
-
-    void GenAIBedrockSystemComponent::Init()
-    {
-    }
-
-    void GenAIBedrockSystemComponent::Activate()
-    {
-        GenAIBedrockRequestBus::Handler::BusConnect();
-        AZ::TickBus::Handler::BusConnect();
-    }
-
-    void GenAIBedrockSystemComponent::Deactivate()
-    {
-        AZ::TickBus::Handler::BusDisconnect();
-        GenAIBedrockRequestBus::Handler::BusDisconnect();
-    }
-
-    void GenAIBedrockSystemComponent::OnTick([[maybe_unused]] float deltaTime, [[maybe_unused]] AZ::ScriptTimePoint time)
     {
     }
 

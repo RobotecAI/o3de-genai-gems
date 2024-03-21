@@ -2,15 +2,10 @@
 #pragma once
 
 #include <AzCore/Component/Component.h>
-#include <AzCore/Component/TickBus.h>
-#include <GenAIBedrock/GenAIBedrockBus.h>
 
 namespace GenAIBedrock
 {
-    class GenAIBedrockSystemComponent
-        : public AZ::Component
-        , protected GenAIBedrockRequestBus::Handler
-        , public AZ::TickBus::Handler
+    class GenAIBedrockSystemComponent : public AZ::Component
     {
     public:
         AZ_COMPONENT_DECL(GenAIBedrockSystemComponent);
@@ -22,25 +17,14 @@ namespace GenAIBedrock
         static void GetRequiredServices(AZ::ComponentDescriptor::DependencyArrayType& required);
         static void GetDependentServices(AZ::ComponentDescriptor::DependencyArrayType& dependent);
 
-        GenAIBedrockSystemComponent();
-        ~GenAIBedrockSystemComponent();
+        GenAIBedrockSystemComponent() = default;
+        ~GenAIBedrockSystemComponent() = default;
 
     protected:
         ////////////////////////////////////////////////////////////////////////
-        // GenAIBedrockRequestBus interface implementation
-
-        ////////////////////////////////////////////////////////////////////////
-
-        ////////////////////////////////////////////////////////////////////////
         // AZ::Component interface implementation
-        void Init() override;
-        void Activate() override;
-        void Deactivate() override;
-        ////////////////////////////////////////////////////////////////////////
-
-        ////////////////////////////////////////////////////////////////////////
-        // AZTickBus interface implementation
-        void OnTick(float deltaTime, AZ::ScriptTimePoint time) override;
+        void Activate() override{};
+        void Deactivate() override{};
         ////////////////////////////////////////////////////////////////////////
     };
 
