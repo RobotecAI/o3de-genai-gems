@@ -7,7 +7,7 @@
  */
 
 #include "GenAIFrameworkEditorSystemComponent.h"
-#include "GenAIFrameworkSettingsRegistryManager/GenAIFrameworkSettingsRegistryManager.h"
+#include "SettingsRegistryManager/SettingsRegistryManager.h"
 
 #include <API/ViewPaneOptions.h>
 #include <Action/ActionTools/GenAIFrameworkEditorScriptExecutor.h>

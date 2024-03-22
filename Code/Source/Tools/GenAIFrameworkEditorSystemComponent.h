@@ -8,15 +8,15 @@
 
 #pragma once
 
-#include "GenAIFrameworkSettingsRegistryManager/Editor/GenAIFrameworkEditorSettingsRegistryManager.h"
-#include <GenAIFramework/GenAIFrameworkBus.h>
-#include <GenAIFramework/GenAIFrameworkEditorBus.h>
+#include "SettingsRegistryManager/Editor/EditorSettingsRegistryManager.h"
 #include <Action/GenAIFrameworkActionRequestHandler.h>
 #include <AzCore/Math/Uuid.h>
 #include <AzCore/std/string/string_view.h>
 #include <AzToolsFramework/API/ToolsApplicationAPI.h>
 #include <AzToolsFramework/Entity/EditorEntityContextBus.h>
 #include <Clients/GenAIFrameworkSystemComponent.h>
+#include <GenAIFramework/GenAIFrameworkBus.h>
+#include <GenAIFramework/GenAIFrameworkEditorBus.h>
 
 #include "UI/GenAIFrameworkWidget.h"
 
@@ -63,7 +63,6 @@ namespace GenAIFramework
         void Deactivate() override;
 
         GenAIFrameworkActionRequestHandler m_actionRequestHandler;
-        GenAIFrameworkEditorSettingsRegistryManager m_settingsRegistryManager;
+        EditorSettingsRegistryManager m_settingsRegistryManager;
     };
 } // namespace GenAIFramework
-

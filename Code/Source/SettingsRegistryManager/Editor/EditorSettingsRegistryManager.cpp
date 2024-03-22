@@ -6,13 +6,13 @@
  *
  */
 
-#include "GenAIFrameworkEditorSettingsRegistryManager.h"
 #include "AzCore/Outcome/Outcome.h"
+#include "EditorSettingsRegistryManager.h"
 
 namespace GenAIFramework
 {
-    GenAIFrameworkEditorSettingsRegistryManager::GenAIFrameworkEditorSettingsRegistryManager()
-        : GenAIFrameworkSettingsRegistryManager()
+    EditorSettingsRegistryManager::EditorSettingsRegistryManager()
+        : SettingsRegistryManager()
     {
         AZ::IO::FixedMaxPath projectPath = AZ::Utils::GetProjectPath();
         projectPath /= "Registry";
@@ -20,8 +20,7 @@ namespace GenAIFramework
         m_GenAIFrameworkSettingsRegistryFilePath /= "genaiframeworksystemconfiguration.setreg";
     }
 
-    void GenAIFrameworkEditorSettingsRegistryManager::SaveSystemConfiguration(
-        const SaveObject& saveObject, const OnConfigSaveComplete& saveCallback)
+    void EditorSettingsRegistryManager::SaveSystemConfiguration(const SaveObject& saveObject, const OnConfigSaveComplete& saveCallback)
     {
         bool sourceControlActive = false;
         AzToolsFramework::SourceControlConnectionRequestBus::BroadcastResult(

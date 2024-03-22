@@ -8,13 +8,13 @@
 
 #pragma once
 
-#include <GenAIFrameworkSettingsRegistryManager/GenAIFrameworkSettingsRegistryManager.h>
 #include <AzCore/IO/ByteContainerStream.h>
 #include <AzCore/IO/TextStreamWriters.h>
 #include <AzCore/JSON/pointer.h>
 #include <AzCore/JSON/prettywriter.h>
 #include <AzCore/Utils/Utils.h>
 #include <AzToolsFramework/SourceControl/SourceControlAPI.h>
+#include <SettingsRegistryManager/SettingsRegistryManager.h>
 
 namespace GenAIFramework
 {
@@ -38,7 +38,8 @@ namespace GenAIFramework
             {
                 if (info.IsLockedByOther())
                 {
-                    AZ_Warning("GenAIFramework", false, R"(The file "%s" already exclusively opened by another user)", info.m_filePath.c_str());
+                    AZ_Warning(
+                        "GenAIFramework", false, R"(The file "%s" already exclusively opened by another user)", info.m_filePath.c_str());
                     return;
                 }
                 else if (info.IsReadOnly() && AZ::IO::SystemFile::Exists(info.m_filePath.c_str()))
@@ -64,11 +65,11 @@ namespace GenAIFramework
         }
     } // namespace Internal
 
-    class GenAIFrameworkEditorSettingsRegistryManager : public GenAIFrameworkSettingsRegistryManager
+    class EditorSettingsRegistryManager : public SettingsRegistryManager
     {
     public:
-        GenAIFrameworkEditorSettingsRegistryManager();
-        ~GenAIFrameworkEditorSettingsRegistryManager() = default;
+        EditorSettingsRegistryManager();
+        ~EditorSettingsRegistryManager() = default;
 
         void SaveSystemConfiguration(const SaveObject& saveObject, const OnConfigSaveComplete& saveCallback);
 

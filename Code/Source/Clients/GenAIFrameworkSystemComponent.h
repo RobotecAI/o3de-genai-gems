@@ -8,16 +8,15 @@
 
 #pragma once
 
-#include "GenAIFrameworkSettingsRegistryManager/GenAIFrameworkSettingsRegistryManager.h"
+#include "SettingsRegistryManager/SettingsRegistryManager.h"
 #include "Clients/GenAIFrameworkSystemComponentConfiguration.h"
 
-#include <GenAIFramework/GenAIFrameworkBus.h>
-#include <GenAIFramework/GenAIFrameworkScriptExecutor.h>
 #include <Action/GenAIFrameworkActionRequestHandler.h>
+#include <AzCore/Component/Component.h>
 #include <AzCore/std/smart_ptr/shared_ptr.h>
 #include <GenAIFramework/GenAIFrameworkBus.h>
-#include <GenAIFramework/SystemRegistrationContext/GenAIFrameworkSystemRegistrationContext.h>
-#include <AzCore/Component/Component.h>
+#include <GenAIFramework/GenAIFrameworkScriptExecutor.h>
+#include <GenAIFramework/SystemRegistrationContext/SystemRegistrationContext.h>
 
 namespace GenAIFramework
 {
@@ -42,7 +41,7 @@ namespace GenAIFramework
         ////////////////////////////////////////////////////////////////////////
         // GenAIFrameworkRequestBus interface implementation
         AZStd::unique_ptr<GenAIFrameworkScriptExecutor> MakeScriptExecutor(const AIContext& aiContext) override;
-        GenAIFrameworkSystemRegistrationContext* GetSystemRegistrationContext() override;
+        SystemRegistrationContext* GetSystemRegistrationContext() override;
         AZStd::vector<AZStd::pair<AZStd::string, AZ::Uuid>> GetRegisteredModelConfigurationsNameAndComponentTypeId() override;
         AZStd::vector<AZStd::pair<AZStd::string, AZ::Uuid>> GetRegisteredServiceRequestersNameAndComponentTypeId() override;
         AZStd::vector<AZ::Component*> GetActiveModelConfigurations() override;
@@ -62,7 +61,7 @@ namespace GenAIFramework
         ////////////////////////////////////////////////////////////////////////
 
         GenAIFrameworkSystemComponentConfiguration m_configuration;
-        GenAIFrameworkSettingsRegistryManager m_settingsRegistryManager;
+        SettingsRegistryManager m_settingsRegistryManager;
 
     private:
         static void InitEntities(const EntityIdToEntityMap& entities);

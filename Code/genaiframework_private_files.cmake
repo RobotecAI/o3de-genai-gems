@@ -9,8 +9,8 @@ set(FILES
     Source/GenAIFrameworkModuleInterface.cpp
     Source/GenAIFrameworkModuleInterface.h
 
-    Source/GenAIFrameworkSettingsRegistryManager/GenAIFrameworkSettingsRegistryManager.cpp
-    Source/GenAIFrameworkSettingsRegistryManager/GenAIFrameworkSettingsRegistryManager.h
+    Source/SettingsRegistryManager/SettingsRegistryManager.cpp
+    Source/SettingsRegistryManager/SettingsRegistryManager.h
 
     Source/BehaviorContextUtils/BehaviorContextDump.cpp
     Source/BehaviorContextUtils/BehaviorContextDump.h

@@ -11,11 +11,11 @@
 #if !defined(Q_MOC_RUN)
 #include "NewSegment.h"
 #include "Segment.h"
-#include <GenAIFrameworkSettingsRegistryManager/GenAIFrameworkSettingsRegistryManager.h>
 #include <AzQtComponents/Components/Widgets/SegmentControl.h>
 #include <AzToolsFramework/API/ToolsApplicationAPI.h>
 #include <QWidget>
 #include <QtCore/qstringliteral.h>
+#include <SettingsRegistryManager/SettingsRegistryManager.h>
 #include <UI/PropertyEditor/ReflectedPropertyEditor.hxx>
 #include <qobjectdefs.h>
 

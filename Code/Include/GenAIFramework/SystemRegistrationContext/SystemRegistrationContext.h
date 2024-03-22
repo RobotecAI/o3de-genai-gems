@@ -18,14 +18,14 @@
 
 namespace GenAIFramework
 {
-    class GenAIFrameworkSystemRegistrationContext : public AZ::ReflectContext
+    class SystemRegistrationContext : public AZ::ReflectContext
     {
     public:
-        GenAIFrameworkSystemRegistrationContext() = default;
-        ~GenAIFrameworkSystemRegistrationContext() = default;
+        SystemRegistrationContext() = default;
+        ~SystemRegistrationContext() = default;
 
-        AZ_CLASS_ALLOCATOR(GenAIFrameworkSystemRegistrationContext, AZ::SystemAllocator);
-        AZ_RTTI(GenAIFrameworkSystemRegistrationContext, "{e162937c-0177-4ced-87b3-3b037a44c394}", AZ::ReflectContext);
+        AZ_CLASS_ALLOCATOR(SystemRegistrationContext, AZ::SystemAllocator);
+        AZ_RTTI(SystemRegistrationContext, "{e162937c-0177-4ced-87b3-3b037a44c394}", AZ::ReflectContext);
 
         template<class C>
         void RegisterGenAIFrameworkServiceRequester()
