@@ -7,7 +7,7 @@
  */
 
 #include "MockRequesterComponent.h"
-#include <GenAIFramework/SystemRegistrationContext/GenAIFrameworkSystemRegistrationContext.h>
+#include <GenAIFramework/SystemRegistrationContext/SystemRegistrationContext.h>
 
 #include <AzCore/Component/Component.h>
 #include <AzCore/Outcome/Outcome.h>
@@ -55,7 +55,7 @@ namespace GenAIMock
             }
         }
 
-        if (auto registrationContext = azrtti_cast<GenAIFramework::GenAIFrameworkSystemRegistrationContext*>(context))
+        if (auto registrationContext = azrtti_cast<GenAIFramework::SystemRegistrationContext*>(context))
         {
             registrationContext->RegisterGenAIFrameworkServiceRequester<MockRequesterComponent>();
         }

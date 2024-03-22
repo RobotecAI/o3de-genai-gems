@@ -6,7 +6,7 @@
 #include <AzCore/Serialization/EditContext.h>
 #include <AzCore/Serialization/SerializeContext.h>
 #include <GenAIFramework/Communication/AIModelRequestBus.h>
-#include <GenAIFramework/SystemRegistrationContext/GenAIFrameworkSystemRegistrationContext.h>
+#include <GenAIFramework/SystemRegistrationContext/SystemRegistrationContext.h>
 #include <aws/core/utils/json/JsonSerializer.h>
 #include <sstream>
 
@@ -40,8 +40,7 @@ namespace GenAIBedrock
             }
         }
 
-        using namespace GenAIFramework;
-        if (auto registrationContext = azrtti_cast<GenAIFrameworkSystemRegistrationContext*>(context))
+        if (auto registrationContext = azrtti_cast<GenAIFramework::SystemRegistrationContext*>(context))
         {
             registrationContext->RegisterModelConfiguration<ClaudePromptGeneratorComponent>();
         }
