@@ -12,13 +12,14 @@
 #include <AzCore/Component/EntityId.h>
 #include <AzCore/std/containers/vector.h>
 #include <AzCore/std/string/string.h>
+#include <AzToolsFramework/ToolsComponents/EditorComponentBase.h>
 
 namespace GenAIFramework
 {
-    class AIComponentBase : public AZ::Component
+    class AIComponentBase : public AzToolsFramework::Components::EditorComponentBase
     {
     public:
-        AZ_COMPONENT(AIComponentBase, "{43956388-0819-4a78-9307-1e485220ee9c}", AZ::Component);
+        AZ_COMPONENT(AIComponentBase, "{43956388-0819-4a78-9307-1e485220ee9c}", AzToolsFramework::Components::EditorComponentBase);
 
         AIComponentBase() = default;
         ~AIComponentBase() = default;

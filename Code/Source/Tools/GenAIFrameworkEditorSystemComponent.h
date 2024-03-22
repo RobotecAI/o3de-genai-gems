@@ -28,6 +28,7 @@ namespace GenAIFramework
         , protected AzToolsFramework::EditorEvents::Bus::Handler
         , private AzToolsFramework::EditorEntityContextNotificationBus::Handler
         , protected GenAIFrameworkEditorRequestBus::Handler
+        , protected GenAIFrameworkNotificationBus::Handler
     {
         using BaseSystemComponent = GenAIFrameworkSystemComponent;
 
@@ -64,5 +65,12 @@ namespace GenAIFramework
 
         GenAIFrameworkActionRequestHandler m_actionRequestHandler;
         EditorSettingsRegistryManager m_settingsRegistryManager;
+
+        ////////////////////////////////////////////////////////////////////////
+        // GenAIFrameworkNotificationBus overrides
+        void OnServiceRequestorAdded(const AZ::EntityId& serviceRequestorId) override;
+        void OnServiceRequestorRemoved(const AZ::EntityId& serviceRequestorId) override;
+        void OnModelConfigurationAdded(const AZ::EntityId& modelConfigurationId) override;
+        void OnModelConfigurationRemoved(const AZ::EntityId& modelConfigurationId) override;
     };
 } // namespace GenAIFramework

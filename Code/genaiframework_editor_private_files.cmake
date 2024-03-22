@@ -13,6 +13,8 @@ set(FILES
     Source/Test/CustomEditorRequests.cpp
     Source/Test/CustomEditorRequests.h
 
+    Source/AIComponentBase/AIComponentBase.cpp
+
     Source/Tools/GenAIFrameworkEditorSystemComponent.cpp
     Source/Tools/GenAIFrameworkEditorSystemComponent.h
     Source/Tools/PromptComponent.cpp

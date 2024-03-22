@@ -19,8 +19,8 @@
 #include <AzCore/Serialization/EditContext.h>
 #include <AzCore/Serialization/SerializeContext.h>
 #include <AzCore/std/utility/move.h>
-#include <GenAIFramework/AIComponentBase/AIComponentBase.h>
 #include <GenAIFramework/GenAIFrameworkTypeIds.h>
+
 namespace GenAIFramework
 {
     AZ_COMPONENT_IMPL(GenAIFrameworkSystemComponent, "GenAIFrameworkSystemComponent", GenAIFrameworkSystemComponentTypeId);
@@ -33,7 +33,6 @@ namespace GenAIFramework
 
     void GenAIFrameworkSystemComponent::Reflect(AZ::ReflectContext* context)
     {
-        AIComponentBase::Reflect(context);
         GenAIFrameworkLauncherScriptExecutor::Reflect(context);
         GenAIFrameworkSystemComponentConfiguration::Reflect(context);
         if (auto serializeContext = azrtti_cast<AZ::SerializeContext*>(context))
