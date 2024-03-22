@@ -6,7 +6,7 @@
  *
  */
 #include "MockPromptGeneratorComponent.h"
-#include <GenAIFramework/SystemRegistrationContext/GenAIFrameworkSystemRegistrationContext.h>
+#include <GenAIFramework/SystemRegistrationContext/SystemRegistrationContext.h>
 
 #include <cstdlib>
 
@@ -31,7 +31,7 @@ namespace GenAIMock
             }
         }
 
-        if (auto registrationContext = azrtti_cast<GenAIFramework::GenAIFrameworkSystemRegistrationContext*>(context))
+        if (auto registrationContext = azrtti_cast<GenAIFramework::SystemRegistrationContext*>(context))
         {
             registrationContext->RegisterModelConfiguration<MockPromptGeneratorComponent>();
         }

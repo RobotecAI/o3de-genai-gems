@@ -6,7 +6,7 @@
 #include <AzCore/Serialization/EditContextConstants.inl>
 #include <AzCore/Serialization/SerializeContext.h>
 #include <AzCore/std/string/string.h>
-#include <GenAIFramework/SystemRegistrationContext/GenAIFrameworkSystemRegistrationContext.h>
+#include <GenAIFramework/SystemRegistrationContext/SystemRegistrationContext.h>
 
 #include <aws/bedrock-runtime/BedrockRuntimeErrors.h>
 #include <aws/bedrock-runtime/BedrockRuntimeServiceClientModel.h>
@@ -62,7 +62,7 @@ namespace GenAIBedrock
             }
         }
 
-        if (auto registrationContext = azrtti_cast<GenAIFramework::GenAIFrameworkSystemRegistrationContext*>(context))
+        if (auto registrationContext = azrtti_cast<GenAIFramework::SystemRegistrationContext*>(context))
         {
             registrationContext->RegisterGenAIFrameworkServiceRequester<AwsSdkBedrockRequesterComponent>();
         }
@@ -119,7 +119,7 @@ namespace GenAIBedrock
     {
         using namespace Aws::BedrockRuntime;
 
-        Aws::BedrockRuntime::Model::InvokeModelRequest invokeModelRequest;
+        Model::InvokeModelRequest invokeModelRequest;
         invokeModelRequest.SetModelId(m_configuration.m_modelId.c_str());
         std::shared_ptr<Aws::StringStream> ss = std::make_shared<Aws::StringStream>();
         *ss << request.c_str();
@@ -127,12 +127,11 @@ namespace GenAIBedrock
         invokeModelRequest.SetBody(ss);
         invokeModelRequest.SetContentType("application/json");
 
-        Aws::BedrockRuntime::InvokeModelResponseReceivedHandler handler =
-            [callback](
-                const BedrockRuntimeClient* client,
-                const Model::InvokeModelRequest& request,
-                Model::InvokeModelOutcome outcome,
-                const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context)
+        InvokeModelResponseReceivedHandler handler = [callback](
+                                                         const BedrockRuntimeClient* client,
+                                                         const Model::InvokeModelRequest& request,
+                                                         Model::InvokeModelOutcome outcome,
+                                                         const std::shared_ptr<const Aws::Client::AsyncCallerContext>& context)
         {
             if (outcome.IsSuccess())
             {
@@ -145,7 +144,7 @@ namespace GenAIBedrock
             }
             else
             {
-                const Aws::BedrockRuntime::BedrockRuntimeError& error = outcome.GetError();
+                const BedrockRuntimeError& error = outcome.GetError();
                 callback(AZ::Failure(error.GetMessage().c_str()));
             }
         };

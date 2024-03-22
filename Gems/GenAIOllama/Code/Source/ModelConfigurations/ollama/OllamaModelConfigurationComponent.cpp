@@ -4,7 +4,7 @@
 #include <AzCore/Serialization/EditContext.h>
 #include <AzCore/Serialization/SerializeContext.h>
 #include <AzCore/std/string/string.h>
-#include <GenAIFramework/SystemRegistrationContext/GenAIFrameworkSystemRegistrationContext.h>
+#include <GenAIFramework/SystemRegistrationContext/SystemRegistrationContext.h>
 #include <aws/core/utils/json/JsonSerializer.h>
 
 namespace GenAIOllama
@@ -144,10 +144,9 @@ namespace GenAIOllama
             }
         }
 
-        using namespace GenAIFramework;
-        if (auto registrationContext = azrtti_cast<GenAIFrameworkSystemRegistrationContext*>(context))
+        if (auto registrationContext = azrtti_cast<GenAIFramework::SystemRegistrationContext*>(context))
         {
-            registrationContext->RegisterModelConfiguration<GenAIOllama::OllamaModelConfigurationComponent>();
+            registrationContext->RegisterModelConfiguration<OllamaModelConfigurationComponent>();
         }
     }
 

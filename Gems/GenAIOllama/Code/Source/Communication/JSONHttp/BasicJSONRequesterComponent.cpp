@@ -5,7 +5,7 @@
 #include <AzCore/Serialization/EditContext.h>
 #include <AzCore/Serialization/SerializeContext.h>
 #include <AzCore/std/string/string.h>
-#include <GenAIFramework/SystemRegistrationContext/GenAIFrameworkSystemRegistrationContext.h>
+#include <GenAIFramework/SystemRegistrationContext/SystemRegistrationContext.h>
 #include <HttpRequestor/HttpRequestorBus.h>
 #include <HttpRequestor/HttpTypes.h>
 
@@ -32,7 +32,7 @@ namespace GenAIOllama
                         AZ::Edit::UIHandlers::Default,
                         &BasicJSONRequesterConfiguration::m_url,
                         "EndpointURL",
-                        "An url with port pointing to an HTTP endpoint (format addres:port)")
+                        "An url with port pointing to an HTTP endpoint (format address:port)")
                     ->DataElement(
                         AZ::Edit::UIHandlers::Default,
                         &BasicJSONRequesterConfiguration::m_contentType,
@@ -70,8 +70,7 @@ namespace GenAIOllama
             }
         }
 
-        using namespace GenAIOllama;
-        if (auto registrationContext = azrtti_cast<GenAIFramework::GenAIFrameworkSystemRegistrationContext*>(context))
+        if (auto registrationContext = azrtti_cast<GenAIFramework::SystemRegistrationContext*>(context))
         {
             registrationContext->RegisterGenAIFrameworkServiceRequester<BasicJSONRequesterComponent>();
         }
@@ -84,7 +83,6 @@ namespace GenAIOllama
 
     void BasicJSONRequesterComponent::Deactivate()
     {
-        using namespace GenAIOllama;
         GenAIFramework::AIServiceRequesterBus::Handler::BusDisconnect();
     }
 
