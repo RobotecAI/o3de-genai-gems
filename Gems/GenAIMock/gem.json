@@ -7,7 +7,7 @@
     "origin": "RobotecAI",
     "origin_url": "https://robotec.ai",
     "type": "Code",
-    "summary": "Mock gem that can be used instead of a vendor LLM gem",
+    "summary": "Mock vendor gem that simulates the communication with an AI model",
     "canonical_tags": [
         "Gem"
     ],
@@ -21,7 +21,7 @@
     "requirements": "This gem requires GenAIFramework gem",
     "documentation_url": "Link to any documentation of your Gem",
     "dependencies": [
-        "GenAIFramework"
+        "GenAIFramework==1.0.0"
     ],
     "repo_uri": "",
     "compatible_engines": [],

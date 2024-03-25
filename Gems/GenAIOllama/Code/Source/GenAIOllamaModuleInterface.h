@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) Contributors to the Open 3D Engine Project.
+ * For complete copyright and license terms please see the LICENSE at the root of this distribution.
+ *
+ * SPDX-License-Identifier: Apache-2.0 OR MIT
+ *
+ */
 
 #include <AzCore/Memory/Memory_fwd.h>
 #include <AzCore/Module/Module.h>
@@ -6,8 +13,7 @@
 
 namespace GenAIOllama
 {
-    class GenAIOllamaModuleInterface
-        : public AZ::Module
+    class GenAIOllamaModuleInterface : public AZ::Module
     {
     public:
         AZ_TYPE_INFO_WITH_NAME_DECL(GenAIOllamaModuleInterface)
@@ -21,4 +27,4 @@ namespace GenAIOllama
          */
         AZ::ComponentTypeList GetRequiredSystemComponents() const override;
     };
-}// namespace GenAIOllama
+} // namespace GenAIOllama
