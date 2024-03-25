@@ -1,20 +1,26 @@
+/*
+ * Copyright (c) Contributors to the Open 3D Engine Project.
+ * For complete copyright and license terms please see the LICENSE at the root of this distribution.
+ *
+ * SPDX-License-Identifier: Apache-2.0 OR MIT
+ *
+ */
 
-#include <AzCore/Serialization/SerializeContext.h>
 #include "GenAIOllamaEditorSystemComponent.h"
+#include <AzCore/Serialization/SerializeContext.h>
 
 #include <GenAIOllama/GenAIOllamaTypeIds.h>
 
 namespace GenAIOllama
 {
-    AZ_COMPONENT_IMPL(GenAIOllamaEditorSystemComponent, "GenAIOllamaEditorSystemComponent",
-        GenAIOllamaEditorSystemComponentTypeId, BaseSystemComponent);
+    AZ_COMPONENT_IMPL(
+        GenAIOllamaEditorSystemComponent, "GenAIOllamaEditorSystemComponent", GenAIOllamaEditorSystemComponentTypeId, BaseSystemComponent);
 
     void GenAIOllamaEditorSystemComponent::Reflect(AZ::ReflectContext* context)
     {
         if (auto serializeContext = azrtti_cast<AZ::SerializeContext*>(context))
         {
-            serializeContext->Class<GenAIOllamaEditorSystemComponent, GenAIOllamaSystemComponent>()
-                ->Version(0);
+            serializeContext->Class<GenAIOllamaEditorSystemComponent, GenAIOllamaSystemComponent>()->Version(0);
         }
     }
 
