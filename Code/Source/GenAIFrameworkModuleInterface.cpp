@@ -10,9 +10,11 @@
 #include "Test/GenAIFrameworkTestComponent.h"
 #include <AzCore/Component/ComponentApplication.h>
 #include <AzCore/Memory/Memory.h>
+#include <Clients/GenAIAsyncRequestSystemComponent.h>
 #include <Clients/GenAIFrameworkSystemComponent.h>
 #include <GenAIFramework/GenAIFrameworkTypeIds.h>
 #include <GenAIFramework/SystemRegistrationContext/SystemRegistrationContext.h>
+
 namespace GenAIFramework
 {
     AZ_TYPE_INFO_WITH_NAME_IMPL(GenAIFrameworkModuleInterface, "GenAIFrameworkModuleInterface", GenAIFrameworkModuleInterfaceTypeId);
@@ -30,6 +32,7 @@ namespace GenAIFramework
             {
                 GenAIFrameworkSystemComponent::CreateDescriptor(),
                 GenAIFrameworkTestComponent::CreateDescriptor(),
+                GenAIAsyncRequestSystemComponent::CreateDescriptor(),
             });
 
         // Create a new reflection context for reflecting serviceRequesters and modelConfigurations
@@ -38,8 +41,6 @@ namespace GenAIFramework
 
     AZ::ComponentTypeList GenAIFrameworkModuleInterface::GetRequiredSystemComponents() const
     {
-        return AZ::ComponentTypeList{
-            azrtti_typeid<GenAIFrameworkSystemComponent>(),
-        };
+        return AZ::ComponentTypeList{ azrtti_typeid<GenAIFrameworkSystemComponent>(), azrtti_typeid<GenAIAsyncRequestSystemComponent>() };
     }
 } // namespace GenAIFramework

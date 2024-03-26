@@ -155,9 +155,7 @@ namespace GenAIFramework
     }
 
     AZ::Component* GenAIFrameworkSystemComponent::CreateNewComponentEntity(
-        const AZStd::string& name,
-        const AZ::Uuid& componentTypeId,
-        EntityIdToEntityMap& entities)
+        const AZStd::string& name, const AZ::Uuid& componentTypeId, EntityIdToEntityMap& entities)
     {
         AZStd::shared_ptr<AZ::Entity> newEntity = nullptr;
         newEntity = AZStd::make_shared<AZ::Entity>(name);
