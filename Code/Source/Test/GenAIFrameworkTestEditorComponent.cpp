@@ -47,10 +47,12 @@ namespace GenAIFramework
 
             if (AZ::EditContext* ec = serializeContext->GetEditContext())
             {
-                ec->Class<GenAIFrameworkTestEditorComponent>("AI Test Editor Component", "Simple test of AI")
+                ec->Class<GenAIFrameworkTestEditorComponent>("Test Editor Component", "Simple test of AI")
                     ->ClassElement(AZ::Edit::ClassElements::EditorData, "")
                     ->Attribute(AZ::Edit::Attributes::AppearsInAddComponentMenu, AZ_CRC_CE("Game"))
                     ->Attribute(AZ::Edit::Attributes::Category, "AI")
+                    ->Attribute(AZ::Edit::Attributes::Icon, "Editor/Icons/Components/AITest.svg")
+                    ->Attribute(AZ::Edit::Attributes::ViewportIcon, "Editor/Icons/Components/Viewport/AITest.svg")
                     ->DataElement(AZ::Edit::UIHandlers::Default, &GenAIFrameworkTestEditorComponent::m_className, "", "Class name")
                     ->UIElement(AZ::Edit::UIHandlers::Button, "", "List classes matching filter")
                     ->Attribute(AZ::Edit::Attributes::ChangeNotify, &GenAIFrameworkTestEditorComponent::ListClasses)
