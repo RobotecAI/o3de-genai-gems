@@ -1,11 +1,19 @@
-#pragma once
+/*
+ * Copyright (c) Contributors to the Open 3D Engine Project.
+ * For complete copyright and license terms please see the LICENSE at the root of this distribution.
+ *
+ * SPDX-License-Identifier: Apache-2.0 OR MIT
+ *
+ */
 
 #include "GenAIAsyncRequestSystemComponent.h"
 #include <AzCore/Component/Entity.h>
+#include <AzCore/RTTI/BehaviorContext.h>
 #include <AzCore/Serialization/SerializeContext.h>
 #include <GenAIFramework/Communication/AIModelRequestBus.h>
 #include <GenAIFramework/Communication/AIServiceRequesterBus.h>
 #include <GenAIFramework/GenAIFrameworkBus.h>
+
 namespace GenAIFramework
 {
     AZ_COMPONENT_IMPL(GenAIAsyncRequestSystemComponent, "GenAIAsyncRequestSystemComponent", GenAIAsyncRequestSystemComponentTypeId);

@@ -7,6 +7,7 @@
  */
 
 #pragma once
+
 #include <AzCore/Component/ComponentBus.h>
 #include <AzCore/EBus/EBus.h>
 #include <AzCore/Interface/Interface.h>

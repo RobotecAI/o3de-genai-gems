@@ -28,18 +28,11 @@ namespace GenAIFramework
 
     void GenAIAsyncRequestEditorSystemComponent::Reflect(AZ::ReflectContext* context)
     {
-        // GenAIFrameworkEditorScriptExecutor::Reflect(context);
         if (auto serializeContext = azrtti_cast<AZ::SerializeContext*>(context))
         {
             serializeContext->Class<GenAIAsyncRequestEditorSystemComponent, GenAIAsyncRequestSystemComponent>()->Version(0);
         }
     }
-
-    GenAIAsyncRequestEditorSystemComponent::GenAIAsyncRequestEditorSystemComponent()
-    {
-    }
-
-    GenAIAsyncRequestEditorSystemComponent::~GenAIAsyncRequestEditorSystemComponent(){};
 
     void GenAIAsyncRequestEditorSystemComponent::GetProvidedServices(AZ::ComponentDescriptor::DependencyArrayType& provided)
     {
@@ -53,8 +46,7 @@ namespace GenAIFramework
         incompatible.push_back(AZ_CRC_CE("GenAIAsyncRequestEditorSystemComponentService"));
     }
 
-    void GenAIAsyncRequestEditorSystemComponent::GetRequiredServices(
-        [[maybe_unused]] AZ::ComponentDescriptor::DependencyArrayType& required)
+    void GenAIAsyncRequestEditorSystemComponent::GetRequiredServices(AZ::ComponentDescriptor::DependencyArrayType& required)
     {
         BaseSystemComponent::GetRequiredServices(required);
     }
