@@ -133,7 +133,7 @@ namespace GenAIOllama
 
         if (auto serializeContext = azrtti_cast<AZ::SerializeContext*>(context))
         {
-            serializeContext->Class<OllamaModelConfigurationComponent>()->Version(0)->Field(
+            serializeContext->Class<OllamaModelConfigurationComponent, AZ::Component>()->Version(0)->Field(
                 "Configuration", &OllamaModelConfigurationComponent::m_configuration);
 
             if (auto editContext = serializeContext->GetEditContext())
