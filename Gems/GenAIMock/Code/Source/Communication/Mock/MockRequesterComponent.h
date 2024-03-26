@@ -10,9 +10,12 @@
 
 #include <GenAIFramework/Communication/AIServiceRequesterBus.h>
 
+#include <AzCore/Asset/AssetCommon.h>
 #include <AzCore/Component/Component.h>
+#include <AzCore/IO/FileIO.h>
+#include <AzCore/IO/Path/Path.h>
 #include <AzCore/RTTI/RTTIMacros.h>
-#include <AzCore/std/containers/unordered_map.h>
+#include <AzCore/std/containers/vector.h>
 #include <AzCore/std/string/string.h>
 
 namespace GenAIMock
@@ -27,6 +30,10 @@ namespace GenAIMock
         ~MockRequesterComponentConfiguration() = default;
 
         static void Reflect(AZ::ReflectContext* context);
+        AZ::IO::Path GetAssetPath() const;
+
+    private:
+        AZ::IO::Path m_assetPath; //!< Path of the JSON asset
     };
 
     class MockRequesterComponent
@@ -36,7 +43,7 @@ namespace GenAIMock
     public:
         AZ_COMPONENT(MockRequesterComponent, "{db01be29-ec0b-41e1-bf68-12d70dd6b630}");
 
-        MockRequesterComponent();
+        MockRequesterComponent() = default;
         explicit MockRequesterComponent(const MockRequesterComponentConfiguration& config);
 
         static void Reflect(AZ::ReflectContext* context);
@@ -57,6 +64,8 @@ namespace GenAIMock
 
     private:
         MockRequesterComponentConfiguration m_configuration;
-        AZStd::unordered_map<AZStd::string, AZStd::string> m_testData;
+        AZStd::vector<AZStd::string> m_testData;
+
+        void ReloadAsset();
     };
 } // namespace GenAIMock

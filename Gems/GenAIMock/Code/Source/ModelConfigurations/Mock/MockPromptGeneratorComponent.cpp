@@ -64,7 +64,7 @@ namespace GenAIMock
             return AZStd::to_string(m_lastCompleted);
         }
 
-        int index = std::atoi(prompt.c_str());
+        const int index = std::atoi(prompt.c_str());
         if (index < 0)
         {
             m_lastCompleted = 0;
