@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include <AzCore/Component/EntityId.h>
 #include <AzCore/Component/Component.h>
 #include <AzCore/EBus/EBus.h>
 #include <AzCore/Interface/Interface.h>
@@ -57,4 +58,24 @@ namespace GenAIFramework
 
     using GenAIFrameworkRequestBus = AZ::EBus<GenAIFrameworkRequests, GenAIFrameworkBusTraits>;
     using GenAIFrameworkInterface = AZ::Interface<GenAIFrameworkRequests>;
+
+    class GenAIFrameworkNotifications : public AZ::EBusTraits
+    {
+    public:
+        //////////////////////////////////////////////////////////////////////////
+        // EBusTraits overrides
+        static constexpr AZ::EBusHandlerPolicy HandlerPolicy = AZ::EBusHandlerPolicy::Multiple;
+        static constexpr AZ::EBusAddressPolicy AddressPolicy = AZ::EBusAddressPolicy::Single;
+        //////////////////////////////////////////////////////////////////////////
+
+        virtual ~GenAIFrameworkNotifications() = default;
+
+        virtual void OnModelConfigurationAdded(const AZ::EntityId& modelConfigurationId) = 0;
+        virtual void OnServiceRequestorAdded(const AZ::EntityId& serviceRequestorId) = 0;
+
+        virtual void OnModelConfigurationRemoved(const AZ::EntityId& modelConfigurationId) = 0;
+        virtual void OnServiceRequestorRemoved(const AZ::EntityId& serviceRequestorId) = 0;
+    };
+
+    using GenAIFrameworkNotificationBus = AZ::EBus<GenAIFrameworkNotifications>;
 } // namespace GenAIFramework

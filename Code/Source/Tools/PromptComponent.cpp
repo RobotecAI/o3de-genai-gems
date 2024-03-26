@@ -48,10 +48,12 @@ namespace GenAIFramework
 
     void PromptComponent::Activate()
     {
+        AIComponentBase::Activate();
     }
 
     void PromptComponent::Deactivate()
     {
+        AIComponentBase::Deactivate();
     }
 
     AZ::Crc32 PromptComponent::PromptInput()

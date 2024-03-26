@@ -15,6 +15,8 @@
 #include <AzCore/Serialization/SerializeContext.h>
 #include <AzCore/std/containers/vector.h>
 #include <AzCore/std/smart_ptr/make_shared.h>
+#include <GenAIFramework/AIComponentBase/AIComponentBase.h>
+#include <GenAIFramework/GenAIFrameworkBus.h>
 #include <GenAIFramework/GenAIFrameworkEditorBus.h>
 #include <GenAIFramework/GenAIFrameworkTypeIds.h>
 
@@ -34,7 +36,7 @@ namespace GenAIFramework
 
     void GenAIFrameworkEditorSystemComponent::Reflect(AZ::ReflectContext* context)
     {
-        // GenAIFrameworkEditorScriptExecutor::Reflect(context);
+        AIComponentBase::Reflect(context);
         if (auto serializeContext = azrtti_cast<AZ::SerializeContext*>(context))
         {
             serializeContext->Class<GenAIFrameworkEditorSystemComponent, GenAIFrameworkSystemComponent>()->Version(0);
@@ -100,12 +102,14 @@ namespace GenAIFramework
     void GenAIFrameworkEditorSystemComponent::Activate()
     {
         AzToolsFramework::EditorEvents::Bus::Handler::BusConnect();
+        GenAIFrameworkNotificationBus::Handler::BusConnect();
         BaseSystemComponent::Activate();
     }
 
     void GenAIFrameworkEditorSystemComponent::Deactivate()
     {
         BaseSystemComponent::Deactivate();
+        GenAIFrameworkNotificationBus::Handler::BusDisconnect();
         AzToolsFramework::EditorEvents::Bus::Handler::BusDisconnect();
     }
 
@@ -129,6 +133,31 @@ namespace GenAIFramework
         options.toolbarIcon = ":/GenAIFramework/AI.svg";
 
         AzToolsFramework::RegisterViewPane<GenAIFrameworkWidget>("GenAIFramework", "GenAIFramework", options);
+    }
+
+    void GenAIFrameworkEditorSystemComponent::OnServiceRequestorAdded(const AZ::EntityId& serviceRequestorId)
+    {
+        AzToolsFramework::ToolsApplicationEvents::Bus::Broadcast(
+            &AzToolsFramework::ToolsApplicationEvents::Bus::Events::InvalidatePropertyDisplay,
+            AzToolsFramework::Refresh_AttributesAndValues);
+    }
+    void GenAIFrameworkEditorSystemComponent::OnServiceRequestorRemoved(const AZ::EntityId& serviceRequestorId)
+    {
+        AzToolsFramework::ToolsApplicationEvents::Bus::Broadcast(
+            &AzToolsFramework::ToolsApplicationEvents::Bus::Events::InvalidatePropertyDisplay,
+            AzToolsFramework::Refresh_AttributesAndValues);
+    }
+    void GenAIFrameworkEditorSystemComponent::OnModelConfigurationAdded(const AZ::EntityId& modelConfigurationId)
+    {
+        AzToolsFramework::ToolsApplicationEvents::Bus::Broadcast(
+            &AzToolsFramework::ToolsApplicationEvents::Bus::Events::InvalidatePropertyDisplay,
+            AzToolsFramework::Refresh_AttributesAndValues);
+    }
+    void GenAIFrameworkEditorSystemComponent::OnModelConfigurationRemoved(const AZ::EntityId& modelConfigurationId)
+    {
+        AzToolsFramework::ToolsApplicationEvents::Bus::Broadcast(
+            &AzToolsFramework::ToolsApplicationEvents::Bus::Events::InvalidatePropertyDisplay,
+            AzToolsFramework::Refresh_AttributesAndValues);
     }
 
 } // namespace GenAIFramework

@@ -19,8 +19,8 @@
 #include <AzCore/Serialization/EditContext.h>
 #include <AzCore/Serialization/SerializeContext.h>
 #include <AzCore/std/utility/move.h>
-#include <GenAIFramework/AIComponentBase/AIComponentBase.h>
 #include <GenAIFramework/GenAIFrameworkTypeIds.h>
+
 namespace GenAIFramework
 {
     AZ_COMPONENT_IMPL(GenAIFrameworkSystemComponent, "GenAIFrameworkSystemComponent", GenAIFrameworkSystemComponentTypeId);
@@ -33,7 +33,6 @@ namespace GenAIFramework
 
     void GenAIFrameworkSystemComponent::Reflect(AZ::ReflectContext* context)
     {
-        AIComponentBase::Reflect(context);
         GenAIFrameworkLauncherScriptExecutor::Reflect(context);
         GenAIFrameworkSystemComponentConfiguration::Reflect(context);
         if (auto serializeContext = azrtti_cast<AZ::SerializeContext*>(context))
@@ -169,13 +168,19 @@ namespace GenAIFramework
     AZ::Component* GenAIFrameworkSystemComponent::CreateNewModelConfiguration(
         const AZStd::string& configurationName, const AZ::Uuid& componentTypeId)
     {
-        return CreateNewComponentEntity(configurationName, componentTypeId, m_configuration.m_modelConfigurations);
+        auto* component = CreateNewComponentEntity(configurationName, componentTypeId, m_configuration.m_modelConfigurations);
+        GenAIFrameworkNotificationBus::Broadcast(
+            &GenAIFrameworkNotificationBus::Events::OnModelConfigurationAdded, component->GetEntity()->GetId());
+        return component;
     }
 
     AZ::Component* GenAIFrameworkSystemComponent::CreateNewServiceRequester(
         const AZStd::string& requesterName, const AZ::Uuid& componentTypeId)
     {
-        return CreateNewComponentEntity(requesterName, componentTypeId, m_configuration.m_serviceRequesters);
+        auto* component = CreateNewComponentEntity(requesterName, componentTypeId, m_configuration.m_serviceRequesters);
+        GenAIFrameworkNotificationBus::Broadcast(
+            &GenAIFrameworkNotificationBus::Events::OnServiceRequestorAdded, component->GetEntity()->GetId());
+        return component;
     }
 
     void GenAIFrameworkSystemComponent::RemoveComponent(AZ::Component* component)
@@ -189,10 +194,12 @@ namespace GenAIFramework
 
                 if (m_configuration.m_serviceRequesters.contains(entityId))
                 {
+                    GenAIFrameworkNotificationBus::Broadcast(&GenAIFrameworkNotificationBus::Events::OnServiceRequestorRemoved, entityId);
                     m_configuration.m_serviceRequesters.erase(entityId);
                 }
                 if (m_configuration.m_modelConfigurations.contains(entityId))
                 {
+                    GenAIFrameworkNotificationBus::Broadcast(&GenAIFrameworkNotificationBus::Events::OnModelConfigurationRemoved, entityId);
                     m_configuration.m_modelConfigurations.erase(entityId);
                 }
             }
@@ -257,6 +264,15 @@ namespace GenAIFramework
         }
         InitEntities(m_configuration.m_serviceRequesters);
         InitEntities(m_configuration.m_modelConfigurations);
+
+        for (auto& [entityId, _] : m_configuration.m_serviceRequesters)
+        {
+            GenAIFrameworkNotificationBus::Broadcast(&GenAIFrameworkNotificationBus::Events::OnServiceRequestorAdded, entityId);
+        }
+        for (auto& [entityId, _] : m_configuration.m_modelConfigurations)
+        {
+            GenAIFrameworkNotificationBus::Broadcast(&GenAIFrameworkNotificationBus::Events::OnModelConfigurationAdded, entityId);
+        }
     }
 
     void GenAIFrameworkSystemComponent::Activate()
