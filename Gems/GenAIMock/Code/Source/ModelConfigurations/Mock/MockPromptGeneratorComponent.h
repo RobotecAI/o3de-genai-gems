@@ -37,6 +37,6 @@ namespace GenAIMock
         GenAIFramework::ModelAPIResponse ExtractResult(const GenAIFramework::ModelAPIResponse& modelAPIResponse) override;
 
     private:
-        unsigned int m_lastCompleted{ 0 }; //!< Interator (number) of the last call that was completed (it can be reset)
+        int m_lastCompleted{ -1 }; //!< Interator (number) of the last call that was completed (it can be reset)
     };
 } // namespace GenAIMock
