@@ -6,8 +6,8 @@
  *
  */
 
-#include "AzCore/Outcome/Outcome.h"
 #include "EditorSettingsRegistryManager.h"
+#include "AzCore/Outcome/Outcome.h"
 
 namespace GenAIFramework
 {
