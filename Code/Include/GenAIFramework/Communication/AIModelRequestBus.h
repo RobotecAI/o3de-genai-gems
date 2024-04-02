@@ -41,18 +41,17 @@ namespace GenAIFramework
         //! @return The response from the model, or an error message if the response could not be extracted.
         virtual ModelAPIResponse ExtractResult(const ModelAPIResponse& modelAPIResponse) = 0;
 
-        //! Reset the model context. This will clear any context that the model has stored.
-        virtual void ResetModelContext()
+        //! Reset the model history. This will clear any history that the model has stored.
+        virtual void ResetModelHistory()
         {
             return;
         }
 
-        //! Set whether the model should remember the context between requests.
-        //! This method does not automatically reset the context when the rememberContext flag is set to false.
-        //! @param rememberContext True if the model should remember the context, false otherwise.
-        virtual void SetRememberContext(bool rememberContext)
+        //! Set whether the model should remember the history of the conversation.
+        //! @param enableHistory True if the model should remember the history, false otherwise.
+        virtual void EnableHistory(bool enableHistory)
         {
-            AZ_UNUSED(rememberContext);
+            AZ_UNUSED(enableHistory);
             return;
         };
 
