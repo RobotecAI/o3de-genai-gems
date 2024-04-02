@@ -25,6 +25,16 @@ namespace GenAIFramework
         //! Set the selected model configuration and requestor.
         virtual void SetRequestorAndModel(AZ::EntityId selectedModelConfigurationId, AZ::EntityId selectedRequestorId) = 0;
 
+        //! Set the service requestor by name. If the service requestor does not exist, it will not be set.
+        //! @param requestorName The name of the service requestor.
+        //! @return True if the service requestor was set successfully, false otherwise.
+        virtual bool SetServiceRequestorByName(const AZStd::string& requestorName) = 0;
+
+        //! Set the model configuration by name. If the model configuration does not exist, it will not be set.
+        //! @param modelConfigurationName The name of the model configuration.
+        //! @return True if the model configuration was set successfully, false otherwise.
+        virtual bool SetModelConfigurationByName(const AZStd::string& modelConfigurationName) = 0;
+
         //! Non-blocking call to send a prompt to LLM. It returns a unique identifier for the prompt.
         //! The response to the prompt will be sent to the SendPromptToLLM method.
         virtual AZ::Uuid SendPromptToLLM(const AZStd::string& prompt) = 0;

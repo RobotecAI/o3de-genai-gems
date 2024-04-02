@@ -30,6 +30,8 @@ namespace GenAIFramework
                 ->Attribute(AZ::Script::Attributes::Category, "AI")
                 ->Attribute(AZ::Script::Attributes::Scope, AZ::Script::Attributes::ScopeFlags::Common)
                 ->Attribute(AZ::Script::Attributes::Module, "ai")
+                ->Event("SetServiceRequestorByName", &AsyncRequestBus::Events::SetServiceRequestorByName)
+                ->Event("SetModelConfigurationByName", &AsyncRequestBus::Events::SetModelConfigurationByName)
                 ->Event("SendPromptToLLM", &AsyncRequestBus::Events::SendPromptToLLM)
                 ->Event("IsResponseReady", &AsyncRequestBus::Events::IsResponseReady)
                 ->Event("GetResponse", &AsyncRequestBus::Events::GetResponse)
@@ -85,6 +87,49 @@ namespace GenAIFramework
 
         AZ_Printf("AiAssistantEditorSystemComponent", "Using model : %s", selectedModelConfigurationId.ToString().c_str());
         AZ_Printf("AiAssistantEditorSystemComponent", "Using Requestor : %s", selectedRequestorId.ToString().c_str());
+    }
+
+    bool GenAIAsyncRequestSystemComponent::SetServiceRequestorByName(const AZStd::string& requestorName)
+    {
+        AZStd::vector<AZ::Component*> activeServiceRequesters;
+        GenAIFramework::GenAIFrameworkRequestBus::BroadcastResult(
+            activeServiceRequesters, &GenAIFramework::GenAIFrameworkRequests::GetActiveServiceRequesters);
+        for (auto requester : activeServiceRequesters)
+        {
+            if (requester->GetEntity()->GetName() == requestorName)
+            {
+                m_selectedRequestorId = requester->GetEntityId();
+                AZ_Printf("AiAssistantEditorSystemComponent", "Using Requestor : %s", m_selectedRequestorId.ToString().c_str());
+                return true;
+            }
+        }
+        AZ_Warning("AiAssistantEditorSystemComponent", false, "Cannot find the requestor with the name: %s.", requestorName.c_str());
+        m_selectedRequestorId = activeServiceRequesters.front()->GetEntityId();
+
+        return false;
+    }
+
+    bool GenAIAsyncRequestSystemComponent::SetModelConfigurationByName(const AZStd::string& modelConfigurationName)
+    {
+        AZStd::vector<AZ::Component*> activeModelConfigurations;
+        GenAIFramework::GenAIFrameworkRequestBus::BroadcastResult(
+            activeModelConfigurations, &GenAIFramework::GenAIFrameworkRequests::GetActiveModelConfigurations);
+        for (auto modelConfiguration : activeModelConfigurations)
+        {
+            if (modelConfiguration->GetEntity()->GetName() == modelConfigurationName)
+            {
+                m_selectedModelConfigurationId = modelConfiguration->GetEntityId();
+                AZ_Printf("AiAssistantEditorSystemComponent", "Using model : %s", m_selectedModelConfigurationId.ToString().c_str());
+                return true;
+            }
+        }
+        AZ_Warning(
+            "AiAssistantEditorSystemComponent",
+            false,
+            "Cannot find the model configuration with the name: %s.",
+            modelConfigurationName.c_str());
+
+        return false;
     }
 
     AZ::Uuid GenAIAsyncRequestSystemComponent::SendPromptToLLM(const AZStd::string& prompt)
