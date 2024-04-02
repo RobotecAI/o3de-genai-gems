@@ -41,6 +41,21 @@ namespace GenAIFramework
         //! @return The response from the model, or an error message if the response could not be extracted.
         virtual ModelAPIResponse ExtractResult(const ModelAPIResponse& modelAPIResponse) = 0;
 
+        //! Reset the model context. This will clear any context that the model has stored.
+        virtual void ResetModelContext()
+        {
+            return;
+        }
+
+        //! Set whether the model should remember the context between requests.
+        //! This method does not automatically reset the context when the rememberContext flag is set to false.
+        //! @param rememberContext True if the model should remember the context, false otherwise.
+        virtual void SetRememberContext(bool rememberContext)
+        {
+            AZ_UNUSED(rememberContext);
+            return;
+        };
+
         //! Optional method to set custom model parameters (e.g. stop sequence)
         //! @param parameterName The name of the parameter to set.
         //! @param parameterValue The value to set the parameter.
