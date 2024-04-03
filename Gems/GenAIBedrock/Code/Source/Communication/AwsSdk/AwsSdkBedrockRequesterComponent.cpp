@@ -87,6 +87,10 @@ namespace GenAIBedrock
         }
         m_clientConfiguration->region = m_configuration.m_regionName.c_str();
         m_runtimeClientConfiguration->region = m_configuration.m_regionName.c_str();
+
+        //NOTE(pawel-kotowski): This is a temporary solution to set the request timeout to 60 seconds. It will be handled by UI solution in the future.
+        m_runtimeClientConfiguration->requestTimeoutMs = 60000;
+
         m_client = AZStd::make_unique<Aws::Bedrock::BedrockClient>(*m_clientConfiguration);
         m_runtimeClient = AZStd::make_unique<Aws::BedrockRuntime::BedrockRuntimeClient>(*m_runtimeClientConfiguration);
     }
