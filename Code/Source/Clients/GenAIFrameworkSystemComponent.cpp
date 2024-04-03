@@ -8,7 +8,6 @@
 
 #include "GenAIFrameworkSystemComponent.h"
 #include "Clients/GenAIFrameworkSystemComponentConfiguration.h"
-#include "GenAIFramework/GenAIFrameworkPythonBus.h"
 #include <AzCore/Component/EntityId.h>
 #include <AzCore/RTTI/BehaviorContext.h>
 #include <AzCore/std/smart_ptr/shared_ptr.h>

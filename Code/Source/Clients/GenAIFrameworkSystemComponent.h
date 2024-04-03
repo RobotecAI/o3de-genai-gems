@@ -15,7 +15,6 @@
 #include <AzCore/Component/Component.h>
 #include <AzCore/std/smart_ptr/shared_ptr.h>
 #include <GenAIFramework/GenAIFrameworkBus.h>
-#include <GenAIFramework/GenAIFrameworkPythonBus.h>
 #include <GenAIFramework/GenAIFrameworkScriptExecutor.h>
 #include <GenAIFramework/SystemRegistrationContext/SystemRegistrationContext.h>
 
