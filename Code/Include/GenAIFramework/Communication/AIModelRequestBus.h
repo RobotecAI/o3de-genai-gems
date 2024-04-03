@@ -49,7 +49,7 @@ namespace GenAIFramework
 
         //! Set whether the model should remember the history of the conversation.
         //! @param enableHistory True if the model should remember the history, false otherwise.
-        virtual void EnableHistory(bool enableHistory)
+        virtual void EnableModelHistory(bool enableHistory)
         {
             AZ_UNUSED(enableHistory);
             return;
