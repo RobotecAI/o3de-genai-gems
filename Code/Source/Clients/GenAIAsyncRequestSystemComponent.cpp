@@ -94,19 +94,7 @@ namespace GenAIFramework
         AZStd::vector<AZ::Component*> activeServiceRequesters;
         GenAIFramework::GenAIFrameworkRequestBus::BroadcastResult(
             activeServiceRequesters, &GenAIFramework::GenAIFrameworkRequests::GetActiveServiceRequesters);
-        for (auto requester : activeServiceRequesters)
-        {
-            if (requester->GetEntity()->GetName() == requestorName)
-            {
-                m_selectedRequestorId = requester->GetEntityId();
-                AZ_Printf("AiAssistantEditorSystemComponent", "Using Requestor : %s", m_selectedRequestorId.ToString().c_str());
-                return true;
-            }
-        }
-        AZ_Warning("AiAssistantEditorSystemComponent", false, "Cannot find the requestor with the name: %s.", requestorName.c_str());
-        m_selectedRequestorId = activeServiceRequesters.front()->GetEntityId();
-
-        return false;
+        return SetEntityIdByName(activeServiceRequesters, requestorName, m_selectedRequestorId);
     }
 
     bool GenAIAsyncRequestSystemComponent::SetModelConfigurationByName(const AZStd::string& modelConfigurationName)
@@ -114,21 +102,20 @@ namespace GenAIFramework
         AZStd::vector<AZ::Component*> activeModelConfigurations;
         GenAIFramework::GenAIFrameworkRequestBus::BroadcastResult(
             activeModelConfigurations, &GenAIFramework::GenAIFrameworkRequests::GetActiveModelConfigurations);
-        for (auto modelConfiguration : activeModelConfigurations)
+        return SetEntityIdByName(activeModelConfigurations, modelConfigurationName, m_selectedModelConfigurationId);
+    }
+
+    bool GenAIAsyncRequestSystemComponent::SetEntityIdByName(
+        const AZStd::vector<AZ::Component*>& components, const AZStd::string& entityName, AZ::EntityId& entityId)
+    {
+        for (auto component : components)
         {
-            if (modelConfiguration->GetEntity()->GetName() == modelConfigurationName)
+            if (component->GetEntity()->GetName() == entityName)
             {
-                m_selectedModelConfigurationId = modelConfiguration->GetEntityId();
-                AZ_Printf("AiAssistantEditorSystemComponent", "Using model : %s", m_selectedModelConfigurationId.ToString().c_str());
+                entityId = component->GetEntityId();
                 return true;
             }
         }
-        AZ_Warning(
-            "AiAssistantEditorSystemComponent",
-            false,
-            "Cannot find the model configuration with the name: %s.",
-            modelConfigurationName.c_str());
-
         return false;
     }
 

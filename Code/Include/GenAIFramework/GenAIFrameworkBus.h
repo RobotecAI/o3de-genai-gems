@@ -37,10 +37,10 @@ namespace GenAIFramework
         virtual AZStd::vector<AZ::Component*> GetActiveServiceRequesters() = 0;
 
         //! Return a vector of the active model configurations names.
-        virtual AZStd::vector<AZStd::string> GetActiveModelConfigurationsNames() = 0;
+        virtual AZStd::vector<AZStd::string> GetActiveModelConfigurationsNames() const = 0;
 
         //! Return a vector of the active service requesters names.
-        virtual AZStd::vector<AZStd::string> GetActiveServiceRequestersNames() = 0;
+        virtual AZStd::vector<AZStd::string> GetActiveServiceRequestersNames() const = 0;
 
         virtual AZ::Component* CreateNewModelConfiguration(
             const AZStd::string& modelConfigurationName, const AZ::Uuid& componentTypeId) = 0;

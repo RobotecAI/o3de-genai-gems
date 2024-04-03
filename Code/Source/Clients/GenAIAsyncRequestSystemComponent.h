@@ -49,6 +49,8 @@ namespace GenAIFramework
         void ResetModelHistory() override;
         void EnableModelHistory(bool enableHistory) override;
 
+        bool SetEntityIdByName(const AZStd::vector<AZ::Component*>& components, const AZStd::string& entityName, AZ::EntityId& entityId);
+
         AZ::EntityId m_selectedModelConfigurationId = AZ::EntityId(); //! Selected model configuration entity id
         AZ::EntityId m_selectedRequestorId = AZ::EntityId(); //! Selected requestor entity id
         AZStd::mutex m_promptMutex; //! Mutex to protect the prompt responses
