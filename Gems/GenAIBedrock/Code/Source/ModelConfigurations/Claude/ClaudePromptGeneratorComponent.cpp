@@ -66,7 +66,7 @@ namespace GenAIBedrock
     GenAIFramework::ModelAPIRequest ClaudePromptGeneratorComponent::PrepareRequest(const AZStd::string& prompt)
     {
         std::stringstream oss;
-        oss << "Human: \"" << prompt.c_str() << "\" Assistant: ";
+        oss << "\n\nHuman: " << prompt.c_str() << "\n\nAssistant: ";
         Aws::Utils::Json::JsonValue jsonPrompt;
         jsonPrompt.WithString("prompt", oss.str().c_str());
         ClaudePromptInputConfiguration configuration = m_defaultConfiguration;
