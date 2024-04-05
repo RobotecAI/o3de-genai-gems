@@ -111,7 +111,7 @@ namespace GenAIFramework
             return methodDump;
         }
 
-        AZStd::string DumpLuaEbus(const EbusFormatterHelper& ebus)
+        AZStd::string DumpLuaEbus([[maybe_unused]] const EbusFormatterHelper& ebus)
         { // TODO implement
             AZStd::string ebusDump = AZStd::string::format("Lua Ebus dump (not implemented)");
             return ebusDump;
@@ -205,7 +205,7 @@ namespace GenAIFramework
     }
 
     MethodFormatterHelper BehaviorContextDump::MethodDump(
-        const AZStd::string& className,
+        [[maybe_unused]] const AZStd::string& className,
         const AZStd::string& methodName,
         const AZ::BehaviorMethod* method,
         const AZ::BehaviorClass* behaviorClass)

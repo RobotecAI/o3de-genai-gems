@@ -49,7 +49,7 @@ namespace GenAIFramework
 
         AZ::JsonSerialization::Store(GenAIFrameworkConfigurationValue, GenAIFrameworkConfigurationDocument.GetAllocator(), saveObject);
 
-        auto postSaveCallback = [saveObject, saveCallback](bool result)
+        auto postSaveCallback = [saveCallback](bool result)
         {
             if (saveCallback)
             {

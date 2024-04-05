@@ -47,7 +47,8 @@ namespace GenAIFramework
         //! @return True if the parameter was set, false otherwise.
         //! @note This method is optional and can be implemented by the model configuration component - if the model configuration
         //! component does not have particular parameters to set, it should return failure.
-        virtual AZ::Outcome<void, AZStd::string> SetModelParameter(const AZ::Name& parameterName, const AZStd::string& parameterValue)
+        virtual AZ::Outcome<void, AZStd::string> SetModelParameter(
+            [[maybe_unused]] const AZ::Name& parameterName, [[maybe_unused]] const AZStd::string& parameterValue)
         {
             return AZ::Failure("This model does not have any parameters to set.");
         }

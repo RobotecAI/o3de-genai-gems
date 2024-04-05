@@ -12,7 +12,8 @@
 
 namespace GenAIFramework
 {
-    void SettingsRegistryManager::SaveSystemConfiguration(const SaveObject& saveObject, const OnConfigSaveComplete& saveCallback)
+    void SettingsRegistryManager::SaveSystemConfiguration(
+        [[maybe_unused]] const SaveObject& saveObject, const OnConfigSaveComplete& saveCallback)
     {
         if (saveCallback)
         {
