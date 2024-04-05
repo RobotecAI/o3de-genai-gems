@@ -51,6 +51,8 @@ namespace GenAIFramework
         void RemoveComponent(AZ::Component* component) override;
         void ActivateEntity(AZStd::shared_ptr<AZ::Entity> entity) override;
         void DeactivateEntity(AZStd::shared_ptr<AZ::Entity> entity) override;
+        AZStd::vector<AZStd::string> GetActiveModelConfigurationsNames() override;
+        AZStd::vector<AZStd::string> GetActiveServiceRequestersNames() override;
         ////////////////////////////////////////////////////////////////////////
 
         ////////////////////////////////////////////////////////////////////////
@@ -74,5 +76,7 @@ namespace GenAIFramework
         AZStd::vector<AZ::Component*> GetActiveComponents(const EntityIdToEntityMap& entities);
         AZ::Component* CreateNewComponentEntity(
             const AZStd::string& name, const AZ::Uuid& componentTypeId, EntityIdToEntityMap& entities);
+
+        AZStd::vector<AZStd::string> GetActiveComponentsNames(const EntityIdToEntityMap& entities);
     };
 } // namespace GenAIFramework
