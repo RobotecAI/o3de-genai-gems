@@ -32,7 +32,9 @@ namespace GenAIFramework
                 ->Attribute(AZ::Script::Attributes::Module, "ai")
                 ->Event("SendPromptToLLM", &AsyncRequestBus::Events::SendPromptToLLM)
                 ->Event("IsResponseReady", &AsyncRequestBus::Events::IsResponseReady)
-                ->Event("GetResponse", &AsyncRequestBus::Events::GetResponse);
+                ->Event("GetResponse", &AsyncRequestBus::Events::GetResponse)
+                ->Event("ResetModelHistory", &AsyncRequestBus::Events::ResetModelHistory)
+                ->Event("EnableModelHistory", &AsyncRequestBus::Events::EnableModelHistory);
         }
     }
 
@@ -168,6 +170,18 @@ namespace GenAIFramework
             m_promptResponses.erase(promptId);
         }
         return response;
+    }
+
+    void GenAIAsyncRequestSystemComponent::ResetModelHistory()
+    {
+        GenAIFramework::AIModelRequestBus::Event(
+            m_selectedModelConfigurationId, &GenAIFramework::AIModelRequestBus::Events::ResetModelHistory);
+    }
+
+    void GenAIAsyncRequestSystemComponent::EnableModelHistory(bool enableHistory)
+    {
+        GenAIFramework::AIModelRequestBus::Event(
+            m_selectedModelConfigurationId, &GenAIFramework::AIModelRequestBus::Events::EnableModelHistory, enableHistory);
     }
 
 } // namespace GenAIFramework

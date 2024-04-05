@@ -72,6 +72,19 @@ response = azlmbr.ai.asyncRequestBus(bus.Broadcast, 'GetResponse', ticket)
 print(response)
 ```
 
+To reset the model history, use the following code snippet:
+```python
+azlmbr.ai.asyncRequestBus(bus.Broadcast, 'ResetModelHistory')
+```
+
+To enable or disable the model history, use the following code snippet:
+```python
+# Enable model history
+azlmbr.ai.asyncRequestBus(bus.Broadcast, 'EnableModelHistory', True)
+# Disable model history
+azlmbr.ai.asyncRequestBus(bus.Broadcast, 'EnableModelHistory', False)
+```
+
 ## Contribute
 For information about contributing to O3DE, visit [https://o3de.org/docs/contributing/](https://o3de.org/docs/contributing/).
 
