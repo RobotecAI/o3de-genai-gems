@@ -41,6 +41,20 @@ namespace GenAIFramework
         //! @return The response from the model, or an error message if the response could not be extracted.
         virtual ModelAPIResponse ExtractResult(const ModelAPIResponse& modelAPIResponse) = 0;
 
+        //! Reset the model history. This will clear any history that the model has stored.
+        virtual void ResetModelHistory()
+        {
+            return;
+        }
+
+        //! Set whether the model should remember the history of the conversation.
+        //! @param enableHistory True if the model should remember the history, false otherwise.
+        virtual void EnableModelHistory(bool enableHistory)
+        {
+            AZ_UNUSED(enableHistory);
+            return;
+        };
+
         //! Optional method to set custom model parameters (e.g. stop sequence)
         //! @param parameterName The name of the parameter to set.
         //! @param parameterValue The value to set the parameter.
