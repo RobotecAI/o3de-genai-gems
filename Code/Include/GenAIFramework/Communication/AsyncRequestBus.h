@@ -13,7 +13,7 @@
 #include <AzCore/Interface/Interface.h>
 #include <AzCore/Outcome/Outcome.h>
 #include <AzCore/RTTI/TemplateInfo.h>
-#include <uuid/uuid.h>
+#include <AzCore/Math/Uuid.h>
 
 namespace GenAIFramework
 {

@@ -135,25 +135,25 @@ namespace GenAIFramework
         AzToolsFramework::RegisterViewPane<GenAIFrameworkWidget>("GenAIFramework", "GenAIFramework", options);
     }
 
-    void GenAIFrameworkEditorSystemComponent::OnServiceRequestorAdded(const AZ::EntityId& serviceRequestorId)
+    void GenAIFrameworkEditorSystemComponent::OnServiceRequestorAdded([[maybe_unused]] const AZ::EntityId& serviceRequestorId)
     {
         AzToolsFramework::ToolsApplicationEvents::Bus::Broadcast(
             &AzToolsFramework::ToolsApplicationEvents::Bus::Events::InvalidatePropertyDisplay,
             AzToolsFramework::Refresh_AttributesAndValues);
     }
-    void GenAIFrameworkEditorSystemComponent::OnServiceRequestorRemoved(const AZ::EntityId& serviceRequestorId)
+    void GenAIFrameworkEditorSystemComponent::OnServiceRequestorRemoved([[maybe_unused]]  const AZ::EntityId& serviceRequestorId)
     {
         AzToolsFramework::ToolsApplicationEvents::Bus::Broadcast(
             &AzToolsFramework::ToolsApplicationEvents::Bus::Events::InvalidatePropertyDisplay,
             AzToolsFramework::Refresh_AttributesAndValues);
     }
-    void GenAIFrameworkEditorSystemComponent::OnModelConfigurationAdded(const AZ::EntityId& modelConfigurationId)
+    void GenAIFrameworkEditorSystemComponent::OnModelConfigurationAdded([[maybe_unused]] const AZ::EntityId& modelConfigurationId)
     {
         AzToolsFramework::ToolsApplicationEvents::Bus::Broadcast(
             &AzToolsFramework::ToolsApplicationEvents::Bus::Events::InvalidatePropertyDisplay,
             AzToolsFramework::Refresh_AttributesAndValues);
     }
-    void GenAIFrameworkEditorSystemComponent::OnModelConfigurationRemoved(const AZ::EntityId& modelConfigurationId)
+    void GenAIFrameworkEditorSystemComponent::OnModelConfigurationRemoved([[maybe_unused]] const AZ::EntityId& modelConfigurationId)
     {
         AzToolsFramework::ToolsApplicationEvents::Bus::Broadcast(
             &AzToolsFramework::ToolsApplicationEvents::Bus::Events::InvalidatePropertyDisplay,
