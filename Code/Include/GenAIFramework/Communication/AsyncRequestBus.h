@@ -34,6 +34,12 @@ namespace GenAIFramework
 
         //! Get the response to the prompt.
         virtual AZStd::string GetResponse(AZ::Uuid promptId) = 0;
+
+        //! Reset the history of the currently selected model.
+        virtual void ResetModelHistory() = 0;
+
+        //! Enable or disable the history of the currently selected model.
+        virtual void EnableModelHistory(bool enableHistory) = 0;
     };
 
     class RequestsUtilsBusTraits : public AZ::EBusTraits

@@ -44,6 +44,8 @@ namespace GenAIFramework
         AZ::Uuid SendPromptToLLM(const AZStd::string& prompt) override;
         bool IsResponseReady(AZ::Uuid promptId) override;
         AZStd::string GetResponse(AZ::Uuid promptId) override;
+        void ResetModelHistory() override;
+        void EnableModelHistory(bool enableHistory) override;
 
         AZ::EntityId m_selectedModelConfigurationId = AZ::EntityId(); //! Selected model configuration entity id
         AZ::EntityId m_selectedRequestorId = AZ::EntityId(); //! Selected requestor entity id
