@@ -22,19 +22,11 @@ namespace GenAIFramework
             serializeContext->Class<AIComponentBase, AZ::Component>()
                 ->Version(0)
                 ->Field("SelectedServiceRequestorName", &AIComponentBase::m_selectedServiceRequestorName)
-                ->Field("SelectedModelConfigurationName", &AIComponentBase::m_selectedModelConfigurationName)
-                ->Field("SelectedServiceRequestorId", &AIComponentBase::m_selectedServiceRequestorId)
-                ->Field("SelectedModelConfigurationId", &AIComponentBase::m_selectedModelConfigurationId)
-                ->Field("UseNonSystemComponents", &AIComponentBase::m_useNonSystemComponents);
+                ->Field("SelectedModelConfigurationName", &AIComponentBase::m_selectedModelConfigurationName);
 
             if (auto* editContext = serializeContext->GetEditContext())
             {
                 editContext->Class<AIComponentBase>("AI Component Base", "Base component for AI")
-                    ->DataElement(
-                        AZ::Edit::UIHandlers::CheckBox,
-                        &AIComponentBase::m_useNonSystemComponents,
-                        "Use Non-System Components",
-                        "Manually define the IDs for the requestor and generator components.")
                     ->Attribute(AZ::Edit::Attributes::ChangeNotify, AZ::Edit::PropertyRefreshLevels::EntireTree)
                     ->DataElement(
                         AZ::Edit::UIHandlers::ComboBox,
@@ -43,27 +35,13 @@ namespace GenAIFramework
                         "Id of requester to be used for AI requests")
                     ->Attribute(AZ::Edit::Attributes::StringList, &AIComponentBase::GetServiceRequestorsNames)
                     ->Attribute(AZ::Edit::Attributes::ChangeNotify, &AIComponentBase::UpdateNamedServiceRequestorId)
-                    ->Attribute(AZ::Edit::Attributes::Visibility, &AIComponentBase::UseSystemComponents)
                     ->DataElement(
                         AZ::Edit::UIHandlers::ComboBox,
                         &AIComponentBase::m_selectedModelConfigurationName,
                         "Generator",
                         "Id of generator to be used for AI prompt generation")
                     ->Attribute(AZ::Edit::Attributes::StringList, &AIComponentBase::GetModelConfigurationsNames)
-                    ->Attribute(AZ::Edit::Attributes::ChangeNotify, &AIComponentBase::UpdateNamedModelConfigurationId)
-                    ->Attribute(AZ::Edit::Attributes::Visibility, &AIComponentBase::UseSystemComponents)
-                    ->DataElement(
-                        AZ::Edit::UIHandlers::Default,
-                        &AIComponentBase::m_selectedServiceRequestorId,
-                        "Selected Requestor Id",
-                        "Id of selected requester")
-                    ->Attribute(AZ::Edit::Attributes::Visibility, &AIComponentBase::m_useNonSystemComponents)
-                    ->DataElement(
-                        AZ::Edit::UIHandlers::Default,
-                        &AIComponentBase::m_selectedModelConfigurationId,
-                        "Selected Generator Id",
-                        "Id of selected generator")
-                    ->Attribute(AZ::Edit::Attributes::Visibility, &AIComponentBase::m_useNonSystemComponents);
+                    ->Attribute(AZ::Edit::Attributes::ChangeNotify, &AIComponentBase::UpdateNamedModelConfigurationId);
             }
         }
     }
@@ -125,11 +103,6 @@ namespace GenAIFramework
     void AIComponentBase::UpdateNamedModelConfigurationId()
     {
         GetNamedId(m_selectedModelConfigurationName, GetModelConfigurations(), m_selectedModelConfigurationId);
-    }
-
-    bool AIComponentBase::UseSystemComponents()
-    {
-        return !m_useNonSystemComponents;
     }
 
 } // namespace GenAIFramework
