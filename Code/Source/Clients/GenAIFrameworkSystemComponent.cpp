@@ -141,7 +141,7 @@ namespace GenAIFramework
         return GetRegisteredComponentsNameAndComponentTypeId(registeredRequesters);
     }
 
-    AZStd::vector<AZ::Component*> GenAIFrameworkSystemComponent::GetActiveComponents(const EntityIdToEntityMap& entities)
+    AZStd::vector<AZ::Component*> GenAIFrameworkSystemComponent::GetActiveComponents(const EntityIdToEntityMap& entities) const
     {
         AZStd::vector<AZ::Component*> result;
         for (auto& [_, entity] : entities)
