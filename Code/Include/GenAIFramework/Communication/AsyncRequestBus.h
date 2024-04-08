@@ -28,7 +28,7 @@ namespace GenAIFramework
         //! Set the service requestor by name. If the service requestor does not exist, it will not be set.
         //! @param requestorName The name of the service requestor.
         //! @return True if the service requestor was set successfully, false otherwise.
-        virtual bool SetServiceRequestorByName(const AZStd::string& requestorName) = 0;
+        virtual bool SetServiceRequesterByName(const AZStd::string& requestorName) = 0;
 
         //! Set the model configuration by name. If the model configuration does not exist, it will not be set.
         //! @param modelConfigurationName The name of the model configuration.

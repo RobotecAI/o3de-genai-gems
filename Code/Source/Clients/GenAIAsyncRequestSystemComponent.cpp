@@ -30,7 +30,7 @@ namespace GenAIFramework
                 ->Attribute(AZ::Script::Attributes::Category, "AI")
                 ->Attribute(AZ::Script::Attributes::Scope, AZ::Script::Attributes::ScopeFlags::Common)
                 ->Attribute(AZ::Script::Attributes::Module, "ai")
-                ->Event("SetServiceRequestorByName", &AsyncRequestBus::Events::SetServiceRequestorByName)
+                ->Event("SetServiceRequesterByName", &AsyncRequestBus::Events::SetServiceRequesterByName)
                 ->Event("SetModelConfigurationByName", &AsyncRequestBus::Events::SetModelConfigurationByName)
                 ->Event("SendPromptToLLM", &AsyncRequestBus::Events::SendPromptToLLM)
                 ->Event("IsResponseReady", &AsyncRequestBus::Events::IsResponseReady)
@@ -89,7 +89,7 @@ namespace GenAIFramework
         AZ_Printf("AiAssistantEditorSystemComponent", "Using Requestor : %s", selectedRequestorId.ToString().c_str());
     }
 
-    bool GenAIAsyncRequestSystemComponent::SetServiceRequestorByName(const AZStd::string& requestorName)
+    bool GenAIAsyncRequestSystemComponent::SetServiceRequesterByName(const AZStd::string& requestorName)
     {
         AZStd::vector<AZ::Component*> activeServiceRequesters;
         GenAIFramework::GenAIFrameworkRequestBus::BroadcastResult(

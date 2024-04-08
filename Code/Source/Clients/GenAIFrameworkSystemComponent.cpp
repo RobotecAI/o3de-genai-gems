@@ -318,6 +318,7 @@ namespace GenAIFramework
     {
         return GetActiveComponentsNames(m_configuration.m_modelConfigurations);
     }
+
     AZStd::vector<AZStd::string> GenAIFrameworkSystemComponent::GetActiveServiceRequestersNames() const
     {
         return GetActiveComponentsNames(m_configuration.m_serviceRequesters);
