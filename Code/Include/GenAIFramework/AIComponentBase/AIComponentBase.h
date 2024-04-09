@@ -33,8 +33,8 @@ namespace GenAIFramework
         void Deactivate() override;
 
     protected:
-        AZStd::string m_selectedServiceRequestorName;
-        AZStd::string m_selectedModelConfigurationName;
+        AZStd::string m_selectedServiceRequestorName = "";
+        AZStd::string m_selectedModelConfigurationName = "";
 
         AZ::EntityId m_selectedServiceRequestorId;
         AZ::EntityId m_selectedModelConfigurationId;

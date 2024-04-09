@@ -48,6 +48,8 @@ namespace GenAIFramework
 
     void AIComponentBase::Activate()
     {
+        UpdateNamedServiceRequestorId();
+        UpdateNamedModelConfigurationId();
     }
 
     void AIComponentBase::Deactivate()
