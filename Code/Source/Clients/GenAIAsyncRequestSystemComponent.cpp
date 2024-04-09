@@ -30,6 +30,8 @@ namespace GenAIFramework
                 ->Attribute(AZ::Script::Attributes::Category, "AI")
                 ->Attribute(AZ::Script::Attributes::Scope, AZ::Script::Attributes::ScopeFlags::Common)
                 ->Attribute(AZ::Script::Attributes::Module, "ai")
+                ->Event("SetServiceRequesterByName", &AsyncRequestBus::Events::SetServiceRequesterByName)
+                ->Event("SetModelConfigurationByName", &AsyncRequestBus::Events::SetModelConfigurationByName)
                 ->Event("SendPromptToLLM", &AsyncRequestBus::Events::SendPromptToLLM)
                 ->Event("IsResponseReady", &AsyncRequestBus::Events::IsResponseReady)
                 ->Event("GetResponse", &AsyncRequestBus::Events::GetResponse)
@@ -85,6 +87,36 @@ namespace GenAIFramework
 
         AZ_Printf("AiAssistantEditorSystemComponent", "Using model : %s", selectedModelConfigurationId.ToString().c_str());
         AZ_Printf("AiAssistantEditorSystemComponent", "Using Requestor : %s", selectedRequestorId.ToString().c_str());
+    }
+
+    bool GenAIAsyncRequestSystemComponent::SetServiceRequesterByName(const AZStd::string& requestorName)
+    {
+        AZStd::vector<AZ::Component*> activeServiceRequesters;
+        GenAIFramework::GenAIFrameworkRequestBus::BroadcastResult(
+            activeServiceRequesters, &GenAIFramework::GenAIFrameworkRequests::GetActiveServiceRequesters);
+        return SetEntityIdByName(activeServiceRequesters, requestorName, m_selectedRequestorId);
+    }
+
+    bool GenAIAsyncRequestSystemComponent::SetModelConfigurationByName(const AZStd::string& modelConfigurationName)
+    {
+        AZStd::vector<AZ::Component*> activeModelConfigurations;
+        GenAIFramework::GenAIFrameworkRequestBus::BroadcastResult(
+            activeModelConfigurations, &GenAIFramework::GenAIFrameworkRequests::GetActiveModelConfigurations);
+        return SetEntityIdByName(activeModelConfigurations, modelConfigurationName, m_selectedModelConfigurationId);
+    }
+
+    bool GenAIAsyncRequestSystemComponent::SetEntityIdByName(
+        const AZStd::vector<AZ::Component*>& components, const AZStd::string& entityName, AZ::EntityId& entityId)
+    {
+        for (auto component : components)
+        {
+            if (component->GetEntity()->GetName() == entityName)
+            {
+                entityId = component->GetEntityId();
+                return true;
+            }
+        }
+        return false;
     }
 
     AZ::Uuid GenAIAsyncRequestSystemComponent::SendPromptToLLM(const AZStd::string& prompt)

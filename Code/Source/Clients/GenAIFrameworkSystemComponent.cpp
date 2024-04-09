@@ -23,9 +23,6 @@
 #include <AzCore/std/string/string.h>
 #include <AzCore/std/utility/move.h>
 #include <GenAIFramework/GenAIFrameworkTypeIds.h>
-#include <rapidjson/document.h>
-#include <rapidjson/stringbuffer.h>
-#include <rapidjson/writer.h>
 
 namespace GenAIFramework
 {
@@ -144,7 +141,7 @@ namespace GenAIFramework
         return GetRegisteredComponentsNameAndComponentTypeId(registeredRequesters);
     }
 
-    AZStd::vector<AZ::Component*> GenAIFrameworkSystemComponent::GetActiveComponents(const EntityIdToEntityMap& entities)
+    AZStd::vector<AZ::Component*> GenAIFrameworkSystemComponent::GetActiveComponents(const EntityIdToEntityMap& entities) const
     {
         AZStd::vector<AZ::Component*> result;
         for (auto& [_, entity] : entities)
@@ -317,26 +314,28 @@ namespace GenAIFramework
         DeactivateEntities(m_configuration.m_modelConfigurations);
     }
 
-    AZStd::vector<AZStd::string> GenAIFrameworkSystemComponent::GetActiveModelConfigurationsNames()
+    AZStd::vector<AZStd::string> GenAIFrameworkSystemComponent::GetActiveModelConfigurationsNames() const
     {
         return GetActiveComponentsNames(m_configuration.m_modelConfigurations);
     }
-    AZStd::vector<AZStd::string> GenAIFrameworkSystemComponent::GetActiveServiceRequestersNames()
+
+    AZStd::vector<AZStd::string> GenAIFrameworkSystemComponent::GetActiveServiceRequestersNames() const
     {
         return GetActiveComponentsNames(m_configuration.m_serviceRequesters);
     }
 
-    AZStd::vector<AZStd::string> GenAIFrameworkSystemComponent::GetActiveComponentsNames(const EntityIdToEntityMap& entities)
+    AZStd::vector<AZStd::string> GenAIFrameworkSystemComponent::GetActiveComponentsNames(const EntityIdToEntityMap& entities) const
     {
         auto activeComponents = GetActiveComponents(entities);
         AZStd::vector<AZStd::string> result;
-        for (auto& component : activeComponents)
-        {
-            if (component)
+        AZStd::transform(
+            activeComponents.begin(),
+            activeComponents.end(),
+            AZStd::back_inserter(result),
+            [](AZ::Component* component)
             {
-                result.push_back(component->GetEntity()->GetName());
-            }
-        }
+                return component->GetEntity()->GetName();
+            });
 
         return result;
     }

@@ -52,10 +52,23 @@ The latter, `Test Editor Component`, was implemented to test O3DE functionalitie
 The API allows you to get responses from AI services in an asynchronous way. 
 It is based on the `AZ::EBus` and `AZ::BehaviorContext`. 
 
-Sending a prompt example:
+Selecting an available AI service and model configuration can be done by first getting all available models:
 ```python
 import azlmbr.ai;
 import azlmbr.bus as bus;
+modelConfigurationsNames = azlmbr.ai.GenAIFrameworkRequestBus(bus.Broadcast, 'GetActiveModelConfigurationsNames')
+serviceRequestersNames = azlmbr.ai.GenAIFrameworkRequestBus(bus.Broadcast, 'GetActiveServiceRequestersNames')
+```
+
+And after getting the available methods the models can be selected:
+```python
+result = azlmbr.ai.asyncRequestBus(bus.Broadcast, 'SetServiceRequesterByName', 'example_name')
+result = azlmbr.ai.asyncRequestBus(bus.Broadcast, 'SetModelConfigurationByName', 'example_name')
+```
+The result will be true if the model configuration or service requester was found and set. False otherwise.
+
+Sending a prompt example:
+```python
 ticket = azlmbr.ai.asyncRequestBus(bus.Broadcast, 'SendPromptToLLM', "Hello World")
 ```
 The ticket is a random identifier used to identify the response.

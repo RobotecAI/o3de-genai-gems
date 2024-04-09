@@ -41,11 +41,15 @@ namespace GenAIFramework
     private:
         // AysncRequestBus::Handler
         void SetRequestorAndModel(AZ::EntityId selectedModelConfigurationId, AZ::EntityId selectedRequestorId) override;
+        bool SetServiceRequesterByName(const AZStd::string& requestorName) override;
+        bool SetModelConfigurationByName(const AZStd::string& modelConfigurationName) override;
         AZ::Uuid SendPromptToLLM(const AZStd::string& prompt) override;
         bool IsResponseReady(AZ::Uuid promptId) override;
         AZStd::string GetResponse(AZ::Uuid promptId) override;
         void ResetModelHistory() override;
         void EnableModelHistory(bool enableHistory) override;
+
+        bool SetEntityIdByName(const AZStd::vector<AZ::Component*>& components, const AZStd::string& entityName, AZ::EntityId& entityId);
 
         AZ::EntityId m_selectedModelConfigurationId = AZ::EntityId(); //! Selected model configuration entity id
         AZ::EntityId m_selectedRequestorId = AZ::EntityId(); //! Selected requestor entity id
