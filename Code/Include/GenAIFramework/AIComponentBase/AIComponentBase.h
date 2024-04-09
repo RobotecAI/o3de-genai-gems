@@ -33,17 +33,14 @@ namespace GenAIFramework
         void Deactivate() override;
 
     protected:
-        AZStd::string m_selectedServiceRequestorName;
-        AZStd::string m_selectedModelConfigurationName;
+        AZStd::string m_selectedServiceRequestorName = "";
+        AZStd::string m_selectedModelConfigurationName = "";
 
         AZ::EntityId m_selectedServiceRequestorId;
         AZ::EntityId m_selectedModelConfigurationId;
 
-        bool m_useNonSystemComponents = false;
-
         void UpdateNamedServiceRequestorId();
         void UpdateNamedModelConfigurationId();
-        bool UseSystemComponents();
 
     private:
         AZStd::vector<AZStd::string> GetNames(AZStd::vector<AZ::Component*> components) const;
