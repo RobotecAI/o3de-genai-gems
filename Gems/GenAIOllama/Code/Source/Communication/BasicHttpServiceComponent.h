@@ -8,19 +8,20 @@
 
 #pragma once
 
+#include <GenAIFramework/Communication/AIServiceRequesterBus.h>
+
 #include <AzCore/Component/Component.h>
 #include <AzFramework/Components/ComponentAdapter.h>
-#include <GenAIFramework/Communication/AIServiceRequesterBus.h>
 
 namespace GenAIOllama
 {
-    class BasicJSONRequesterConfiguration : public AZ::ComponentConfig
+    class BasicHttpServiceConfiguration : public AZ::ComponentConfig
     {
     public:
-        AZ_RTTI(BasicJSONRequesterConfiguration, "{18ddba8f-1fe5-4dde-a0f4-90dccbda5f33}");
+        AZ_RTTI(BasicHttpServiceConfiguration, "{18ddba8f-1fe5-4dde-a0f4-90dccbda5f33}");
 
-        BasicJSONRequesterConfiguration() = default;
-        ~BasicJSONRequesterConfiguration() = default;
+        BasicHttpServiceConfiguration() = default;
+        ~BasicHttpServiceConfiguration() = default;
 
         static void Reflect(AZ::ReflectContext* context);
 
@@ -28,17 +29,17 @@ namespace GenAIOllama
         AZStd::string m_contentType = "application/json";
     };
 
-    class BasicJSONRequesterComponent
+    class BasicHttpServiceComponent
         : public AZ::Component
         , public GenAIFramework::AIServiceRequesterBus::Handler
 
     {
     public:
-        AZ_COMPONENT(BasicJSONRequesterComponent, "{aad62d35-c628-4141-b759-0d3764013b29}", AZ::Component)
+        AZ_COMPONENT(BasicHttpServiceComponent, "{aad62d35-c628-4141-b759-0d3764013b29}", AZ::Component)
 
-        BasicJSONRequesterComponent() = default;
-        BasicJSONRequesterComponent(const BasicJSONRequesterConfiguration& config);
-        ~BasicJSONRequesterComponent() = default;
+        BasicHttpServiceComponent() = default;
+        BasicHttpServiceComponent(const BasicHttpServiceConfiguration& config);
+        ~BasicHttpServiceComponent() = default;
 
         static void Reflect(AZ::ReflectContext* context);
 
@@ -54,6 +55,6 @@ namespace GenAIOllama
         void SendRequest(const AZStd::string& request, AZStd::function<void(AZ::Outcome<AZStd::string, AZStd::string>)> callback) override;
         //////////////////////////////////////////////////////////////////////////
 
-        BasicJSONRequesterConfiguration m_configuration;
+        BasicHttpServiceConfiguration m_configuration;
     };
 } // namespace GenAIOllama

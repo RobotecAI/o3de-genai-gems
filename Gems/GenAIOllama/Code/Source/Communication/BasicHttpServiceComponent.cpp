@@ -6,94 +6,92 @@
  *
  */
 
-#include "BasicJSONRequesterComponent.h"
+#include "BasicHttpServiceComponent.h"
+#include <GenAIFramework/SystemRegistrationContext/SystemRegistrationContext.h>
 
 #include <AzCore/Component/Component.h>
 #include <AzCore/Serialization/EditContext.h>
 #include <AzCore/Serialization/SerializeContext.h>
 #include <AzCore/std/string/string.h>
-#include <GenAIFramework/SystemRegistrationContext/SystemRegistrationContext.h>
 #include <HttpRequestor/HttpRequestorBus.h>
 #include <HttpRequestor/HttpTypes.h>
 
 namespace GenAIOllama
 {
-
-    void BasicJSONRequesterConfiguration::Reflect(AZ::ReflectContext* context)
+    void BasicHttpServiceConfiguration::Reflect(AZ::ReflectContext* context)
     {
         if (auto serializeContext = azrtti_cast<AZ::SerializeContext*>(context))
         {
-            serializeContext->Class<BasicJSONRequesterConfiguration, AZ::ComponentConfig>()
+            serializeContext->Class<BasicHttpServiceConfiguration, AZ::ComponentConfig>()
                 ->Version(0)
-                ->Field("url", &BasicJSONRequesterConfiguration::m_url)
-                ->Field("contentType", &BasicJSONRequesterConfiguration::m_contentType);
+                ->Field("url", &BasicHttpServiceConfiguration::m_url)
+                ->Field("contentType", &BasicHttpServiceConfiguration::m_contentType);
 
             if (auto editContext = serializeContext->GetEditContext())
             {
-                editContext
-                    ->Class<BasicJSONRequesterConfiguration>("Basic JSON requester configuration", "Basic JSON requester configuration")
+                editContext->Class<BasicHttpServiceConfiguration>("Basic HTTP Service Provider Configuration", "")
                     ->ClassElement(AZ::Edit::ClassElements::EditorData, "")
-                    ->Attribute(AZ::Edit::Attributes::Category, "AICore")
+                    ->Attribute(AZ::Edit::Attributes::Category, "AI")
                     ->Attribute(AZ::Edit::Attributes::AppearsInAddComponentMenu, AZ_CRC_CE("Game"))
                     ->DataElement(
                         AZ::Edit::UIHandlers::Default,
-                        &BasicJSONRequesterConfiguration::m_url,
-                        "EndpointURL",
-                        "An url with port pointing to an HTTP endpoint (format address:port)")
+                        &BasicHttpServiceConfiguration::m_url,
+                        "Endpoint URL",
+                        "An url with port pointing to an HTTP endpoint (format address:port/endpoint_url)")
                     ->DataElement(
                         AZ::Edit::UIHandlers::Default,
-                        &BasicJSONRequesterConfiguration::m_contentType,
+                        &BasicHttpServiceConfiguration::m_contentType,
                         "Content type",
                         "Content type of the request");
             }
         }
     }
 
-    BasicJSONRequesterComponent::BasicJSONRequesterComponent(const BasicJSONRequesterConfiguration& config)
+    BasicHttpServiceComponent::BasicHttpServiceComponent(const BasicHttpServiceConfiguration& config)
         : m_configuration(config)
     {
     }
 
-    void BasicJSONRequesterComponent::Reflect(AZ::ReflectContext* context)
+    void BasicHttpServiceComponent::Reflect(AZ::ReflectContext* context)
     {
-        BasicJSONRequesterConfiguration::Reflect(context);
+        BasicHttpServiceConfiguration::Reflect(context);
 
         if (auto serializeContext = azrtti_cast<AZ::SerializeContext*>(context))
         {
-            serializeContext->Class<BasicJSONRequesterComponent, AZ::Component>()->Version(0)->Field(
-                "Configuration", &BasicJSONRequesterComponent::m_configuration);
+            serializeContext->Class<BasicHttpServiceComponent, AZ::Component>()->Version(0)->Field(
+                "Configuration", &BasicHttpServiceComponent::m_configuration);
 
             if (auto editContext = serializeContext->GetEditContext())
             {
-                editContext->Class<BasicJSONRequesterComponent>("Basic JSON requester component", "")
+                editContext->Class<BasicHttpServiceComponent>("Basic HTTP Service Provider", "")
                     ->ClassElement(AZ::Edit::ClassElements::EditorData, "")
-                    ->Attribute(AZ::Edit::Attributes::Category, "AICore")
+                    ->Attribute(AZ::Edit::Attributes::Category, "AI")
                     ->DataElement(
                         AZ::Edit::UIHandlers::Default,
-                        &BasicJSONRequesterComponent::m_configuration,
+                        &BasicHttpServiceComponent::m_configuration,
                         "Configuration",
-                        "Configuration for the basic JSON requester")
+                        "Configuration for the Basic HTTP Service Provider")
                     ->Attribute(AZ::Edit::Attributes::Visibility, AZ::Edit::PropertyVisibility::ShowChildrenOnly);
             }
         }
 
         if (auto registrationContext = azrtti_cast<GenAIFramework::SystemRegistrationContext*>(context))
         {
-            registrationContext->RegisterGenAIFrameworkServiceRequester<BasicJSONRequesterComponent>();
+            registrationContext->RegisterGenAIFrameworkServiceRequester<BasicHttpServiceComponent>();
         }
     }
 
-    void BasicJSONRequesterComponent::Activate()
+    void BasicHttpServiceComponent::Activate()
     {
         GenAIFramework::AIServiceRequesterBus::Handler::BusConnect(GetEntityId());
     }
 
-    void BasicJSONRequesterComponent::Deactivate()
+    void BasicHttpServiceComponent::Deactivate()
     {
         GenAIFramework::AIServiceRequesterBus::Handler::BusDisconnect();
     }
 
-    void BasicJSONRequesterComponent::SendRequest(
+    void BasicHttpServiceComponent::SendRequest(
         const AZStd::string& request, AZStd::function<void(AZ::Outcome<AZStd::string, AZStd::string>)> callback)
     {
         HttpRequestor::Headers headers;

@@ -7,14 +7,13 @@
  */
 
 #include "GenAIOllamaModuleInterface.h"
-#include <AzCore/Memory/Memory.h>
-
-#include <GenAIOllama/GenAIOllamaTypeIds.h>
 
 #include <Clients/GenAIOllamaSystemComponent.h>
+#include <Communication/BasicHttpServiceComponent.h>
+#include <GenAIOllama/GenAIOllamaTypeIds.h>
+#include <ModelConfigurations/OllamaModelComponent.h>
 
-#include "Communication/JSONHttp/BasicJSONRequesterComponent.h"
-#include "ModelConfigurations/ollama/OllamaModelConfigurationComponent.h"
+#include <AzCore/Memory/Memory.h>
 
 namespace GenAIOllama
 {
@@ -32,8 +31,8 @@ namespace GenAIOllama
             m_descriptors.end(),
             {
                 GenAIOllamaSystemComponent::CreateDescriptor(),
-                OllamaModelConfigurationComponent::CreateDescriptor(),
-                BasicJSONRequesterComponent::CreateDescriptor(),
+                OllamaModelComponent::CreateDescriptor(),
+                BasicHttpServiceComponent::CreateDescriptor(),
             });
     }
 

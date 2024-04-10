@@ -10,9 +10,9 @@ set(FILES
     Source/Clients/GenAIOllamaSystemComponent.cpp
     Source/Clients/GenAIOllamaSystemComponent.h
 
-    Source/Communication/JSONHttp/BasicJSONRequesterComponent.cpp
-    Source/Communication/JSONHttp/BasicJSONRequesterComponent.h
+    Source/Communication/BasicHttpServiceComponent.cpp
+    Source/Communication/BasicHttpServiceComponent.h
 
-    Source/ModelConfigurations/ollama/OllamaModelConfigurationComponent.cpp
-    Source/ModelConfigurations/ollama/OllamaModelConfigurationComponent.h
+    Source/ModelConfigurations/OllamaModelComponent.cpp
+    Source/ModelConfigurations/OllamaModelComponent.h
 )
