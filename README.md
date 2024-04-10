@@ -1,6 +1,6 @@
-# o3de-genai-gem
+# o3de-genai-gems
 
-`o3de-genai-gem` repo contains the core Gem of the Gen AI O3DE Framework.
+`o3de-genai-gems` repo contains the core Gem of the Gen AI O3DE Framework.
 
 ## Context
 [Open 3D Engine](https:://o3de.org) - an open-source game & simulation engine. O3DE is extendable through modules called Gems. This repository is a collection of such Gems related to one functionality.
