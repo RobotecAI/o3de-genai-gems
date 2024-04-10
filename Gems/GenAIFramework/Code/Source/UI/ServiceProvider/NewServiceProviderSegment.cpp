@@ -6,34 +6,34 @@
  *
  */
 
-#include "NewServiceRequesterSegment.h"
+#include "NewServiceProviderSegment.h"
 #include <GenAIFramework/GenAIFrameworkBus.h>
 
 namespace GenAIFramework
 {
-    NewServiceRequesterSegment::NewServiceRequesterSegment(QWidget* parent)
+    NewServiceProviderSegment::NewServiceProviderSegment(QWidget* parent)
         : NewSegment(GetRegisteredNameAndComponentTypeId(), parent)
     {
     }
 
-    AZStd::vector<AZStd::pair<AZStd::string, AZ::Uuid>> NewServiceRequesterSegment::GetRegisteredNameAndComponentTypeId()
+    AZStd::vector<AZStd::pair<AZStd::string, AZ::Uuid>> NewServiceProviderSegment::GetRegisteredNameAndComponentTypeId()
     {
         auto interface = GenAIFrameworkInterface::Get();
         if (!interface)
         {
             return {};
         }
-        return interface->GetRegisteredServiceRequestersNameAndComponentTypeId();
+        return interface->GetRegisteredServiceProvidersNameAndComponentTypeId();
     }
 
-    AZ::Component* NewServiceRequesterSegment::CreateNewComponentEntity(const AZStd::string& name, const AZ::Uuid& selectedComponentTypeId)
+    AZ::Component* NewServiceProviderSegment::CreateNewComponentEntity(const AZStd::string& name, const AZ::Uuid& selectedComponentTypeId)
     {
         auto interface = GenAIFrameworkInterface::Get();
         if (!interface)
         {
             return nullptr;
         }
-        return interface->CreateNewServiceRequester(name, selectedComponentTypeId);
+        return interface->CreateNewServiceProvider(name, selectedComponentTypeId);
     }
 
 } // namespace GenAIFramework

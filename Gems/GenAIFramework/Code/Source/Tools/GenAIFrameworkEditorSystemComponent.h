@@ -68,8 +68,8 @@ namespace GenAIFramework
 
         ////////////////////////////////////////////////////////////////////////
         // GenAIFrameworkNotificationBus overrides
-        void OnServiceRequestorAdded(const AZ::EntityId& serviceRequestorId) override;
-        void OnServiceRequestorRemoved(const AZ::EntityId& serviceRequestorId) override;
+        void OnServiceProviderAdded(const AZ::EntityId& serviceProviderId) override;
+        void OnServiceProviderRemoved(const AZ::EntityId& serviceProviderId) override;
         void OnModelConfigurationAdded(const AZ::EntityId& modelConfigurationId) override;
         void OnModelConfigurationRemoved(const AZ::EntityId& modelConfigurationId) override;
     };

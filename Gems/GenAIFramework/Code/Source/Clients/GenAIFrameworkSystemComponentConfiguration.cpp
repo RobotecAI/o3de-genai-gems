@@ -17,7 +17,7 @@ namespace GenAIFramework
         {
             serializeContext->Class<GenAIFrameworkSystemComponentConfiguration>()
                 ->Version(1)
-                ->Field("ServiceRequesters", &GenAIFrameworkSystemComponentConfiguration::m_serviceRequesters)
+                ->Field("ServiceProviders", &GenAIFrameworkSystemComponentConfiguration::m_serviceProviders)
                 ->Field("ModelConfigurations", &GenAIFrameworkSystemComponentConfiguration::m_modelConfigurations);
         }
     }

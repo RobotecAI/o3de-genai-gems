@@ -11,7 +11,7 @@
 #include <AzCore/RTTI/BehaviorContext.h>
 #include <AzCore/Serialization/SerializeContext.h>
 #include <GenAIFramework/Communication/AIModelRequestBus.h>
-#include <GenAIFramework/Communication/AIServiceRequesterBus.h>
+#include <GenAIFramework/Communication/AIServiceProviderBus.h>
 #include <GenAIFramework/GenAIFrameworkBus.h>
 
 namespace GenAIFramework
@@ -30,7 +30,7 @@ namespace GenAIFramework
                 ->Attribute(AZ::Script::Attributes::Category, "AI")
                 ->Attribute(AZ::Script::Attributes::Scope, AZ::Script::Attributes::ScopeFlags::Common)
                 ->Attribute(AZ::Script::Attributes::Module, "ai")
-                ->Event("SetServiceRequesterByName", &AsyncRequestBus::Events::SetServiceRequesterByName)
+                ->Event("SetServiceProviderByName", &AsyncRequestBus::Events::SetServiceProviderByName)
                 ->Event("SetModelConfigurationByName", &AsyncRequestBus::Events::SetModelConfigurationByName)
                 ->Event("SendPromptToLLM", &AsyncRequestBus::Events::SendPromptToLLM)
                 ->Event("IsResponseReady", &AsyncRequestBus::Events::IsResponseReady)
@@ -80,21 +80,21 @@ namespace GenAIFramework
         AsyncRequestBus::Handler::BusDisconnect();
     }
 
-    void GenAIAsyncRequestSystemComponent::SetRequestorAndModel(AZ::EntityId selectedModelConfigurationId, AZ::EntityId selectedRequestorId)
+    void GenAIAsyncRequestSystemComponent::SetProviderAndModel(AZ::EntityId modelConfigurationId, AZ::EntityId serviceProviderId)
     {
-        m_selectedModelConfigurationId = selectedModelConfigurationId;
-        m_selectedRequestorId = selectedRequestorId;
+        m_modelConfigurationId = modelConfigurationId;
+        m_serviceProviderId = serviceProviderId;
 
-        AZ_Printf("AiAssistantEditorSystemComponent", "Using model : %s", selectedModelConfigurationId.ToString().c_str());
-        AZ_Printf("AiAssistantEditorSystemComponent", "Using Requestor : %s", selectedRequestorId.ToString().c_str());
+        AZ_Printf("AiAssistantEditorSystemComponent", "Using model: %s", modelConfigurationId.ToString().c_str());
+        AZ_Printf("AiAssistantEditorSystemComponent", "Using service: %s", serviceProviderId.ToString().c_str());
     }
 
-    bool GenAIAsyncRequestSystemComponent::SetServiceRequesterByName(const AZStd::string& requestorName)
+    bool GenAIAsyncRequestSystemComponent::SetServiceProviderByName(const AZStd::string& providerName)
     {
-        AZStd::vector<AZ::Component*> activeServiceRequesters;
+        AZStd::vector<AZ::Component*> activeServiceProviders;
         GenAIFramework::GenAIFrameworkRequestBus::BroadcastResult(
-            activeServiceRequesters, &GenAIFramework::GenAIFrameworkRequests::GetActiveServiceRequesters);
-        return SetEntityIdByName(activeServiceRequesters, requestorName, m_selectedRequestorId);
+            activeServiceProviders, &GenAIFramework::GenAIFrameworkRequests::GetActiveServiceProviders);
+        return SetEntityIdByName(activeServiceProviders, providerName, m_serviceProviderId);
     }
 
     bool GenAIAsyncRequestSystemComponent::SetModelConfigurationByName(const AZStd::string& modelConfigurationName)
@@ -102,7 +102,7 @@ namespace GenAIFramework
         AZStd::vector<AZ::Component*> activeModelConfigurations;
         GenAIFramework::GenAIFrameworkRequestBus::BroadcastResult(
             activeModelConfigurations, &GenAIFramework::GenAIFrameworkRequests::GetActiveModelConfigurations);
-        return SetEntityIdByName(activeModelConfigurations, modelConfigurationName, m_selectedModelConfigurationId);
+        return SetEntityIdByName(activeModelConfigurations, modelConfigurationName, m_modelConfigurationId);
     }
 
     bool GenAIAsyncRequestSystemComponent::SetEntityIdByName(
@@ -121,50 +121,50 @@ namespace GenAIFramework
 
     AZ::Uuid GenAIAsyncRequestSystemComponent::SendPromptToLLM(const AZStd::string& prompt)
     {
-        AZ::EntityId selectedModelConfigurationId = m_selectedModelConfigurationId;
-        AZ::EntityId selectedRequestorId = m_selectedRequestorId;
-        if (!selectedModelConfigurationId.IsValid())
+        AZ::EntityId modelConfigurationId = m_modelConfigurationId;
+        AZ::EntityId serviceProviderId = m_serviceProviderId;
+        if (!modelConfigurationId.IsValid())
         {
             AZStd::vector<AZ::Component*> activeModelConfigurations;
             GenAIFramework::GenAIFrameworkRequestBus::BroadcastResult(
                 activeModelConfigurations, &GenAIFramework::GenAIFrameworkRequests::GetActiveModelConfigurations);
             if (!activeModelConfigurations.empty())
             {
-                selectedModelConfigurationId = activeModelConfigurations.front()->GetEntityId();
+                modelConfigurationId = activeModelConfigurations.front()->GetEntityId();
                 AZ_Warning(
                     "AiAssistantEditorSystemComponent",
                     false,
                     "No model configuration selected. Using the first available model configuration: %s",
-                    selectedModelConfigurationId.ToString().c_str())
+                    modelConfigurationId.ToString().c_str())
             }
         }
 
-        if (!selectedRequestorId.IsValid())
+        if (!serviceProviderId.IsValid())
         {
-            AZStd::vector<AZ::Component*> activeServiceRequesters;
+            AZStd::vector<AZ::Component*> activeServiceProviders;
             GenAIFramework::GenAIFrameworkRequestBus::BroadcastResult(
-                activeServiceRequesters, &GenAIFramework::GenAIFrameworkRequests::GetActiveServiceRequesters);
-            if (!activeServiceRequesters.empty())
+                activeServiceProviders, &GenAIFramework::GenAIFrameworkRequests::GetActiveServiceProviders);
+            if (!activeServiceProviders.empty())
             {
-                selectedRequestorId = activeServiceRequesters.front()->GetEntityId();
+                serviceProviderId = activeServiceProviders.front()->GetEntityId();
                 AZ_Warning(
                     "AiAssistantEditorSystemComponent",
                     false,
-                    "No model configuration selected. Using the first available requestor: %s",
-                    selectedRequestorId.ToString().c_str())
+                    "No model configuration selected. Using the first available service provider: %s",
+                    serviceProviderId.ToString().c_str())
             }
         }
 
         AZ::Uuid promptId = AZ::Uuid::CreateRandom();
         GenAIFramework::ModelAPIRequest preparedRequest;
         GenAIFramework::AIModelRequestBus::EventResult(
-            preparedRequest, selectedModelConfigurationId, &GenAIFramework::AIModelRequestBus::Events::PrepareRequest, prompt);
+            preparedRequest, modelConfigurationId, &GenAIFramework::AIModelRequestBus::Events::PrepareRequest, prompt);
 
-        auto callback = [this, promptId, selectedModelConfigurationId](GenAIFramework::ModelAPIResponse outcome)
+        auto callback = [this, promptId, modelConfigurationId](GenAIFramework::ModelAPIResponse outcome)
         {
             AZ::Outcome<AZStd::string, AZStd::string> extractedResponse;
             GenAIFramework::AIModelRequestBus::EventResult(
-                extractedResponse, selectedModelConfigurationId, &GenAIFramework::AIModelRequestBus::Events::ExtractResult, outcome);
+                extractedResponse, modelConfigurationId, &GenAIFramework::AIModelRequestBus::Events::ExtractResult, outcome);
             if (extractedResponse.IsSuccess())
             {
                 AZStd::unique_lock<AZStd::mutex> lock(m_promptMutex);
@@ -179,8 +179,8 @@ namespace GenAIFramework
             }
         };
 
-        GenAIFramework::AIServiceRequesterBus::Event(
-            selectedRequestorId, &GenAIFramework::AIServiceRequesterBus::Events::SendRequest, preparedRequest, callback);
+        GenAIFramework::AIServiceProviderBus::Event(
+            serviceProviderId, &GenAIFramework::AIServiceProviderBus::Events::SendRequest, preparedRequest, callback);
 
         return promptId;
     }
@@ -206,14 +206,13 @@ namespace GenAIFramework
 
     void GenAIAsyncRequestSystemComponent::ResetModelHistory()
     {
-        GenAIFramework::AIModelRequestBus::Event(
-            m_selectedModelConfigurationId, &GenAIFramework::AIModelRequestBus::Events::ResetModelHistory);
+        GenAIFramework::AIModelRequestBus::Event(m_modelConfigurationId, &GenAIFramework::AIModelRequestBus::Events::ResetModelHistory);
     }
 
     void GenAIAsyncRequestSystemComponent::EnableModelHistory(bool enableHistory)
     {
         GenAIFramework::AIModelRequestBus::Event(
-            m_selectedModelConfigurationId, &GenAIFramework::AIModelRequestBus::Events::EnableModelHistory, enableHistory);
+            m_modelConfigurationId, &GenAIFramework::AIModelRequestBus::Events::EnableModelHistory, enableHistory);
     }
 
 } // namespace GenAIFramework

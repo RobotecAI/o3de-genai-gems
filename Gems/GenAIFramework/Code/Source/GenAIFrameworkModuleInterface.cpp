@@ -35,7 +35,7 @@ namespace GenAIFramework
                 GenAIAsyncRequestSystemComponent::CreateDescriptor(),
             });
 
-        // Create a new reflection context for reflecting serviceRequesters and modelConfigurations
+        // Create a new reflection context for reflecting serviceProviders and modelConfigurations
         AZ::ReflectionEnvironment::GetReflectionManager()->AddReflectContext<SystemRegistrationContext>();
     }
 

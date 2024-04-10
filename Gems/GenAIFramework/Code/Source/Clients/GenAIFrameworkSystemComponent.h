@@ -8,8 +8,8 @@
 
 #pragma once
 
-#include "SettingsRegistryManager/SettingsRegistryManager.h"
 #include "Clients/GenAIFrameworkSystemComponentConfiguration.h"
+#include "SettingsRegistryManager/SettingsRegistryManager.h"
 
 #include <Action/GenAIFrameworkActionRequestHandler.h>
 #include <AzCore/Component/Component.h>
@@ -43,16 +43,16 @@ namespace GenAIFramework
         AZStd::unique_ptr<GenAIFrameworkScriptExecutor> MakeScriptExecutor(const AIContext& aiContext) override;
         SystemRegistrationContext* GetSystemRegistrationContext() override;
         AZStd::vector<AZStd::pair<AZStd::string, AZ::Uuid>> GetRegisteredModelConfigurationsNameAndComponentTypeId() override;
-        AZStd::vector<AZStd::pair<AZStd::string, AZ::Uuid>> GetRegisteredServiceRequestersNameAndComponentTypeId() override;
+        AZStd::vector<AZStd::pair<AZStd::string, AZ::Uuid>> GetRegisteredServiceProvidersNameAndComponentTypeId() override;
         AZStd::vector<AZ::Component*> GetActiveModelConfigurations() override;
-        AZStd::vector<AZ::Component*> GetActiveServiceRequesters() override;
+        AZStd::vector<AZ::Component*> GetActiveServiceProviders() override;
         AZ::Component* CreateNewModelConfiguration(const AZStd::string& modelConfigurationName, const AZ::Uuid& componentTypeId) override;
-        AZ::Component* CreateNewServiceRequester(const AZStd::string& requesterName, const AZ::Uuid& componentTypeId) override;
+        AZ::Component* CreateNewServiceProvider(const AZStd::string& providerName, const AZ::Uuid& componentTypeId) override;
         void RemoveComponent(AZ::Component* component) override;
         void ActivateEntity(AZStd::shared_ptr<AZ::Entity> entity) override;
         void DeactivateEntity(AZStd::shared_ptr<AZ::Entity> entity) override;
         AZStd::vector<AZStd::string> GetActiveModelConfigurationsNames() const override;
-        AZStd::vector<AZStd::string> GetActiveServiceRequestersNames() const override;
+        AZStd::vector<AZStd::string> GetActiveServiceProvidersNames() const override;
         ////////////////////////////////////////////////////////////////////////
 
         ////////////////////////////////////////////////////////////////////////
@@ -74,8 +74,7 @@ namespace GenAIFramework
         AZStd::vector<AZStd::pair<AZStd::string, AZ::Uuid>> GetRegisteredComponentsNameAndComponentTypeId(
             const AZStd::vector<AZ::Uuid>& componentTypeIds);
         AZStd::vector<AZ::Component*> GetActiveComponents(const EntityIdToEntityMap& entities) const;
-        AZ::Component* CreateNewComponentEntity(
-            const AZStd::string& name, const AZ::Uuid& componentTypeId, EntityIdToEntityMap& entities);
+        AZ::Component* CreateNewComponentEntity(const AZStd::string& name, const AZ::Uuid& componentTypeId, EntityIdToEntityMap& entities);
 
         AZStd::vector<AZStd::string> GetActiveComponentsNames(const EntityIdToEntityMap& entities) const;
     };

@@ -15,11 +15,11 @@
 
 namespace GenAIFramework
 {
-    class NewServiceRequesterSegment : public NewSegment
+    class NewServiceProviderSegment : public NewSegment
     {
     public:
-        explicit NewServiceRequesterSegment(QWidget* parent = nullptr);
-        ~NewServiceRequesterSegment() = default;
+        explicit NewServiceProviderSegment(QWidget* parent = nullptr);
+        ~NewServiceProviderSegment() = default;
 
         AZStd::vector<AZStd::pair<AZStd::string, AZ::Uuid>> GetRegisteredNameAndComponentTypeId() override;
         AZ::Component* CreateNewComponentEntity(const AZStd::string& name, const AZ::Uuid& selectedComponentTypeId) override;

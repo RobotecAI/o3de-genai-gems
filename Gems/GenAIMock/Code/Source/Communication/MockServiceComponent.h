@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include <GenAIFramework/Communication/AIServiceRequesterBus.h>
+#include <GenAIFramework/Communication/AIServiceProviderBus.h>
 
 #include <AzCore/Asset/AssetCommon.h>
 #include <AzCore/Component/Component.h>
@@ -38,7 +38,7 @@ namespace GenAIMock
 
     class MockServiceComponent
         : public AZ::Component
-        , public GenAIFramework::AIServiceRequesterBus::Handler
+        , public GenAIFramework::AIServiceProviderBus::Handler
     {
     public:
         AZ_COMPONENT(MockServiceComponent, "{db01be29-ec0b-41e1-bf68-12d70dd6b630}");
@@ -58,7 +58,7 @@ namespace GenAIMock
         //////////////////////////////////////////////////////////////////////////
 
         //////////////////////////////////////////////////////////////////////////
-        // AIServiceRequesterBus overrides
+        // AIServiceProviderBus overrides
         void SendRequest(const AZStd::string& request, AZStd::function<void(AZ::Outcome<AZStd::string, AZStd::string>)> callback);
         //////////////////////////////////////////////////////////////////////////
 

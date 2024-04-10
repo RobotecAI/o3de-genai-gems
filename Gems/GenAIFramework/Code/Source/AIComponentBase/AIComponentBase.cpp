@@ -21,7 +21,7 @@ namespace GenAIFramework
         {
             serializeContext->Class<AIComponentBase, AZ::Component>()
                 ->Version(0)
-                ->Field("SelectedServiceRequestorName", &AIComponentBase::m_selectedServiceRequestorName)
+                ->Field("SelectedServiceProviderName", &AIComponentBase::m_selectedServiceProviderName)
                 ->Field("SelectedModelConfigurationName", &AIComponentBase::m_selectedModelConfigurationName);
 
             if (auto* editContext = serializeContext->GetEditContext())
@@ -30,16 +30,16 @@ namespace GenAIFramework
                     ->Attribute(AZ::Edit::Attributes::ChangeNotify, AZ::Edit::PropertyRefreshLevels::EntireTree)
                     ->DataElement(
                         AZ::Edit::UIHandlers::ComboBox,
-                        &AIComponentBase::m_selectedServiceRequestorName,
-                        "Requestor",
-                        "Id of requester to be used for AI requests")
-                    ->Attribute(AZ::Edit::Attributes::StringList, &AIComponentBase::GetServiceRequestorsNames)
-                    ->Attribute(AZ::Edit::Attributes::ChangeNotify, &AIComponentBase::UpdateNamedServiceRequestorId)
+                        &AIComponentBase::m_selectedServiceProviderName,
+                        "Service",
+                        "Name of the service to be used for AI requests")
+                    ->Attribute(AZ::Edit::Attributes::StringList, &AIComponentBase::GetServiceProvidersNames)
+                    ->Attribute(AZ::Edit::Attributes::ChangeNotify, &AIComponentBase::UpdateNamedServiceProviderId)
                     ->DataElement(
                         AZ::Edit::UIHandlers::ComboBox,
                         &AIComponentBase::m_selectedModelConfigurationName,
-                        "Generator",
-                        "Id of generator to be used for AI prompt generation")
+                        "Model",
+                        "Name of the model to be used for AI prompt generation")
                     ->Attribute(AZ::Edit::Attributes::StringList, &AIComponentBase::GetModelConfigurationsNames)
                     ->Attribute(AZ::Edit::Attributes::ChangeNotify, &AIComponentBase::UpdateNamedModelConfigurationId);
             }
@@ -48,7 +48,7 @@ namespace GenAIFramework
 
     void AIComponentBase::Activate()
     {
-        UpdateNamedServiceRequestorId();
+        UpdateNamedServiceProviderId();
         UpdateNamedModelConfigurationId();
     }
 
@@ -56,9 +56,9 @@ namespace GenAIFramework
     {
     }
 
-    AZStd::vector<AZStd::string> AIComponentBase::GetServiceRequestorsNames() const
+    AZStd::vector<AZStd::string> AIComponentBase::GetServiceProvidersNames() const
     {
-        return GetNames(GetServiceRequestors());
+        return GetNames(GetServiceProviders());
     }
 
     AZStd::vector<AZStd::string> AIComponentBase::GetModelConfigurationsNames() const
@@ -76,10 +76,10 @@ namespace GenAIFramework
         return names;
     }
 
-    AZStd::vector<AZ::Component*> AIComponentBase::GetServiceRequestors() const
+    AZStd::vector<AZ::Component*> AIComponentBase::GetServiceProviders() const
     {
         auto interface = GenAIFrameworkInterface::Get();
-        return interface ? interface->GetActiveServiceRequesters() : AZStd::vector<AZ::Component*>();
+        return interface ? interface->GetActiveServiceProviders() : AZStd::vector<AZ::Component*>();
     }
     AZStd::vector<AZ::Component*> AIComponentBase::GetModelConfigurations() const
     {
@@ -98,13 +98,13 @@ namespace GenAIFramework
             }
         }
     }
-    void AIComponentBase::UpdateNamedServiceRequestorId()
+    void AIComponentBase::UpdateNamedServiceProviderId()
     {
-        GetNamedId(m_selectedServiceRequestorName, GetServiceRequestors(), m_selectedServiceRequestorId);
+        GetNamedId(m_selectedServiceProviderName, GetServiceProviders(), m_serviceProviderId);
     }
     void AIComponentBase::UpdateNamedModelConfigurationId()
     {
-        GetNamedId(m_selectedModelConfigurationName, GetModelConfigurations(), m_selectedModelConfigurationId);
+        GetNamedId(m_selectedModelConfigurationName, GetModelConfigurations(), m_modelConfigurationId);
     }
 
 } // namespace GenAIFramework

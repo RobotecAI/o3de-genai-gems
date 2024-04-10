@@ -28,9 +28,9 @@ namespace GenAIFramework
         AZ_RTTI(SystemRegistrationContext, "{e162937c-0177-4ced-87b3-3b037a44c394}", AZ::ReflectContext);
 
         template<class C>
-        void RegisterGenAIFrameworkServiceRequester()
+        void RegisterGenAIFrameworkServiceProvider()
         {
-            m_registeredServiceRequesters.push_back(C::RTTI_Type());
+            m_registeredServiceProviders.push_back(C::RTTI_Type());
         }
 
         template<class C>
@@ -39,9 +39,9 @@ namespace GenAIFramework
             m_registeredModelConfigurations.push_back(C::RTTI_Type());
         }
 
-        inline AZStd::vector<AZ::Uuid> GetRegisteredServiceRequesters() const
+        inline AZStd::vector<AZ::Uuid> GetRegisteredServiceProviders() const
         {
-            return m_registeredServiceRequesters;
+            return m_registeredServiceProviders;
         }
 
         inline AZStd::vector<AZ::Uuid> GetRegisteredModelConfigurations() const
@@ -50,7 +50,7 @@ namespace GenAIFramework
         }
 
     private:
-        AZStd::vector<AZ::Uuid> m_registeredServiceRequesters;
+        AZStd::vector<AZ::Uuid> m_registeredServiceProviders;
         AZStd::vector<AZ::Uuid> m_registeredModelConfigurations;
     };
 } // namespace GenAIFramework

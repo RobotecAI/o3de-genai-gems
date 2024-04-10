@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include <GenAIFramework/Communication/AIServiceRequesterBus.h>
+#include <GenAIFramework/Communication/AIServiceProviderBus.h>
 
 #include <AzCore/Component/Component.h>
 #include <AzFramework/Components/ComponentAdapter.h>
@@ -31,7 +31,7 @@ namespace GenAIOllama
 
     class BasicHttpServiceComponent
         : public AZ::Component
-        , public GenAIFramework::AIServiceRequesterBus::Handler
+        , public GenAIFramework::AIServiceProviderBus::Handler
 
     {
     public:
@@ -51,7 +51,7 @@ namespace GenAIOllama
 
     private:
         //////////////////////////////////////////////////////////////////////////
-        // AIServiceRequesterBus::Handler
+        // AIServiceProviderBus::Handler
         void SendRequest(const AZStd::string& request, AZStd::function<void(AZ::Outcome<AZStd::string, AZStd::string>)> callback) override;
         //////////////////////////////////////////////////////////////////////////
 

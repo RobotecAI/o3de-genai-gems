@@ -40,8 +40,8 @@ namespace GenAIFramework
 
     private:
         // AysncRequestBus::Handler
-        void SetRequestorAndModel(AZ::EntityId selectedModelConfigurationId, AZ::EntityId selectedRequestorId) override;
-        bool SetServiceRequesterByName(const AZStd::string& requestorName) override;
+        void SetProviderAndModel(AZ::EntityId modelConfigurationId, AZ::EntityId serviceProviderId) override;
+        bool SetServiceProviderByName(const AZStd::string& providerName) override;
         bool SetModelConfigurationByName(const AZStd::string& modelConfigurationName) override;
         AZ::Uuid SendPromptToLLM(const AZStd::string& prompt) override;
         bool IsResponseReady(AZ::Uuid promptId) override;
@@ -51,8 +51,8 @@ namespace GenAIFramework
 
         bool SetEntityIdByName(const AZStd::vector<AZ::Component*>& components, const AZStd::string& entityName, AZ::EntityId& entityId);
 
-        AZ::EntityId m_selectedModelConfigurationId = AZ::EntityId(); //! Selected model configuration entity id
-        AZ::EntityId m_selectedRequestorId = AZ::EntityId(); //! Selected requestor entity id
+        AZ::EntityId m_modelConfigurationId = AZ::EntityId(); //! Selected model configuration entity id
+        AZ::EntityId m_serviceProviderId = AZ::EntityId(); //! Selected service provider entity id
         AZStd::mutex m_promptMutex; //! Mutex to protect the prompt responses
         AZStd::unordered_map<AZ::Uuid, AZStd::string> m_promptResponses; //! Map of ready to be read responses
     };

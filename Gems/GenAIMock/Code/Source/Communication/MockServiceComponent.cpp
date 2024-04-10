@@ -77,7 +77,7 @@ namespace GenAIMock
 
         if (auto registrationContext = azrtti_cast<GenAIFramework::SystemRegistrationContext*>(context))
         {
-            registrationContext->RegisterGenAIFrameworkServiceRequester<MockServiceComponent>();
+            registrationContext->RegisterGenAIFrameworkServiceProvider<MockServiceComponent>();
         }
     }
 
@@ -133,12 +133,12 @@ namespace GenAIMock
 
     void MockServiceComponent::Activate()
     {
-        GenAIFramework::AIServiceRequesterBus::Handler::BusConnect(GetEntityId());
+        GenAIFramework::AIServiceProviderBus::Handler::BusConnect(GetEntityId());
     }
 
     void MockServiceComponent::Deactivate()
     {
-        GenAIFramework::AIServiceRequesterBus::Handler::BusDisconnect();
+        GenAIFramework::AIServiceProviderBus::Handler::BusDisconnect();
     }
 
     void MockServiceComponent::SetConfiguration(const MockServiceComponentConfiguration& config)

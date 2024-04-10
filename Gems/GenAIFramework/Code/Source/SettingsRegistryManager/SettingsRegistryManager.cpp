@@ -36,9 +36,9 @@ namespace GenAIFramework
         AZ_Assert(configurationRead, "Failed to read GenAIFramework settings from the Settings Registry");
         if (configurationRead)
         {
-            for (const auto& [id, e] : saveObject.m_serviceRequesters)
+            for (const auto& [id, e] : saveObject.m_serviceProviders)
             {
-                AZ_Printf("SettingsRegistryManager", "Service Requester: %s, %llu\n", e->GetName().c_str(), id);
+                AZ_Printf("SettingsRegistryManager", "Service Provider: %s, %llu\n", e->GetName().c_str(), id);
             }
             for (const auto& [id, e] : saveObject.m_modelConfigurations)
             {

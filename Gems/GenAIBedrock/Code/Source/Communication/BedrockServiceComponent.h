@@ -11,7 +11,7 @@
 #include <AzCore/Component/Component.h>
 #include <AzCore/RTTI/RTTIMacros.h>
 #include <AzCore/std/string/string.h>
-#include <GenAIFramework/Communication/AIServiceRequesterBus.h>
+#include <GenAIFramework/Communication/AIServiceProviderBus.h>
 
 #include <aws/bedrock-runtime/BedrockRuntimeClient.h>
 #include <aws/bedrock-runtime/BedrockRuntimeErrors.h>
@@ -38,7 +38,7 @@ namespace GenAIBedrock
 
     class BedrockServiceComponent
         : public AZ::Component
-        , private GenAIFramework::AIServiceRequesterBus::Handler
+        , private GenAIFramework::AIServiceProviderBus::Handler
     {
     public:
         AZ_COMPONENT(BedrockServiceComponent, "{77f1b8e1-e616-44c0-a6c6-9d1bd26cf751}");
@@ -58,7 +58,7 @@ namespace GenAIBedrock
         const BedrockServiceConfiguration& GetConfiguration() const;
 
     private:
-        // GenAIFramework::AIServiceRequesterBus::Handler overrides
+        // GenAIFramework::AIServiceProviderBus::Handler overrides
         void SendRequest(const AZStd::string& request, AZStd::function<void(AZ::Outcome<AZStd::string, AZStd::string>)> callback) override;
 
         // Internal configuration for the AWS SDK client

@@ -16,10 +16,10 @@
 #include <GenAIFramework/Communication/AIModelRequestBus.h>
 namespace GenAIFramework
 {
-    class AIServiceRequesterRequests : public AZ::ComponentBus
+    class AIServiceProviderRequests : public AZ::ComponentBus
     {
     public:
-        AZ_RTTI(AIServiceRequesterRequests, "{0bcac4e2-09a9-4702-98dd-ef37006664a7}", AZ::ComponentBus);
+        AZ_RTTI(AIServiceProviderRequests, "{0bcac4e2-09a9-4702-98dd-ef37006664a7}", AZ::ComponentBus);
 
         static const AZ::EBusHandlerPolicy HandlerPolicy = AZ::EBusHandlerPolicy::Single;
         static const AZ::EBusAddressPolicy AddressPolicy = AZ::EBusAddressPolicy::ById;
@@ -33,5 +33,5 @@ namespace GenAIFramework
         virtual void SendRequest(const ModelAPIRequest& request, AZStd::function<void(ModelAPIResponse)> callback) = 0;
     };
 
-    using AIServiceRequesterBus = AZ::EBus<AIServiceRequesterRequests>;
+    using AIServiceProviderBus = AZ::EBus<AIServiceProviderRequests>;
 } // namespace GenAIFramework

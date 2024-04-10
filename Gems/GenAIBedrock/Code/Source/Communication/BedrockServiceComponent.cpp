@@ -73,7 +73,7 @@ namespace GenAIBedrock
 
         if (auto registrationContext = azrtti_cast<GenAIFramework::SystemRegistrationContext*>(context))
         {
-            registrationContext->RegisterGenAIFrameworkServiceRequester<BedrockServiceComponent>();
+            registrationContext->RegisterGenAIFrameworkServiceProvider<BedrockServiceComponent>();
         }
     }
 
@@ -110,12 +110,12 @@ namespace GenAIBedrock
     void BedrockServiceComponent::Activate()
     {
         OnConfigurationChanged();
-        GenAIFramework::AIServiceRequesterBus::Handler::BusConnect(GetEntityId());
+        GenAIFramework::AIServiceProviderBus::Handler::BusConnect(GetEntityId());
     }
 
     void BedrockServiceComponent::Deactivate()
     {
-        GenAIFramework::AIServiceRequesterBus::Handler::BusDisconnect();
+        GenAIFramework::AIServiceProviderBus::Handler::BusDisconnect();
     }
 
     void BedrockServiceComponent::SetConfiguration(const BedrockServiceConfiguration& config)
