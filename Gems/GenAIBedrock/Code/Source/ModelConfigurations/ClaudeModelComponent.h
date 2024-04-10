@@ -8,25 +8,25 @@
 
 #pragma once
 
-#include "ModelConfigurations/Claude/ClaudePromptConfiguration.h"
-#include <AzCore/Component/Component.h>
 #include <GenAIFramework/Communication/AIModelRequestBus.h>
-#include <aws/core/utils/json/JsonSerializer.h>
+#include <ModelConfigurations/ClaudeModelConfiguration.h>
+
+#include <AzCore/Component/Component.h>
 
 namespace GenAIBedrock
 {
-    class ClaudePromptGeneratorComponent
+    class ClaudeModelComponent
         : public AZ::Component
         , public GenAIFramework::AIModelRequestBus::Handler
     {
     public:
-        AZ_COMPONENT(ClaudePromptGeneratorComponent, "{0310426d-3035-4240-b9e5-d1556af98b47}");
+        AZ_COMPONENT(ClaudeModelComponent, "{0310426d-3035-4240-b9e5-d1556af98b47}");
 
         static void Reflect(AZ::ReflectContext* context);
 
-        ClaudePromptGeneratorComponent() = default;
-        explicit ClaudePromptGeneratorComponent(const ClaudePromptInputConfiguration& config);
-        ~ClaudePromptGeneratorComponent() = default;
+        ClaudeModelComponent() = default;
+        explicit ClaudeModelComponent(const ClaudeModelConfiguration& config);
+        ~ClaudeModelComponent() = default;
 
         void Activate() override;
         void Deactivate() override;
@@ -36,6 +36,6 @@ namespace GenAIBedrock
         AZ::Outcome<AZStd::string, AZStd::string> ExtractResult(const GenAIFramework::ModelAPIResponse& modelAPIResponse) override;
 
     private:
-        ClaudePromptInputConfiguration m_defaultConfiguration;
+        ClaudeModelConfiguration m_configuration;
     };
 } // namespace GenAIBedrock

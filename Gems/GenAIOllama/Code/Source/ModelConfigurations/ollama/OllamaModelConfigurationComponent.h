@@ -8,13 +8,13 @@
 
 #pragma once
 
+#include <GenAIFramework/Communication/AIModelRequestBus.h>
+
 #include <AzCore/Component/Component.h>
 #include <AzFramework/Components/ComponentAdapter.h>
-#include <GenAIFramework/Communication/AIModelRequestBus.h>
 
 namespace GenAIOllama
 {
-
     class OllamaModelConfiguration : public AZ::ComponentConfig
     {
     public:
