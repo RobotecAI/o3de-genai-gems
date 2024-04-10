@@ -6,7 +6,7 @@
  *
  */
 
-#include "MockRequesterComponent.h"
+#include "MockServiceComponent.h"
 #include <GenAIFramework/SystemRegistrationContext/SystemRegistrationContext.h>
 
 #include <API/EditorAssetSystemAPI.h>
@@ -22,21 +22,21 @@
 
 namespace GenAIMock
 {
-    void MockRequesterComponentConfiguration::Reflect(AZ::ReflectContext* context)
+    void MockServiceComponentConfiguration::Reflect(AZ::ReflectContext* context)
     {
         if (auto serializeContext = azrtti_cast<AZ::SerializeContext*>(context))
         {
-            serializeContext->Class<MockRequesterComponentConfiguration, AZ::ComponentConfig>()->Version(0)->Field(
-                "assetPath", &MockRequesterComponentConfiguration::m_assetPath);
+            serializeContext->Class<MockServiceComponentConfiguration, AZ::ComponentConfig>()->Version(0)->Field(
+                "assetPath", &MockServiceComponentConfiguration::m_assetPath);
 
             if (auto editContext = serializeContext->GetEditContext())
             {
-                editContext->Class<MockRequesterComponentConfiguration>("Mock Requester configuration", "")
+                editContext->Class<MockServiceComponentConfiguration>("Mock Service Provider Configuration", "")
                     ->ClassElement(AZ::Edit::ClassElements::EditorData, "")
                     ->Attribute(AZ::Edit::Attributes::Category, "AI")
                     ->DataElement(
                         AZ::Edit::UIHandlers::Default,
-                        &MockRequesterComponentConfiguration::m_assetPath,
+                        &MockServiceComponentConfiguration::m_assetPath,
                         "JSON Asset Path",
                         "JSON Asset Path")
                     ->Attribute(AZ::Edit::Attributes::SourceAssetFilterPattern, "*.json");
@@ -44,48 +44,49 @@ namespace GenAIMock
         }
     }
 
-    AZ::IO::Path MockRequesterComponentConfiguration::GetAssetPath() const
+    AZ::IO::Path MockServiceComponentConfiguration::GetAssetPath() const
     {
         return m_assetPath;
     }
 
-    void MockRequesterComponent::Reflect(AZ::ReflectContext* context)
+    void MockServiceComponent::Reflect(AZ::ReflectContext* context)
     {
-        MockRequesterComponentConfiguration::Reflect(context);
+        MockServiceComponentConfiguration::Reflect(context);
         if (auto serializeContext = azrtti_cast<AZ::SerializeContext*>(context))
         {
-            serializeContext->Class<MockRequesterComponent, AZ::Component>()
+            serializeContext->Class<MockServiceComponent, AZ::Component>()
                 ->Version(0)
-                ->Field("Configuration", &MockRequesterComponent::m_configuration)
-                ->Field("testData", &MockRequesterComponent::m_testData);
+                ->Field("Configuration", &MockServiceComponent::m_configuration)
+                ->Field("testData", &MockServiceComponent::m_testData)
+                ->Field("lastCompleted", &MockServiceComponent::m_lastCompleted);
 
             if (auto editContext = serializeContext->GetEditContext())
             {
-                editContext->Class<MockRequesterComponent>("Mock Requester component", "")
+                editContext->Class<MockServiceComponent>("Mock Service Provider", "")
                     ->ClassElement(AZ::Edit::ClassElements::EditorData, "")
                     ->Attribute(AZ::Edit::Attributes::Category, "AI")
                     ->DataElement(
                         AZ::Edit::UIHandlers::Default,
-                        &MockRequesterComponent::m_configuration,
+                        &MockServiceComponent::m_configuration,
                         "Configuration",
-                        "Configuration for the Mock requester")
+                        "Configuration for the Mock Service Provider")
                     ->Attribute(AZ::Edit::Attributes::Visibility, AZ::Edit::PropertyVisibility::ShowChildrenOnly)
-                    ->Attribute(AZ::Edit::Attributes::ChangeNotify, &MockRequesterComponent::ReloadAsset);
+                    ->Attribute(AZ::Edit::Attributes::ChangeNotify, &MockServiceComponent::ReloadAsset);
             }
         }
 
         if (auto registrationContext = azrtti_cast<GenAIFramework::SystemRegistrationContext*>(context))
         {
-            registrationContext->RegisterGenAIFrameworkServiceRequester<MockRequesterComponent>();
+            registrationContext->RegisterGenAIFrameworkServiceRequester<MockServiceComponent>();
         }
     }
 
-    MockRequesterComponent::MockRequesterComponent(const MockRequesterComponentConfiguration& config)
+    MockServiceComponent::MockServiceComponent(const MockServiceComponentConfiguration& config)
         : m_configuration(config)
     {
     }
 
-    void MockRequesterComponent::ReloadAsset()
+    void MockServiceComponent::ReloadAsset()
     {
         const auto relativePath = m_configuration.GetAssetPath().String();
         bool hasResult = false;
@@ -98,11 +99,11 @@ namespace GenAIMock
 
         if (!hasResult)
         {
-            AZ_Warning("MockRequesterComponent", false, "File %s not found, mock data was not reloaded.", fullPath.c_str());
+            AZ_Warning("MockServiceComponent", false, "File %s not found, mock data was not reloaded.", fullPath.c_str());
             return;
         }
 
-        AZ_Printf("MockRequesterComponent", "Reloading data from file %s", fullPath.c_str());
+        AZ_Printf("MockServiceComponent", "Reloading data from file %s", fullPath.c_str());
         m_testData.clear();
         auto result = AZ::JsonSerializationUtils::ReadJsonFile(fullPath);
         if (result.IsSuccess())
@@ -122,39 +123,67 @@ namespace GenAIMock
         }
         else
         {
-            AZ_Warning("MockRequesterComponent", false, "Failed to parse file %s: %s", fullPath.c_str(), result.GetError().c_str());
+            AZ_Warning("MockServiceComponent", false, "Failed to parse file %s: %s", fullPath.c_str(), result.GetError().c_str());
         }
     }
 
-    void MockRequesterComponent::Init()
+    void MockServiceComponent::Init()
     {
     }
 
-    void MockRequesterComponent::Activate()
+    void MockServiceComponent::Activate()
     {
         GenAIFramework::AIServiceRequesterBus::Handler::BusConnect(GetEntityId());
     }
 
-    void MockRequesterComponent::Deactivate()
+    void MockServiceComponent::Deactivate()
     {
         GenAIFramework::AIServiceRequesterBus::Handler::BusDisconnect();
     }
 
-    void MockRequesterComponent::SetConfiguration(const MockRequesterComponentConfiguration& config)
+    void MockServiceComponent::SetConfiguration(const MockServiceComponentConfiguration& config)
     {
         m_configuration = config;
     }
 
-    const MockRequesterComponentConfiguration& MockRequesterComponent::GetConfiguration() const
+    const MockServiceComponentConfiguration& MockServiceComponent::GetConfiguration() const
     {
         return m_configuration;
     }
 
-    void MockRequesterComponent::SendRequest(
+    void MockServiceComponent::SendRequest(
         const AZStd::string& request, AZStd::function<void(AZ::Outcome<AZStd::string, AZStd::string>)> callback)
     {
-        const int index = std::atoi(request.c_str());
-        if (index >= 0 && index < m_testData.size())
+        // This service accepts three types of prompts:
+        // 1) restart - restart the counter and get the first mock outcome from the model
+        // 2) next - get the next mock outcome from the model
+        // 3) [0..9] - get the n-th mock outcome from the model
+        int index;
+        if (request == "restart")
+        {
+            m_lastCompleted = 0;
+            index = 0;
+        }
+        else if (request == "next")
+        {
+            m_lastCompleted++;
+            index = m_lastCompleted;
+        }
+        else
+        {
+            index = std::atoi(request.c_str());
+            if (index < 0)
+            {
+                m_lastCompleted = 0;
+                index = 0;
+            }
+            else
+            {
+                m_lastCompleted = index;
+            }
+        }
+
+        if (index < m_testData.size())
         {
             AZ::Outcome<AZStd::string, AZStd::string> outcomeResult = AZ::Success(m_testData[index]);
             callback(outcomeResult);

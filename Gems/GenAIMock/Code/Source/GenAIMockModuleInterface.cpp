@@ -9,11 +9,10 @@
 #include "GenAIMockModuleInterface.h"
 #include <AzCore/Memory/Memory.h>
 
-#include <GenAIMock/GenAIMockTypeIds.h>
-
 #include <Clients/GenAIMockSystemComponent.h>
-#include <Communication/Mock/MockRequesterComponent.h>
-#include <ModelConfigurations/Mock/MockPromptGeneratorComponent.h>
+#include <Communication/MockServiceComponent.h>
+#include <GenAIMock/GenAIMockTypeIds.h>
+#include <ModelConfigurations/PassthroughModelComponent.h>
 
 namespace GenAIMock
 {
@@ -30,8 +29,8 @@ namespace GenAIMock
         m_descriptors.insert(
             m_descriptors.end(),
             { GenAIMockSystemComponent::CreateDescriptor(),
-              MockPromptGeneratorComponent::CreateDescriptor(),
-              MockRequesterComponent::CreateDescriptor() });
+              PassthroughModelComponent::CreateDescriptor(),
+              MockServiceComponent::CreateDescriptor() });
     }
 
     AZ::ComponentTypeList GenAIMockModuleInterface::GetRequiredSystemComponents() const

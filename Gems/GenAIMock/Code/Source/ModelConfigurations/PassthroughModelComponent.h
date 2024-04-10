@@ -16,17 +16,17 @@
 
 namespace GenAIMock
 {
-    class MockPromptGeneratorComponent
+    class PassthroughModelComponent
         : public AZ::Component
         , public GenAIFramework::AIModelRequestBus::Handler
     {
     public:
-        AZ_COMPONENT(MockPromptGeneratorComponent, "{b873470c-0ca8-49af-82b6-4de26c242c7b}");
+        AZ_COMPONENT(PassthroughModelComponent, "{b873470c-0ca8-49af-82b6-4de26c242c7b}");
 
         static void Reflect(AZ::ReflectContext* context);
 
-        MockPromptGeneratorComponent() = default;
-        ~MockPromptGeneratorComponent() = default;
+        PassthroughModelComponent() = default;
+        ~PassthroughModelComponent() = default;
 
         void Activate() override;
         void Deactivate() override;
@@ -35,8 +35,5 @@ namespace GenAIMock
         // AIModelRequestBus overrides
         GenAIFramework::ModelAPIRequest PrepareRequest(const AZStd::string& prompt) override;
         GenAIFramework::ModelAPIResponse ExtractResult(const GenAIFramework::ModelAPIResponse& modelAPIResponse) override;
-
-    private:
-        int m_lastCompleted{ -1 }; //!< Interator (number) of the last call that was completed (it can be reset)
     };
 } // namespace GenAIMock
