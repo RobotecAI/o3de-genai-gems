@@ -54,11 +54,8 @@ namespace GenAIMock
         MockServiceComponentConfiguration::Reflect(context);
         if (auto serializeContext = azrtti_cast<AZ::SerializeContext*>(context))
         {
-            serializeContext->Class<MockServiceComponent, AZ::Component>()
-                ->Version(0)
-                ->Field("Configuration", &MockServiceComponent::m_configuration)
-                ->Field("testData", &MockServiceComponent::m_testData)
-                ->Field("lastCompleted", &MockServiceComponent::m_lastCompleted);
+            serializeContext->Class<MockServiceComponent, AZ::Component>()->Version(0)->Field(
+                "Configuration", &MockServiceComponent::m_configuration);
 
             if (auto editContext = serializeContext->GetEditContext())
             {
@@ -154,6 +151,12 @@ namespace GenAIMock
     void MockServiceComponent::SendRequest(
         const AZStd::string& request, AZStd::function<void(AZ::Outcome<AZStd::string, AZStd::string>)> callback)
     {
+        if (m_testData.empty())
+        {
+            // Try to reload data if not available
+            ReloadAsset();
+        }
+
         // This service accepts three types of prompts:
         // 1) restart - restart the counter and get the first mock outcome from the model
         // 2) next - get the next mock outcome from the model
@@ -190,7 +193,7 @@ namespace GenAIMock
         }
         else
         {
-            AZStd::string azStringResult("I have no answer for that.");
+            AZStd::string azStringResult("Out of range prompt for given mock data.");
             AZ::Outcome<AZStd::string, AZStd::string> outcomeError = AZ::Failure(azStringResult);
             callback(outcomeError);
         }
