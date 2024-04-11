@@ -28,13 +28,13 @@ namespace GenAIFramework
         {
             AZStd::vector<AZ::Component*> activeModelConfigurations = interface->GetActiveModelConfigurations();
             m_newModelConfigurationSegment = new NewModelConfigurationSegment();
-            m_modelsConfigurationTab = new Tab(activeModelConfigurations, m_newModelConfigurationSegment, "Model configurations", m_tabs);
-            m_tabs->addTab(m_modelsConfigurationTab, "Model configurations");
+            m_modelsConfigurationTab = new Tab(activeModelConfigurations, m_newModelConfigurationSegment, "Model Configurations", m_tabs);
+            m_tabs->addTab(m_modelsConfigurationTab, "Model Configurations");
 
             AZStd::vector<AZ::Component*> activeProviders = interface->GetActiveServiceProviders();
             m_newServiceProviderSegment = new NewServiceProviderSegment();
-            m_serviceProvidersTab = new Tab(activeProviders, m_newServiceProviderSegment, "AI service providers", m_tabs);
-            m_tabs->addTab(m_serviceProvidersTab, "AI service providers");
+            m_serviceProvidersTab = new Tab(activeProviders, m_newServiceProviderSegment, "AI Service Providers", m_tabs);
+            m_tabs->addTab(m_serviceProvidersTab, "AI Service Providers");
         }
 
         verticalLayout->addWidget(m_tabs);

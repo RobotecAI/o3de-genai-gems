@@ -47,7 +47,7 @@ namespace GenAIFramework
 
             if (AZ::EditContext* ec = serializeContext->GetEditContext())
             {
-                ec->Class<GenAIFrameworkTestEditorComponent>("Test Editor Component", "Simple test of AI")
+                ec->Class<GenAIFrameworkTestEditorComponent>("Test AI API Component", "Simple test of AI")
                     ->ClassElement(AZ::Edit::ClassElements::EditorData, "")
                     ->Attribute(AZ::Edit::Attributes::AppearsInAddComponentMenu, AZ_CRC_CE("Game"))
                     ->Attribute(AZ::Edit::Attributes::Category, "AI")

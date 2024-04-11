@@ -45,15 +45,10 @@ namespace GenAIFramework
 
     void NewSegment::onCreateButtonPressed()
     {
-        QMessageBox::StandardButton reply;
-        reply = QMessageBox::question(this, "Confirmation", "Are you sure?", QMessageBox::Yes | QMessageBox::No);
-        if (reply == QMessageBox::Yes)
-        {
-            AZ::Uuid selectedComponentTypeId = m_componentSelection->currentData().value<AZ::Uuid>();
-            AZStd::string name = m_nameInput->text().toUtf8().constData();
-            AZ::Component* component = CreateNewComponentEntity(name, selectedComponentTypeId);
-            emit NewComponentAdded(component, selectedComponentTypeId);
-        }
+        AZ::Uuid selectedComponentTypeId = m_componentSelection->currentData().value<AZ::Uuid>();
+        AZStd::string name = m_nameInput->text().toUtf8().constData();
+        AZ::Component* component = CreateNewComponentEntity(name, selectedComponentTypeId);
+        emit NewComponentAdded(component, selectedComponentTypeId);
     }
 
 } // namespace GenAIFramework
