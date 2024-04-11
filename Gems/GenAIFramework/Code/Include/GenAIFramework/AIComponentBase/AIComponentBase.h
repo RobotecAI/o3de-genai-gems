@@ -33,8 +33,8 @@ namespace GenAIFramework
         void Deactivate() override;
 
     protected:
-        AZStd::string m_selectedServiceProviderName = "";
-        AZStd::string m_selectedModelConfigurationName = "";
+        AZStd::string m_serviceProviderName = "";
+        AZStd::string m_modelConfigurationName = "";
 
         AZ::EntityId m_serviceProviderId;
         AZ::EntityId m_modelConfigurationId;
@@ -43,10 +43,10 @@ namespace GenAIFramework
         void UpdateNamedModelConfigurationId();
 
     private:
-        AZStd::vector<AZStd::string> GetNames(AZStd::vector<AZ::Component*> components) const;
+        AZStd::vector<AZStd::string> GetNames(const AZStd::vector<AZ::Component*>& components) const;
         AZStd::vector<AZ::Component*> GetServiceProviders() const;
         AZStd::vector<AZ::Component*> GetModelConfigurations() const;
 
-        void GetNamedId(const AZStd::string& name, AZStd::vector<AZ::Component*> components, AZ::EntityId& id);
+        void GetNamedId(const AZStd::string& name, const AZStd::vector<AZ::Component*>& components, AZ::EntityId& id);
     };
 } // namespace GenAIFramework

@@ -99,19 +99,19 @@ namespace GenAIFramework
     void GenAIFrameworkTestEditorComponent::ListClasses()
     {
         BehaviorContextDump b(m_genAIFrameworkActionTest.GetAIContext(), m_className);
-        Internal::LinePrint(b.ClassesDump());
+        Internal::LinePrint(b.DumpClasses());
     }
 
     void GenAIFrameworkTestEditorComponent::ListMethods()
     {
         BehaviorContextDump b(m_genAIFrameworkActionTest.GetAIContext(), m_methodName);
-        Internal::LinePrint(b.MethodsDump(m_className));
+        Internal::LinePrint(b.DumpMethods(m_className));
     }
 
     void GenAIFrameworkTestEditorComponent::ListEbuses()
     {
         BehaviorContextDump b(m_genAIFrameworkActionTest.GetAIContext(), m_methodName);
-        Internal::LinePrint(b.EbusesDump());
+        Internal::LinePrint(b.DumpEbusses());
     }
 
     void GenAIFrameworkTestEditorComponent::CommandTest()

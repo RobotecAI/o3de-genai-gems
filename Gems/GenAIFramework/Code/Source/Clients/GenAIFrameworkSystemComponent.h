@@ -72,7 +72,7 @@ namespace GenAIFramework
         GenAIFrameworkActionRequestHandler m_actionRequestHandler;
 
         AZStd::vector<AZStd::pair<AZStd::string, AZ::Uuid>> GetRegisteredComponentsNameAndComponentTypeId(
-            const AZStd::vector<AZ::Uuid>& componentTypeIds);
+            const AZStd::set<AZ::Uuid>& registeredComponent);
         AZStd::vector<AZ::Component*> GetActiveComponents(const EntityIdToEntityMap& entities) const;
         AZ::Component* CreateNewComponentEntity(const AZStd::string& name, const AZ::Uuid& componentTypeId, EntityIdToEntityMap& entities);
 

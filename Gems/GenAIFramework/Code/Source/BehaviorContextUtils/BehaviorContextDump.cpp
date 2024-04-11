@@ -127,14 +127,14 @@ namespace GenAIFramework
         AZ_Error("BehaviorContextDump", m_context, "Invalid context");
     }
 
-    AZStd::string BehaviorContextDump::APIDump()
+    AZStd::string BehaviorContextDump::DumpAPI()
     {
-        AZStd::string apiDump = ClassesDump();
-        apiDump += EbusesDump();
+        AZStd::string apiDump = DumpClasses();
+        apiDump += DumpEbusses();
         return apiDump;
     }
 
-    AZStd::vector<ArgumentFormatterHelper> BehaviorContextDump::ArgumentsDump(const AZ::BehaviorMethod* method)
+    AZStd::vector<ArgumentFormatterHelper> BehaviorContextDump::DumpArguments(const AZ::BehaviorMethod* method)
     {
         AZStd::vector<ArgumentFormatterHelper> argumentsFormatter;
         for (size_t i = 0; i < method->GetNumArguments(); ++i)
@@ -153,11 +153,11 @@ namespace GenAIFramework
                 }
                 else if (i == 0 && method->IsMember())
                 {
-                    argumentFormatter.m_argumentName = ArgumentFormatterHelper::m_thisArgument;
+                    argumentFormatter.m_argumentName = ArgumentFormatterHelper::ThisArgument;
                 }
                 else if (i == 0 && method->HasBusId())
                 {
-                    argumentFormatter.m_argumentName = ArgumentFormatterHelper::m_ebusIdArgument;
+                    argumentFormatter.m_argumentName = ArgumentFormatterHelper::EbusIdArgument;
                 }
                 argumentsFormatter.push_back(argumentFormatter);
             }
@@ -165,7 +165,7 @@ namespace GenAIFramework
         return argumentsFormatter;
     }
 
-    AZStd::string BehaviorContextDump::ClassesDump(bool dumpMethods)
+    AZStd::string BehaviorContextDump::DumpClasses(bool dumpMethods)
     {
         AZStd::string classesDump;
         for (const auto& classIter : m_context->m_classes)
@@ -182,13 +182,13 @@ namespace GenAIFramework
                 continue;
             }
 
-            ClassFormatterHelper classFormatter = ClassDump(className, behaviorClass, dumpMethods);
+            ClassFormatterHelper classFormatter = DumpClass(className, behaviorClass, dumpMethods);
             classesDump += DumpFormattedClass(classFormatter);
         }
         return classesDump;
     }
 
-    ClassFormatterHelper BehaviorContextDump::ClassDump(
+    ClassFormatterHelper BehaviorContextDump::DumpClass(
         const AZStd::string& className, const AZ::BehaviorClass* behaviorClass, bool dumpMethods)
     {
         ClassFormatterHelper classFormatter;
@@ -204,7 +204,7 @@ namespace GenAIFramework
         return classFormatter;
     }
 
-    MethodFormatterHelper BehaviorContextDump::MethodDump(
+    MethodFormatterHelper BehaviorContextDump::DumpMethod(
         [[maybe_unused]] const AZStd::string& className,
         const AZStd::string& methodName,
         const AZ::BehaviorMethod* method,
@@ -220,7 +220,7 @@ namespace GenAIFramework
     }
 
     // Produce a signature for calling the ebus event including documentation (format: returnType Ebus.Event(arg1, arg2))
-    EbusFormatterHelper BehaviorContextDump::EbusDump(const AZStd::string& ebusName, const AZ::BehaviorEBus* ebus)
+    EbusFormatterHelper BehaviorContextDump::DumpEbus(const AZStd::string& ebusName, const AZ::BehaviorEBus* ebus)
     {
         EbusFormatterHelper ebusFormatter;
         if (!ebus)
@@ -242,7 +242,7 @@ namespace GenAIFramework
         return ebusFormatter;
     }
 
-    AZStd::string BehaviorContextDump::MethodsDump(const AZStd::string& className)
+    AZStd::string BehaviorContextDump::DumpMethods(const AZStd::string& className)
     {
         AZStd::string methodsString;
         AZStd::unordered_map<AZStd::string, AZ::BehaviorMethod*> methods;
@@ -256,7 +256,7 @@ namespace GenAIFramework
             reflectedClass = const_cast<AZ::BehaviorClass*>(m_context->FindClassByReflectedName(className));
             if (!reflectedClass)
             {
-                AZ_Printf("MethodsDump", "Invalid class name: %s\n", className.c_str());
+                AZ_Printf("DumpMethods", "Invalid class name: %s\n", className.c_str());
                 return methodsString;
             }
             methods = reflectedClass->m_methods;
@@ -269,13 +269,13 @@ namespace GenAIFramework
                 continue;
             }
 
-            methodsString += DumpFormattedMethod(MethodDump(className, methodName, method, reflectedClass));
+            methodsString += DumpFormattedMethod(DumpMethod(className, methodName, method, reflectedClass));
             methodsString += "\n";
         }
         return methodsString;
     }
 
-    AZStd::string BehaviorContextDump::EbusesDump()
+    AZStd::string BehaviorContextDump::DumpEbusses()
     {
         AZStd::string ebusesString;
         for (const auto& [ebusName, ebus] : m_context->m_ebuses)
@@ -295,7 +295,7 @@ namespace GenAIFramework
                 continue;
             }
 
-            ebusesString += DumpFormattedEbus(EbusDump(ebusName, ebus));
+            ebusesString += DumpFormattedEbus(DumpEbus(ebusName, ebus));
         }
         return ebusesString;
     }

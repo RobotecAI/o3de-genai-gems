@@ -19,8 +19,8 @@ namespace GenAIFramework
         AZStd::string m_argumentType;
         AZStd::string m_argumentName;
         AZStd::string m_documentation;
-        static constexpr const char* m_thisArgument{ "_this" };
-        static constexpr const char* m_ebusIdArgument{ "_ebusid" };
+        static constexpr const char* ThisArgument{ "_this" };
+        static constexpr const char* EbusIdArgument{ "_ebusid" };
     };
 
     struct MethodFormatterHelper

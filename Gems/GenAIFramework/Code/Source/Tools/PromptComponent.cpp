@@ -58,7 +58,7 @@ namespace GenAIFramework
 
     AZ::Crc32 PromptComponent::PromptInput()
     {
-        if (!m_modelConfigurationId.IsValid())
+        if (!m_serviceProviderId.IsValid())
         {
             UpdateNamedServiceProviderId();
         }
@@ -69,7 +69,6 @@ namespace GenAIFramework
         AZ_Assert(m_modelConfigurationId.IsValid(), "Selected model configuration id is not valid!");
         AZ_Assert(m_serviceProviderId.IsValid(), "Selected service provider id is not valid!");
 
-        AZStd::mutex mutex;
         // prepare the request
         GenAIFramework::ModelAPIRequest preparedRequest;
         GenAIFramework::AIModelRequestBus::EventResult(
