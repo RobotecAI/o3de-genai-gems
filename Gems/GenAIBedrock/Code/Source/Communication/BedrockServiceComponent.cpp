@@ -6,14 +6,15 @@
  *
  */
 
-#include "AwsSdkBedrockRequesterComponent.h"
+#include "BedrockServiceComponent.h"
+#include <GenAIFramework/SystemRegistrationContext/SystemRegistrationContext.h>
+
 #include <AzCore/Component/Component.h>
 #include <AzCore/Outcome/Outcome.h>
 #include <AzCore/Serialization/EditContext.h>
 #include <AzCore/Serialization/EditContextConstants.inl>
 #include <AzCore/Serialization/SerializeContext.h>
 #include <AzCore/std/string/string.h>
-#include <GenAIFramework/SystemRegistrationContext/SystemRegistrationContext.h>
 
 #include <aws/bedrock-runtime/BedrockRuntimeErrors.h>
 #include <aws/bedrock-runtime/BedrockRuntimeServiceClientModel.h>
@@ -22,60 +23,61 @@
 #include <aws/bedrock/BedrockClient.h>
 #include <aws/core/utils/memory/stl/AWSStreamFwd.h>
 #include <aws/core/utils/memory/stl/AWSStringStream.h>
+
 #include <memory>
 
 namespace GenAIBedrock
 {
-    void AwsSdkBedrockRequesterConfiguration::Reflect(AZ::ReflectContext* context)
+    void BedrockServiceConfiguration::Reflect(AZ::ReflectContext* context)
     {
         if (auto serializeContext = azrtti_cast<AZ::SerializeContext*>(context))
         {
-            serializeContext->Class<AwsSdkBedrockRequesterConfiguration, AZ::ComponentConfig>()
+            serializeContext->Class<BedrockServiceConfiguration, AZ::ComponentConfig>()
                 ->Version(0)
-                ->Field("RegionName", &AwsSdkBedrockRequesterConfiguration::m_regionName)
-                ->Field("ModelId", &AwsSdkBedrockRequesterConfiguration::m_modelId);
+                ->Field("RegionName", &BedrockServiceConfiguration::m_regionName)
+                ->Field("ModelId", &BedrockServiceConfiguration::m_modelId);
 
             if (auto editContext = serializeContext->GetEditContext())
             {
-                editContext->Class<AwsSdkBedrockRequesterConfiguration>("AWS SDK Requester configuration", "")
+                editContext->Class<BedrockServiceConfiguration>("AWS Bedrock Service Provider Configuration", "")
                     ->ClassElement(AZ::Edit::ClassElements::EditorData, "")
                     ->Attribute(AZ::Edit::Attributes::Category, "AI")
-                    ->DataElement(AZ::Edit::UIHandlers::Default, &AwsSdkBedrockRequesterConfiguration::m_regionName, "Region Name", "")
-                    ->DataElement(AZ::Edit::UIHandlers::Default, &AwsSdkBedrockRequesterConfiguration::m_modelId, "Model Id", "");
+                    ->DataElement(AZ::Edit::UIHandlers::Default, &BedrockServiceConfiguration::m_regionName, "Region Name", "")
+                    ->DataElement(AZ::Edit::UIHandlers::Default, &BedrockServiceConfiguration::m_modelId, "Model Id", "");
             }
         }
     }
 
-    void AwsSdkBedrockRequesterComponent::Reflect(AZ::ReflectContext* context)
+    void BedrockServiceComponent::Reflect(AZ::ReflectContext* context)
     {
-        AwsSdkBedrockRequesterConfiguration::Reflect(context);
+        BedrockServiceConfiguration::Reflect(context);
         if (auto serializeContext = azrtti_cast<AZ::SerializeContext*>(context))
         {
-            serializeContext->Class<AwsSdkBedrockRequesterComponent, AZ::Component>()->Version(0)->Field(
-                "Configuration", &AwsSdkBedrockRequesterComponent::m_configuration);
+            serializeContext->Class<BedrockServiceComponent, AZ::Component>()->Version(0)->Field(
+                "Configuration", &BedrockServiceComponent::m_configuration);
 
             if (auto editContext = serializeContext->GetEditContext())
             {
-                editContext->Class<AwsSdkBedrockRequesterComponent>("AWS SDK Requester component", "")
+                editContext->Class<BedrockServiceComponent>("AWS Bedrock Service Provider", "")
                     ->ClassElement(AZ::Edit::ClassElements::EditorData, "")
                     ->Attribute(AZ::Edit::Attributes::Category, "AI")
                     ->DataElement(
                         AZ::Edit::UIHandlers::Default,
-                        &AwsSdkBedrockRequesterComponent::m_configuration,
+                        &BedrockServiceComponent::m_configuration,
                         "Configuration",
-                        "Configuration for the AWS SDK requester")
+                        "Configuration of the AWS Bedrock Service Provider")
                     ->Attribute(AZ::Edit::Attributes::Visibility, AZ::Edit::PropertyVisibility::ShowChildrenOnly)
-                    ->Attribute(AZ::Edit::Attributes::ChangeNotify, &AwsSdkBedrockRequesterComponent::OnConfigurationChanged);
+                    ->Attribute(AZ::Edit::Attributes::ChangeNotify, &BedrockServiceComponent::OnConfigurationChanged);
             }
         }
 
         if (auto registrationContext = azrtti_cast<GenAIFramework::SystemRegistrationContext*>(context))
         {
-            registrationContext->RegisterGenAIFrameworkServiceRequester<AwsSdkBedrockRequesterComponent>();
+            registrationContext->RegisterGenAIFrameworkServiceProvider<BedrockServiceComponent>();
         }
     }
 
-    void AwsSdkBedrockRequesterComponent::OnConfigurationChanged()
+    void BedrockServiceComponent::OnConfigurationChanged()
     {
         if (!m_clientConfiguration)
         {
@@ -88,44 +90,45 @@ namespace GenAIBedrock
         m_clientConfiguration->region = m_configuration.m_regionName.c_str();
         m_runtimeClientConfiguration->region = m_configuration.m_regionName.c_str();
 
-        //NOTE(pawel-kotowski): This is a temporary solution to set the request timeout to 60 seconds. It will be handled by UI solution in the future.
+        // NOTE(pawel-kotowski): This is a temporary solution to set the request timeout to 60 seconds. It will be handled by UI solution in
+        // the future.
         m_runtimeClientConfiguration->requestTimeoutMs = 60000;
 
         m_client = AZStd::make_unique<Aws::Bedrock::BedrockClient>(*m_clientConfiguration);
         m_runtimeClient = AZStd::make_unique<Aws::BedrockRuntime::BedrockRuntimeClient>(*m_runtimeClientConfiguration);
     }
 
-    AwsSdkBedrockRequesterComponent::AwsSdkBedrockRequesterComponent(const AwsSdkBedrockRequesterConfiguration& config)
+    BedrockServiceComponent::BedrockServiceComponent(const BedrockServiceConfiguration& config)
         : m_configuration(config)
     {
     }
 
-    void AwsSdkBedrockRequesterComponent::Init()
+    void BedrockServiceComponent::Init()
     {
     }
 
-    void AwsSdkBedrockRequesterComponent::Activate()
+    void BedrockServiceComponent::Activate()
     {
         OnConfigurationChanged();
-        GenAIFramework::AIServiceRequesterBus::Handler::BusConnect(GetEntityId());
+        GenAIFramework::AIServiceProviderBus::Handler::BusConnect(GetEntityId());
     }
 
-    void AwsSdkBedrockRequesterComponent::Deactivate()
+    void BedrockServiceComponent::Deactivate()
     {
-        GenAIFramework::AIServiceRequesterBus::Handler::BusDisconnect();
+        GenAIFramework::AIServiceProviderBus::Handler::BusDisconnect();
     }
 
-    void AwsSdkBedrockRequesterComponent::SetConfiguration(const AwsSdkBedrockRequesterConfiguration& config)
+    void BedrockServiceComponent::SetConfiguration(const BedrockServiceConfiguration& config)
     {
         m_configuration = config;
     }
 
-    const AwsSdkBedrockRequesterConfiguration& AwsSdkBedrockRequesterComponent::GetConfiguration() const
+    const BedrockServiceConfiguration& BedrockServiceComponent::GetConfiguration() const
     {
         return m_configuration;
     }
 
-    void AwsSdkBedrockRequesterComponent::SendRequest(
+    void BedrockServiceComponent::SendRequest(
         const AZStd::string& request, AZStd::function<void(AZ::Outcome<AZStd::string, AZStd::string>)> callback)
     {
         using namespace Aws::BedrockRuntime;

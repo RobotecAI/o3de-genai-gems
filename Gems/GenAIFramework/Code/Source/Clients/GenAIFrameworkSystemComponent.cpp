@@ -49,7 +49,7 @@ namespace GenAIFramework
                 ->Attribute(AZ::Script::Attributes::Scope, AZ::Script::Attributes::ScopeFlags::Common)
                 ->Attribute(AZ::Script::Attributes::Module, "ai")
                 ->Event("GetActiveModelConfigurationsNames", &GenAIFrameworkRequestBus::Events::GetActiveModelConfigurationsNames)
-                ->Event("GetActiveServiceRequestersNames", &GenAIFrameworkRequestBus::Events::GetActiveServiceRequestersNames);
+                ->Event("GetActiveServiceProvidersNames", &GenAIFrameworkRequestBus::Events::GetActiveServiceProvidersNames);
         }
     }
 
@@ -134,11 +134,10 @@ namespace GenAIFramework
         return GetRegisteredComponentsNameAndComponentTypeId(modelConfigurations);
     }
 
-    AZStd::vector<AZStd::pair<AZStd::string, AZ::Uuid>> GenAIFrameworkSystemComponent::
-        GetRegisteredServiceRequestersNameAndComponentTypeId()
+    AZStd::vector<AZStd::pair<AZStd::string, AZ::Uuid>> GenAIFrameworkSystemComponent::GetRegisteredServiceProvidersNameAndComponentTypeId()
     {
-        auto registeredRequesters = GetSystemRegistrationContext()->GetRegisteredServiceRequesters();
-        return GetRegisteredComponentsNameAndComponentTypeId(registeredRequesters);
+        auto registeredProviders = GetSystemRegistrationContext()->GetRegisteredServiceProviders();
+        return GetRegisteredComponentsNameAndComponentTypeId(registeredProviders);
     }
 
     AZStd::vector<AZ::Component*> GenAIFrameworkSystemComponent::GetActiveComponents(const EntityIdToEntityMap& entities) const
@@ -160,9 +159,9 @@ namespace GenAIFramework
         return GetActiveComponents(m_configuration.m_modelConfigurations);
     }
 
-    AZStd::vector<AZ::Component*> GenAIFrameworkSystemComponent::GetActiveServiceRequesters()
+    AZStd::vector<AZ::Component*> GenAIFrameworkSystemComponent::GetActiveServiceProviders()
     {
-        return GetActiveComponents(m_configuration.m_serviceRequesters);
+        return GetActiveComponents(m_configuration.m_serviceProviders);
     }
 
     AZ::Component* GenAIFrameworkSystemComponent::CreateNewComponentEntity(
@@ -186,12 +185,12 @@ namespace GenAIFramework
         return component;
     }
 
-    AZ::Component* GenAIFrameworkSystemComponent::CreateNewServiceRequester(
-        const AZStd::string& requesterName, const AZ::Uuid& componentTypeId)
+    AZ::Component* GenAIFrameworkSystemComponent::CreateNewServiceProvider(
+        const AZStd::string& providerName, const AZ::Uuid& componentTypeId)
     {
-        auto* component = CreateNewComponentEntity(requesterName, componentTypeId, m_configuration.m_serviceRequesters);
+        auto* component = CreateNewComponentEntity(providerName, componentTypeId, m_configuration.m_serviceProviders);
         GenAIFrameworkNotificationBus::Broadcast(
-            &GenAIFrameworkNotificationBus::Events::OnServiceRequestorAdded, component->GetEntity()->GetId());
+            &GenAIFrameworkNotificationBus::Events::OnServiceProviderAdded, component->GetEntity()->GetId());
         return component;
     }
 
@@ -204,10 +203,10 @@ namespace GenAIFramework
             {
                 component->GetEntity()->Deactivate();
 
-                if (m_configuration.m_serviceRequesters.contains(entityId))
+                if (m_configuration.m_serviceProviders.contains(entityId))
                 {
-                    GenAIFrameworkNotificationBus::Broadcast(&GenAIFrameworkNotificationBus::Events::OnServiceRequestorRemoved, entityId);
-                    m_configuration.m_serviceRequesters.erase(entityId);
+                    GenAIFrameworkNotificationBus::Broadcast(&GenAIFrameworkNotificationBus::Events::OnServiceProviderRemoved, entityId);
+                    m_configuration.m_serviceProviders.erase(entityId);
                 }
                 if (m_configuration.m_modelConfigurations.contains(entityId))
                 {
@@ -274,12 +273,12 @@ namespace GenAIFramework
         {
             m_configuration = *result;
         }
-        InitEntities(m_configuration.m_serviceRequesters);
+        InitEntities(m_configuration.m_serviceProviders);
         InitEntities(m_configuration.m_modelConfigurations);
 
-        for (auto& [entityId, _] : m_configuration.m_serviceRequesters)
+        for (auto& [entityId, _] : m_configuration.m_serviceProviders)
         {
-            GenAIFrameworkNotificationBus::Broadcast(&GenAIFrameworkNotificationBus::Events::OnServiceRequestorAdded, entityId);
+            GenAIFrameworkNotificationBus::Broadcast(&GenAIFrameworkNotificationBus::Events::OnServiceProviderAdded, entityId);
         }
         for (auto& [entityId, _] : m_configuration.m_modelConfigurations)
         {
@@ -291,13 +290,13 @@ namespace GenAIFramework
     {
         AZ_Printf(
             "GenAIFrameworkSystemComponent",
-            "Activating GenAIFrameworkSystemComponent with %d service requesters and %d model configurations\n",
-            m_configuration.m_serviceRequesters.size(),
+            "Activating GenAIFrameworkSystemComponent with %d service providers and %d model configurations\n",
+            m_configuration.m_serviceProviders.size(),
             m_configuration.m_modelConfigurations.size());
         GenAIFrameworkRequestBus::Handler::BusConnect();
         m_actionRequestHandler.Connect();
 
-        ActivateEntities(m_configuration.m_serviceRequesters);
+        ActivateEntities(m_configuration.m_serviceProviders);
         ActivateEntities(m_configuration.m_modelConfigurations);
 
         auto registeredGenerators = GetSystemRegistrationContext()->GetRegisteredModelConfigurations();
@@ -310,7 +309,7 @@ namespace GenAIFramework
         m_actionRequestHandler.Disconnect();
         GenAIFrameworkRequestBus::Handler::BusDisconnect();
 
-        DeactivateEntities(m_configuration.m_serviceRequesters);
+        DeactivateEntities(m_configuration.m_serviceProviders);
         DeactivateEntities(m_configuration.m_modelConfigurations);
     }
 
@@ -319,9 +318,9 @@ namespace GenAIFramework
         return GetActiveComponentsNames(m_configuration.m_modelConfigurations);
     }
 
-    AZStd::vector<AZStd::string> GenAIFrameworkSystemComponent::GetActiveServiceRequestersNames() const
+    AZStd::vector<AZStd::string> GenAIFrameworkSystemComponent::GetActiveServiceProvidersNames() const
     {
-        return GetActiveComponentsNames(m_configuration.m_serviceRequesters);
+        return GetActiveComponentsNames(m_configuration.m_serviceProviders);
     }
 
     AZStd::vector<AZStd::string> GenAIFrameworkSystemComponent::GetActiveComponentsNames(const EntityIdToEntityMap& entities) const

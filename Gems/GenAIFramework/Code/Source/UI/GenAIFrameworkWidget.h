@@ -10,7 +10,7 @@
 
 #if !defined(Q_MOC_RUN)
 #include "UI/ModelConfiguration/NewModelConfigurationSegment.h"
-#include "UI/ServiceRequester/NewServiceRequesterSegment.h"
+#include "UI/ServiceProvider/NewServiceProviderSegment.h"
 #include "UI/Tab.h"
 #include <qwindowdefs.h>
 
@@ -31,7 +31,7 @@ namespace GenAIFramework
         AzQtComponents::TabWidget* m_tabs;
         Tab* m_modelsConfigurationTab;
         NewModelConfigurationSegment* m_newModelConfigurationSegment;
-        Tab* m_serviceRequestersTab;
-        NewServiceRequesterSegment* m_newServiceRequesterSegment;
+        Tab* m_serviceProvidersTab;
+        NewServiceProviderSegment* m_newServiceProviderSegment;
     };
 } // namespace GenAIFramework

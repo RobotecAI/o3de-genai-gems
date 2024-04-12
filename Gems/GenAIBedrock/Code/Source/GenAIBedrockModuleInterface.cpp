@@ -7,13 +7,13 @@
  */
 
 #include "GenAIBedrockModuleInterface.h"
+#include <Clients/GenAIBedrockSystemComponent.h>
+#include <Communication/BedrockServiceComponent.h>
+#include <GenAIBedrock/GenAIBedrockTypeIds.h>
+#include <ModelConfigurations/ClaudeModelComponent.h>
+
 #include <AzCore/Memory/Memory.h>
 
-#include <GenAIBedrock/GenAIBedrockTypeIds.h>
-
-#include <Clients/GenAIBedrockSystemComponent.h>
-#include <Communication/AwsSdk/AwsSdkBedrockRequesterComponent.h>
-#include <ModelConfigurations/Claude/ClaudePromptGeneratorComponent.h>
 namespace GenAIBedrock
 {
     AZ_TYPE_INFO_WITH_NAME_IMPL(GenAIBedrockModuleInterface, "GenAIBedrockModuleInterface", GenAIBedrockModuleInterfaceTypeId);
@@ -30,8 +30,8 @@ namespace GenAIBedrock
             m_descriptors.end(),
             {
                 GenAIBedrockSystemComponent::CreateDescriptor(),
-                AwsSdkBedrockRequesterComponent::CreateDescriptor(),
-                ClaudePromptGeneratorComponent::CreateDescriptor(),
+                BedrockServiceComponent::CreateDescriptor(),
+                ClaudeModelComponent::CreateDescriptor(),
             });
     }
 

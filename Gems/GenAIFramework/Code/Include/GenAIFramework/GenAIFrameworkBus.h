@@ -8,8 +8,8 @@
 
 #pragma once
 
-#include <AzCore/Component/EntityId.h>
 #include <AzCore/Component/Component.h>
+#include <AzCore/Component/EntityId.h>
 #include <AzCore/EBus/EBus.h>
 #include <AzCore/Interface/Interface.h>
 #include <AzCore/Math/Uuid.h>
@@ -31,20 +31,20 @@ namespace GenAIFramework
         virtual SystemRegistrationContext* GetSystemRegistrationContext() = 0;
 
         virtual AZStd::vector<AZStd::pair<AZStd::string, AZ::Uuid>> GetRegisteredModelConfigurationsNameAndComponentTypeId() = 0;
-        virtual AZStd::vector<AZStd::pair<AZStd::string, AZ::Uuid>> GetRegisteredServiceRequestersNameAndComponentTypeId() = 0;
+        virtual AZStd::vector<AZStd::pair<AZStd::string, AZ::Uuid>> GetRegisteredServiceProvidersNameAndComponentTypeId() = 0;
 
         virtual AZStd::vector<AZ::Component*> GetActiveModelConfigurations() = 0;
-        virtual AZStd::vector<AZ::Component*> GetActiveServiceRequesters() = 0;
+        virtual AZStd::vector<AZ::Component*> GetActiveServiceProviders() = 0;
 
         //! Return a vector of the active model configurations names.
         virtual AZStd::vector<AZStd::string> GetActiveModelConfigurationsNames() const = 0;
 
-        //! Return a vector of the active service requesters names.
-        virtual AZStd::vector<AZStd::string> GetActiveServiceRequestersNames() const = 0;
+        //! Return a vector of the active service providers names.
+        virtual AZStd::vector<AZStd::string> GetActiveServiceProvidersNames() const = 0;
 
         virtual AZ::Component* CreateNewModelConfiguration(
             const AZStd::string& modelConfigurationName, const AZ::Uuid& componentTypeId) = 0;
-        virtual AZ::Component* CreateNewServiceRequester(const AZStd::string& requesterName, const AZ::Uuid& componentTypeId) = 0;
+        virtual AZ::Component* CreateNewServiceProvider(const AZStd::string& providerName, const AZ::Uuid& componentTypeId) = 0;
 
         virtual void RemoveComponent(AZ::Component* component) = 0;
 
@@ -77,10 +77,10 @@ namespace GenAIFramework
         virtual ~GenAIFrameworkNotifications() = default;
 
         virtual void OnModelConfigurationAdded(const AZ::EntityId& modelConfigurationId) = 0;
-        virtual void OnServiceRequestorAdded(const AZ::EntityId& serviceRequestorId) = 0;
+        virtual void OnServiceProviderAdded(const AZ::EntityId& serviceProviderId) = 0;
 
         virtual void OnModelConfigurationRemoved(const AZ::EntityId& modelConfigurationId) = 0;
-        virtual void OnServiceRequestorRemoved(const AZ::EntityId& serviceRequestorId) = 0;
+        virtual void OnServiceProviderRemoved(const AZ::EntityId& serviceProviderId) = 0;
     };
 
     using GenAIFrameworkNotificationBus = AZ::EBus<GenAIFrameworkNotifications>;

@@ -135,13 +135,13 @@ namespace GenAIFramework
         AzToolsFramework::RegisterViewPane<GenAIFrameworkWidget>("GenAIFramework", "GenAIFramework", options);
     }
 
-    void GenAIFrameworkEditorSystemComponent::OnServiceRequestorAdded([[maybe_unused]] const AZ::EntityId& serviceRequestorId)
+    void GenAIFrameworkEditorSystemComponent::OnServiceProviderAdded([[maybe_unused]] const AZ::EntityId& serviceProviderId)
     {
         AzToolsFramework::ToolsApplicationEvents::Bus::Broadcast(
             &AzToolsFramework::ToolsApplicationEvents::Bus::Events::InvalidatePropertyDisplay,
             AzToolsFramework::Refresh_AttributesAndValues);
     }
-    void GenAIFrameworkEditorSystemComponent::OnServiceRequestorRemoved([[maybe_unused]]  const AZ::EntityId& serviceRequestorId)
+    void GenAIFrameworkEditorSystemComponent::OnServiceProviderRemoved([[maybe_unused]] const AZ::EntityId& serviceProviderId)
     {
         AzToolsFramework::ToolsApplicationEvents::Bus::Broadcast(
             &AzToolsFramework::ToolsApplicationEvents::Bus::Events::InvalidatePropertyDisplay,

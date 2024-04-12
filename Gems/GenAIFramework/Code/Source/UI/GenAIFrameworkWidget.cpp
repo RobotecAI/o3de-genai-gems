@@ -8,7 +8,7 @@
 
 #include "GenAIFrameworkWidget.h"
 #include "UI/ModelConfiguration/NewModelConfigurationSegment.h"
-#include "UI/ServiceRequester/NewServiceRequesterSegment.h"
+#include "UI/ServiceProvider/NewServiceProviderSegment.h"
 #include <GenAIFramework/GenAIFrameworkBus.h>
 
 namespace GenAIFramework
@@ -31,10 +31,10 @@ namespace GenAIFramework
             m_modelsConfigurationTab = new Tab(activeModelConfigurations, m_newModelConfigurationSegment, "Model configurations", m_tabs);
             m_tabs->addTab(m_modelsConfigurationTab, "Model configurations");
 
-            AZStd::vector<AZ::Component*> activeRequesters = interface->GetActiveServiceRequesters();
-            m_newServiceRequesterSegment = new NewServiceRequesterSegment();
-            m_serviceRequestersTab = new Tab(activeRequesters, m_newServiceRequesterSegment, "AI service requesters", m_tabs);
-            m_tabs->addTab(m_serviceRequestersTab, "AI service requesters");
+            AZStd::vector<AZ::Component*> activeProviders = interface->GetActiveServiceProviders();
+            m_newServiceProviderSegment = new NewServiceProviderSegment();
+            m_serviceProvidersTab = new Tab(activeProviders, m_newServiceProviderSegment, "AI service providers", m_tabs);
+            m_tabs->addTab(m_serviceProvidersTab, "AI service providers");
         }
 
         verticalLayout->addWidget(m_tabs);

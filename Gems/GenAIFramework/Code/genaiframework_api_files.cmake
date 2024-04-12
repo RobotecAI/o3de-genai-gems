@@ -1,6 +1,6 @@
 set(FILES
     Include/GenAIFramework/AIContext.h
-    Include/GenAIFramework/Communication/AIServiceRequesterBus.h
+    Include/GenAIFramework/Communication/AIServiceProviderBus.h
     Include/GenAIFramework/Communication/AIModelRequestBus.h
     Include/GenAIFramework/GenAIFrameworkActionBus.h
     Include/GenAIFramework/GenAIFrameworkBus.h

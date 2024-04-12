@@ -22,7 +22,6 @@ namespace GenAIFramework
     class GenAIFrameworkSystemComponentConfiguration
     {
     public:
-
         AZ_RTTI(GenAIFrameworkSystemComponentConfiguration, "{6ab6e636-60dc-4377-bd45-2326cf6a0069}");
         AZ_CLASS_ALLOCATOR(GenAIFrameworkSystemComponentConfiguration, AZ::SystemAllocator);
 
@@ -31,7 +30,7 @@ namespace GenAIFramework
         GenAIFrameworkSystemComponentConfiguration() = default;
         virtual ~GenAIFrameworkSystemComponentConfiguration() = default;
 
-        EntityIdToEntityMap m_serviceRequesters;
+        EntityIdToEntityMap m_serviceProviders;
         EntityIdToEntityMap m_modelConfigurations;
     };
 } // namespace GenAIFramework

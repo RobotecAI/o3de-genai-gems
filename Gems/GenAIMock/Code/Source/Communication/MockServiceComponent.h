@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include <GenAIFramework/Communication/AIServiceRequesterBus.h>
+#include <GenAIFramework/Communication/AIServiceProviderBus.h>
 
 #include <AzCore/Asset/AssetCommon.h>
 #include <AzCore/Component/Component.h>
@@ -20,14 +20,14 @@
 
 namespace GenAIMock
 {
-    class MockRequesterComponentConfiguration : public AZ::ComponentConfig
+    class MockServiceComponentConfiguration : public AZ::ComponentConfig
     {
     public:
-        AZ_RTTI(MockRequesterComponentConfiguration, "{47ab736f-33f1-453b-9cdb-96faffd5d33e}");
-        AZ_CLASS_ALLOCATOR(MockRequesterComponentConfiguration, AZ::SystemAllocator);
+        AZ_RTTI(MockServiceComponentConfiguration, "{47ab736f-33f1-453b-9cdb-96faffd5d33e}");
+        AZ_CLASS_ALLOCATOR(MockServiceComponentConfiguration, AZ::SystemAllocator);
 
-        MockRequesterComponentConfiguration() = default;
-        ~MockRequesterComponentConfiguration() = default;
+        MockServiceComponentConfiguration() = default;
+        ~MockServiceComponentConfiguration() = default;
 
         static void Reflect(AZ::ReflectContext* context);
         AZ::IO::Path GetAssetPath() const;
@@ -36,15 +36,15 @@ namespace GenAIMock
         AZ::IO::Path m_assetPath; //!< Path of the JSON asset
     };
 
-    class MockRequesterComponent
+    class MockServiceComponent
         : public AZ::Component
-        , public GenAIFramework::AIServiceRequesterBus::Handler
+        , public GenAIFramework::AIServiceProviderBus::Handler
     {
     public:
-        AZ_COMPONENT(MockRequesterComponent, "{db01be29-ec0b-41e1-bf68-12d70dd6b630}");
+        AZ_COMPONENT(MockServiceComponent, "{db01be29-ec0b-41e1-bf68-12d70dd6b630}");
 
-        MockRequesterComponent() = default;
-        explicit MockRequesterComponent(const MockRequesterComponentConfiguration& config);
+        MockServiceComponent() = default;
+        explicit MockServiceComponent(const MockServiceComponentConfiguration& config);
 
         static void Reflect(AZ::ReflectContext* context);
 
@@ -53,18 +53,19 @@ namespace GenAIMock
         void Init();
         void Activate();
         void Deactivate();
-        void SetConfiguration(const MockRequesterComponentConfiguration& config);
-        const MockRequesterComponentConfiguration& GetConfiguration() const;
+        void SetConfiguration(const MockServiceComponentConfiguration& config);
+        const MockServiceComponentConfiguration& GetConfiguration() const;
         //////////////////////////////////////////////////////////////////////////
 
         //////////////////////////////////////////////////////////////////////////
-        // AIServiceRequesterBus overrides
+        // AIServiceProviderBus overrides
         void SendRequest(const AZStd::string& request, AZStd::function<void(AZ::Outcome<AZStd::string, AZStd::string>)> callback);
         //////////////////////////////////////////////////////////////////////////
 
     private:
-        MockRequesterComponentConfiguration m_configuration;
+        MockServiceComponentConfiguration m_configuration;
         AZStd::vector<AZStd::string> m_testData;
+        int m_lastCompleted{ -1 }; //!< Interator (number) of the last call that was completed (it can be reset)
 
         void ReloadAsset();
     };

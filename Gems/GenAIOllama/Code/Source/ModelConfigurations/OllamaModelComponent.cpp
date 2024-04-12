@@ -6,12 +6,14 @@
  *
  */
 
-#include "OllamaModelConfigurationComponent.h"
+#include "OllamaModelComponent.h"
+#include <GenAIFramework/SystemRegistrationContext/SystemRegistrationContext.h>
+
 #include <AzCore/Component/Component.h>
 #include <AzCore/Serialization/EditContext.h>
 #include <AzCore/Serialization/SerializeContext.h>
 #include <AzCore/std/string/string.h>
-#include <GenAIFramework/SystemRegistrationContext/SystemRegistrationContext.h>
+
 #include <aws/core/utils/json/JsonSerializer.h>
 
 namespace GenAIOllama
@@ -39,9 +41,9 @@ namespace GenAIOllama
 
             if (auto editContext = serializeContext->GetEditContext())
             {
-                editContext->Class<OllamaModelConfiguration>("Ollama Basic Prompt Configuration", "Configuration of the prompt")
+                editContext->Class<OllamaModelConfiguration>("Ollama Model Configuration", "Configuration for the Ollama model")
                     ->ClassElement(AZ::Edit::ClassElements::EditorData, "")
-                    ->Attribute(AZ::Edit::Attributes::Category, "AICore")
+                    ->Attribute(AZ::Edit::Attributes::Category, "AI")
                     ->Attribute(AZ::Edit::Attributes::AppearsInAddComponentMenu, AZ_CRC_CE("Game"))
                     ->DataElement(AZ::Edit::UIHandlers::Default, &OllamaModelConfiguration::m_model, "Model", "Model to use for the prompt")
                     ->DataElement(
@@ -122,52 +124,52 @@ namespace GenAIOllama
         }
     }
 
-    OllamaModelConfigurationComponent::OllamaModelConfigurationComponent(const OllamaModelConfiguration& config)
+    OllamaModelComponent::OllamaModelComponent(const OllamaModelConfiguration& config)
         : m_configuration(config)
     {
     }
 
-    void OllamaModelConfigurationComponent::Reflect(AZ::ReflectContext* context)
+    void OllamaModelComponent::Reflect(AZ::ReflectContext* context)
     {
         OllamaModelConfiguration::Reflect(context);
 
         if (auto serializeContext = azrtti_cast<AZ::SerializeContext*>(context))
         {
-            serializeContext->Class<OllamaModelConfigurationComponent, AZ::Component>()->Version(0)->Field(
-                "Configuration", &OllamaModelConfigurationComponent::m_configuration);
+            serializeContext->Class<OllamaModelComponent, AZ::Component>()->Version(0)->Field(
+                "Configuration", &OllamaModelComponent::m_configuration);
 
             if (auto editContext = serializeContext->GetEditContext())
             {
-                editContext->Class<OllamaModelConfigurationComponent>("Ollama model configuration component", "")
+                editContext->Class<OllamaModelComponent>("Ollama Model", "Generates prompts and extracts results for the Ollama model")
                     ->ClassElement(AZ::Edit::ClassElements::EditorData, "")
                     ->Attribute(AZ::Edit::Attributes::Category, "Ollama")
                     ->Attribute(AZ::Edit::Attributes::AppearsInAddComponentMenu, AZ_CRC_CE("Game"))
                     ->DataElement(
                         AZ::Edit::UIHandlers::Default,
-                        &OllamaModelConfigurationComponent::m_configuration,
+                        &OllamaModelComponent::m_configuration,
                         "Configuration",
-                        "Configuration for the Ollama context request generator")
+                        "The configuration attached to the prompts")
                     ->Attribute(AZ::Edit::Attributes::Visibility, AZ::Edit::PropertyVisibility::ShowChildrenOnly);
             }
         }
 
         if (auto registrationContext = azrtti_cast<GenAIFramework::SystemRegistrationContext*>(context))
         {
-            registrationContext->RegisterModelConfiguration<OllamaModelConfigurationComponent>();
+            registrationContext->RegisterModelConfiguration<OllamaModelComponent>();
         }
     }
 
-    void OllamaModelConfigurationComponent::Activate()
+    void OllamaModelComponent::Activate()
     {
         GenAIFramework::AIModelRequestBus::Handler::BusConnect(GetEntityId());
     }
 
-    void OllamaModelConfigurationComponent::Deactivate()
+    void OllamaModelComponent::Deactivate()
     {
         GenAIFramework::AIModelRequestBus::Handler::BusDisconnect();
     }
 
-    AZStd::string OllamaModelConfigurationComponent::PrepareRequest(const AZStd::string& prompt)
+    AZStd::string OllamaModelComponent::PrepareRequest(const AZStd::string& prompt)
     {
         Aws::Utils::Json::JsonValue jsonValue;
 
@@ -200,8 +202,7 @@ namespace GenAIOllama
         return jsonValue.View().WriteReadable().c_str();
     }
 
-    AZ::Outcome<AZStd::string, AZStd::string> OllamaModelConfigurationComponent::ExtractResult(
-        const GenAIFramework::ModelAPIResponse& modelAPIResponse)
+    AZ::Outcome<AZStd::string, AZStd::string> OllamaModelComponent::ExtractResult(const GenAIFramework::ModelAPIResponse& modelAPIResponse)
     {
         AZStd::string response;
 

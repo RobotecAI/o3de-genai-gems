@@ -26,25 +26,25 @@ namespace GenAIFramework
 
         static void Reflect(AZ::ReflectContext* context);
 
-        AZStd::vector<AZStd::string> GetServiceRequestorsNames() const;
+        AZStd::vector<AZStd::string> GetServiceProvidersNames() const;
         AZStd::vector<AZStd::string> GetModelConfigurationsNames() const;
 
         void Activate() override;
         void Deactivate() override;
 
     protected:
-        AZStd::string m_selectedServiceRequestorName = "";
+        AZStd::string m_selectedServiceProviderName = "";
         AZStd::string m_selectedModelConfigurationName = "";
 
-        AZ::EntityId m_selectedServiceRequestorId;
-        AZ::EntityId m_selectedModelConfigurationId;
+        AZ::EntityId m_serviceProviderId;
+        AZ::EntityId m_modelConfigurationId;
 
-        void UpdateNamedServiceRequestorId();
+        void UpdateNamedServiceProviderId();
         void UpdateNamedModelConfigurationId();
 
     private:
         AZStd::vector<AZStd::string> GetNames(AZStd::vector<AZ::Component*> components) const;
-        AZStd::vector<AZ::Component*> GetServiceRequestors() const;
+        AZStd::vector<AZ::Component*> GetServiceProviders() const;
         AZStd::vector<AZ::Component*> GetModelConfigurations() const;
 
         void GetNamedId(const AZStd::string& name, AZStd::vector<AZ::Component*> components, AZ::EntityId& id);

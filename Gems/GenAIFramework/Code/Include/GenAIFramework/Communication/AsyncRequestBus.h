@@ -11,9 +11,9 @@
 #include <AzCore/Component/ComponentBus.h>
 #include <AzCore/EBus/EBus.h>
 #include <AzCore/Interface/Interface.h>
+#include <AzCore/Math/Uuid.h>
 #include <AzCore/Outcome/Outcome.h>
 #include <AzCore/RTTI/TemplateInfo.h>
-#include <AzCore/Math/Uuid.h>
 
 namespace GenAIFramework
 {
@@ -22,13 +22,13 @@ namespace GenAIFramework
     {
     public:
         AZ_RTTI(AsyncRequest, "{018e7a12-5db2-7daa-a764-78d7703c8efa}");
-        //! Set the selected model configuration and requestor.
-        virtual void SetRequestorAndModel(AZ::EntityId selectedModelConfigurationId, AZ::EntityId selectedRequestorId) = 0;
+        //! Set the selected model configuration and service provider.
+        virtual void SetProviderAndModel(AZ::EntityId modelConfigurationId, AZ::EntityId serviceProviderId) = 0;
 
-        //! Set the service requestor by name. If the service requestor does not exist, it will not be set.
-        //! @param requestorName The name of the service requestor.
-        //! @return True if the service requestor was set successfully, false otherwise.
-        virtual bool SetServiceRequesterByName(const AZStd::string& requestorName) = 0;
+        //! Set the service provider by name. If the service provider does not exist, it will not be set.
+        //! @param providerName The name of the service provider.
+        //! @return True if the service provider was set successfully, false otherwise.
+        virtual bool SetServiceProviderByName(const AZStd::string& providerName) = 0;
 
         //! Set the model configuration by name. If the model configuration does not exist, it will not be set.
         //! @param modelConfigurationName The name of the model configuration.

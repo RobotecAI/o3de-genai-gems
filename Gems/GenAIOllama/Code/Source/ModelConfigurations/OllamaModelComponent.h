@@ -8,13 +8,13 @@
 
 #pragma once
 
+#include <GenAIFramework/Communication/AIModelRequestBus.h>
+
 #include <AzCore/Component/Component.h>
 #include <AzFramework/Components/ComponentAdapter.h>
-#include <GenAIFramework/Communication/AIModelRequestBus.h>
 
 namespace GenAIOllama
 {
-
     class OllamaModelConfiguration : public AZ::ComponentConfig
     {
     public:
@@ -39,16 +39,16 @@ namespace GenAIOllama
         bool m_useDefaultKeepAlive = true;
     };
 
-    class OllamaModelConfigurationComponent
+    class OllamaModelComponent
         : public AZ::Component
         , public GenAIFramework::AIModelRequestBus::Handler
     {
     public:
-        AZ_COMPONENT(OllamaModelConfigurationComponent, "{3782988d-058f-4943-9862-874ebc90a240}", AZ::Component);
+        AZ_COMPONENT(OllamaModelComponent, "{3782988d-058f-4943-9862-874ebc90a240}", AZ::Component);
 
-        OllamaModelConfigurationComponent() = default;
-        OllamaModelConfigurationComponent(const OllamaModelConfiguration& other);
-        ~OllamaModelConfigurationComponent() = default;
+        OllamaModelComponent() = default;
+        OllamaModelComponent(const OllamaModelConfiguration& other);
+        ~OllamaModelComponent() = default;
 
         static void Reflect(AZ::ReflectContext* context);
 

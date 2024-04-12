@@ -11,7 +11,8 @@
 #include <AzCore/Component/Component.h>
 #include <AzCore/RTTI/RTTIMacros.h>
 #include <AzCore/std/string/string.h>
-#include <GenAIFramework/Communication/AIServiceRequesterBus.h>
+#include <GenAIFramework/Communication/AIServiceProviderBus.h>
+
 #include <aws/bedrock-runtime/BedrockRuntimeClient.h>
 #include <aws/bedrock-runtime/BedrockRuntimeErrors.h>
 #include <aws/bedrock-runtime/BedrockRuntimeServiceClientModel.h>
@@ -20,15 +21,14 @@
 
 namespace GenAIBedrock
 {
-
-    class AwsSdkBedrockRequesterConfiguration : public AZ::ComponentConfig
+    class BedrockServiceConfiguration : public AZ::ComponentConfig
     {
     public:
-        AZ_RTTI(AwsSdkBedrockRequesterConfiguration, "{769166cb-bd18-4fb0-b9ff-93dbaaaf82a8}");
-        AZ_CLASS_ALLOCATOR(AwsSdkBedrockRequesterConfiguration, AZ::SystemAllocator);
+        AZ_RTTI(BedrockServiceConfiguration, "{769166cb-bd18-4fb0-b9ff-93dbaaaf82a8}");
+        AZ_CLASS_ALLOCATOR(BedrockServiceConfiguration, AZ::SystemAllocator);
 
-        AwsSdkBedrockRequesterConfiguration() = default;
-        ~AwsSdkBedrockRequesterConfiguration() = default;
+        BedrockServiceConfiguration() = default;
+        ~BedrockServiceConfiguration() = default;
 
         static void Reflect(AZ::ReflectContext* context);
 
@@ -36,15 +36,15 @@ namespace GenAIBedrock
         AZStd::string m_regionName = "eu-central-1";
     };
 
-    class AwsSdkBedrockRequesterComponent
+    class BedrockServiceComponent
         : public AZ::Component
-        , private GenAIFramework::AIServiceRequesterBus::Handler
+        , private GenAIFramework::AIServiceProviderBus::Handler
     {
     public:
-        AZ_COMPONENT(AwsSdkBedrockRequesterComponent, "{77f1b8e1-e616-44c0-a6c6-9d1bd26cf751}");
+        AZ_COMPONENT(BedrockServiceComponent, "{77f1b8e1-e616-44c0-a6c6-9d1bd26cf751}");
 
-        AwsSdkBedrockRequesterComponent() = default;
-        explicit AwsSdkBedrockRequesterComponent(const AwsSdkBedrockRequesterConfiguration& config);
+        BedrockServiceComponent() = default;
+        explicit BedrockServiceComponent(const BedrockServiceConfiguration& config);
 
         static void Reflect(AZ::ReflectContext* context);
         void OnConfigurationChanged();
@@ -54,11 +54,11 @@ namespace GenAIBedrock
         void Activate() override;
         void Deactivate() override;
 
-        void SetConfiguration(const AwsSdkBedrockRequesterConfiguration& config);
-        const AwsSdkBedrockRequesterConfiguration& GetConfiguration() const;
+        void SetConfiguration(const BedrockServiceConfiguration& config);
+        const BedrockServiceConfiguration& GetConfiguration() const;
 
     private:
-        // GenAIFramework::AIServiceRequesterBus::Handler overrides
+        // GenAIFramework::AIServiceProviderBus::Handler overrides
         void SendRequest(const AZStd::string& request, AZStd::function<void(AZ::Outcome<AZStd::string, AZStd::string>)> callback) override;
 
         // Internal configuration for the AWS SDK client
@@ -67,6 +67,6 @@ namespace GenAIBedrock
         AZStd::unique_ptr<Aws::Bedrock::BedrockClient> m_client;
         AZStd::unique_ptr<Aws::BedrockRuntime::BedrockRuntimeClient> m_runtimeClient;
 
-        AwsSdkBedrockRequesterConfiguration m_configuration;
+        BedrockServiceConfiguration m_configuration;
     };
 } // namespace GenAIBedrock
