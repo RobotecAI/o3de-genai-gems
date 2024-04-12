@@ -74,7 +74,7 @@ namespace GenAIFramework
         void SaveSystemConfiguration(const SaveObject& saveObject, const OnConfigSaveComplete& saveCallback);
 
     private:
-        AZ::IO::FixedMaxPath m_GenAIFrameworkSettingsRegistryFilePath;
+        AZ::IO::FixedMaxPath m_settingsRegistryFilePath;
     };
 
 } // namespace GenAIFramework

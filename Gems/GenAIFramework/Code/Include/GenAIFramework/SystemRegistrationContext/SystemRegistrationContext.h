@@ -8,13 +8,11 @@
 
 #pragma once
 
-#include "AzCore/Memory/Memory_fwd.h"
-#include "AzCore/RTTI/RTTIMacros.h"
 #include <AzCore/Math/Uuid.h>
+#include <AzCore/Memory/Memory_fwd.h>
+#include <AzCore/RTTI/RTTIMacros.h>
 #include <AzCore/RTTI/ReflectContext.h>
-#include <AzCore/std/containers/vector.h>
-
-#include <iostream>
+#include <AzCore/std/containers/set.h>
 
 namespace GenAIFramework
 {
@@ -30,27 +28,27 @@ namespace GenAIFramework
         template<class C>
         void RegisterGenAIFrameworkServiceProvider()
         {
-            m_registeredServiceProviders.push_back(C::RTTI_Type());
+            m_registeredServiceProviders.emplace(C::RTTI_Type());
         }
 
         template<class C>
         void RegisterModelConfiguration()
         {
-            m_registeredModelConfigurations.push_back(C::RTTI_Type());
+            m_registeredModelConfigurations.emplace(C::RTTI_Type());
         }
 
-        inline AZStd::vector<AZ::Uuid> GetRegisteredServiceProviders() const
+        inline AZStd::set<AZ::Uuid> GetRegisteredServiceProviders() const
         {
             return m_registeredServiceProviders;
         }
 
-        inline AZStd::vector<AZ::Uuid> GetRegisteredModelConfigurations() const
+        inline AZStd::set<AZ::Uuid> GetRegisteredModelConfigurations() const
         {
             return m_registeredModelConfigurations;
         }
 
     private:
-        AZStd::vector<AZ::Uuid> m_registeredServiceProviders;
-        AZStd::vector<AZ::Uuid> m_registeredModelConfigurations;
+        AZStd::set<AZ::Uuid> m_registeredServiceProviders;
+        AZStd::set<AZ::Uuid> m_registeredModelConfigurations;
     };
 } // namespace GenAIFramework

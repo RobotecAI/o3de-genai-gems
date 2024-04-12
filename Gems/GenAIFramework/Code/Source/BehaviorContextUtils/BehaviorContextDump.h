@@ -8,11 +8,11 @@
 #pragma once
 
 #include "AzCore/RTTI/BehaviorContext.h"
-#include <GenAIFramework/AIContext.h>
-#include <GenAIFramework/APIFormatterStructs.h>
 #include <AzCore/std/containers/set.h>
 #include <AzCore/std/containers/vector.h>
 #include <AzCore/std/string/string.h>
+#include <GenAIFramework/AIContext.h>
+#include <GenAIFramework/APIFormatterStructs.h>
 
 namespace AZ
 {
@@ -29,24 +29,24 @@ namespace GenAIFramework
         BehaviorContextDump(
             const AIContext& aiContext, const AZStd::string& filter = "", const AZ::BehaviorContext* behaviorContext = nullptr);
 
-        AZStd::string APIDump();
-        AZStd::string ClassesDump(bool dumpMethods = true);
-        AZStd::string MethodsDump(const AZStd::string& className);
-        AZStd::string EbusesDump();
+        AZStd::string DumpAPI();
+        AZStd::string DumpClasses(bool dumpMethods = true);
+        AZStd::string DumpMethods(const AZStd::string& className);
+        AZStd::string DumpEbusses();
 
     private:
         AZStd::string DumpFormattedClass(const ClassFormatterHelper& classHelper);
         AZStd::string DumpFormattedMethod(const MethodFormatterHelper& method);
         AZStd::string DumpFormattedEbus(const EbusFormatterHelper& method);
 
-        ClassFormatterHelper ClassDump(const AZStd::string& className, const AZ::BehaviorClass* behaviorClass, bool dumpMethods = true);
-        EbusFormatterHelper EbusDump(const AZStd::string& ebusName, const AZ::BehaviorEBus* ebus);
-        MethodFormatterHelper MethodDump(
+        ClassFormatterHelper DumpClass(const AZStd::string& className, const AZ::BehaviorClass* behaviorClass, bool dumpMethods = true);
+        EbusFormatterHelper DumpEbus(const AZStd::string& ebusName, const AZ::BehaviorEBus* ebus);
+        MethodFormatterHelper DumpMethod(
             const AZStd::string& className,
             const AZStd::string& methodName,
             const AZ::BehaviorMethod* method,
             const AZ::BehaviorClass* behaviorClass);
-        AZStd::vector<ArgumentFormatterHelper> ArgumentsDump(const AZ::BehaviorMethod* method);
+        AZStd::vector<ArgumentFormatterHelper> DumpArguments(const AZ::BehaviorMethod* method);
 
         const AZStd::set<AZStd::string> m_exclude = { "ScriptCanvas" };
         AZStd::string m_filter;

@@ -16,7 +16,7 @@ namespace GenAIFramework
     void GenAIFrameworkActionRequestHandler::RegisterAIContext(const AIContext& context)
     {
         AZ_Warning("GenAIFrameworkActionRequestHandler", !m_handlers.contains(context.m_key), "handler for context exists!");
-        m_handlers.emplace(AZStd::make_pair(context.m_key, AZStd::make_shared<GenAIFrameworkActionHandler>(context)));
+        m_handlers[context.m_key] = AZStd::make_shared<GenAIFrameworkActionHandler>(context);
     }
 
     void GenAIFrameworkActionRequestHandler::UnregisterAIContext(const AIContext& context)
@@ -26,13 +26,8 @@ namespace GenAIFramework
 
     void GenAIFrameworkActionRequestHandler::UnregisterAIContext(const AZStd::string& key)
     {
-        auto it = m_handlers.find(key);
-        if (it == m_handlers.end())
-        {
-            AZ_Warning("GenAIFrameworkActionRequestHandler", false, "Handler not registered, but unregister ");
-            return;
-        }
-        m_handlers.erase(it);
+        auto unregistered = m_handlers.erase(key);
+        AZ_Warning("GenAIFrameworkActionRequestHandler", unregistered == 1, "Handler not registered, but unregister ");
     }
 
     void GenAIFrameworkActionRequestHandler::RegisterBehaviorMethod(const AZ::BehaviorMethod* method, const AIContext& aiContext)

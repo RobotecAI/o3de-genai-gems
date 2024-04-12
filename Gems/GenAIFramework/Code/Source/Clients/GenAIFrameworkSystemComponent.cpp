@@ -7,22 +7,18 @@
  */
 
 #include "GenAIFrameworkSystemComponent.h"
-#include "Clients/GenAIFrameworkSystemComponentConfiguration.h"
-#include <AzCore/Component/EntityId.h>
-#include <AzCore/RTTI/BehaviorContext.h>
-#include <AzCore/std/smart_ptr/shared_ptr.h>
+#include <Clients/GenAIFrameworkSystemComponentConfiguration.h>
+#include <GenAIFramework/GenAIFrameworkTypeIds.h>
 
 #include <Action/GenAIFrameworkLauncherScriptExecutor.h>
 #include <AzCore/Component/ComponentApplication.h>
 #include <AzCore/Component/ComponentApplicationBus.h>
 #include <AzCore/Component/Entity.h>
-#include <AzCore/Memory/Memory_fwd.h>
+#include <AzCore/Component/EntityId.h>
+#include <AzCore/RTTI/BehaviorContext.h>
 #include <AzCore/Serialization/EditContext.h>
 #include <AzCore/Serialization/SerializeContext.h>
 #include <AzCore/std/smart_ptr/make_shared.h>
-#include <AzCore/std/string/string.h>
-#include <AzCore/std/utility/move.h>
-#include <GenAIFramework/GenAIFrameworkTypeIds.h>
 
 namespace GenAIFramework
 {
@@ -106,23 +102,22 @@ namespace GenAIFramework
     }
 
     AZStd::vector<AZStd::pair<AZStd::string, AZ::Uuid>> GenAIFrameworkSystemComponent::GetRegisteredComponentsNameAndComponentTypeId(
-        const AZStd::vector<AZ::Uuid>& componentTypeIds)
+        const AZStd::set<AZ::Uuid>& registeredComponents)
     {
         AZStd::vector<AZStd::pair<AZStd::string, AZ::Uuid>> result;
-        auto registeredComponents = componentTypeIds;
 
         AZ::SerializeContext* serializeContext = nullptr;
         AZ::ComponentApplicationBus::BroadcastResult(serializeContext, &AZ::ComponentApplicationBus::Events::GetSerializeContext);
 
         for (auto& generator : registeredComponents)
         {
-            auto classData = serializeContext->FindClassData(generator);
+            const auto classData = serializeContext->FindClassData(generator);
             auto serializedName = classData->m_name;
             if (classData->m_editData)
             {
                 serializedName = classData->m_editData->m_name;
             }
-            result.push_back({ serializedName, generator });
+            result.emplace_back(AZStd::make_pair(serializedName, generator));
         }
         return result;
     }
@@ -143,11 +138,11 @@ namespace GenAIFramework
     AZStd::vector<AZ::Component*> GenAIFrameworkSystemComponent::GetActiveComponents(const EntityIdToEntityMap& entities) const
     {
         AZStd::vector<AZ::Component*> result;
-        for (auto& [_, entity] : entities)
+        for (const auto& [_, entity] : entities)
         {
             if (entity)
             {
-                auto components = entity->GetComponents();
+                const auto components = entity->GetComponents();
                 result.insert(result.end(), components.begin(), components.end());
             }
         }
@@ -171,7 +166,7 @@ namespace GenAIFramework
         newEntity = AZStd::make_shared<AZ::Entity>(name);
         entities[newEntity->GetId()] = newEntity;
         newEntity->Init();
-        auto component = newEntity->CreateComponent(componentTypeId);
+        const auto component = newEntity->CreateComponent(componentTypeId);
         newEntity->Activate();
         return component;
     }
@@ -276,11 +271,11 @@ namespace GenAIFramework
         InitEntities(m_configuration.m_serviceProviders);
         InitEntities(m_configuration.m_modelConfigurations);
 
-        for (auto& [entityId, _] : m_configuration.m_serviceProviders)
+        for (const auto& [entityId, _] : m_configuration.m_serviceProviders)
         {
             GenAIFrameworkNotificationBus::Broadcast(&GenAIFrameworkNotificationBus::Events::OnServiceProviderAdded, entityId);
         }
-        for (auto& [entityId, _] : m_configuration.m_modelConfigurations)
+        for (const auto& [entityId, _] : m_configuration.m_modelConfigurations)
         {
             GenAIFrameworkNotificationBus::Broadcast(&GenAIFrameworkNotificationBus::Events::OnModelConfigurationAdded, entityId);
         }

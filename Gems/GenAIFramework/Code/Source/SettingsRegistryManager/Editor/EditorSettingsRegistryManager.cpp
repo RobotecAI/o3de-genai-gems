@@ -16,8 +16,8 @@ namespace GenAIFramework
     {
         AZ::IO::FixedMaxPath projectPath = AZ::Utils::GetProjectPath();
         projectPath /= "Registry";
-        m_GenAIFrameworkSettingsRegistryFilePath = projectPath;
-        m_GenAIFrameworkSettingsRegistryFilePath /= "genaiframeworksystemconfiguration.setreg";
+        m_settingsRegistryFilePath = projectPath;
+        m_settingsRegistryFilePath /= "genaiframeworksystemconfiguration.setreg";
     }
 
     void EditorSettingsRegistryManager::SaveSystemConfiguration(const SaveObject& saveObject, const OnConfigSaveComplete& saveCallback)
@@ -45,7 +45,7 @@ namespace GenAIFramework
 
         rapidjson::Document GenAIFrameworkConfigurationDocument;
         rapidjson::Value& GenAIFrameworkConfigurationValue = rapidjson::CreateValueByPointer(
-            GenAIFrameworkConfigurationDocument, rapidjson::Pointer(m_GenAIFrameworkSettingsRegistryPath.data()));
+            GenAIFrameworkConfigurationDocument, rapidjson::Pointer(GenAIFrameworkSettingsRegistryPath.data()));
 
         AZ::JsonSerialization::Store(GenAIFrameworkConfigurationValue, GenAIFrameworkConfigurationDocument.GetAllocator(), saveObject);
 
@@ -66,7 +66,7 @@ namespace GenAIFramework
 
         AzToolsFramework::SourceControlCommandBus::Broadcast(
             SourceControlSaveCallback,
-            m_GenAIFrameworkSettingsRegistryFilePath.c_str(),
+            m_settingsRegistryFilePath.c_str(),
             Internal::GetConfigurationSaveCallback(Internal::WriteDocumentToString(GenAIFrameworkConfigurationDocument), postSaveCallback));
     }
 

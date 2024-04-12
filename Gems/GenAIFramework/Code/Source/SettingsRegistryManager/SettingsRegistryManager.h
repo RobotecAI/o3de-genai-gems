@@ -29,7 +29,7 @@ namespace GenAIFramework
         AZStd::optional<SaveObject> LoadSystemConfiguration() const;
 
     protected:
-        constexpr static AZStd::string_view m_GenAIFrameworkSettingsRegistryPath = "/Robotec.ai/Gems/GenAIFramework";
+        constexpr static AZStd::string_view GenAIFrameworkSettingsRegistryPath = "/Robotec.ai/Gems/GenAIFramework";
     };
 
 } // namespace GenAIFramework

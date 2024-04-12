@@ -31,7 +31,7 @@ namespace GenAIFramework
         AZ_Assert(settingsRegistry, "Settings Registry is not available");
         if (settingsRegistry)
         {
-            configurationRead = settingsRegistry->GetObject(saveObject, m_GenAIFrameworkSettingsRegistryPath);
+            configurationRead = settingsRegistry->GetObject(saveObject, GenAIFrameworkSettingsRegistryPath);
         }
         AZ_Assert(configurationRead, "Failed to read GenAIFramework settings from the Settings Registry");
         if (configurationRead)
