@@ -44,7 +44,7 @@ namespace GenAIFramework
     {
         Segment* segment = new Segment(component, componentTypeId, m_segmentControl);
         m_segments.push_back(segment);
-        AZStd::string name = component->GetNamedEntityId().GetName();
+        const AZStd::string name = component->GetNamedEntityId().GetName();
         m_segmentControl->addTab(segment, QString(name.c_str()));
         connect(segment, &Segment::RemoveSegment, this, &Tab::RemoveSegment);
     }

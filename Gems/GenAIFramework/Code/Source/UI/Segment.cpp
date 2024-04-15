@@ -28,12 +28,16 @@ namespace GenAIFramework
         AZ::ComponentApplicationBus::BroadcastResult(m_serializeContext, &AZ::ComponentApplicationRequests::GetSerializeContext);
         AZ_Assert(m_serializeContext, "Failed to retrieve serialize context.");
 
+	const AZStd::string name = component->GetNamedEntityId().GetName();
+        m_componentName = new QLabel(name.c_str());
+
         const int propertyLabelWidth = 250;
         m_propertyEditor = new AzToolsFramework::ReflectedPropertyEditor(this);
         m_propertyEditor->Setup(m_serializeContext, this, true, propertyLabelWidth);
         m_propertyEditor->show();
         m_propertyEditor->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
         m_propertyEditor->SetAutoResizeLabels(true);
+        m_propertyEditor->SetHideRootProperties(true);
 
         blockSignals(true);
         m_propertyEditor->ClearInstances();
@@ -45,6 +49,7 @@ namespace GenAIFramework
         m_removeButton->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
         connect(m_removeButton, &QPushButton::clicked, this, &Segment::onRemoveButtonPressed);
 
+        m_verticalLayout->addWidget(m_componentName);
         m_verticalLayout->addWidget(m_propertyEditor);
         m_verticalLayout->addWidget(m_removeButton);
 

@@ -14,6 +14,7 @@
 #include <AzCore/Component/Entity.h>
 #include <AzCore/Math/Uuid.h>
 #include <QBoxLayout>
+#include <QLabel>
 #include <QPushButton>
 #include <QWidget>
 #include <UI/PropertyEditor/ReflectedPropertyEditor.hxx>
@@ -49,6 +50,7 @@ namespace GenAIFramework
         AzToolsFramework::ReflectedPropertyEditor* m_propertyEditor;
         AZ::Component* m_component;
         QPushButton* m_removeButton;
+        QLabel* m_componentName;
     };
 
 } // namespace GenAIFramework

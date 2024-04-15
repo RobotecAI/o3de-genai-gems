@@ -8,9 +8,7 @@
 
 #pragma once
 
-#include "AzCore/std/smart_ptr/shared_ptr.h"
 #include <AzCore/Component/Entity.h>
-#include <AzCore/Memory/Memory_fwd.h>
 #include <AzCore/RTTI/RTTIMacros.h>
 #include <AzCore/Serialization/SerializeContext.h>
 

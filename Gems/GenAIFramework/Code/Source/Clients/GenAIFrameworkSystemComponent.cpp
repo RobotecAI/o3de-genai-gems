@@ -125,13 +125,13 @@ namespace GenAIFramework
     AZStd::vector<AZStd::pair<AZStd::string, AZ::Uuid>> GenAIFrameworkSystemComponent::
         GetRegisteredModelConfigurationsNameAndComponentTypeId()
     {
-        auto modelConfigurations = GetSystemRegistrationContext()->GetRegisteredModelConfigurations();
+        const auto modelConfigurations = GetSystemRegistrationContext()->GetRegisteredModelConfigurations();
         return GetRegisteredComponentsNameAndComponentTypeId(modelConfigurations);
     }
 
     AZStd::vector<AZStd::pair<AZStd::string, AZ::Uuid>> GenAIFrameworkSystemComponent::GetRegisteredServiceProvidersNameAndComponentTypeId()
     {
-        auto registeredProviders = GetSystemRegistrationContext()->GetRegisteredServiceProviders();
+        const auto registeredProviders = GetSystemRegistrationContext()->GetRegisteredServiceProviders();
         return GetRegisteredComponentsNameAndComponentTypeId(registeredProviders);
     }
 
