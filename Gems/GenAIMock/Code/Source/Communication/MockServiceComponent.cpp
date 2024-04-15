@@ -18,6 +18,8 @@
 #include <AzCore/Serialization/EditContextConstants.inl>
 #include <AzCore/Serialization/Json/JsonUtils.h>
 #include <AzCore/Serialization/SerializeContext.h>
+#include <AzCore/std/algorithm.h>
+#include <AzCore/std/string/regex.h>
 #include <AzCore/std/string/string.h>
 
 namespace GenAIMock
@@ -122,6 +124,8 @@ namespace GenAIMock
         {
             AZ_Warning("MockServiceComponent", false, "Failed to parse file %s: %s", fullPath.c_str(), result.GetError().c_str());
         }
+
+        m_lastCompleted = -1;
     }
 
     void MockServiceComponent::Init()
@@ -157,38 +161,28 @@ namespace GenAIMock
             ReloadAsset();
         }
 
-        // This service accepts three types of prompts:
-        // 1) restart - restart the counter and get the first mock outcome from the model
-        // 2) next - get the next mock outcome from the model
-        // 3) [0..9] - get the n-th mock outcome from the model
+        // This service accepts two types of prompts:
+        // 1) "restart" or "reset" - restart the counter and get the first mock outcome from the model
+        // 2) [n] - set the counter to 'n' and get the 'n-th' mock outcome from the model
+        // The model increases the counter and returns the next mock outcome otherwise.
         int index;
-        if (request == "restart")
+        if (request == "restart" || request == "reset")
         {
-            m_lastCompleted = 0;
             index = 0;
         }
-        else if (request == "next")
+        else if (!request.empty() && AZStd::all_of(request.begin(), request.end(), ::isdigit))
         {
-            m_lastCompleted++;
-            index = m_lastCompleted;
+            index = std::atoi(request.c_str());
         }
         else
         {
-            index = std::atoi(request.c_str());
-            if (index < 0)
-            {
-                m_lastCompleted = 0;
-                index = 0;
-            }
-            else
-            {
-                m_lastCompleted = index;
-            }
+            index = m_lastCompleted + 1;
         }
 
         if (index < m_testData.size())
         {
             AZ::Outcome<AZStd::string, AZStd::string> outcomeResult = AZ::Success(m_testData[index]);
+            m_lastCompleted = index;
             callback(outcomeResult);
         }
         else
