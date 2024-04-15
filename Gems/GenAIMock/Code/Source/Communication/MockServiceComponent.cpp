@@ -115,7 +115,21 @@ namespace GenAIMock
                 {
                     for (rapidjson::SizeType i = 0; i < testData.Size(); ++i)
                     {
-                        m_testData.push_back(testData[i].GetString());
+                        if (testData[i].IsArray())
+                        {
+                            AZStd::string multiLineOut;
+                            const auto& multiLineIn = testData[i];
+                            for (rapidjson::SizeType l = 0; l < multiLineIn.Size(); ++l)
+                            {
+                                multiLineOut.append(multiLineIn[l].GetString());
+                                multiLineOut.append("\n");
+                            }
+                            m_testData.emplace_back(AZStd::move(multiLineOut));
+                        }
+                        else
+                        {
+                            m_testData.push_back(testData[i].GetString());
+                        }
                     }
                 }
             }
