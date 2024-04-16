@@ -39,10 +39,10 @@ It is based on the `AZ::EBus` and `AZ::BehaviorContext`.
 
 Selecting an available AI service and model configuration can be done by first getting all available models:
 ```python
-import azlmbr.ai;
-import azlmbr.bus as bus;
-modelConfigurationsNames = azlmbr.ai.GenAIFrameworkRequestBus(bus.Broadcast, 'GetModelConfigurationNames')
+import azlmbr.ai
+import azlmbr.bus as bus
 serviceProvidersNames = azlmbr.ai.GenAIFrameworkRequestBus(bus.Broadcast, 'GetServiceProviderNames')
+modelConfigurationsNames = azlmbr.ai.GenAIFrameworkRequestBus(bus.Broadcast, 'GetModelConfigurationNames')
 ```
 
 And after getting the available methods the models can be selected:
@@ -50,7 +50,12 @@ And after getting the available methods the models can be selected:
 result = azlmbr.ai.asyncRequestBus(bus.Broadcast, 'SetServiceProviderByName', 'example_name')
 result = azlmbr.ai.asyncRequestBus(bus.Broadcast, 'SetModelConfigurationByName', 'example_name')
 ```
-The result will be true if the model configuration or service provider was found and set. False otherwise.
+The result is true if the model configuration or service provider is found and set. False otherwise. It is also possible to verify which model configuration or service provider is currently set by calling the following:
+```python
+providerName = azlmbr.ai.asyncRequestBus(bus.Broadcast, 'GetActiveServiceProviderName')
+modelConfiguration = azlmbr.ai.asyncRequestBus(bus.Broadcast, 'GetActiveModelConfigurationName')
+```
+The output name might be empty in the case of a service provider or model configuration respectively being not set.
 
 Sending a prompt example:
 ```python
