@@ -24,27 +24,53 @@ namespace GenAIFramework
         AZ_RTTI(GenAIFrameworkRequests, GenAIFrameworkRequestsTypeId);
         virtual ~GenAIFrameworkRequests() = default;
 
-        virtual SystemRegistrationContext* GetSystemRegistrationContext() = 0;
 
-        virtual AZStd::vector<AZStd::pair<AZStd::string, AZ::Uuid>> GetRegisteredModelConfigurationsNameAndComponentTypeId() = 0;
-        virtual AZStd::vector<AZStd::pair<AZStd::string, AZ::Uuid>> GetRegisteredServiceProvidersNameAndComponentTypeId() = 0;
+        //! Get a system registration context.
+        //! @return A pointer to the SystemRegistrationContext object.
+        virtual SystemRegistrationContext* GetSystemRegistrationContext() const = 0;
 
-        virtual AZStd::vector<AZ::Component*> GetActiveModelConfigurations() = 0;
-        virtual AZStd::vector<AZ::Component*> GetActiveServiceProviders() = 0;
+        //! Get a list of registered model configuration names and corresponding type ids.
+        //! @return A vector of pairs with registered model configuration name and corresponding type id.
+        virtual AZStd::vector<AZStd::pair<AZStd::string, AZ::Uuid>> GetModelConfigurationNamesAndComponentTypeIds() const = 0;
+        //! Get a list of registered service provider names and corresponding type ids.
+        //! @return A vector of pairs with registered service provider name and corresponding type id.
+        virtual AZStd::vector<AZStd::pair<AZStd::string, AZ::Uuid>> GetServiceProviderNamesAndComponentTypeIds() const = 0;
 
-        //! Return a vector of the active model configurations names.
-        virtual AZStd::vector<AZStd::string> GetActiveModelConfigurationsNames() const = 0;
+        //! Get a list of registered model configuration components.
+        //! @return A vector of registered model configuration components.
+        virtual AZStd::vector<AZ::Component*> GetModelConfigurations() const = 0;
+        //! Get a list of registered service provider components.
+        //! @return A vector of registered service provider components.
+        virtual AZStd::vector<AZ::Component*> GetServiceProviders() const = 0;
 
-        //! Return a vector of the active service providers names.
-        virtual AZStd::vector<AZStd::string> GetActiveServiceProvidersNames() const = 0;
+        //! Get a list of registered model configuration names.
+        //! @return A vector of registered model configuration names.
+        virtual AZStd::vector<AZStd::string> GetModelConfigurationNames() const = 0;
+        //! Get a list of registered service provider names.
+        //! @return A vector of registered service provider names.
+        virtual AZStd::vector<AZStd::string> GetServiceProviderNames() const = 0;
 
-        virtual AZ::Component* CreateNewModelConfiguration(
-            const AZStd::string& modelConfigurationName, const AZ::Uuid& componentTypeId) = 0;
-        virtual AZ::Component* CreateNewServiceProvider(const AZStd::string& providerName, const AZ::Uuid& componentTypeId) = 0;
+        //! Create and register a new model configuration.
+        //! @param modelConfigurationName Name of the new model configuration.
+        //! @param componentTypeId Uuid of the new model configuration component type.
+        //! @return A pointer to created component of a requested type (or nullptr when failed).
+        virtual AZ::Component* CreateModelConfiguration(const AZStd::string& modelConfigurationName, const AZ::Uuid& componentTypeId) = 0;
+        //! Create and register a new service provider.
+        //! @param providerName Name of the new service provider.
+        //! @param componentTypeId Uuid of the new service provider component type.
+        //! @return A pointer to created component of a requested type (or nullptr when failed).
+        virtual AZ::Component* CreateServiceProvider(const AZStd::string& providerName, const AZ::Uuid& componentTypeId) = 0;
 
+        //! Unregister and remove a model configuration or a service provider component.
+        //! @param component A pointer to the component to be removed.
         virtual void RemoveComponent(AZ::Component* component) = 0;
 
+        //! Activate the entity and its components.
+        //! @param entity A pointer to the entity to be activated.
         virtual void ActivateEntity(AZStd::shared_ptr<AZ::Entity> entity) = 0;
+
+        //! Deactivate the entity and its components.
+        //! @param entity A pointer to the entity to be deactivated.
         virtual void DeactivateEntity(AZStd::shared_ptr<AZ::Entity> entity) = 0;
     };
 

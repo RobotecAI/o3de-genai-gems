@@ -93,7 +93,7 @@ namespace GenAIFramework
     {
         AZStd::vector<AZ::Component*> activeServiceProviders;
         GenAIFramework::GenAIFrameworkRequestBus::BroadcastResult(
-            activeServiceProviders, &GenAIFramework::GenAIFrameworkRequests::GetActiveServiceProviders);
+            activeServiceProviders, &GenAIFramework::GenAIFrameworkRequests::GetServiceProviders);
         return SetEntityIdByName(activeServiceProviders, providerName, m_serviceProviderId);
     }
 
@@ -101,7 +101,7 @@ namespace GenAIFramework
     {
         AZStd::vector<AZ::Component*> activeModelConfigurations;
         GenAIFramework::GenAIFrameworkRequestBus::BroadcastResult(
-            activeModelConfigurations, &GenAIFramework::GenAIFrameworkRequests::GetActiveModelConfigurations);
+            activeModelConfigurations, &GenAIFramework::GenAIFrameworkRequests::GetModelConfigurations);
         return SetEntityIdByName(activeModelConfigurations, modelConfigurationName, m_modelConfigurationId);
     }
 
@@ -127,7 +127,7 @@ namespace GenAIFramework
         {
             AZStd::vector<AZ::Component*> activeModelConfigurations;
             GenAIFramework::GenAIFrameworkRequestBus::BroadcastResult(
-                activeModelConfigurations, &GenAIFramework::GenAIFrameworkRequests::GetActiveModelConfigurations);
+                activeModelConfigurations, &GenAIFramework::GenAIFrameworkRequests::GetModelConfigurations);
             if (!activeModelConfigurations.empty())
             {
                 modelConfigurationId = activeModelConfigurations.front()->GetEntityId();
@@ -143,7 +143,7 @@ namespace GenAIFramework
         {
             AZStd::vector<AZ::Component*> activeServiceProviders;
             GenAIFramework::GenAIFrameworkRequestBus::BroadcastResult(
-                activeServiceProviders, &GenAIFramework::GenAIFrameworkRequests::GetActiveServiceProviders);
+                activeServiceProviders, &GenAIFramework::GenAIFrameworkRequests::GetServiceProviders);
             if (!activeServiceProviders.empty())
             {
                 serviceProviderId = activeServiceProviders.front()->GetEntityId();

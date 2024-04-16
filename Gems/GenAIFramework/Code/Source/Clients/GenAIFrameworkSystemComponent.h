@@ -38,18 +38,18 @@ namespace GenAIFramework
     protected:
         ////////////////////////////////////////////////////////////////////////
         // GenAIFrameworkRequestBus interface implementation
-        SystemRegistrationContext* GetSystemRegistrationContext() override;
-        AZStd::vector<AZStd::pair<AZStd::string, AZ::Uuid>> GetRegisteredModelConfigurationsNameAndComponentTypeId() override;
-        AZStd::vector<AZStd::pair<AZStd::string, AZ::Uuid>> GetRegisteredServiceProvidersNameAndComponentTypeId() override;
-        AZStd::vector<AZ::Component*> GetActiveModelConfigurations() override;
-        AZStd::vector<AZ::Component*> GetActiveServiceProviders() override;
-        AZ::Component* CreateNewModelConfiguration(const AZStd::string& modelConfigurationName, const AZ::Uuid& componentTypeId) override;
-        AZ::Component* CreateNewServiceProvider(const AZStd::string& providerName, const AZ::Uuid& componentTypeId) override;
+        SystemRegistrationContext* GetSystemRegistrationContext() const override;
+        AZStd::vector<AZStd::pair<AZStd::string, AZ::Uuid>> GetModelConfigurationNamesAndComponentTypeIds() const override;
+        AZStd::vector<AZStd::pair<AZStd::string, AZ::Uuid>> GetServiceProviderNamesAndComponentTypeIds() const override;
+        AZStd::vector<AZ::Component*> GetModelConfigurations() const override;
+        AZStd::vector<AZ::Component*> GetServiceProviders() const override;
+        AZStd::vector<AZStd::string> GetModelConfigurationNames() const override;
+        AZStd::vector<AZStd::string> GetServiceProviderNames() const override;
+        AZ::Component* CreateModelConfiguration(const AZStd::string& modelConfigurationName, const AZ::Uuid& componentTypeId) override;
+        AZ::Component* CreateServiceProvider(const AZStd::string& providerName, const AZ::Uuid& componentTypeId) override;
         void RemoveComponent(AZ::Component* component) override;
         void ActivateEntity(AZStd::shared_ptr<AZ::Entity> entity) override;
         void DeactivateEntity(AZStd::shared_ptr<AZ::Entity> entity) override;
-        AZStd::vector<AZStd::string> GetActiveModelConfigurationsNames() const override;
-        AZStd::vector<AZStd::string> GetActiveServiceProvidersNames() const override;
         ////////////////////////////////////////////////////////////////////////
 
         ////////////////////////////////////////////////////////////////////////
@@ -68,10 +68,10 @@ namespace GenAIFramework
         static void DeactivateEntities(const EntityIdToEntityMap& entities);
 
         AZStd::vector<AZStd::pair<AZStd::string, AZ::Uuid>> GetRegisteredComponentsNameAndComponentTypeId(
-            const AZStd::set<AZ::Uuid>& registeredComponent);
+            const AZStd::set<AZ::Uuid>& registeredComponent) const;
         AZStd::vector<AZ::Component*> GetActiveComponents(const EntityIdToEntityMap& entities) const;
         AZ::Component* CreateNewComponentEntity(const AZStd::string& name, const AZ::Uuid& componentTypeId, EntityIdToEntityMap& entities);
 
-        AZStd::vector<AZStd::string> GetActiveComponentsNames(const EntityIdToEntityMap& entities) const;
+        AZStd::vector<AZStd::string> GetRegisteredComponentNames(const EntityIdToEntityMap& entities) const;
     };
 } // namespace GenAIFramework

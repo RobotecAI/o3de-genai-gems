@@ -23,7 +23,7 @@ namespace GenAIFramework
         {
             return {};
         }
-        return interface->GetRegisteredServiceProvidersNameAndComponentTypeId();
+        return interface->GetServiceProviderNamesAndComponentTypeIds();
     }
 
     AZ::Component* NewServiceProviderSegment::CreateNewComponentEntity(const AZStd::string& name, const AZ::Uuid& selectedComponentTypeId)
@@ -33,7 +33,7 @@ namespace GenAIFramework
         {
             return nullptr;
         }
-        return interface->CreateNewServiceProvider(name, selectedComponentTypeId);
+        return interface->CreateServiceProvider(name, selectedComponentTypeId);
     }
 
 } // namespace GenAIFramework

@@ -41,8 +41,8 @@ Selecting an available AI service and model configuration can be done by first g
 ```python
 import azlmbr.ai;
 import azlmbr.bus as bus;
-modelConfigurationsNames = azlmbr.ai.GenAIFrameworkRequestBus(bus.Broadcast, 'GetActiveModelConfigurationsNames')
-serviceProvidersNames = azlmbr.ai.GenAIFrameworkRequestBus(bus.Broadcast, 'GetActiveServiceProvidersNames')
+modelConfigurationsNames = azlmbr.ai.GenAIFrameworkRequestBus(bus.Broadcast, 'GetModelConfigurationNames')
+serviceProvidersNames = azlmbr.ai.GenAIFrameworkRequestBus(bus.Broadcast, 'GetServiceProviderNames')
 ```
 
 And after getting the available methods the models can be selected:
