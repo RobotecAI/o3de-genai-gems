@@ -16,7 +16,6 @@
 #include <aws/bedrock-runtime/BedrockRuntimeClient.h>
 #include <aws/bedrock-runtime/BedrockRuntimeErrors.h>
 #include <aws/bedrock-runtime/BedrockRuntimeServiceClientModel.h>
-#include <aws/bedrock/BedrockClient.h>
 #include <aws/core/utils/json/JsonSerializer.h>
 
 namespace GenAIBedrock
@@ -62,9 +61,7 @@ namespace GenAIBedrock
         void SendRequest(const AZStd::string& request, AZStd::function<void(AZ::Outcome<AZStd::string, AZStd::string>)> callback) override;
 
         // Internal configuration for the AWS SDK client
-        AZStd::unique_ptr<Aws::Bedrock::BedrockClientConfiguration> m_clientConfiguration;
         AZStd::unique_ptr<Aws::BedrockRuntime::BedrockRuntimeClientConfiguration> m_runtimeClientConfiguration;
-        AZStd::unique_ptr<Aws::Bedrock::BedrockClient> m_client;
         AZStd::unique_ptr<Aws::BedrockRuntime::BedrockRuntimeClient> m_runtimeClient;
 
         BedrockServiceConfiguration m_configuration;

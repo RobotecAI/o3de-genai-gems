@@ -20,7 +20,6 @@
 #include <aws/bedrock-runtime/BedrockRuntimeServiceClientModel.h>
 #include <aws/bedrock-runtime/model/InvokeModelRequest.h>
 #include <aws/bedrock-runtime/model/InvokeModelResult.h>
-#include <aws/bedrock/BedrockClient.h>
 #include <aws/core/utils/memory/stl/AWSStreamFwd.h>
 #include <aws/core/utils/memory/stl/AWSStringStream.h>
 
@@ -79,22 +78,16 @@ namespace GenAIBedrock
 
     void BedrockServiceComponent::OnConfigurationChanged()
     {
-        if (!m_clientConfiguration)
-        {
-            m_clientConfiguration = AZStd::make_unique<Aws::Bedrock::BedrockClientConfiguration>();
-        }
         if (!m_runtimeClientConfiguration)
         {
             m_runtimeClientConfiguration = AZStd::make_unique<Aws::BedrockRuntime::BedrockRuntimeClientConfiguration>();
         }
-        m_clientConfiguration->region = m_configuration.m_regionName.c_str();
         m_runtimeClientConfiguration->region = m_configuration.m_regionName.c_str();
 
         // NOTE(pawel-kotowski): This is a temporary solution to set the request timeout to 60 seconds. It will be handled by UI solution in
         // the future.
         m_runtimeClientConfiguration->requestTimeoutMs = 60000;
 
-        m_client = AZStd::make_unique<Aws::Bedrock::BedrockClient>(*m_clientConfiguration);
         m_runtimeClient = AZStd::make_unique<Aws::BedrockRuntime::BedrockRuntimeClient>(*m_runtimeClientConfiguration);
     }
 
