@@ -5,6 +5,12 @@
         "two",
         "three",
         "four",
-        "five - end, fin, fine, etc."
+        [
+            "multiline example:",
+            "the end",
+            "la fin",
+            "el fin",
+            "fine"
+        ]
     ]
 }

@@ -18,6 +18,8 @@
 #include <AzCore/Serialization/EditContextConstants.inl>
 #include <AzCore/Serialization/Json/JsonUtils.h>
 #include <AzCore/Serialization/SerializeContext.h>
+#include <AzCore/std/algorithm.h>
+#include <AzCore/std/string/regex.h>
 #include <AzCore/std/string/string.h>
 
 namespace GenAIMock
@@ -54,11 +56,8 @@ namespace GenAIMock
         MockServiceComponentConfiguration::Reflect(context);
         if (auto serializeContext = azrtti_cast<AZ::SerializeContext*>(context))
         {
-            serializeContext->Class<MockServiceComponent, AZ::Component>()
-                ->Version(0)
-                ->Field("Configuration", &MockServiceComponent::m_configuration)
-                ->Field("testData", &MockServiceComponent::m_testData)
-                ->Field("lastCompleted", &MockServiceComponent::m_lastCompleted);
+            serializeContext->Class<MockServiceComponent, AZ::Component>()->Version(0)->Field(
+                "Configuration", &MockServiceComponent::m_configuration);
 
             if (auto editContext = serializeContext->GetEditContext())
             {
@@ -116,7 +115,21 @@ namespace GenAIMock
                 {
                     for (rapidjson::SizeType i = 0; i < testData.Size(); ++i)
                     {
-                        m_testData.push_back(testData[i].GetString());
+                        if (testData[i].IsArray())
+                        {
+                            AZStd::string multiLineOut;
+                            const auto& multiLineIn = testData[i];
+                            for (rapidjson::SizeType l = 0; l < multiLineIn.Size(); ++l)
+                            {
+                                multiLineOut.append(multiLineIn[l].GetString());
+                                multiLineOut.append("\n");
+                            }
+                            m_testData.emplace_back(AZStd::move(multiLineOut));
+                        }
+                        else
+                        {
+                            m_testData.push_back(testData[i].GetString());
+                        }
                     }
                 }
             }
@@ -125,6 +138,8 @@ namespace GenAIMock
         {
             AZ_Warning("MockServiceComponent", false, "Failed to parse file %s: %s", fullPath.c_str(), result.GetError().c_str());
         }
+
+        m_lastCompleted = -1;
     }
 
     void MockServiceComponent::Init()
@@ -154,43 +169,39 @@ namespace GenAIMock
     void MockServiceComponent::SendRequest(
         const AZStd::string& request, AZStd::function<void(AZ::Outcome<AZStd::string, AZStd::string>)> callback)
     {
-        // This service accepts three types of prompts:
-        // 1) restart - restart the counter and get the first mock outcome from the model
-        // 2) next - get the next mock outcome from the model
-        // 3) [0..9] - get the n-th mock outcome from the model
-        int index;
-        if (request == "restart")
+        if (m_testData.empty())
         {
-            m_lastCompleted = 0;
+            // Try to reload data if not available
+            ReloadAsset();
+        }
+
+        // This service accepts two types of prompts:
+        // 1) "restart" or "reset" - restart the counter and get the first mock outcome from the model
+        // 2) [n] - set the counter to 'n' and get the 'n-th' mock outcome from the model
+        // The model increases the counter and returns the next mock outcome otherwise.
+        int index;
+        if (request == "restart" || request == "reset")
+        {
             index = 0;
         }
-        else if (request == "next")
+        else if (!request.empty() && AZStd::all_of(request.begin(), request.end(), ::isdigit))
         {
-            m_lastCompleted++;
-            index = m_lastCompleted;
+            index = std::atoi(request.c_str());
         }
         else
         {
-            index = std::atoi(request.c_str());
-            if (index < 0)
-            {
-                m_lastCompleted = 0;
-                index = 0;
-            }
-            else
-            {
-                m_lastCompleted = index;
-            }
+            index = m_lastCompleted + 1;
         }
 
         if (index < m_testData.size())
         {
             AZ::Outcome<AZStd::string, AZStd::string> outcomeResult = AZ::Success(m_testData[index]);
+            m_lastCompleted = index;
             callback(outcomeResult);
         }
         else
         {
-            AZStd::string azStringResult("I have no answer for that.");
+            AZStd::string azStringResult("Out of range prompt for given mock data.");
             AZ::Outcome<AZStd::string, AZStd::string> outcomeError = AZ::Failure(azStringResult);
             callback(outcomeError);
         }
