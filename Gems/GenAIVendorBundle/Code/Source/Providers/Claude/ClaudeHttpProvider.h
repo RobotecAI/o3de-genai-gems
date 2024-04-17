@@ -8,38 +8,44 @@
 
 #pragma once
 
+#include <AzCore/Component/Component.h>
+#include <AzCore/std/string/string.h>
+#include <AzFramework/Components/ComponentAdapter.h>
 #include <GenAIFramework/Communication/AIServiceProviderBus.h>
 
-#include <AzCore/Component/Component.h>
-#include <AzFramework/Components/ComponentAdapter.h>
-
-namespace GenAIOllama
+namespace GenAIClaude
 {
-    class OllamaHttpServiceConfiguration : public AZ::ComponentConfig
+    class ClaudeHttpProviderConfiguration : public AZ::ComponentConfig
     {
     public:
-        AZ_RTTI(OllamaHttpServiceConfiguration, "{18ddba8f-1fe5-4dde-a0f4-90dccbda5f33}");
+        AZ_RTTI(ClaudeHttpProviderConfiguration, "{4822d5ec-f30a-4402-9fce-48826b3183bf}");
 
-        OllamaHttpServiceConfiguration() = default;
-        ~OllamaHttpServiceConfiguration() = default;
+        ClaudeHttpProviderConfiguration();
+        ~ClaudeHttpProviderConfiguration() = default;
 
         static void Reflect(AZ::ReflectContext* context);
 
-        AZStd::string m_url = "";
+        AZStd::string m_url = "https://api.anthropic.com/v1/messages";
         AZStd::string m_contentType = "application/json";
+        AZStd::string m_model = "";
+        AZStd::string m_xAPIKey = "";
+        int m_timeout = 10000;
+
+    private:
+        bool IsKeyInEnvironment();
     };
 
-    class OllamaHttpServiceComponent
+    class ClaudeHttpProvider
         : public AZ::Component
         , public GenAIFramework::AIServiceProviderBus::Handler
 
     {
     public:
-        AZ_COMPONENT(OllamaHttpServiceComponent, "{aad62d35-c628-4141-b759-0d3764013b29}", AZ::Component)
+        AZ_COMPONENT(ClaudeHttpProvider, "{ffa395bc-1d5b-46e3-b557-10ff550cfb34}", AZ::Component)
 
-        OllamaHttpServiceComponent() = default;
-        OllamaHttpServiceComponent(const OllamaHttpServiceConfiguration& config);
-        ~OllamaHttpServiceComponent() = default;
+        ClaudeHttpProvider() = default;
+        ClaudeHttpProvider(const ClaudeHttpProviderConfiguration& config);
+        ~ClaudeHttpProvider() = default;
 
         static void Reflect(AZ::ReflectContext* context);
 
@@ -51,10 +57,10 @@ namespace GenAIOllama
 
     private:
         //////////////////////////////////////////////////////////////////////////
-        // AIServiceProviderBus::Handler
+        // AIServiceRequesterBus::Handler
         void SendRequest(const AZStd::string& request, AZStd::function<void(AZ::Outcome<AZStd::string, AZStd::string>)> callback) override;
         //////////////////////////////////////////////////////////////////////////
 
-        OllamaHttpServiceConfiguration m_configuration;
+        ClaudeHttpProviderConfiguration m_configuration;
     };
-} // namespace GenAIOllama
+} // namespace GenAIClaude

@@ -6,7 +6,7 @@
  *
  */
 
-#include "BasicHttpServiceComponent.h"
+#include "OllamaHttpProvider.h"
 #include <GenAIFramework/SystemRegistrationContext/SystemRegistrationContext.h>
 
 #include <AzCore/Component/Component.h>
@@ -29,7 +29,7 @@ namespace GenAIOllama
 
             if (auto editContext = serializeContext->GetEditContext())
             {
-                editContext->Class<OllamaHttpServiceConfiguration>("Basic HTTP Service Provider Configuration", "")
+                editContext->Class<OllamaHttpServiceConfiguration>("Ollama Service Provider Configuration", "")
                     ->ClassElement(AZ::Edit::ClassElements::EditorData, "")
                     ->Attribute(AZ::Edit::Attributes::Category, "AI")
                     ->Attribute(AZ::Edit::Attributes::AppearsInAddComponentMenu, AZ_CRC_CE("Game"))
@@ -63,14 +63,14 @@ namespace GenAIOllama
 
             if (auto editContext = serializeContext->GetEditContext())
             {
-                editContext->Class<OllamaHttpServiceComponent>("Ollama HTTP service", "")
+                editContext->Class<OllamaHttpServiceComponent>("Ollama HTTP Service Provider", "")
                     ->ClassElement(AZ::Edit::ClassElements::EditorData, "")
                     ->Attribute(AZ::Edit::Attributes::Category, "AI")
                     ->DataElement(
                         AZ::Edit::UIHandlers::Default,
                         &OllamaHttpServiceComponent::m_configuration,
                         "Configuration",
-                        "Configuration for the Basic HTTP Service Provider")
+                        "Configuration for the Ollama HTTP provider")
                     ->Attribute(AZ::Edit::Attributes::Visibility, AZ::Edit::PropertyVisibility::ShowChildrenOnly);
             }
         }

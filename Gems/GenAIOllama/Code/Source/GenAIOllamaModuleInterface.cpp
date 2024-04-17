@@ -32,7 +32,7 @@ namespace GenAIOllama
             {
                 GenAIOllamaSystemComponent::CreateDescriptor(),
                 OllamaModelComponent::CreateDescriptor(),
-                BasicHttpServiceComponent::CreateDescriptor(),
+                OllamaHttpServiceComponent::CreateDescriptor(),
             });
     }
 
