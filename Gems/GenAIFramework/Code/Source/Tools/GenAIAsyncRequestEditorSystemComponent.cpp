@@ -10,7 +10,6 @@
 #include "SettingsRegistryManager/SettingsRegistryManager.h"
 
 #include <API/ViewPaneOptions.h>
-#include <Action/ActionTools/GenAIFrameworkEditorScriptExecutor.h>
 #include <AzCore/Component/Entity.h>
 #include <AzCore/Serialization/SerializeContext.h>
 #include <AzCore/std/containers/vector.h>

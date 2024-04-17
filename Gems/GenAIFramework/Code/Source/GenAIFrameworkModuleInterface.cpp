@@ -7,7 +7,6 @@
  */
 
 #include "GenAIFrameworkModuleInterface.h"
-#include "Test/GenAIFrameworkTestComponent.h"
 #include <AzCore/Component/ComponentApplication.h>
 #include <AzCore/Memory/Memory.h>
 #include <Clients/GenAIAsyncRequestSystemComponent.h>
@@ -31,7 +30,6 @@ namespace GenAIFramework
             m_descriptors.end(),
             {
                 GenAIFrameworkSystemComponent::CreateDescriptor(),
-                GenAIFrameworkTestComponent::CreateDescriptor(),
                 GenAIAsyncRequestSystemComponent::CreateDescriptor(),
             });
 
