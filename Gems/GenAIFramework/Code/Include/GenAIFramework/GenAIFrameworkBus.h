@@ -13,8 +13,6 @@
 #include <AzCore/EBus/EBus.h>
 #include <AzCore/Interface/Interface.h>
 #include <AzCore/Math/Uuid.h>
-#include <GenAIFramework/AIContext.h>
-#include <GenAIFramework/GenAIFrameworkScriptExecutor.h>
 #include <GenAIFramework/GenAIFrameworkTypeIds.h>
 #include <GenAIFramework/SystemRegistrationContext/SystemRegistrationContext.h>
 
@@ -25,8 +23,6 @@ namespace GenAIFramework
     public:
         AZ_RTTI(GenAIFrameworkRequests, GenAIFrameworkRequestsTypeId);
         virtual ~GenAIFrameworkRequests() = default;
-
-        virtual AZStd::unique_ptr<GenAIFrameworkScriptExecutor> MakeScriptExecutor(const AIContext& aiContext) = 0;
 
         virtual SystemRegistrationContext* GetSystemRegistrationContext() = 0;
 

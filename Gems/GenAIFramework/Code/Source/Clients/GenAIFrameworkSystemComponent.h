@@ -11,11 +11,9 @@
 #include "Clients/GenAIFrameworkSystemComponentConfiguration.h"
 #include "SettingsRegistryManager/SettingsRegistryManager.h"
 
-#include <Action/GenAIFrameworkActionRequestHandler.h>
 #include <AzCore/Component/Component.h>
 #include <AzCore/std/smart_ptr/shared_ptr.h>
 #include <GenAIFramework/GenAIFrameworkBus.h>
-#include <GenAIFramework/GenAIFrameworkScriptExecutor.h>
 #include <GenAIFramework/SystemRegistrationContext/SystemRegistrationContext.h>
 
 namespace GenAIFramework
@@ -40,7 +38,6 @@ namespace GenAIFramework
     protected:
         ////////////////////////////////////////////////////////////////////////
         // GenAIFrameworkRequestBus interface implementation
-        AZStd::unique_ptr<GenAIFrameworkScriptExecutor> MakeScriptExecutor(const AIContext& aiContext) override;
         SystemRegistrationContext* GetSystemRegistrationContext() override;
         AZStd::vector<AZStd::pair<AZStd::string, AZ::Uuid>> GetRegisteredModelConfigurationsNameAndComponentTypeId() override;
         AZStd::vector<AZStd::pair<AZStd::string, AZ::Uuid>> GetRegisteredServiceProvidersNameAndComponentTypeId() override;
@@ -69,7 +66,6 @@ namespace GenAIFramework
         static void InitEntities(const EntityIdToEntityMap& entities);
         static void ActivateEntities(const EntityIdToEntityMap& entities);
         static void DeactivateEntities(const EntityIdToEntityMap& entities);
-        GenAIFrameworkActionRequestHandler m_actionRequestHandler;
 
         AZStd::vector<AZStd::pair<AZStd::string, AZ::Uuid>> GetRegisteredComponentsNameAndComponentTypeId(
             const AZStd::set<AZ::Uuid>& registeredComponent);

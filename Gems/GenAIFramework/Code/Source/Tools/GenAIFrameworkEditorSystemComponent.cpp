@@ -10,7 +10,6 @@
 #include "SettingsRegistryManager/SettingsRegistryManager.h"
 
 #include <API/ViewPaneOptions.h>
-#include <Action/ActionTools/GenAIFrameworkEditorScriptExecutor.h>
 #include <AzCore/Component/Entity.h>
 #include <AzCore/Serialization/SerializeContext.h>
 #include <AzCore/std/containers/vector.h>
@@ -27,12 +26,6 @@ namespace GenAIFramework
         "GenAIFrameworkEditorSystemComponent",
         GenAIFrameworkEditorSystemComponentTypeId,
         BaseSystemComponent);
-
-    AZStd::unique_ptr<GenAIFrameworkScriptExecutor> GenAIFrameworkEditorSystemComponent::MakeScriptExecutor(
-        [[maybe_unused]] const AIContext& aiContext)
-    {
-        return AZStd::make_unique<GenAIFrameworkEditorScriptExecutor>();
-    }
 
     void GenAIFrameworkEditorSystemComponent::Reflect(AZ::ReflectContext* context)
     {

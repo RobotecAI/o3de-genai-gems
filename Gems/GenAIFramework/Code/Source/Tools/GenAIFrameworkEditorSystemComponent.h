@@ -9,7 +9,6 @@
 #pragma once
 
 #include "SettingsRegistryManager/Editor/EditorSettingsRegistryManager.h"
-#include <Action/GenAIFrameworkActionRequestHandler.h>
 #include <AzCore/Math/Uuid.h>
 #include <AzCore/std/string/string_view.h>
 #include <AzToolsFramework/API/ToolsApplicationAPI.h>
@@ -46,9 +45,6 @@ namespace GenAIFramework
         static void GetRequiredServices(AZ::ComponentDescriptor::DependencyArrayType& required);
         static void GetDependentServices(AZ::ComponentDescriptor::DependencyArrayType& dependent);
 
-        // GenAIFrameworkRequestBus
-        AZStd::unique_ptr<GenAIFrameworkScriptExecutor> MakeScriptExecutor(const AIContext& aiContext) override;
-
         // EditorEntityContextNotificationBus overrides
         void OnStartPlayInEditorBegin() override;
         void OnStopPlayInEditor() override;
@@ -63,7 +59,6 @@ namespace GenAIFramework
         void Activate() override;
         void Deactivate() override;
 
-        GenAIFrameworkActionRequestHandler m_actionRequestHandler;
         EditorSettingsRegistryManager m_settingsRegistryManager;
 
         ////////////////////////////////////////////////////////////////////////

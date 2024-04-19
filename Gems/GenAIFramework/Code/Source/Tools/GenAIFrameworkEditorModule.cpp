@@ -9,7 +9,6 @@
 #include "GenAIAsyncRequestEditorSystemComponent.h"
 #include "GenAIFrameworkEditorSystemComponent.h"
 #include "PromptComponent.h"
-#include "Test/GenAIFrameworkTestEditorComponent.h"
 #include <GenAIFramework/GenAIFrameworkTypeIds.h>
 #include <GenAIFrameworkModuleInterface.h>
 #include <QtCore/qglobal.h>
@@ -38,7 +37,6 @@ namespace GenAIFramework
             m_descriptors.insert(
                 m_descriptors.end(),
                 { GenAIFrameworkEditorSystemComponent::CreateDescriptor(),
-                  GenAIFrameworkTestEditorComponent::CreateDescriptor(),
                   GenAIAsyncRequestEditorSystemComponent::CreateDescriptor(),
                   PromptComponent::CreateDescriptor() });
         }

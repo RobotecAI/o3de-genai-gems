@@ -10,7 +10,6 @@
 #include <Clients/GenAIFrameworkSystemComponentConfiguration.h>
 #include <GenAIFramework/GenAIFrameworkTypeIds.h>
 
-#include <Action/GenAIFrameworkLauncherScriptExecutor.h>
 #include <AzCore/Component/ComponentApplication.h>
 #include <AzCore/Component/ComponentApplicationBus.h>
 #include <AzCore/Component/Entity.h>
@@ -24,15 +23,8 @@ namespace GenAIFramework
 {
     AZ_COMPONENT_IMPL(GenAIFrameworkSystemComponent, "GenAIFrameworkSystemComponent", GenAIFrameworkSystemComponentTypeId);
 
-    AZStd::unique_ptr<GenAIFrameworkScriptExecutor> GenAIFrameworkSystemComponent::MakeScriptExecutor(
-        [[maybe_unused]] const AIContext& aiContext)
-    {
-        return AZStd::make_unique<GenAIFrameworkLauncherScriptExecutor>();
-    }
-
     void GenAIFrameworkSystemComponent::Reflect(AZ::ReflectContext* context)
     {
-        GenAIFrameworkLauncherScriptExecutor::Reflect(context);
         GenAIFrameworkSystemComponentConfiguration::Reflect(context);
         if (auto serializeContext = azrtti_cast<AZ::SerializeContext*>(context))
         {
@@ -74,11 +66,6 @@ namespace GenAIFramework
         {
             GenAIFrameworkInterface::Register(this);
         }
-
-        if (GenAIFrameworkActionInterface::Get() == nullptr)
-        {
-            GenAIFrameworkActionInterface::Register(&m_actionRequestHandler);
-        }
     }
 
     GenAIFrameworkSystemComponent::~GenAIFrameworkSystemComponent()
@@ -86,11 +73,6 @@ namespace GenAIFramework
         if (GenAIFrameworkInterface::Get() == this)
         {
             GenAIFrameworkInterface::Unregister(this);
-        }
-
-        if (GenAIFrameworkActionInterface::Get() == &m_actionRequestHandler)
-        {
-            GenAIFrameworkActionInterface::Unregister(&m_actionRequestHandler);
         }
     }
 
@@ -289,7 +271,6 @@ namespace GenAIFramework
             m_configuration.m_serviceProviders.size(),
             m_configuration.m_modelConfigurations.size());
         GenAIFrameworkRequestBus::Handler::BusConnect();
-        m_actionRequestHandler.Connect();
 
         ActivateEntities(m_configuration.m_serviceProviders);
         ActivateEntities(m_configuration.m_modelConfigurations);
@@ -301,7 +282,6 @@ namespace GenAIFramework
 
     void GenAIFrameworkSystemComponent::Deactivate()
     {
-        m_actionRequestHandler.Disconnect();
         GenAIFrameworkRequestBus::Handler::BusDisconnect();
 
         DeactivateEntities(m_configuration.m_serviceProviders);
