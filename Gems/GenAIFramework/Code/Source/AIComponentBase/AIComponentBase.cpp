@@ -27,6 +27,7 @@ namespace GenAIFramework
             if (auto* editContext = serializeContext->GetEditContext())
             {
                 editContext->Class<AIComponentBase>("AI Component Base", "Base component for AI")
+                    ->ClassElement(AZ::Edit::ClassElements::EditorData, "")
                     ->Attribute(AZ::Edit::Attributes::ChangeNotify, AZ::Edit::PropertyRefreshLevels::EntireTree)
                     ->DataElement(
                         AZ::Edit::UIHandlers::ComboBox,
