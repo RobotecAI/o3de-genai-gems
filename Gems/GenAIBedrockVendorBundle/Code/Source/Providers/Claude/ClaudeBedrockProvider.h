@@ -17,7 +17,7 @@
 #include <aws/bedrock-runtime/BedrockRuntimeServiceClientModel.h>
 #include <aws/core/utils/json/JsonSerializer.h>
 
-namespace GenAIBedrock
+namespace GenAIBedrockVendorBundle
 {
 
     class ClaudeBedrockProviderConfiguration : public AZ::ComponentConfig
@@ -57,7 +57,7 @@ namespace GenAIBedrock
         const ClaudeBedrockProviderConfiguration& GetConfiguration() const;
 
     private:
-        // GenAIFramework::AIServiceRequesterBus::Handler overrides
+        // GenAIFramework::AIServiceProviderBus::Handler overrides
         void SendRequest(const AZStd::string& request, AZStd::function<void(AZ::Outcome<AZStd::string, AZStd::string>)> callback) override;
 
         // Internal configuration for the AWS SDK client
@@ -66,4 +66,4 @@ namespace GenAIBedrock
 
         ClaudeBedrockProviderConfiguration m_configuration;
     };
-} // namespace GenAIBedrock
+} // namespace GenAIBedrockVendorBundle

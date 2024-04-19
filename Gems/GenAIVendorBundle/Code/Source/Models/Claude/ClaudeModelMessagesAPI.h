@@ -15,7 +15,7 @@
 #include <GenAIFramework/Communication/AIModelRequestBus.h>
 #include <aws/core/utils/json/JsonSerializer.h>
 
-namespace GenAIClaude
+namespace GenAIVendorBundle
 {
     class ClaudeModelMessagesAPI
         : public AZ::Component
@@ -27,7 +27,7 @@ namespace GenAIClaude
         static void Reflect(AZ::ReflectContext* context);
 
         ClaudeModelMessagesAPI() = default;
-        explicit ClaudeModelMessagesAPI(const GenAIClaude::ClaudeModelConfiguration& config);
+        explicit ClaudeModelMessagesAPI(const ClaudeModelConfiguration& config);
         ~ClaudeModelMessagesAPI() = default;
 
         void Activate() override;
@@ -35,16 +35,16 @@ namespace GenAIClaude
 
         // GenAIFramework::ModelConfigurationBus overrides
         GenAIFramework::ModelAPIRequest PrepareRequest(const AZStd::string& prompt) override;
-        AZ::Outcome<AZStd::string, AZStd::string> ExtractResult(const GenAIFramework::ModelAPIResponse& modelAPIResponse) override;
+        GenAIFramework::ModelAPIResponse ExtractResult(const GenAIFramework::ModelAPIResponse& modelAPIResponse) override;
         void ResetModelHistory() override;
         void EnableModelHistory(bool enableHistory) override;
 
     private:
-        GenAIClaude::ClaudeModelConfiguration m_defaultConfiguration;
+        ClaudeModelConfiguration m_configuration;
 
         using ClaudeMessage = AZStd::pair<AZStd::string, AZStd::string>;
 
         bool m_enableHistory = true;
         AZStd::vector<ClaudeMessage> m_history;
     };
-} // namespace GenAIClaude
+} // namespace GenAIVendorBundle

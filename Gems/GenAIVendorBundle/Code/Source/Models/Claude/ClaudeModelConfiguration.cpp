@@ -1,11 +1,18 @@
+/*
+ * Copyright (c) Contributors to the Open 3D Engine Project.
+ * For complete copyright and license terms please see the LICENSE at the root of this distribution.
+ *
+ * SPDX-License-Identifier: Apache-2.0 OR MIT
+ *
+ */
 
 #include "ClaudeModelConfiguration.h"
-#include "AzCore/Component/ComponentBus.h"
-#include "AzCore/Serialization/EditContextConstants.inl"
+#include <AzCore/Component/ComponentBus.h>
 #include <AzCore/Serialization/EditContext.h>
+#include <AzCore/Serialization/EditContextConstants.inl>
 #include <AzCore/Serialization/SerializeContext.h>
 
-namespace GenAIClaude
+namespace GenAIVendorBundle
 {
     void ClaudeModelConfiguration::Reflect(AZ::ReflectContext* context)
     {
@@ -103,4 +110,4 @@ namespace GenAIClaude
             }
         }
     }
-} // namespace GenAIClaude
+} // namespace GenAIVendorBundle

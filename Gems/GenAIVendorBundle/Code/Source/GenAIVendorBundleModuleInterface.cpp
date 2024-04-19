@@ -7,14 +7,14 @@
  */
 
 #include "GenAIVendorBundleModuleInterface.h"
-#include "Models/Claude/ClaudeModelMessagesAPI.h"
-#include "Models/Claude/ClaudeModelTextCompletions.h"
-#include "Models/Ollama/OllamaModelComponent.h"
-#include "Providers/Claude/ClaudeHttpProvider.h"
-#include "Providers/Ollama/OllamaHttpProvider.h"
-#include <AzCore/Memory/Memory.h>
 
+#include <AzCore/Memory/Memory.h>
 #include <GenAIVendorBundle/GenAIVendorBundleTypeIds.h>
+#include <Models/Claude/ClaudeModelMessagesAPI.h>
+#include <Models/Claude/ClaudeModelTextCompletions.h>
+#include <Models/Ollama/OllamaModelComponent.h>
+#include <Providers/Claude/ClaudeHttpProvider.h>
+#include <Providers/Ollama/OllamaHttpProvider.h>
 
 namespace GenAIVendorBundle
 {
@@ -32,11 +32,11 @@ namespace GenAIVendorBundle
         m_descriptors.insert(
             m_descriptors.end(),
             {
-                GenAIClaude::ClaudeModelTextCompletions::CreateDescriptor(),
-                GenAIClaude::ClaudeModelMessagesAPI::CreateDescriptor(),
-                GenAIClaude::ClaudeHttpProvider::CreateDescriptor(),
-                GenAIOllama::OllamaHttpServiceComponent::CreateDescriptor(),
-                GenAIOllama::OllamaModelComponent::CreateDescriptor(),
+                ClaudeModelTextCompletions::CreateDescriptor(),
+                ClaudeModelMessagesAPI::CreateDescriptor(),
+                ClaudeHttpProvider::CreateDescriptor(),
+                OllamaHttpServiceComponent::CreateDescriptor(),
+                OllamaModelComponent::CreateDescriptor(),
             });
     }
 

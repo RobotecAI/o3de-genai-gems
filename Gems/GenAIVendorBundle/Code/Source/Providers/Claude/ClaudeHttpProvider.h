@@ -13,7 +13,7 @@
 #include <AzFramework/Components/ComponentAdapter.h>
 #include <GenAIFramework/Communication/AIServiceProviderBus.h>
 
-namespace GenAIClaude
+namespace GenAIVendorBundle
 {
     class ClaudeHttpProviderConfiguration : public AZ::ComponentConfig
     {
@@ -58,9 +58,9 @@ namespace GenAIClaude
     private:
         //////////////////////////////////////////////////////////////////////////
         // AIServiceRequesterBus::Handler
-        void SendRequest(const AZStd::string& request, AZStd::function<void(AZ::Outcome<AZStd::string, AZStd::string>)> callback) override;
+        void SendRequest(const AZStd::string& request, AZStd::function<void(GenAIFramework::ModelAPIResponse)> callback) override;
         //////////////////////////////////////////////////////////////////////////
 
         ClaudeHttpProviderConfiguration m_configuration;
     };
-} // namespace GenAIClaude
+} // namespace GenAIVendorBundle

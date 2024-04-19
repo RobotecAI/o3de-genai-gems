@@ -22,10 +22,10 @@
 #include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/core/utils/memory/stl/AWSVector.h>
 
-namespace GenAIClaude
+namespace GenAIVendorBundle
 {
-    ClaudeModelMessagesAPI::ClaudeModelMessagesAPI(const GenAIClaude::ClaudeModelConfiguration& config)
-        : m_defaultConfiguration(config)
+    ClaudeModelMessagesAPI::ClaudeModelMessagesAPI(const ClaudeModelConfiguration& config)
+        : m_configuration(config)
     {
     }
 
@@ -35,8 +35,8 @@ namespace GenAIClaude
         {
             serializeContext->Class<ClaudeModelMessagesAPI, AZ::Component>()
                 ->Version(1)
-                ->Field("Default Configuration", &ClaudeModelMessagesAPI::m_defaultConfiguration)
-                ->Field("rememberHistory", &ClaudeModelMessagesAPI::m_enableHistory)
+                ->Field("defaultConfiguration", &ClaudeModelMessagesAPI::m_configuration)
+                ->Field("enableHistory", &ClaudeModelMessagesAPI::m_enableHistory)
                 ->Field("history", &ClaudeModelMessagesAPI::m_history);
 
             if (auto* editContext = serializeContext->GetEditContext())
@@ -46,7 +46,7 @@ namespace GenAIClaude
                     ->Attribute(AZ::Edit::Attributes::Category, "AI")
                     ->DataElement(
                         AZ::Edit::UIHandlers::Default,
-                        &ClaudeModelMessagesAPI::m_defaultConfiguration,
+                        &ClaudeModelMessagesAPI::m_configuration,
                         "Default Configuration",
                         "The default configuration to use when generating prompts")
                     ->Attribute(AZ::Edit::Attributes::Visibility, AZ::Edit::PropertyVisibility::ShowChildrenOnly)
@@ -55,7 +55,7 @@ namespace GenAIClaude
                         &ClaudeModelMessagesAPI::m_enableHistory,
                         "Use model history",
                         "Whether to remember the context of the conversation")
-                    ->UIElement(AZ::Edit::UIHandlers::Button, "Reset history")
+                    ->UIElement(AZ::Edit::UIHandlers::Button, "")
                     ->Attribute(AZ::Edit::Attributes::ChangeNotify, &ClaudeModelMessagesAPI::ResetModelHistory)
                     ->Attribute(AZ::Edit::Attributes::ButtonText, "Reset history");
             }
@@ -110,7 +110,7 @@ namespace GenAIClaude
         Aws::Utils::Json::JsonValue jsonPrompt;
         jsonPrompt.WithObject("messages", messagesArrayJson);
 
-        GenAIClaude::ClaudeModelConfiguration configuration = m_defaultConfiguration;
+        ClaudeModelConfiguration configuration = m_configuration;
 
         jsonPrompt.WithInteger("max_tokens", configuration.m_maxTokensToSample);
         jsonPrompt.WithString("anthropic_version", configuration.m_anthropicVersion.c_str());
@@ -192,4 +192,4 @@ namespace GenAIClaude
         m_enableHistory = enableHistory;
     }
 
-} // namespace GenAIClaude
+} // namespace GenAIVendorBundle

@@ -16,7 +16,7 @@
 #include <HttpRequestor/HttpRequestorBus.h>
 #include <HttpRequestor/HttpTypes.h>
 
-namespace GenAIOllama
+namespace GenAIVendorBundle
 {
     void OllamaHttpServiceConfiguration::Reflect(AZ::ReflectContext* context)
     {
@@ -122,4 +122,4 @@ namespace GenAIOllama
             innerCallback);
     }
 
-} // namespace GenAIOllama
+} // namespace GenAIVendorBundle

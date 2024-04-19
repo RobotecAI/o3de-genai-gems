@@ -9,12 +9,11 @@
 #pragma once
 
 #include <AzCore/Component/Component.h>
-#include <AzCore/Memory/Memory_fwd.h>
 #include <AzCore/RTTI/RTTIMacros.h>
 #include <AzCore/RTTI/ReflectContext.h>
 #include <AzCore/std/string/string.h>
 
-namespace GenAIClaude
+namespace GenAIVendorBundle
 {
     class ClaudeModelConfiguration : public AZ::ComponentConfig
     {
@@ -57,4 +56,4 @@ namespace GenAIClaude
             return m_useDefaultStopSequence;
         }
     };
-} // namespace GenAIClaude
+} // namespace GenAIVendorBundle

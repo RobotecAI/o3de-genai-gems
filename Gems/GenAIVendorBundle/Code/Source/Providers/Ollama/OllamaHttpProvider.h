@@ -13,7 +13,7 @@
 #include <AzCore/Component/Component.h>
 #include <AzFramework/Components/ComponentAdapter.h>
 
-namespace GenAIOllama
+namespace GenAIVendorBundle
 {
     class OllamaHttpServiceConfiguration : public AZ::ComponentConfig
     {
@@ -57,4 +57,4 @@ namespace GenAIOllama
 
         OllamaHttpServiceConfiguration m_configuration;
     };
-} // namespace GenAIOllama
+} // namespace GenAIVendorBundle

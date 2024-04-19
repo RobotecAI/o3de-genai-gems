@@ -13,7 +13,7 @@
 #include <GenAIFramework/Communication/AIModelRequestBus.h>
 #include <aws/core/utils/json/JsonSerializer.h>
 
-namespace GenAIClaude
+namespace GenAIVendorBundle
 {
     class ClaudeModelTextCompletions
         : public AZ::Component
@@ -36,6 +36,6 @@ namespace GenAIClaude
         AZ::Outcome<AZStd::string, AZStd::string> ExtractResult(const GenAIFramework::ModelAPIResponse& modelAPIResponse) override;
 
     private:
-        ClaudeModelConfiguration m_defaultConfiguration;
+        ClaudeModelConfiguration m_configuration;
     };
-} // namespace GenAIClaude
+} // namespace GenAIVendorBundle

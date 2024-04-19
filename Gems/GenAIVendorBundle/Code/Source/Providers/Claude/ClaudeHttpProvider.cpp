@@ -21,7 +21,7 @@
 #include <rapidjson/stringbuffer.h>
 #include <rapidjson/writer.h>
 
-namespace GenAIClaude
+namespace GenAIVendorBundle
 {
 
     void ClaudeHttpProviderConfiguration::Reflect(AZ::ReflectContext* context)
@@ -37,9 +37,9 @@ namespace GenAIClaude
 
             if (auto editContext = serializeContext->GetEditContext())
             {
-                editContext->Class<ClaudeHttpProviderConfiguration>("Anthropic HTTP requester config", "")
+                editContext->Class<ClaudeHttpProviderConfiguration>("Anthropic HTTP provider config", "")
                     ->ClassElement(AZ::Edit::ClassElements::EditorData, "")
-                    ->Attribute(AZ::Edit::Attributes::Category, "Anthropic")
+                    ->Attribute(AZ::Edit::Attributes::Category, "AI")
                     ->DataElement(
                         AZ::Edit::UIHandlers::Default,
                         &ClaudeHttpProviderConfiguration::m_url,
@@ -180,8 +180,6 @@ namespace GenAIClaude
             callback(outcome);
         };
 
-        std::cout << requestNoStream.c_str() << std::endl;
-
         HttpRequestor::HttpRequestorRequestBus::Broadcast(
             &HttpRequestor::HttpRequestorRequests::AddRequestWithHeadersBodyAndClientConfiguration,
             m_configuration.m_url,
@@ -192,4 +190,4 @@ namespace GenAIClaude
             clientConfiguration);
     }
 
-} // namespace GenAIClaude
+} // namespace GenAIVendorBundle

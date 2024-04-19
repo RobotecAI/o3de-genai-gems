@@ -17,10 +17,10 @@
 #include <aws/core/utils/json/JsonSerializer.h>
 #include <sstream>
 
-namespace GenAIClaude
+namespace GenAIVendorBundle
 {
     ClaudeModelTextCompletions::ClaudeModelTextCompletions(const ClaudeModelConfiguration& config)
-        : m_defaultConfiguration(config)
+        : m_configuration(config)
     {
     }
 
@@ -31,7 +31,7 @@ namespace GenAIClaude
         if (auto* serializeContext = azrtti_cast<AZ::SerializeContext*>(context))
         {
             serializeContext->Class<ClaudeModelTextCompletions, AZ::Component>()->Version(1)->Field(
-                "Default Configuration", &ClaudeModelTextCompletions::m_defaultConfiguration);
+                "Default Configuration", &ClaudeModelTextCompletions::m_configuration);
 
             if (auto* editContext = serializeContext->GetEditContext())
             {
@@ -40,7 +40,7 @@ namespace GenAIClaude
                     ->Attribute(AZ::Edit::Attributes::Category, "AI")
                     ->DataElement(
                         AZ::Edit::UIHandlers::Default,
-                        &ClaudeModelTextCompletions::m_defaultConfiguration,
+                        &ClaudeModelTextCompletions::m_configuration,
                         "Default Configuration",
                         "The default configuration to use when generating prompts")
                     ->Attribute(AZ::Edit::Attributes::Visibility, AZ::Edit::PropertyVisibility::ShowChildrenOnly);
@@ -69,25 +69,24 @@ namespace GenAIClaude
         oss << "Human: \"" << prompt.c_str() << "\" Assistant: ";
         Aws::Utils::Json::JsonValue jsonPrompt;
         jsonPrompt.WithString("prompt", oss.str().c_str());
-        ClaudeModelConfiguration configuration = m_defaultConfiguration;
 
-        jsonPrompt.WithInteger("max_tokens_to_sample", configuration.m_maxTokensToSample);
+        jsonPrompt.WithInteger("max_tokens_to_sample", m_configuration.m_maxTokensToSample);
 
-        if (!configuration.m_useDefaultTemperature)
+        if (!m_configuration.m_useDefaultTemperature)
         {
-            jsonPrompt.WithDouble("temperature", configuration.m_temperature);
+            jsonPrompt.WithDouble("temperature", m_configuration.m_temperature);
         }
-        if (!configuration.m_useDefaultTopP)
+        if (!m_configuration.m_useDefaultTopP)
         {
-            jsonPrompt.WithDouble("top_p", configuration.m_topP);
+            jsonPrompt.WithDouble("top_p", m_configuration.m_topP);
         }
-        if (!configuration.m_useDefaultTopK)
+        if (!m_configuration.m_useDefaultTopK)
         {
-            jsonPrompt.WithInteger("top_k", configuration.m_topK);
+            jsonPrompt.WithInteger("top_k", m_configuration.m_topK);
         }
-        if (!configuration.m_useDefaultStopSequence)
+        if (!m_configuration.m_useDefaultStopSequence)
         {
-            jsonPrompt.WithString("stop_sequence", configuration.m_stopSequence.c_str());
+            jsonPrompt.WithString("stop_sequence", m_configuration.m_stopSequence.c_str());
         }
         Aws::String jsonString = jsonPrompt.View().WriteReadable();
         AZ_Printf("ClaudeModelTextCompletions", "Prepared request: %s", jsonString.c_str());
@@ -116,4 +115,4 @@ namespace GenAIClaude
             return AZ::Failure(modelAPIResponse.GetError());
         }
     };
-} // namespace GenAIClaude
+} // namespace GenAIVendorBundle

@@ -23,7 +23,7 @@
 #include <aws/core/utils/memory/stl/AWSStringStream.h>
 #include <memory>
 
-namespace GenAIBedrock
+namespace GenAIBedrockVendorBundle
 {
     void ClaudeBedrockProviderConfiguration::Reflect(AZ::ReflectContext* context)
     {
@@ -62,7 +62,7 @@ namespace GenAIBedrock
                         AZ::Edit::UIHandlers::Default,
                         &ClaudeBedrockProvider::m_configuration,
                         "Configuration",
-                        "Configuration for the bedrock provider")
+                        "Configuration for the Claude Bedrock provider")
                     ->Attribute(AZ::Edit::Attributes::Visibility, AZ::Edit::PropertyVisibility::ShowChildrenOnly)
                     ->Attribute(AZ::Edit::Attributes::ChangeNotify, &ClaudeBedrockProvider::OnConfigurationChanged);
             }
@@ -81,6 +81,9 @@ namespace GenAIBedrock
             m_runtimeClientConfiguration = AZStd::make_unique<Aws::BedrockRuntime::BedrockRuntimeClientConfiguration>();
         }
         m_runtimeClientConfiguration->region = m_configuration.m_regionName.c_str();
+        // NOTE(pawel-kotowski): This is a temporary solution to set the request timeout to 60 seconds. It will be handled by UI solution in
+        // the future.
+        m_runtimeClientConfiguration->requestTimeoutMs = 60000;
         m_runtimeClient = AZStd::make_unique<Aws::BedrockRuntime::BedrockRuntimeClient>(*m_runtimeClientConfiguration);
     }
 
@@ -151,4 +154,4 @@ namespace GenAIBedrock
 
         m_runtimeClient->InvokeModelAsync(invokeModelRequest, handler);
     }
-} // namespace GenAIBedrock
+} // namespace GenAIBedrockVendorBundle

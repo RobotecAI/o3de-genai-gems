@@ -7,10 +7,10 @@
  */
 
 #include "GenAIBedrockVendorBundleModuleInterface.h"
-#include "Providers/Claude/ClaudeBedrockProvider.h"
-#include <AzCore/Memory/Memory.h>
 
+#include <AzCore/Memory/Memory.h>
 #include <GenAIBedrockVendorBundle/GenAIBedrockVendorBundleTypeIds.h>
+#include <Providers/Claude/ClaudeBedrockProvider.h>
 
 namespace GenAIBedrockVendorBundle
 {
@@ -28,7 +28,7 @@ namespace GenAIBedrockVendorBundle
         m_descriptors.insert(
             m_descriptors.end(),
             {
-                GenAIBedrock::ClaudeBedrockProvider::CreateDescriptor(),
+                ClaudeBedrockProvider::CreateDescriptor(),
             });
     }
 

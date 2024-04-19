@@ -16,7 +16,7 @@
 
 #include <aws/core/utils/json/JsonSerializer.h>
 
-namespace GenAIOllama
+namespace GenAIVendorBundle
 {
 
     void OllamaModelConfiguration::Reflect(AZ::ReflectContext* context)
@@ -228,4 +228,4 @@ namespace GenAIOllama
         return AZ::Success(response);
     }
 
-} // namespace GenAIOllama
+} // namespace GenAIVendorBundle
