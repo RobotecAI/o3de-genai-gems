@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "AzCore/base.h"
 #include <AzCore/Component/Component.h>
 #include <AzCore/Component/EntityId.h>
 #include <AzCore/std/containers/vector.h>
@@ -36,17 +37,14 @@ namespace GenAIFramework
         AZStd::string m_serviceProviderName = "";
         AZStd::string m_modelConfigurationName = "";
 
-        AZ::EntityId m_serviceProviderId;
-        AZ::EntityId m_modelConfigurationId;
+        AZ::u64 m_agentId;
 
-        void UpdateNamedServiceProviderId();
+        void UpdateComponent();
         void UpdateNamedModelConfigurationId();
 
     private:
         AZStd::vector<AZStd::string> GetNames(const AZStd::vector<AZ::Component*>& components) const;
         AZStd::vector<AZ::Component*> GetServiceProviders() const;
         AZStd::vector<AZ::Component*> GetModelConfigurations() const;
-
-        void GetNamedId(const AZStd::string& name, const AZStd::vector<AZ::Component*>& components, AZ::EntityId& id);
     };
 } // namespace GenAIFramework

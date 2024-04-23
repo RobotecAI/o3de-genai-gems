@@ -33,11 +33,8 @@ namespace GenAIVendorBundle
     {
         if (auto* serializeContext = azrtti_cast<AZ::SerializeContext*>(context))
         {
-            serializeContext->Class<ClaudeModelMessagesAPI, AZ::Component>()
-                ->Version(1)
-                ->Field("defaultm_configuration", &ClaudeModelMessagesAPI::m_configuration)
-                ->Field("enableHistory", &ClaudeModelMessagesAPI::m_enableHistory)
-                ->Field("history", &ClaudeModelMessagesAPI::m_history);
+            serializeContext->Class<ClaudeModelMessagesAPI, AZ::Component>()->Version(1)->Field(
+                "defaultConfiguration", &ClaudeModelMessagesAPI::m_configuration);
 
             if (auto* editContext = serializeContext->GetEditContext())
             {
@@ -47,17 +44,9 @@ namespace GenAIVendorBundle
                     ->DataElement(
                         AZ::Edit::UIHandlers::Default,
                         &ClaudeModelMessagesAPI::m_configuration,
-                        "Default configuration",
+                        "Default Configuration",
                         "The default configuration to use when generating prompts")
-                    ->Attribute(AZ::Edit::Attributes::Visibility, AZ::Edit::PropertyVisibility::ShowChildrenOnly)
-                    ->DataElement(
-                        AZ::Edit::UIHandlers::Default,
-                        &ClaudeModelMessagesAPI::m_enableHistory,
-                        "Use model history",
-                        "Whether to remember the context of the conversation")
-                    ->UIElement(AZ::Edit::UIHandlers::Button, "")
-                    ->Attribute(AZ::Edit::Attributes::ChangeNotify, &ClaudeModelMessagesAPI::ResetModelHistory)
-                    ->Attribute(AZ::Edit::Attributes::ButtonText, "Reset history");
+                    ->Attribute(AZ::Edit::Attributes::Visibility, AZ::Edit::PropertyVisibility::ShowChildrenOnly);
             }
         }
 
@@ -77,35 +66,19 @@ namespace GenAIVendorBundle
         GenAIFramework::AIModelRequestBus::Handler::BusDisconnect();
     }
 
-    GenAIFramework::ModelAPIRequest ClaudeModelMessagesAPI::PrepareRequest(const AZStd::string& prompt)
+    GenAIFramework::ModelAPIRequest ClaudeModelMessagesAPI::PrepareRequest(const GenAIFramework::ModelAPIPrompt& prompt)
     {
         Aws::Utils::Json::JsonValue messagesArrayJson;
-        Aws::Utils::Array<Aws::Utils::Json::JsonValue> messagesArray(m_history.size() + 1);
+        Aws::Utils::Array<Aws::Utils::Json::JsonValue> messagesArray(prompt.size());
 
-        // Add the context messages to the request
-        if (m_enableHistory)
+        for (int i = 0; i < prompt.size(); i++)
         {
-            for (AZStd::vector<ClaudeMessage>::size_type i = 0; i < m_history.size(); i++)
-            {
-                Aws::Utils::Json::JsonValue message;
-                message.WithString("role", m_history[i].first.c_str());
-                message.WithString("content", m_history[i].second.c_str());
-                messagesArray[i] = message;
-            }
+            Aws::Utils::Json::JsonValue message;
+            message.WithString("role", "user");
+            message.WithString("content", AZStd::any_cast<AZStd::string>(prompt[i]).c_str());
+            messagesArray[i] = message;
         }
-        Aws::Utils::Json::JsonValue message;
-
-        message.WithString("role", "user");
-        message.WithString("content", prompt.c_str());
-
-        messagesArray[m_history.size()] = message;
         messagesArrayJson.AsArray(messagesArray);
-
-        // Remember the sent message if the rememberContext flag is set
-        if (m_enableHistory)
-        {
-            m_history.push_back(AZStd::make_pair("user", prompt));
-        }
 
         Aws::Utils::Json::JsonValue jsonPrompt;
         jsonPrompt.WithObject("messages", messagesArrayJson);
@@ -139,55 +112,31 @@ namespace GenAIVendorBundle
         return jsonString.c_str();
     }
 
-    AZ::Outcome<AZStd::string, AZStd::string> ClaudeModelMessagesAPI::ExtractResult(
-        const GenAIFramework::ModelAPIResponse& modelAPIResponse)
+    GenAIFramework::ModelAPIResponse ClaudeModelMessagesAPI::ExtractResult(const GenAIFramework::ModelAPIRequest& modelAPIRequest)
     {
-        if (modelAPIResponse.IsSuccess())
+        Aws::Utils::Json::JsonValue jsonPrompt(modelAPIRequest.c_str());
+
+        if (jsonPrompt.WasParseSuccessful())
         {
-            AZ_Printf("ClaudeModelMessagesAPI", "Extracted result: %s", modelAPIResponse.GetValue().c_str());
-            Aws::Utils::Json::JsonValue jsonPrompt(modelAPIResponse.GetValue().c_str());
+            auto content = jsonPrompt.View().GetArray("content");
+            AZStd::vector<AZStd::any> completion;
 
-            if (jsonPrompt.WasParseSuccessful())
+            for (int i = 0; i < content.GetLength(); i++)
             {
-                auto content = jsonPrompt.View().GetArray("content");
-                AZStd::string completion;
-
-                for (int i = 0; i < content.GetLength(); i++)
+                auto message = content.GetItem(i);
+                auto role = message.GetString("type");
+                if (role == "text")
                 {
-                    auto message = content.GetItem(i);
-                    auto role = message.GetString("type");
-                    if (role == "text")
-                    {
-                        completion += message.GetString("text").c_str();
-                    }
+                    completion.push_back(AZStd::any(static_cast<AZStd::string>(message.GetString("text").c_str())));
                 }
-
-                if (m_enableHistory)
-                {
-                    m_history.push_back(AZStd::make_pair("assistant", completion));
-                }
-
-                return AZ::Success(completion);
             }
-            else
-            {
-                return AZ::Failure(AZStd::string::format("Failed to parse the response %s", modelAPIResponse.GetValue().c_str()));
-            }
+
+            return AZ::Success(completion);
         }
         else
         {
-            return AZ::Failure(modelAPIResponse.GetError());
+            return AZ::Failure(AZStd::string::format("Failed to parse the response %s", modelAPIRequest.c_str()));
         }
     };
-
-    void ClaudeModelMessagesAPI::ResetModelHistory()
-    {
-        m_history.clear();
-    }
-
-    void ClaudeModelMessagesAPI::EnableModelHistory(bool enableHistory)
-    {
-        m_enableHistory = enableHistory;
-    }
 
 } // namespace GenAIVendorBundle

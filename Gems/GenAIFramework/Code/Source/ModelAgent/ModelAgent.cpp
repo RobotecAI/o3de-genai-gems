@@ -14,33 +14,25 @@ namespace GenAIFramework
     }
 
     void ModelAgent::SendPrompt(
-        const AZStd::vector<AZStd::any>& prompt, AZStd::function<void(AZ::Outcome<AZStd::string, AZStd::string>)> callback)
+        const AZStd::vector<AZStd::any>& prompt, AZStd::function<void(AZ::Outcome<AZStd::vector<AZStd::any>, AZStd::string>)> callback)
     {
         std::cout << "ModelAgent::SendPrompt" << std::endl;
         std::cout << m_modelConfigurationId.ToString().c_str() << std::endl;
         std::cout << m_serviceProviderId.ToString().c_str() << std::endl;
 
-        // Add the prompt to the history
-        for (const auto& item : prompt)
-        {
-            m_history.push_back({ HistoryTag::Prompt, item });
-        }
-
-        // TODO update vendor gems to use AZStd::any instead of string
-        AZStd::string promptString = "";
-        for (const auto& item : prompt)
-        {
-            promptString += AZStd::any_cast<AZStd::string>(item);
-        }
-
         ModelAPIRequest preparedRequest;
-        AIModelRequestBus::EventResult(preparedRequest, m_modelConfigurationId, &AIModelRequestBus::Events::PrepareRequest, promptString);
+        AIModelRequestBus::EventResult(preparedRequest, m_modelConfigurationId, &AIModelRequestBus::Events::PrepareRequest, prompt);
 
-        auto callbackWrapper = [this, callback, prompt](ModelAPIResponse outcome)
+        auto callbackWrapper = [this, callback, prompt](ModelAPIProviderResponse outcome)
         {
-            // TODO change AZStd::string to AZStd::vector<AZStd::any>
-            AZ::Outcome<AZStd::string, AZStd::string> extractedResponse;
-            AIModelRequestBus::EventResult(extractedResponse, m_modelConfigurationId, &AIModelRequestBus::Events::ExtractResult, outcome);
+            if (!outcome.IsSuccess())
+            {
+                callback(AZ::Failure(outcome.GetError()));
+                return;
+            }
+            ModelAPIResponse extractedResponse;
+            AIModelRequestBus::EventResult(
+                extractedResponse, m_modelConfigurationId, &AIModelRequestBus::Events::ExtractResult, outcome.GetValue());
             // Add prompt and response to the history if the response is successful
             if (extractedResponse.IsSuccess())
             {
@@ -48,7 +40,6 @@ namespace GenAIFramework
                 {
                     m_history.push_back({ HistoryTag::Prompt, item });
                 }
-                // TODO change to AZStd::any.
                 m_history.push_back({ HistoryTag::Response, extractedResponse.GetValue() });
             }
 

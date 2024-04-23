@@ -279,22 +279,6 @@ namespace GenAIFramework
         auto registeredGenerators = GetSystemRegistrationContext()->GetRegisteredModelConfigurations();
         AZ::SerializeContext* serializeContext = nullptr;
         AZ::ComponentApplicationBus::BroadcastResult(serializeContext, &AZ::ComponentApplicationBus::Events::GetSerializeContext);
-
-        auto id = CreateModelAgent("test", "test");
-        if (id.IsSuccess())
-        {
-            SendPromptToModelAgent(
-                id.GetValue(),
-                {},
-                [](AZStd::vector<AZStd::any> response)
-                {
-                    AZ_Printf("GenAIFrameworkSystemComponent", "Received response from model agent\n");
-                });
-        }
-        else
-        {
-            std::cout << "not work :(" << std::endl;
-        }
     }
 
     void GenAIFrameworkSystemComponent::Deactivate()
@@ -379,7 +363,9 @@ namespace GenAIFramework
     }
 
     bool GenAIFrameworkSystemComponent::SendPromptToModelAgent(
-        AZ::u64 modelAgentId, const AZStd::vector<AZStd::any>& prompt, const AZStd::function<void(AZStd::vector<AZStd::any>)>& callback)
+        AZ::u64 modelAgentId,
+        const AZStd::vector<AZStd::any>& prompt,
+        const AZStd::function<void(AZ::Outcome<AZStd::vector<AZStd::any>, AZStd::string>)>& callback)
     {
         auto modelAgent = m_modelAgents.find(modelAgentId);
         if (modelAgent != m_modelAgents.end())

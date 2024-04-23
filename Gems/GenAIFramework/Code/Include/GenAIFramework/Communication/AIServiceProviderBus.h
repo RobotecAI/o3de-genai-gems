@@ -16,6 +16,8 @@
 #include <GenAIFramework/Communication/AIModelRequestBus.h>
 namespace GenAIFramework
 {
+    using ModelAPIProviderResponse = AZ::Outcome<AZStd::string, AZStd::string>;
+
     class AIServiceProviderRequests : public AZ::ComponentBus
     {
     public:
@@ -30,7 +32,7 @@ namespace GenAIFramework
         //! @param callback The callback to be called when the request is complete. The callback will be called with the request and the
         //! result of the request. If the request was successful, the result will be a string. If the request failed, the error string will
         //! be returned.
-        virtual void SendRequest(const ModelAPIRequest& request, AZStd::function<void(ModelAPIResponse)> callback) = 0;
+        virtual void SendRequest(const ModelAPIRequest& request, AZStd::function<void(ModelAPIProviderResponse)> callback) = 0;
     };
 
     using AIServiceProviderBus = AZ::EBus<AIServiceProviderRequests>;

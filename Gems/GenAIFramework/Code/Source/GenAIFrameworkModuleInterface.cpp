@@ -7,6 +7,7 @@
  */
 
 #include "GenAIFrameworkModuleInterface.h"
+#include "Tools/PromptComponent.h"
 #include <AzCore/Component/ComponentApplication.h>
 #include <AzCore/Memory/Memory.h>
 #include <Clients/GenAIAsyncRequestSystemComponent.h>

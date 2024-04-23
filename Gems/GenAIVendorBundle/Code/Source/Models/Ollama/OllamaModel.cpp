@@ -6,7 +6,8 @@
  *
  */
 
-#include "OllamaModel.h"
+#include "AzCore/std/containers/vector.h"
+#include "OllamaModelComponent.h"
 #include <GenAIFramework/SystemRegistrationContext/SystemRegistrationContext.h>
 
 #include <AzCore/Component/Component.h>
@@ -168,7 +169,11 @@ namespace GenAIVendorBundle
         GenAIFramework::AIModelRequestBus::Handler::BusDisconnect();
     }
 
+<<<<<<< HEAD:Gems/GenAIVendorBundle/Code/Source/Models/Ollama/OllamaModel.cpp
     AZStd::string OllamaModel::PrepareRequest(const AZStd::string& prompt)
+=======
+    GenAIFramework::ModelAPIRequest OllamaModelComponent::PrepareRequest(const GenAIFramework::ModelAPIPrompt& prompt)
+>>>>>>> 3a4f89e (Model agents WIP):Gems/GenAIVendorBundle/Code/Source/Models/Ollama/OllamaModelComponent.cpp
     {
         Aws::Utils::Json::JsonValue jsonValue;
 
@@ -194,34 +199,36 @@ namespace GenAIVendorBundle
         }
 
         jsonValue.WithBool("stream", m_configuration.m_stream);
-        jsonValue.WithString("prompt", prompt.c_str());
+        AZStd::string promptString = "";
+        for (const auto& element : prompt)
+        {
+            promptString += AZStd::any_cast<AZStd::string>(element).c_str();
+        }
+        jsonValue.WithString("prompt", promptString.c_str());
 
         jsonValue.WithString("model", m_configuration.m_model.c_str());
 
         return jsonValue.View().WriteReadable().c_str();
     }
 
+<<<<<<< HEAD:Gems/GenAIVendorBundle/Code/Source/Models/Ollama/OllamaModel.cpp
     AZ::Outcome<AZStd::string, AZStd::string> OllamaModel::ExtractResult(const GenAIFramework::ModelAPIResponse& modelAPIResponse)
+=======
+    GenAIFramework::ModelAPIResponse OllamaModelComponent::ExtractResult(const GenAIFramework::ModelAPIRequest& modelAPIResponse)
+>>>>>>> 3a4f89e (Model agents WIP):Gems/GenAIVendorBundle/Code/Source/Models/Ollama/OllamaModelComponent.cpp
     {
-        AZStd::string response;
+        AZStd::vector<AZStd::any> response;
 
-        if (modelAPIResponse.IsSuccess())
+        Aws::Utils::Json::JsonValue jsonRequest(modelAPIResponse.c_str());
+        auto jsonRequestView = jsonRequest.View();
+
+        if (jsonRequestView.ValueExists("response"))
         {
-            Aws::Utils::Json::JsonValue jsonRequest(modelAPIResponse.GetValue().c_str());
-            auto jsonRequestView = jsonRequest.View();
-
-            if (jsonRequestView.ValueExists("response"))
-            {
-                response = jsonRequestView.GetString("response").c_str();
-            }
-            else
-            {
-                return AZ::Failure("No response found in the request");
-            }
+            response.push_back(AZStd::any(AZStd::string(jsonRequestView.GetString("response").c_str())));
         }
         else
         {
-            return AZ::Failure("Request failed with error: " + modelAPIResponse.GetError());
+            return AZ::Failure("No response found in the request");
         }
 
         return AZ::Success(response);

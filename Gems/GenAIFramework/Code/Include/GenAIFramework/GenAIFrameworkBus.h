@@ -83,7 +83,7 @@ namespace GenAIFramework
         virtual bool SendPromptToModelAgent(
             AZ::u64 modelAgentId,
             const AZStd::vector<AZStd::any>& prompt,
-            const AZStd::function<void(AZStd::vector<AZStd::any>)>& callback) = 0;
+            const AZStd::function<void(AZ::Outcome<AZStd::vector<AZStd::any>, AZStd::string>)>& callback) = 0;
     };
 
     class GenAIFrameworkBusTraits : public AZ::EBusTraits

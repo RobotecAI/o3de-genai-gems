@@ -21,7 +21,8 @@ namespace GenAIFramework
         ModelAgent(AZ::EntityId serviceProviderId, AZ::EntityId modelConfigurationId);
         ~ModelAgent() = default;
 
-        void SendPrompt(const AZStd::vector<AZStd::any>& prompt, AZStd::function<void(AZ::Outcome<AZStd::string, AZStd::string>)> callback);
+        void SendPrompt(
+            const AZStd::vector<AZStd::any>& prompt, AZStd::function<void(AZ::Outcome<AZStd::vector<AZStd::any>, AZStd::string>)> callback);
 
         void SetServiceProviderId(AZ::EntityId serviceProviderId);
         void SetModelConfigurationId(AZ::EntityId modelConfigurationId);
