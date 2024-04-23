@@ -39,16 +39,16 @@ namespace GenAIVendorBundle
         bool m_useDefaultKeepAlive = true;
     };
 
-    class OllamaModelComponent
+    class OllamaModel
         : public AZ::Component
         , public GenAIFramework::AIModelRequestBus::Handler
     {
     public:
-        AZ_COMPONENT(OllamaModelComponent, "{3782988d-058f-4943-9862-874ebc90a240}", AZ::Component);
+        AZ_COMPONENT(OllamaModel, "{3782988d-058f-4943-9862-874ebc90a240}", AZ::Component);
 
-        OllamaModelComponent() = default;
-        OllamaModelComponent(const OllamaModelConfiguration& other);
-        ~OllamaModelComponent() = default;
+        OllamaModel() = default;
+        OllamaModel(const OllamaModelConfiguration& other);
+        ~OllamaModel() = default;
 
         static void Reflect(AZ::ReflectContext* context);
 

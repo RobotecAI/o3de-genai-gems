@@ -18,7 +18,7 @@
         ""
     ],
     "icon_path": "preview.png",
-    "requirements": "This Gem requires the GenAIFramework Gem to be installed and the HTTPRequestor Gem.",
+    "requirements": "This Gem requires GenAIFramework and HTTPRequestor Gems.",
     "documentation_url": "",
     "dependencies": ["GenAIFramework"],
     "repo_uri": "",

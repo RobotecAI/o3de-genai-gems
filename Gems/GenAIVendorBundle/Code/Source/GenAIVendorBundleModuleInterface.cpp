@@ -12,7 +12,7 @@
 #include <GenAIVendorBundle/GenAIVendorBundleTypeIds.h>
 #include <Models/Claude/ClaudeModelMessagesAPI.h>
 #include <Models/Claude/ClaudeModelTextCompletions.h>
-#include <Models/Ollama/OllamaModelComponent.h>
+#include <Models/Ollama/OllamaModel.h>
 #include <Providers/Claude/ClaudeHttpProvider.h>
 #include <Providers/Ollama/OllamaHttpProvider.h>
 
@@ -36,7 +36,7 @@ namespace GenAIVendorBundle
                 ClaudeModelMessagesAPI::CreateDescriptor(),
                 ClaudeHttpProvider::CreateDescriptor(),
                 OllamaHttpServiceComponent::CreateDescriptor(),
-                OllamaModelComponent::CreateDescriptor(),
+                OllamaModel::CreateDescriptor(),
             });
     }
 

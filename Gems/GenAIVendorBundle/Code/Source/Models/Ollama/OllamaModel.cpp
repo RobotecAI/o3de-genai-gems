@@ -6,7 +6,7 @@
  *
  */
 
-#include "OllamaModelComponent.h"
+#include "OllamaModel.h"
 #include <GenAIFramework/SystemRegistrationContext/SystemRegistrationContext.h>
 
 #include <AzCore/Component/Component.h>
@@ -124,29 +124,28 @@ namespace GenAIVendorBundle
         }
     }
 
-    OllamaModelComponent::OllamaModelComponent(const OllamaModelConfiguration& config)
+    OllamaModel::OllamaModel(const OllamaModelConfiguration& config)
         : m_configuration(config)
     {
     }
 
-    void OllamaModelComponent::Reflect(AZ::ReflectContext* context)
+    void OllamaModel::Reflect(AZ::ReflectContext* context)
     {
         OllamaModelConfiguration::Reflect(context);
 
         if (auto serializeContext = azrtti_cast<AZ::SerializeContext*>(context))
         {
-            serializeContext->Class<OllamaModelComponent, AZ::Component>()->Version(0)->Field(
-                "Configuration", &OllamaModelComponent::m_configuration);
+            serializeContext->Class<OllamaModel, AZ::Component>()->Version(0)->Field("Configuration", &OllamaModel::m_configuration);
 
             if (auto editContext = serializeContext->GetEditContext())
             {
-                editContext->Class<OllamaModelComponent>("Ollama Model", "Generates prompts and extracts results for the Ollama model")
+                editContext->Class<OllamaModel>("Ollama Model", "Generates prompts and extracts results for the Ollama model")
                     ->ClassElement(AZ::Edit::ClassElements::EditorData, "")
                     ->Attribute(AZ::Edit::Attributes::Category, "Ollama")
                     ->Attribute(AZ::Edit::Attributes::AppearsInAddComponentMenu, AZ_CRC_CE("Game"))
                     ->DataElement(
                         AZ::Edit::UIHandlers::Default,
-                        &OllamaModelComponent::m_configuration,
+                        &OllamaModel::m_configuration,
                         "Configuration",
                         "The configuration attached to the prompts")
                     ->Attribute(AZ::Edit::Attributes::Visibility, AZ::Edit::PropertyVisibility::ShowChildrenOnly);
@@ -155,21 +154,21 @@ namespace GenAIVendorBundle
 
         if (auto registrationContext = azrtti_cast<GenAIFramework::SystemRegistrationContext*>(context))
         {
-            registrationContext->RegisterModelConfiguration<OllamaModelComponent>();
+            registrationContext->RegisterModelConfiguration<OllamaModel>();
         }
     }
 
-    void OllamaModelComponent::Activate()
+    void OllamaModel::Activate()
     {
         GenAIFramework::AIModelRequestBus::Handler::BusConnect(GetEntityId());
     }
 
-    void OllamaModelComponent::Deactivate()
+    void OllamaModel::Deactivate()
     {
         GenAIFramework::AIModelRequestBus::Handler::BusDisconnect();
     }
 
-    AZStd::string OllamaModelComponent::PrepareRequest(const AZStd::string& prompt)
+    AZStd::string OllamaModel::PrepareRequest(const AZStd::string& prompt)
     {
         Aws::Utils::Json::JsonValue jsonValue;
 
@@ -202,7 +201,7 @@ namespace GenAIVendorBundle
         return jsonValue.View().WriteReadable().c_str();
     }
 
-    AZ::Outcome<AZStd::string, AZStd::string> OllamaModelComponent::ExtractResult(const GenAIFramework::ModelAPIResponse& modelAPIResponse)
+    AZ::Outcome<AZStd::string, AZStd::string> OllamaModel::ExtractResult(const GenAIFramework::ModelAPIResponse& modelAPIResponse)
     {
         AZStd::string response;
 

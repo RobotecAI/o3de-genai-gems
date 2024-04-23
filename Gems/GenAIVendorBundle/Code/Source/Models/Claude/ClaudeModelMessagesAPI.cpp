@@ -35,7 +35,7 @@ namespace GenAIVendorBundle
         {
             serializeContext->Class<ClaudeModelMessagesAPI, AZ::Component>()
                 ->Version(1)
-                ->Field("defaultConfiguration", &ClaudeModelMessagesAPI::m_configuration)
+                ->Field("defaultm_configuration", &ClaudeModelMessagesAPI::m_configuration)
                 ->Field("enableHistory", &ClaudeModelMessagesAPI::m_enableHistory)
                 ->Field("history", &ClaudeModelMessagesAPI::m_history);
 
@@ -47,8 +47,8 @@ namespace GenAIVendorBundle
                     ->DataElement(
                         AZ::Edit::UIHandlers::Default,
                         &ClaudeModelMessagesAPI::m_configuration,
-                        "Default Configuration",
-                        "The default configuration to use when generating prompts")
+                        "Default m_configuration",
+                        "The default m_configuration to use when generating prompts")
                     ->Attribute(AZ::Edit::Attributes::Visibility, AZ::Edit::PropertyVisibility::ShowChildrenOnly)
                     ->DataElement(
                         AZ::Edit::UIHandlers::Default,
@@ -110,30 +110,28 @@ namespace GenAIVendorBundle
         Aws::Utils::Json::JsonValue jsonPrompt;
         jsonPrompt.WithObject("messages", messagesArrayJson);
 
-        ClaudeModelConfiguration configuration = m_configuration;
+        jsonPrompt.WithInteger("max_tokens", m_configuration.m_maxTokensToSample);
+        jsonPrompt.WithString("anthropic_version", m_configuration.m_anthropicVersion.c_str());
 
-        jsonPrompt.WithInteger("max_tokens", configuration.m_maxTokensToSample);
-        jsonPrompt.WithString("anthropic_version", configuration.m_anthropicVersion.c_str());
-
-        if (!configuration.m_useDefaultTemperature)
+        if (!m_configuration.m_useDefaultTemperature)
         {
-            jsonPrompt.WithDouble("temperature", configuration.m_temperature);
+            jsonPrompt.WithDouble("temperature", m_configuration.m_temperature);
         }
-        if (!configuration.m_useDefaultTopP)
+        if (!m_configuration.m_useDefaultTopP)
         {
-            jsonPrompt.WithDouble("top_p", configuration.m_topP);
+            jsonPrompt.WithDouble("top_p", m_configuration.m_topP);
         }
-        if (!configuration.m_useDefaultTopK)
+        if (!m_configuration.m_useDefaultTopK)
         {
-            jsonPrompt.WithInteger("top_k", configuration.m_topK);
+            jsonPrompt.WithInteger("top_k", m_configuration.m_topK);
         }
-        if (!configuration.m_useDefaultStopSequence)
+        if (!m_configuration.m_useDefaultStopSequence)
         {
-            jsonPrompt.WithString("stop_sequence", configuration.m_stopSequence.c_str());
+            jsonPrompt.WithString("stop_sequence", m_configuration.m_stopSequence.c_str());
         }
-        if (configuration.m_useSystemMessage)
+        if (m_configuration.m_useSystemMessage)
         {
-            jsonPrompt.WithString("system", configuration.m_systemMessage.c_str());
+            jsonPrompt.WithString("system", m_configuration.m_systemMessage.c_str());
         }
 
         Aws::String jsonString = jsonPrompt.View().WriteReadable();
