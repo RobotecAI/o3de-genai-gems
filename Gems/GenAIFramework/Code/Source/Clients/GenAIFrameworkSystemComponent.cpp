@@ -7,6 +7,7 @@
  */
 
 #include "GenAIFrameworkSystemComponent.h"
+#include "AzCore/Outcome/Outcome.h"
 #include <Clients/GenAIFrameworkSystemComponentConfiguration.h>
 #include <GenAIFramework/GenAIFrameworkTypeIds.h>
 
@@ -18,6 +19,8 @@
 #include <AzCore/Serialization/EditContext.h>
 #include <AzCore/Serialization/SerializeContext.h>
 #include <AzCore/std/smart_ptr/make_shared.h>
+
+#include <iostream>
 
 namespace GenAIFramework
 {
@@ -276,6 +279,22 @@ namespace GenAIFramework
         auto registeredGenerators = GetSystemRegistrationContext()->GetRegisteredModelConfigurations();
         AZ::SerializeContext* serializeContext = nullptr;
         AZ::ComponentApplicationBus::BroadcastResult(serializeContext, &AZ::ComponentApplicationBus::Events::GetSerializeContext);
+
+        auto id = CreateModelAgent("test", "test");
+        if (id.IsSuccess())
+        {
+            SendPromptToModelAgent(
+                id.GetValue(),
+                {},
+                [](AZStd::vector<AZStd::any> response)
+                {
+                    AZ_Printf("GenAIFrameworkSystemComponent", "Received response from model agent\n");
+                });
+        }
+        else
+        {
+            std::cout << "not work :(" << std::endl;
+        }
     }
 
     void GenAIFrameworkSystemComponent::Deactivate()
@@ -310,6 +329,66 @@ namespace GenAIFramework
             });
 
         return result;
+    }
+
+    AZ::EntityId GenAIFrameworkSystemComponent::GetEntityIdByName(const AZStd::string& name, const EntityIdToEntityMap& entities) const
+    {
+        for (const auto& [entityId, entity] : entities)
+        {
+            if (entity && entity->GetName() == name)
+            {
+                return entityId;
+            }
+        }
+        return AZ::EntityId();
+    }
+
+    AZ::Outcome<AZ::u64, void> GenAIFrameworkSystemComponent::CreateModelAgent(
+        const AZStd::string& serviceProviderName, const AZStd::string modelModelConfigurationName)
+    {
+        // Find service provider and model configuration
+        AZ::EntityId serviceProviderId = GetEntityIdByName(serviceProviderName, m_configuration.m_serviceProviders);
+        AZ::EntityId modelConfigurationId = GetEntityIdByName(modelModelConfigurationName, m_configuration.m_modelConfigurations);
+
+        if (!serviceProviderId.IsValid() || !modelConfigurationId.IsValid())
+        {
+            return AZ::Failure();
+        }
+
+        // Generate a unique id for the model agent
+        auto currentTime = AZStd::chrono::system_clock::now();
+        AZ::u32 idTime = static_cast<AZ::u64>(currentTime.time_since_epoch().count());
+        AZ::u64 id = m_modelAgentIdCounter.load() << 32 | idTime;
+        m_modelAgentIdCounter++;
+
+        m_modelAgents[id] = ModelAgent(serviceProviderId, modelConfigurationId);
+
+        return AZ::Success(id);
+    }
+
+    bool GenAIFrameworkSystemComponent::RemoveModelAgent(AZ::u64 modelAgentId)
+    {
+        if (m_modelAgents.erase(modelAgentId) > 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    bool GenAIFrameworkSystemComponent::SendPromptToModelAgent(
+        AZ::u64 modelAgentId, const AZStd::vector<AZStd::any>& prompt, const AZStd::function<void(AZStd::vector<AZStd::any>)>& callback)
+    {
+        auto modelAgent = m_modelAgents.find(modelAgentId);
+        if (modelAgent != m_modelAgents.end())
+        {
+            // Send prompt to model agent
+            modelAgent->second.SendPrompt(prompt, callback);
+            return true;
+        }
+        return false;
     }
 
 } // namespace GenAIFramework

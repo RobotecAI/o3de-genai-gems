@@ -8,6 +8,9 @@
 
 #pragma once
 
+#include "AzCore/base.h"
+#include "AzCore/std/containers/vector.h"
+#include "AzCore/std/string/string.h"
 #include <AzCore/Component/Component.h>
 #include <AzCore/Component/EntityId.h>
 #include <AzCore/EBus/EBus.h>
@@ -72,6 +75,15 @@ namespace GenAIFramework
         //! Deactivate the entity and its components.
         //! @param entity A pointer to the entity to be deactivated.
         virtual void DeactivateEntity(AZStd::shared_ptr<AZ::Entity> entity) = 0;
+
+        // Model Agent
+        virtual AZ::Outcome<AZ::u64, void> CreateModelAgent(
+            const AZStd::string& serviceProviderName, const AZStd::string modelModelConfigurationName) = 0;
+        virtual bool RemoveModelAgent(AZ::u64 modelAgentId) = 0;
+        virtual bool SendPromptToModelAgent(
+            AZ::u64 modelAgentId,
+            const AZStd::vector<AZStd::any>& prompt,
+            const AZStd::function<void(AZStd::vector<AZStd::any>)>& callback) = 0;
     };
 
     class GenAIFrameworkBusTraits : public AZ::EBusTraits
