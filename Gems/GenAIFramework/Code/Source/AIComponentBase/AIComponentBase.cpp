@@ -6,8 +6,8 @@
  *
  */
 
-#include "AzCore/Debug/Trace.h"
 #include <AzCore/Component/Entity.h>
+#include <AzCore/Debug/Trace.h>
 #include <AzCore/Serialization/EditContext.h>
 #include <AzCore/Serialization/EditContextConstants.inl>
 #include <AzCore/Serialization/SerializeContext.h>
@@ -99,7 +99,7 @@ namespace GenAIFramework
         }
         else
         {
-            AZ_Warning("AIComponentBase", false, "Failed to create model agent: %s");
+            AZ_Warning("AIComponentBase", false, "Failed to create model agent.");
         }
     }
 

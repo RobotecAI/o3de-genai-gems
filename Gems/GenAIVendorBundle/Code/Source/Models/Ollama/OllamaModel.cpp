@@ -6,13 +6,13 @@
  *
  */
 
-#include "AzCore/std/containers/vector.h"
-#include "OllamaModelComponent.h"
+#include "OllamaModel.h"
 #include <GenAIFramework/SystemRegistrationContext/SystemRegistrationContext.h>
 
 #include <AzCore/Component/Component.h>
 #include <AzCore/Serialization/EditContext.h>
 #include <AzCore/Serialization/SerializeContext.h>
+#include <AzCore/std/containers/vector.h>
 #include <AzCore/std/string/string.h>
 
 #include <aws/core/utils/json/JsonSerializer.h>
@@ -169,11 +169,7 @@ namespace GenAIVendorBundle
         GenAIFramework::AIModelRequestBus::Handler::BusDisconnect();
     }
 
-<<<<<<< HEAD:Gems/GenAIVendorBundle/Code/Source/Models/Ollama/OllamaModel.cpp
-    AZStd::string OllamaModel::PrepareRequest(const AZStd::string& prompt)
-=======
-    GenAIFramework::ModelAPIRequest OllamaModelComponent::PrepareRequest(const GenAIFramework::ModelAPIPrompt& prompt)
->>>>>>> 3a4f89e (Model agents WIP):Gems/GenAIVendorBundle/Code/Source/Models/Ollama/OllamaModelComponent.cpp
+    GenAIFramework::ModelAPIRequest OllamaModel::PrepareRequest(const GenAIFramework::ModelAPIPrompt& prompt)
     {
         Aws::Utils::Json::JsonValue jsonValue;
 
@@ -211,11 +207,7 @@ namespace GenAIVendorBundle
         return jsonValue.View().WriteReadable().c_str();
     }
 
-<<<<<<< HEAD:Gems/GenAIVendorBundle/Code/Source/Models/Ollama/OllamaModel.cpp
-    AZ::Outcome<AZStd::string, AZStd::string> OllamaModel::ExtractResult(const GenAIFramework::ModelAPIResponse& modelAPIResponse)
-=======
-    GenAIFramework::ModelAPIResponse OllamaModelComponent::ExtractResult(const GenAIFramework::ModelAPIRequest& modelAPIResponse)
->>>>>>> 3a4f89e (Model agents WIP):Gems/GenAIVendorBundle/Code/Source/Models/Ollama/OllamaModelComponent.cpp
+    GenAIFramework::ModelAPIResponse OllamaModel::ExtractResult(const GenAIFramework::ModelAPIRequest& modelAPIResponse)
     {
         AZStd::vector<AZStd::any> response;
 

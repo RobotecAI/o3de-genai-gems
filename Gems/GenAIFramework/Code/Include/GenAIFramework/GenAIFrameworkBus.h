@@ -8,14 +8,14 @@
 
 #pragma once
 
-#include "AzCore/base.h"
-#include "AzCore/std/containers/vector.h"
-#include "AzCore/std/string/string.h"
 #include <AzCore/Component/Component.h>
 #include <AzCore/Component/EntityId.h>
 #include <AzCore/EBus/EBus.h>
 #include <AzCore/Interface/Interface.h>
 #include <AzCore/Math/Uuid.h>
+#include <AzCore/base.h>
+#include <AzCore/std/containers/vector.h>
+#include <AzCore/std/string/string.h>
 #include <GenAIFramework/GenAIFrameworkTypeIds.h>
 #include <GenAIFramework/SystemRegistrationContext/SystemRegistrationContext.h>
 

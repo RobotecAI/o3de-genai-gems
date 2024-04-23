@@ -8,9 +8,9 @@
 
 #pragma once
 
-#include "AzCore/base.h"
 #include <AzCore/Component/Component.h>
 #include <AzCore/Component/EntityId.h>
+#include <AzCore/base.h>
 #include <AzCore/std/containers/vector.h>
 #include <AzCore/std/string/string.h>
 #include <AzToolsFramework/ToolsComponents/EditorComponentBase.h>

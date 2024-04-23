@@ -7,7 +7,6 @@
  */
 
 #include "GenAIFrameworkSystemComponent.h"
-#include "AzCore/Outcome/Outcome.h"
 #include <Clients/GenAIFrameworkSystemComponentConfiguration.h>
 #include <GenAIFramework/GenAIFrameworkTypeIds.h>
 
@@ -15,6 +14,7 @@
 #include <AzCore/Component/ComponentApplicationBus.h>
 #include <AzCore/Component/Entity.h>
 #include <AzCore/Component/EntityId.h>
+#include <AzCore/Outcome/Outcome.h>
 #include <AzCore/RTTI/BehaviorContext.h>
 #include <AzCore/Serialization/EditContext.h>
 #include <AzCore/Serialization/SerializeContext.h>

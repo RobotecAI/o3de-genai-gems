@@ -8,13 +8,13 @@
 
 #pragma once
 
-#include "AzCore/std/containers/vector.h"
 #include <AzCore/Component/ComponentBus.h>
 #include <AzCore/EBus/EBus.h>
 #include <AzCore/Name/Name.h>
 #include <AzCore/Outcome/Outcome.h>
 #include <AzCore/RTTI/RTTIMacros.h>
 #include <AzCore/std/any.h>
+#include <AzCore/std/containers/vector.h>
 #include <AzCore/std/string/string.h>
 
 namespace GenAIFramework

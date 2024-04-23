@@ -33,7 +33,7 @@ namespace GenAIMock
 
         //////////////////////////////////////////////////////////////////////////
         // AIModelRequestBus overrides
-        GenAIFramework::ModelAPIRequest PrepareRequest(const AZStd::string& prompt) override;
-        GenAIFramework::ModelAPIResponse ExtractResult(const GenAIFramework::ModelAPIResponse& modelAPIResponse) override;
+        GenAIFramework::ModelAPIRequest PrepareRequest(const GenAIFramework::ModelAPIPrompt& prompt) override;
+        GenAIFramework::ModelAPIResponse ExtractResult(const GenAIFramework::ModelAPIRequest& modelAPIResponse) override;
     };
 } // namespace GenAIMock

@@ -7,7 +7,7 @@
  */
 
 #include "SettingsRegistryManager.h"
-#include "AzCore/Outcome/Outcome.h"
+#include <AzCore/Outcome/Outcome.h>
 #include <AzCore/Settings/SettingsRegistry.h>
 
 namespace GenAIFramework
