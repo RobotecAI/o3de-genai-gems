@@ -26,8 +26,8 @@ namespace GenAIFramework
 
         static void Reflect(AZ::ReflectContext* context);
 
-        AZStd::vector<AZStd::string> GetServiceProvidersNames() const;
-        AZStd::vector<AZStd::string> GetModelConfigurationsNames() const;
+        AZStd::vector<AZStd::string> GetServiceProviderNames() const;
+        AZStd::vector<AZStd::string> GetModelConfigurationNames() const;
 
         void Activate() override;
         void Deactivate() override;

@@ -32,6 +32,8 @@ namespace GenAIFramework
                 ->Attribute(AZ::Script::Attributes::Module, "ai")
                 ->Event("SetServiceProviderByName", &AsyncRequestBus::Events::SetServiceProviderByName)
                 ->Event("SetModelConfigurationByName", &AsyncRequestBus::Events::SetModelConfigurationByName)
+                ->Event("GetActiveServiceProviderName", &AsyncRequestBus::Events::GetActiveServiceProviderName)
+                ->Event("GetActiveModelConfigurationName", &AsyncRequestBus::Events::GetActiveModelConfigurationName)
                 ->Event("SendPromptToLLM", &AsyncRequestBus::Events::SendPromptToLLM)
                 ->Event("IsResponseReady", &AsyncRequestBus::Events::IsResponseReady)
                 ->Event("GetResponse", &AsyncRequestBus::Events::GetResponse)
@@ -93,7 +95,7 @@ namespace GenAIFramework
     {
         AZStd::vector<AZ::Component*> activeServiceProviders;
         GenAIFramework::GenAIFrameworkRequestBus::BroadcastResult(
-            activeServiceProviders, &GenAIFramework::GenAIFrameworkRequests::GetActiveServiceProviders);
+            activeServiceProviders, &GenAIFramework::GenAIFrameworkRequests::GetServiceProviders);
         return SetEntityIdByName(activeServiceProviders, providerName, m_serviceProviderId);
     }
 
@@ -101,14 +103,42 @@ namespace GenAIFramework
     {
         AZStd::vector<AZ::Component*> activeModelConfigurations;
         GenAIFramework::GenAIFrameworkRequestBus::BroadcastResult(
-            activeModelConfigurations, &GenAIFramework::GenAIFrameworkRequests::GetActiveModelConfigurations);
+            activeModelConfigurations, &GenAIFramework::GenAIFrameworkRequests::GetModelConfigurations);
         return SetEntityIdByName(activeModelConfigurations, modelConfigurationName, m_modelConfigurationId);
+    }
+
+    AZStd::string GenAIAsyncRequestSystemComponent::GetActiveServiceProviderName()
+    {
+        if (!m_serviceProviderId.IsValid())
+        {
+            AZ_Warning("GenAIAsyncRequestSystemComponent", false, "No service provider selected.");
+            return {};
+        }
+
+        AZStd::vector<AZ::Component*> activeServiceProviders;
+        GenAIFramework::GenAIFrameworkRequestBus::BroadcastResult(
+            activeServiceProviders, &GenAIFramework::GenAIFrameworkRequests::GetServiceProviders);
+        return GetEntityName(activeServiceProviders, m_serviceProviderId);
+    }
+
+    AZStd::string GenAIAsyncRequestSystemComponent::GetActiveModelConfigurationName()
+    {
+        if (!m_modelConfigurationId.IsValid())
+        {
+            AZ_Warning("GenAIAsyncRequestSystemComponent", false, "No model configuration selected.");
+            return {};
+        }
+
+        AZStd::vector<AZ::Component*> activeModelConfigurations;
+        GenAIFramework::GenAIFrameworkRequestBus::BroadcastResult(
+            activeModelConfigurations, &GenAIFramework::GenAIFrameworkRequests::GetModelConfigurations);
+        return GetEntityName(activeModelConfigurations, m_modelConfigurationId);
     }
 
     bool GenAIAsyncRequestSystemComponent::SetEntityIdByName(
         const AZStd::vector<AZ::Component*>& components, const AZStd::string& entityName, AZ::EntityId& entityId)
     {
-        for (auto component : components)
+        for (const auto& component : components)
         {
             if (component->GetEntity()->GetName() == entityName)
             {
@@ -119,52 +149,62 @@ namespace GenAIFramework
         return false;
     }
 
+    AZStd::string GenAIAsyncRequestSystemComponent::GetEntityName(const AZStd::vector<AZ::Component*>& components, AZ::EntityId& entityId)
+    {
+        for (const auto& component : components)
+        {
+            if (component->GetEntityId() == entityId)
+            {
+                return component->GetEntity()->GetName();
+            }
+        }
+        return {};
+    }
+
     AZ::Uuid GenAIAsyncRequestSystemComponent::SendPromptToLLM(const AZStd::string& prompt)
     {
-        AZ::EntityId modelConfigurationId = m_modelConfigurationId;
-        AZ::EntityId serviceProviderId = m_serviceProviderId;
-        if (!modelConfigurationId.IsValid())
+        if (!m_modelConfigurationId.IsValid())
         {
             AZStd::vector<AZ::Component*> activeModelConfigurations;
             GenAIFramework::GenAIFrameworkRequestBus::BroadcastResult(
-                activeModelConfigurations, &GenAIFramework::GenAIFrameworkRequests::GetActiveModelConfigurations);
+                activeModelConfigurations, &GenAIFramework::GenAIFrameworkRequests::GetModelConfigurations);
             if (!activeModelConfigurations.empty())
             {
-                modelConfigurationId = activeModelConfigurations.front()->GetEntityId();
+                m_modelConfigurationId = activeModelConfigurations.front()->GetEntityId();
                 AZ_Warning(
-                    "AiAssistantEditorSystemComponent",
+                    "GenAIAsyncRequestSystemComponent",
                     false,
                     "No model configuration selected. Using the first available model configuration: %s",
-                    modelConfigurationId.ToString().c_str())
+                    m_modelConfigurationId.ToString().c_str())
             }
         }
 
-        if (!serviceProviderId.IsValid())
+        if (!m_serviceProviderId.IsValid())
         {
             AZStd::vector<AZ::Component*> activeServiceProviders;
             GenAIFramework::GenAIFrameworkRequestBus::BroadcastResult(
-                activeServiceProviders, &GenAIFramework::GenAIFrameworkRequests::GetActiveServiceProviders);
+                activeServiceProviders, &GenAIFramework::GenAIFrameworkRequests::GetServiceProviders);
             if (!activeServiceProviders.empty())
             {
-                serviceProviderId = activeServiceProviders.front()->GetEntityId();
+                m_serviceProviderId = activeServiceProviders.front()->GetEntityId();
                 AZ_Warning(
-                    "AiAssistantEditorSystemComponent",
+                    "GenAIAsyncRequestSystemComponent",
                     false,
                     "No model configuration selected. Using the first available service provider: %s",
-                    serviceProviderId.ToString().c_str())
+                    m_serviceProviderId.ToString().c_str())
             }
         }
 
         AZ::Uuid promptId = AZ::Uuid::CreateRandom();
         GenAIFramework::ModelAPIRequest preparedRequest;
         GenAIFramework::AIModelRequestBus::EventResult(
-            preparedRequest, modelConfigurationId, &GenAIFramework::AIModelRequestBus::Events::PrepareRequest, prompt);
+            preparedRequest, m_modelConfigurationId, &GenAIFramework::AIModelRequestBus::Events::PrepareRequest, prompt);
 
-        auto callback = [this, promptId, modelConfigurationId](GenAIFramework::ModelAPIResponse outcome)
+        auto callback = [this, promptId](GenAIFramework::ModelAPIResponse outcome)
         {
             AZ::Outcome<AZStd::string, AZStd::string> extractedResponse;
             GenAIFramework::AIModelRequestBus::EventResult(
-                extractedResponse, modelConfigurationId, &GenAIFramework::AIModelRequestBus::Events::ExtractResult, outcome);
+                extractedResponse, m_modelConfigurationId, &GenAIFramework::AIModelRequestBus::Events::ExtractResult, outcome);
             if (extractedResponse.IsSuccess())
             {
                 AZStd::unique_lock<AZStd::mutex> lock(m_promptMutex);
@@ -180,7 +220,7 @@ namespace GenAIFramework
         };
 
         GenAIFramework::AIServiceProviderBus::Event(
-            serviceProviderId, &GenAIFramework::AIServiceProviderBus::Events::SendRequest, preparedRequest, callback);
+            m_serviceProviderId, &GenAIFramework::AIServiceProviderBus::Events::SendRequest, preparedRequest, callback);
 
         return promptId;
     }

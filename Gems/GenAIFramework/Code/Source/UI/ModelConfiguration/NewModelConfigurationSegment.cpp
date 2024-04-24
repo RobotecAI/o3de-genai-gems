@@ -23,7 +23,7 @@ namespace GenAIFramework
         {
             return {};
         }
-        return interface->GetRegisteredModelConfigurationsNameAndComponentTypeId();
+        return interface->GetModelConfigurationNamesAndComponentTypeIds();
     }
 
     AZ::Component* NewModelConfigurationSegment::CreateNewComponentEntity(
@@ -34,7 +34,7 @@ namespace GenAIFramework
         {
             return nullptr;
         }
-        return interface->CreateNewModelConfiguration(name, selectedComponentTypeId);
+        return interface->CreateModelConfiguration(name, selectedComponentTypeId);
     }
 
 } // namespace GenAIFramework

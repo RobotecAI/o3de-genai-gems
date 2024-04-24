@@ -26,12 +26,12 @@ namespace GenAIFramework
         auto interface = GenAIFrameworkInterface::Get();
         if (interface)
         {
-            AZStd::vector<AZ::Component*> activeModelConfigurations = interface->GetActiveModelConfigurations();
+            AZStd::vector<AZ::Component*> activeModelConfigurations = interface->GetModelConfigurations();
             m_newModelConfigurationSegment = new NewModelConfigurationSegment();
             m_modelsConfigurationTab = new Tab(activeModelConfigurations, m_newModelConfigurationSegment, "Model Configurations", m_tabs);
             m_tabs->addTab(m_modelsConfigurationTab, "Model Configurations");
 
-            AZStd::vector<AZ::Component*> activeProviders = interface->GetActiveServiceProviders();
+            AZStd::vector<AZ::Component*> activeProviders = interface->GetServiceProviders();
             m_newServiceProviderSegment = new NewServiceProviderSegment();
             m_serviceProvidersTab = new Tab(activeProviders, m_newServiceProviderSegment, "AI Service Providers", m_tabs);
             m_tabs->addTab(m_serviceProvidersTab, "AI Service Providers");

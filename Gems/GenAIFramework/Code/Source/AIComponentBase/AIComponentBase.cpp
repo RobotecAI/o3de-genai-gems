@@ -34,14 +34,14 @@ namespace GenAIFramework
                         &AIComponentBase::m_serviceProviderName,
                         "Service",
                         "Name of the service to be used for AI requests")
-                    ->Attribute(AZ::Edit::Attributes::StringList, &AIComponentBase::GetServiceProvidersNames)
+                    ->Attribute(AZ::Edit::Attributes::StringList, &AIComponentBase::GetServiceProviderNames)
                     ->Attribute(AZ::Edit::Attributes::ChangeNotify, &AIComponentBase::UpdateNamedServiceProviderId)
                     ->DataElement(
                         AZ::Edit::UIHandlers::ComboBox,
                         &AIComponentBase::m_modelConfigurationName,
                         "Model",
                         "Name of the model to be used for AI prompt generation")
-                    ->Attribute(AZ::Edit::Attributes::StringList, &AIComponentBase::GetModelConfigurationsNames)
+                    ->Attribute(AZ::Edit::Attributes::StringList, &AIComponentBase::GetModelConfigurationNames)
                     ->Attribute(AZ::Edit::Attributes::ChangeNotify, &AIComponentBase::UpdateNamedModelConfigurationId);
             }
         }
@@ -57,12 +57,12 @@ namespace GenAIFramework
     {
     }
 
-    AZStd::vector<AZStd::string> AIComponentBase::GetServiceProvidersNames() const
+    AZStd::vector<AZStd::string> AIComponentBase::GetServiceProviderNames() const
     {
         return GetNames(GetServiceProviders());
     }
 
-    AZStd::vector<AZStd::string> AIComponentBase::GetModelConfigurationsNames() const
+    AZStd::vector<AZStd::string> AIComponentBase::GetModelConfigurationNames() const
     {
         return GetNames(GetModelConfigurations());
     }
@@ -80,12 +80,12 @@ namespace GenAIFramework
     AZStd::vector<AZ::Component*> AIComponentBase::GetServiceProviders() const
     {
         auto interface = GenAIFrameworkInterface::Get();
-        return interface ? interface->GetActiveServiceProviders() : AZStd::vector<AZ::Component*>();
+        return interface ? interface->GetServiceProviders() : AZStd::vector<AZ::Component*>();
     }
     AZStd::vector<AZ::Component*> AIComponentBase::GetModelConfigurations() const
     {
         auto interface = GenAIFrameworkInterface::Get();
-        return interface ? interface->GetActiveModelConfigurations() : AZStd::vector<AZ::Component*>();
+        return interface ? interface->GetModelConfigurations() : AZStd::vector<AZ::Component*>();
     }
 
     void AIComponentBase::GetNamedId(const AZStd::string& name, const AZStd::vector<AZ::Component*>& components, AZ::EntityId& id)

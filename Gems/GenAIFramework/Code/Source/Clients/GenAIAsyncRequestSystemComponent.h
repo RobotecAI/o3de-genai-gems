@@ -43,6 +43,8 @@ namespace GenAIFramework
         void SetProviderAndModel(AZ::EntityId modelConfigurationId, AZ::EntityId serviceProviderId) override;
         bool SetServiceProviderByName(const AZStd::string& providerName) override;
         bool SetModelConfigurationByName(const AZStd::string& modelConfigurationName) override;
+        AZStd::string GetActiveServiceProviderName() override;
+        AZStd::string GetActiveModelConfigurationName() override;
         AZ::Uuid SendPromptToLLM(const AZStd::string& prompt) override;
         bool IsResponseReady(AZ::Uuid promptId) override;
         AZStd::string GetResponse(AZ::Uuid promptId) override;
@@ -50,6 +52,7 @@ namespace GenAIFramework
         void EnableModelHistory(bool enableHistory) override;
 
         bool SetEntityIdByName(const AZStd::vector<AZ::Component*>& components, const AZStd::string& entityName, AZ::EntityId& entityId);
+        AZStd::string GetEntityName(const AZStd::vector<AZ::Component*>& components, AZ::EntityId& entityId);
 
         AZ::EntityId m_modelConfigurationId = AZ::EntityId(); //! Selected model configuration entity id
         AZ::EntityId m_serviceProviderId = AZ::EntityId(); //! Selected service provider entity id
