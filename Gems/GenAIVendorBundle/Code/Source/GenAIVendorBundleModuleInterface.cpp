@@ -7,9 +7,14 @@
  */
 
 #include "GenAIVendorBundleModuleInterface.h"
-#include <AzCore/Memory/Memory.h>
 
+#include <AzCore/Memory/Memory.h>
 #include <GenAIVendorBundle/GenAIVendorBundleTypeIds.h>
+#include <Models/Claude/ClaudeModelMessagesAPI.h>
+#include <Models/Claude/ClaudeModelTextCompletions.h>
+#include <Models/Ollama/OllamaModel.h>
+#include <Providers/Claude/ClaudeHttpProvider.h>
+#include <Providers/Ollama/OllamaHttpProvider.h>
 
 namespace GenAIVendorBundle
 {
@@ -24,7 +29,15 @@ namespace GenAIVendorBundle
         // Add ALL components descriptors associated with this gem to m_descriptors.
         // This will associate the AzTypeInfo information for the components with the the SerializeContext, BehaviorContext and EditContext.
         // This happens through the [MyComponent]::Reflect() function.
-        m_descriptors.insert(m_descriptors.end(), {});
+        m_descriptors.insert(
+            m_descriptors.end(),
+            {
+                ClaudeModelTextCompletions::CreateDescriptor(),
+                ClaudeModelMessagesAPI::CreateDescriptor(),
+                ClaudeHttpProvider::CreateDescriptor(),
+                OllamaHttpServiceComponent::CreateDescriptor(),
+                OllamaModel::CreateDescriptor(),
+            });
     }
 
     AZ::ComponentTypeList GenAIVendorBundleModuleInterface::GetRequiredSystemComponents() const

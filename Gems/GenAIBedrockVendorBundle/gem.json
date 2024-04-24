@@ -4,10 +4,10 @@
     "display_name": "GenAIBedrockVendorBundle",
     "license": "License used i.e. Apache-2.0 or MIT",
     "license_url": "Link to the license web site i.e. https://opensource.org/licenses/Apache-2.0",
-    "origin": "The name of the originator or creator",
-    "origin_url": "The website for this Gem",
+    "origin": "Robotec.ai",
+    "origin_url": "",
     "type": "Code",
-    "summary": "A short description of this Gem",
+    "summary": "This Gem is a bundle of components that are used in the GenAIFramework Gem to communicate with AI services using AWS Bedrock services.",
     "canonical_tags": [
         "Gem"
     ],
@@ -18,9 +18,9 @@
         ""
     ],
     "icon_path": "preview.png",
-    "requirements": "Notice of any requirements for this Gem i.e. This requires X other gem",
-    "documentation_url": "Link to any documentation of your Gem",
-    "dependencies": [],
+    "requirements": "This Gem requires the GenAIFramework, AWS SDK that supports Bedrock Runtime and the GenAIVendorBundle Gem.",
+    "documentation_url": "",
+    "dependencies": ["GenAIFramework", "GenAIVendorBundle", "AWSCore"],
     "repo_uri": "",
     "compatible_engines": [],
     "engine_api_dependencies": [],

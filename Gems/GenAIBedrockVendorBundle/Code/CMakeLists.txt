@@ -50,6 +50,9 @@ ly_add_target(
         PUBLIC
             AZ::AzCore
             AZ::AzFramework
+            Gem::AWSCore
+            Gem::GenAIFramework
+            3rdParty::AWSNativeSDK::BedrockRuntime
 )
 
 # Here add ${gem_name} target, it depends on the Private Object library and Public API interface
