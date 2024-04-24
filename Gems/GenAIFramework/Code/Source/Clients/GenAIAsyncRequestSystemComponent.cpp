@@ -203,7 +203,7 @@ namespace GenAIFramework
         GenAIFramework::AIModelRequestBus::EventResult(
             preparedRequest, m_modelConfigurationId, &GenAIFramework::AIModelRequestBus::Events::PrepareRequest, modelPrompt);
 
-        auto callback = [this, promptId](GenAIFramework::ModelAPIResponse outcome)
+        auto callback = [this, promptId](GenAIFramework::ModelAPIProviderResponse outcome)
         {
             if (!outcome.IsSuccess())
             {

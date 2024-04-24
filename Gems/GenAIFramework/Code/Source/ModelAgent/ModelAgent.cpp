@@ -1,9 +1,7 @@
 
 #include "ModelAgent.h"
-#include "GenAIFramework/Communication/AIModelRequestBus.h"
-#include "GenAIFramework/Communication/AIServiceProviderBus.h"
-
-#include <iostream>
+#include <GenAIFramework/Communication/AIModelRequestBus.h>
+#include <GenAIFramework/Communication/AIServiceProviderBus.h>
 
 namespace GenAIFramework
 {
@@ -16,10 +14,6 @@ namespace GenAIFramework
     void ModelAgent::SendPrompt(
         const AZStd::vector<AZStd::any>& prompt, AZStd::function<void(AZ::Outcome<AZStd::vector<AZStd::any>, AZStd::string>)> callback)
     {
-        std::cout << "ModelAgent::SendPrompt" << std::endl;
-        std::cout << m_modelConfigurationId.ToString().c_str() << std::endl;
-        std::cout << m_serviceProviderId.ToString().c_str() << std::endl;
-
         ModelAPIRequest preparedRequest;
         AIModelRequestBus::EventResult(preparedRequest, m_modelConfigurationId, &AIModelRequestBus::Events::PrepareRequest, prompt);
 
