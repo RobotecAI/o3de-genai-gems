@@ -47,8 +47,8 @@ namespace GenAIVendorBundle
                     ->DataElement(
                         AZ::Edit::UIHandlers::Default,
                         &ClaudeModelMessagesAPI::m_configuration,
-                        "Default m_configuration",
-                        "The default m_configuration to use when generating prompts")
+                        "Default configuration",
+                        "The default configuration to use when generating prompts")
                     ->Attribute(AZ::Edit::Attributes::Visibility, AZ::Edit::PropertyVisibility::ShowChildrenOnly)
                     ->DataElement(
                         AZ::Edit::UIHandlers::Default,
