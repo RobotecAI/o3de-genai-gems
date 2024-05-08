@@ -7,6 +7,7 @@
  */
 
 #include "SettingsRegistryManager.h"
+#include <AzCore/Debug/Trace.h>
 #include <AzCore/Outcome/Outcome.h>
 #include <AzCore/Settings/SettingsRegistry.h>
 
@@ -33,7 +34,7 @@ namespace GenAIFramework
         {
             configurationRead = settingsRegistry->GetObject(saveObject, GenAIFrameworkSettingsRegistryPath);
         }
-        AZ_Assert(configurationRead, "Failed to read GenAIFramework settings from the Settings Registry");
+
         if (configurationRead)
         {
             for (const auto& [id, e] : saveObject.m_serviceProviders)
@@ -45,6 +46,10 @@ namespace GenAIFramework
                 AZ_Printf("SettingsRegistryManager", "Model configuration: %s, %llu\n", e->GetName().c_str(), id);
             }
             return saveObject;
+        }
+        else
+        {
+            AZ_Info("GenAIFramework", "GenAIFramework settings not found. The registry will be created.");
         }
         return AZStd::nullopt;
     }
