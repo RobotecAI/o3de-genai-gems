@@ -203,7 +203,7 @@ namespace GenAIFramework
         GenAIFramework::AIModelRequestBus::EventResult(
             preparedRequest, m_modelConfigurationId, &GenAIFramework::AIModelRequestBus::Events::PrepareRequest, modelPrompt);
 
-        auto callback = [this, promptId](GenAIFramework::ModelAPIProviderResponse outcome)
+        auto callback = [this, promptId](GenAIFramework::ModelAPIResponse outcome)
         {
             if (!outcome.IsSuccess())
             {
@@ -213,9 +213,9 @@ namespace GenAIFramework
                 return;
             }
 
-            GenAIFramework::ModelAPIResponse extractedResponse;
+            GenAIFramework::ModelAPIExtractedResponse extractedResponse;
             GenAIFramework::AIModelRequestBus::EventResult(
-                extractedResponse, m_modelConfigurationId, &GenAIFramework::AIModelRequestBus::Events::ExtractResult, outcome.GetValue());
+                extractedResponse, m_modelConfigurationId, &GenAIFramework::AIModelRequestBus::Events::ExtractResult, outcome);
             if (extractedResponse.IsSuccess())
             {
                 AZStd::string response = "";

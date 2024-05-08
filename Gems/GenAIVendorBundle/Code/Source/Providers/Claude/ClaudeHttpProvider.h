@@ -58,7 +58,7 @@ namespace GenAIVendorBundle
     private:
         //////////////////////////////////////////////////////////////////////////
         // AIServiceRequesterBus::Handler
-        void SendRequest(const AZStd::string& request, AZStd::function<void(GenAIFramework::ModelAPIProviderResponse)> callback) override;
+        void SendRequest(const AZStd::string& request, AZStd::function<void(GenAIFramework::ModelAPIResponse)> callback) override;
         //////////////////////////////////////////////////////////////////////////
 
         ClaudeHttpProviderConfiguration m_configuration;

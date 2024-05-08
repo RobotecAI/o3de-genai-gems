@@ -65,7 +65,7 @@ namespace GenAIFramework
         prompt.push_back(AZStd::any(m_modelInput));
 
         // send the request
-        auto callback = [this](GenAIFramework::ModelAPIResponse outcome)
+        auto callback = [this](GenAIFramework::ModelAPIExtractedResponse outcome)
         {
             if (outcome.IsSuccess())
             {

@@ -1,6 +1,14 @@
+/*
+ * Copyright (c) Contributors to the Open 3D Engine Project.
+ * For complete copyright and license terms please see the LICENSE at the root of this distribution.
+ *
+ * SPDX-License-Identifier: Apache-2.0 OR MIT
+ *
+ */
 
 #pragma once
 
+#include "GenAIFramework/Communication/AIModelRequestBus.h"
 #include <AzCore/Component/EntityId.h>
 #include <AzCore/Outcome/Outcome.h>
 #include <AzCore/std/any.h>
@@ -18,14 +26,13 @@ namespace GenAIFramework
     {
     public:
         ModelAgent() = default;
-        ModelAgent(AZ::EntityId serviceProviderId, AZ::EntityId modelConfigurationId);
+        ModelAgent(const AZ::EntityId& serviceProviderId, const AZ::EntityId& modelConfigurationId);
         ~ModelAgent() = default;
 
-        void SendPrompt(
-            const AZStd::vector<AZStd::any>& prompt, AZStd::function<void(AZ::Outcome<AZStd::vector<AZStd::any>, AZStd::string>)> callback);
+        void SendPrompt(const ModelAPIPrompt& prompt, AZStd::function<void(ModelAPIExtractedResponse)> callback);
 
-        void SetServiceProviderId(AZ::EntityId serviceProviderId);
-        void SetModelConfigurationId(AZ::EntityId modelConfigurationId);
+        void SetServiceProviderId(const AZ::EntityId& serviceProviderId);
+        void SetModelConfigurationId(const AZ::EntityId& modelConfigurationId);
 
     private:
         AZStd::vector<AZStd::pair<HistoryTag, AZStd::any>> m_history;

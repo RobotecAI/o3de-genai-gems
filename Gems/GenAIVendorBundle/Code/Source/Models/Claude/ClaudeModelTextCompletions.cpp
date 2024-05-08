@@ -100,9 +100,14 @@ namespace GenAIVendorBundle
         return jsonString.c_str();
     }
 
-    GenAIFramework::ModelAPIResponse ClaudeModelTextCompletions::ExtractResult(const GenAIFramework::ModelAPIRequest& modelAPIRequest)
+    GenAIFramework::ModelAPIExtractedResponse ClaudeModelTextCompletions::ExtractResult(
+        const GenAIFramework::ModelAPIResponse& modelAPIResponse)
     {
-        Aws::Utils::Json::JsonValue jsonPrompt(modelAPIRequest.c_str());
+        if (!modelAPIResponse.IsSuccess())
+        {
+            return AZ::Failure(AZStd::string::format("Failed to get a response from the model: %s", modelAPIResponse.GetError().c_str()));
+        }
+        Aws::Utils::Json::JsonValue jsonPrompt(modelAPIResponse.GetValue().c_str());
         if (jsonPrompt.WasParseSuccessful())
         {
             auto view = jsonPrompt.View();
@@ -113,7 +118,7 @@ namespace GenAIVendorBundle
         }
         else
         {
-            return AZ::Failure(AZStd::string::format("Failed to parse the response %s", modelAPIRequest.c_str()));
+            return AZ::Failure(AZStd::string::format("Failed to parse the response %s", modelAPIResponse.GetValue().c_str()));
         }
     };
 } // namespace GenAIVendorBundle

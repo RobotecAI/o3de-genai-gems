@@ -35,7 +35,7 @@ namespace GenAIVendorBundle
 
         // GenAIFramework::ModelConfigurationBus overrides
         GenAIFramework::ModelAPIRequest PrepareRequest(const GenAIFramework::ModelAPIPrompt& prompt) override;
-        GenAIFramework::ModelAPIResponse ExtractResult(const GenAIFramework::ModelAPIRequest& modelAPIRequest) override;
+        GenAIFramework::ModelAPIExtractedResponse ExtractResult(const GenAIFramework::ModelAPIResponse& modelAPIResponse) override;
 
     private:
         ClaudeModelConfiguration m_configuration;

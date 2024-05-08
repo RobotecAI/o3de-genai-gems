@@ -20,8 +20,10 @@
 namespace GenAIFramework
 {
     using ModelAPIPrompt = AZStd::vector<AZStd::any>; //!< The type of prompt to send to the model
-    using ModelAPIRequest = AZStd::string; //!< The type of request to send to the model
-    using ModelAPIResponse = AZ::Outcome<AZStd::vector<AZStd::any>, AZStd::string>; //!< The type of response from the model
+    using ModelAPIRequest = AZStd::string; //!< The type of request to send to the model provider
+    using ModelAPIResponse = AZ::Outcome<AZStd::string, AZStd::string>; //!< The type of response from the model provider
+    using ModelAPIExtractedResponse =
+        AZ::Outcome<AZStd::vector<AZStd::any>, AZStd::string>; //!< The type of extracted response from the model
 
     class AIModelRequest : public AZ::ComponentBus
     {
@@ -41,7 +43,7 @@ namespace GenAIFramework
         //! Extract the actual response from the model API response
         //! @param modelAPIResponse The response from the model, can be a JSON string that API around the model produced.
         //! @return The response from the model, or an error message if the response could not be extracted.
-        virtual ModelAPIResponse ExtractResult(const ModelAPIRequest& modelAPIResponse) = 0;
+        virtual ModelAPIExtractedResponse ExtractResult(const ModelAPIResponse& modelAPIResponse) = 0;
 
         //! Reset the model history. This will clear any history that the model has stored.
         virtual void ResetModelHistory()

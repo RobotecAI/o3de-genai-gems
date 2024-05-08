@@ -167,7 +167,7 @@ namespace GenAIMock
     }
 
     void MockServiceComponent::SendRequest(
-        const GenAIFramework::ModelAPIRequest& request, AZStd::function<void(GenAIFramework::ModelAPIProviderResponse)> callback)
+        const GenAIFramework::ModelAPIRequest& request, AZStd::function<void(GenAIFramework::ModelAPIResponse)> callback)
     {
         if (m_testData.empty())
         {

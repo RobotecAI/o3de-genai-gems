@@ -207,11 +207,16 @@ namespace GenAIVendorBundle
         return jsonValue.View().WriteReadable().c_str();
     }
 
-    GenAIFramework::ModelAPIResponse OllamaModel::ExtractResult(const GenAIFramework::ModelAPIRequest& modelAPIResponse)
+    GenAIFramework::ModelAPIExtractedResponse OllamaModel::ExtractResult(const GenAIFramework::ModelAPIResponse& modelAPIResponse)
     {
+        if (!modelAPIResponse.IsSuccess())
+        {
+            return AZ::Failure(AZStd::string::format("Failed to get a response from the model: %s", modelAPIResponse.GetError().c_str()));
+        }
+
         AZStd::vector<AZStd::any> response;
 
-        Aws::Utils::Json::JsonValue jsonRequest(modelAPIResponse.c_str());
+        Aws::Utils::Json::JsonValue jsonRequest(modelAPIResponse.GetValue().c_str());
         auto jsonRequestView = jsonRequest.View();
 
         if (jsonRequestView.ValueExists("response"))
@@ -220,7 +225,7 @@ namespace GenAIVendorBundle
         }
         else
         {
-            return AZ::Failure("No response found in the request");
+            return AZ::Failure("Failed to parse the response: response field not found in the response JSON.");
         }
 
         return AZ::Success(response);

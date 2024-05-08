@@ -60,8 +60,7 @@ namespace GenAIMock
         //////////////////////////////////////////////////////////////////////////
         // AIServiceProviderBus overrides
         void SendRequest(
-            const GenAIFramework::ModelAPIRequest& request,
-            AZStd::function<void(GenAIFramework::ModelAPIProviderResponse)> callback) override;
+            const GenAIFramework::ModelAPIRequest& request, AZStd::function<void(GenAIFramework::ModelAPIResponse)> callback) override;
         //////////////////////////////////////////////////////////////////////////
 
     private:

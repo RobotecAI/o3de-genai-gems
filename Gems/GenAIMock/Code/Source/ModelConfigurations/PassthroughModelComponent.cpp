@@ -59,7 +59,8 @@ namespace GenAIMock
         return promptString;
     }
 
-    GenAIFramework::ModelAPIResponse PassthroughModelComponent::ExtractResult(const GenAIFramework::ModelAPIRequest& modelAPIResponse)
+    GenAIFramework::ModelAPIExtractedResponse PassthroughModelComponent::ExtractResult(
+        const GenAIFramework::ModelAPIResponse& modelAPIResponse)
     {
         // The mock model returns the data that does not need additional modifications
         AZStd::vector<AZStd::any> modelAPIResponseVector;

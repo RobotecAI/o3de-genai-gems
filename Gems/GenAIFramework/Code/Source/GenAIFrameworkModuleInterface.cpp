@@ -7,13 +7,13 @@
  */
 
 #include "GenAIFrameworkModuleInterface.h"
-#include "Tools/PromptComponent.h"
 #include <AzCore/Component/ComponentApplication.h>
 #include <AzCore/Memory/Memory.h>
 #include <Clients/GenAIAsyncRequestSystemComponent.h>
 #include <Clients/GenAIFrameworkSystemComponent.h>
 #include <GenAIFramework/GenAIFrameworkTypeIds.h>
 #include <GenAIFramework/SystemRegistrationContext/SystemRegistrationContext.h>
+#include <Tools/PromptComponent.h>
 
 namespace GenAIFramework
 {
