@@ -16,7 +16,7 @@
 
 namespace GenAIFramework
 {
-    enum HistoryTag
+    enum class HistoryTag
     {
         Prompt,
         Response

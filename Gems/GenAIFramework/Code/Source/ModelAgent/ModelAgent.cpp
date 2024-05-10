@@ -24,7 +24,7 @@ namespace GenAIFramework
         ModelAPIRequest preparedRequest;
         AIModelRequestBus::EventResult(preparedRequest, m_modelConfigurationId, &AIModelRequestBus::Events::PrepareRequest, prompt);
 
-        auto callbackWrapper = [this, callback, prompt](ModelAPIResponse outcome)
+        auto callbackWrapper = [this, callback, &prompt](ModelAPIResponse outcome)
         {
             if (!outcome.IsSuccess())
             {

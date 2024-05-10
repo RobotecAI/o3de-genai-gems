@@ -39,8 +39,8 @@ namespace GenAIFramework
                     ->Attribute(AZ::Edit::Attributes::AutoExpand, true)
                     ->DataElement(AZ::Edit::UIHandlers::Default, &PromptComponent::m_modelInput, "Model Input", "Input to the model")
                     ->UIElement(AZ::Edit::UIHandlers::Button, "")
-                    ->Attribute(AZ::Edit::Attributes::ButtonText, "Prompt input")
-                    ->Attribute(AZ::Edit::Attributes::ChangeNotify, &PromptComponent::PromptInput)
+                    ->Attribute(AZ::Edit::Attributes::ButtonText, "Send")
+                    ->Attribute(AZ::Edit::Attributes::ChangeNotify, &PromptComponent::Send)
                     ->DataElement(AZ::Edit::UIHandlers::Default, &PromptComponent::m_modelOutput, "Model Output", "Output from the model")
                     ->Attribute(AZ::Edit::Attributes::ReadOnly, true);
             }
@@ -57,7 +57,7 @@ namespace GenAIFramework
         AIComponentBase::Deactivate();
     }
 
-    AZ::Crc32 PromptComponent::PromptInput()
+    AZ::Crc32 PromptComponent::Send()
     {
         // prepare the request
         ModelAPIPrompt prompt;
