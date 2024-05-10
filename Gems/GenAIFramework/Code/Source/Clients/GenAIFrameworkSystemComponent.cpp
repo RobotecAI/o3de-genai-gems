@@ -141,7 +141,7 @@ namespace GenAIFramework
     }
 
     AZ::Component* GenAIFrameworkSystemComponent::CreateNewComponentEntity(
-        const AZStd::string& name, const AZ::Uuid& componentTypeId, EntityIdToEntityMap& entities)
+        const AZStd::string& name, AZ::Uuid componentTypeId, EntityIdToEntityMap& entities)
     {
         AZStd::shared_ptr<AZ::Entity> newEntity = nullptr;
         newEntity = AZStd::make_shared<AZ::Entity>(name);
@@ -153,7 +153,7 @@ namespace GenAIFramework
     }
 
     AZ::Component* GenAIFrameworkSystemComponent::CreateModelConfiguration(
-        const AZStd::string& configurationName, const AZ::Uuid& componentTypeId)
+        const AZStd::string& configurationName, AZ::Uuid componentTypeId)
     {
         auto* component = CreateNewComponentEntity(configurationName, componentTypeId, m_configuration.m_modelConfigurations);
         GenAIFrameworkNotificationBus::Broadcast(
@@ -161,7 +161,7 @@ namespace GenAIFramework
         return component;
     }
 
-    AZ::Component* GenAIFrameworkSystemComponent::CreateServiceProvider(const AZStd::string& providerName, const AZ::Uuid& componentTypeId)
+    AZ::Component* GenAIFrameworkSystemComponent::CreateServiceProvider(const AZStd::string& providerName, AZ::Uuid componentTypeId)
     {
         auto* component = CreateNewComponentEntity(providerName, componentTypeId, m_configuration.m_serviceProviders);
         GenAIFrameworkNotificationBus::Broadcast(
