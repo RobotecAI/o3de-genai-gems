@@ -1,0 +1,18 @@
+{
+    "Amazon": {
+        "AssetProcessor": {
+            "Settings": {
+                "ScanFolder GenAIAmazonBedrockVendorBundle/Assets": {
+                    "watch": "@GEMROOT:GenAIAmazonBedrockVendorBundle@/Assets",
+                    "recursive": 1,
+                    "order": 101
+                },
+                "ScanFolder GenAIAmazonBedrockVendorBundle/Registry": {
+                    "watch": "@GEMROOT:GenAIAmazonBedrockVendorBundle@/Registry",
+                    "recursive": 1,
+                    "order": 102
+                }
+            }
+        }
+    }
+}

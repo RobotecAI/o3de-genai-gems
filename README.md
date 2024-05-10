@@ -18,7 +18,7 @@ More details about the architecture of the system are given in the [RFC](https:/
 
 ## Available vendor Gems
 The following Gems are available in this repository:
-- `GenAIBedrock Gem` - this vendor Gem implements communication with [Amazon Bedrock service](https://aws.amazon.com/bedrock/) that offers a choice of high-performing models from leading AI companies.
+- `GenAIAmazonBedrock Gem` - this vendor Gem implements communication with [Amazon Bedrock service](https://aws.amazon.com/bedrock/) that offers a choice of high-performing models from leading AI companies.
 - `GenAIMock`- this mocked vendor Gem can produce predictable responses based on given input options, that will give stable, cost-effective and fast tests.
 - `GenAIOllama` - this vendor Gem implements communication with [Ollama toolset](https://github.com/ollama/ollama) that allows getting up and running language models locally.
 
