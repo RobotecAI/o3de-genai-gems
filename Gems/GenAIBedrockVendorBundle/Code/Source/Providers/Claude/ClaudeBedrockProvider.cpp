@@ -15,13 +15,14 @@
 #include <AzCore/std/string/string.h>
 #include <GenAIFramework/SystemRegistrationContext/SystemRegistrationContext.h>
 
+#include <Credential/AWSCredentialBus.h>
 #include <aws/bedrock-runtime/BedrockRuntimeErrors.h>
 #include <aws/bedrock-runtime/BedrockRuntimeServiceClientModel.h>
 #include <aws/bedrock-runtime/model/InvokeModelRequest.h>
 #include <aws/bedrock-runtime/model/InvokeModelResult.h>
+#include <aws/core/auth/AWSCredentialsProvider.h>
 #include <aws/core/utils/memory/stl/AWSStreamFwd.h>
 #include <aws/core/utils/memory/stl/AWSStringStream.h>
-#include <memory>
 
 namespace GenAIBedrockVendorBundle
 {
@@ -64,7 +65,12 @@ namespace GenAIBedrockVendorBundle
                         "Configuration",
                         "Configuration for the Claude Bedrock provider")
                     ->Attribute(AZ::Edit::Attributes::Visibility, AZ::Edit::PropertyVisibility::ShowChildrenOnly)
-                    ->Attribute(AZ::Edit::Attributes::ChangeNotify, &ClaudeBedrockProvider::OnConfigurationChanged);
+                    ->Attribute(AZ::Edit::Attributes::ChangeNotify, &ClaudeBedrockProvider::OnConfigurationChanged)
+                    ->UIElement(AZ::Edit::UIHandlers::Label, "Amazon Web Services (AWS) credentials detection")
+                    ->Attribute(AZ::Edit::Attributes::Visibility, &ClaudeBedrockProvider::AreAwsCredentialsNotDetected)
+                    ->Attribute(
+                        AZ::Edit::Attributes::ValueText,
+                        "The AWS credentials were not detected. Ensure that the proper AWS credentials are set on the system.");
             }
         }
 
@@ -153,5 +159,12 @@ namespace GenAIBedrockVendorBundle
         };
 
         m_runtimeClient->InvokeModelAsync(invokeModelRequest, handler);
+    }
+
+    bool ClaudeBedrockProvider::AreAwsCredentialsNotDetected() const
+    {
+        std::shared_ptr<Aws::Auth::AWSCredentialsProvider> credentialProvider;
+        AWSCore::AWSCredentialRequestBus::BroadcastResult(credentialProvider, &AWSCore::AWSCredentialRequests::GetCredentialsProvider);
+        return !credentialProvider || credentialProvider->GetAWSCredentials().IsEmpty();
     }
 } // namespace GenAIBedrockVendorBundle
