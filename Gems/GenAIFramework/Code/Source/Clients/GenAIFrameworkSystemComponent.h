@@ -8,19 +8,16 @@
 
 #pragma once
 
-#include "Clients/GenAIFrameworkSystemComponentConfiguration.h"
-#include "ModelAgent/ModelAgent.h"
-#include "SettingsRegistryManager/SettingsRegistryManager.h"
-
 #include <AzCore/Component/Component.h>
 #include <AzCore/Component/Entity.h>
 #include <AzCore/Component/EntityId.h>
 #include <AzCore/base.h>
 #include <AzCore/std/smart_ptr/shared_ptr.h>
+#include <Clients/GenAIFrameworkSystemComponentConfiguration.h>
 #include <GenAIFramework/GenAIFrameworkBus.h>
 #include <GenAIFramework/SystemRegistrationContext/SystemRegistrationContext.h>
-#include <atomic>
-#include <cstddef>
+#include <ModelAgent/ModelAgent.h>
+#include <SettingsRegistryManager/SettingsRegistryManager.h>
 
 namespace GenAIFramework
 {
@@ -60,7 +57,7 @@ namespace GenAIFramework
             const AZStd::string& serviceProviderName, const AZStd::string modelModelConfigurationName) override;
         bool RemoveModelAgent(AZ::u64 modelAgentId) override;
         bool SendPromptToModelAgent(
-            AZ::u64 modelAgentId,
+            const AZ::u64 modelAgentId,
             const AZStd::vector<AZStd::any>& prompt,
             const AZStd::function<void(const AZ::Outcome<AZStd::vector<AZStd::any>, AZStd::string>&)>& callback) override;
         ////////////////////////////////////////////////////////////////////////
@@ -90,6 +87,5 @@ namespace GenAIFramework
         AZ::EntityId GetEntityIdByName(const AZStd::string& name, const EntityIdToEntityMap& entities) const;
 
         AZStd::map<AZ::u64, ModelAgent> m_modelAgents;
-        AZStd::atomic<AZStd::size_t> m_modelAgentIdCounter = 0;
     };
 } // namespace GenAIFramework

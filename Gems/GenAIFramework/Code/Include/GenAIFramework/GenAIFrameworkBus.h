@@ -81,7 +81,7 @@ namespace GenAIFramework
             const AZStd::string& serviceProviderName, const AZStd::string modelModelConfigurationName) = 0;
         virtual bool RemoveModelAgent(AZ::u64 modelAgentId) = 0;
         virtual bool SendPromptToModelAgent(
-            AZ::u64 modelAgentId,
+            const AZ::u64 modelAgentId,
             const AZStd::vector<AZStd::any>& prompt,
             const AZStd::function<void(const AZ::Outcome<AZStd::vector<AZStd::any>, AZStd::string>&)>& callback) = 0;
     };

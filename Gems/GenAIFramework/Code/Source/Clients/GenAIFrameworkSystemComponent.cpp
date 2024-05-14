@@ -14,13 +14,10 @@
 #include <AzCore/Component/ComponentApplicationBus.h>
 #include <AzCore/Component/Entity.h>
 #include <AzCore/Component/EntityId.h>
-#include <AzCore/Outcome/Outcome.h>
 #include <AzCore/RTTI/BehaviorContext.h>
 #include <AzCore/Serialization/EditContext.h>
 #include <AzCore/Serialization/SerializeContext.h>
 #include <AzCore/std/smart_ptr/make_shared.h>
-
-#include <iostream>
 
 namespace GenAIFramework
 {
@@ -342,8 +339,7 @@ namespace GenAIFramework
         // Generate a unique id for the model agent
         auto currentTime = AZStd::chrono::system_clock::now();
         AZ::u32 idTime = static_cast<AZ::u64>(currentTime.time_since_epoch().count());
-        AZ::u64 id = m_modelAgentIdCounter.load() << 32 | idTime;
-        m_modelAgentIdCounter++;
+        AZ::u64 id = m_modelAgents.size() << 32 | idTime;
 
         m_modelAgents[id] = ModelAgent(serviceProviderId, modelConfigurationId);
 
@@ -352,23 +348,15 @@ namespace GenAIFramework
 
     bool GenAIFrameworkSystemComponent::RemoveModelAgent(AZ::u64 modelAgentId)
     {
-        if (m_modelAgents.erase(modelAgentId) > 0)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return (m_modelAgents.erase(modelAgentId) > 0);
     }
 
     bool GenAIFrameworkSystemComponent::SendPromptToModelAgent(
-        AZ::u64 modelAgentId,
+        const AZ::u64 modelAgentId,
         const AZStd::vector<AZStd::any>& prompt,
         const AZStd::function<void(const AZ::Outcome<AZStd::vector<AZStd::any>, AZStd::string>&)>& callback)
     {
-        auto modelAgent = m_modelAgents.find(modelAgentId);
-        if (modelAgent != m_modelAgents.end())
+        if (auto modelAgent = m_modelAgents.find(modelAgentId); modelAgent != m_modelAgents.end())
         {
             // Send prompt to model agent
             modelAgent->second.SendPrompt(prompt, callback);

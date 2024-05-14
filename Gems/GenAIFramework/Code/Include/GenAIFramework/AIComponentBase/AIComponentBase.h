@@ -40,7 +40,6 @@ namespace GenAIFramework
         AZ::u64 m_agentId;
 
         void UpdateComponent();
-        void UpdateNamedModelConfigurationId();
 
     private:
         AZStd::vector<AZStd::string> GetNames(const AZStd::vector<AZ::Component*>& components) const;

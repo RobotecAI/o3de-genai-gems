@@ -12,8 +12,6 @@
 #include <AzCore/Component/Component.h>
 #include <AzCore/Serialization/EditContext.h>
 #include <AzCore/Serialization/SerializeContext.h>
-#include <AzCore/std/containers/vector.h>
-#include <AzCore/std/string/string.h>
 
 #include <aws/core/utils/json/JsonSerializer.h>
 
