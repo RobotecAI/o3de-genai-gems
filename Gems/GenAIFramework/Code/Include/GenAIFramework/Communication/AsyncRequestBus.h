@@ -75,6 +75,11 @@ namespace GenAIFramework
         //! Enable or disable the history of the currently selected model.
         //! @param enableHistory A flag to enable/disable the history.
         virtual void EnableModelHistory(bool enableHistory) = 0;
+
+        //! Set custom model parameters.
+        //! @param parameterName The name of the parameter to set.
+        //! @param parameterValue The value to set the parameter as a string.
+        virtual AZStd::string SetModelParameter(const AZStd::string& parameterName, const AZStd::string& parameterValue) = 0;
     };
 
     class RequestsUtilsBusTraits : public AZ::EBusTraits

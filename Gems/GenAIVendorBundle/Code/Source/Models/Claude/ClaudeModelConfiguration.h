@@ -37,7 +37,7 @@ namespace GenAIVendorBundle
         bool m_useDefaultStopSequence = true;
         AZStd::string m_anthropicVersion = "";
         AZStd::string m_systemMessage = "";
-        bool m_useSystemMessage = false;
+        bool m_useSystemMessage = true;
 
         bool IsDefaultTemperature() const
         {
@@ -54,6 +54,43 @@ namespace GenAIVendorBundle
         bool IsDefaultStopSequence() const
         {
             return m_useDefaultStopSequence;
+        }
+
+        AZ::Outcome<void, AZStd::string> SetModelParameter(const AZ::Name& parameterName, const AZStd::string& parameterValue);
+
+        static AZ::Outcome<bool, void> GetBooleanValue(const AZStd::string& value)
+        {
+            AZStd::string lowerCaseParameterValue = value;
+            std::transform(
+                lowerCaseParameterValue.begin(),
+                lowerCaseParameterValue.end(),
+                lowerCaseParameterValue.begin(),
+                [](unsigned char c)
+                {
+                    return std::tolower(c);
+                });
+
+            lowerCaseParameterValue.erase(
+                std::remove_if(
+                    lowerCaseParameterValue.begin(),
+                    lowerCaseParameterValue.end(),
+                    [](unsigned char c)
+                    {
+                        return std::isspace(c);
+                    }),
+                lowerCaseParameterValue.end());
+            if (lowerCaseParameterValue == "true")
+            {
+                return AZ::Success(true);
+            }
+            else if (lowerCaseParameterValue == "false")
+            {
+                return AZ::Success(false);
+            }
+            else
+            {
+                return AZ::Failure();
+            }
         }
     };
 } // namespace GenAIVendorBundle

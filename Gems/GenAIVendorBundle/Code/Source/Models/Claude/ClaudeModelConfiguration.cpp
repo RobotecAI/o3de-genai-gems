@@ -110,4 +110,131 @@ namespace GenAIVendorBundle
             }
         }
     }
+
+    AZ::Outcome<void, AZStd::string> ClaudeModelConfiguration::SetModelParameter(
+        const AZ::Name& parameterName, const AZStd::string& parameterValue)
+    {
+        AZStd::string lowerCaseParameterName = parameterName.GetStringView();
+        std::transform(
+            lowerCaseParameterName.begin(),
+            lowerCaseParameterName.end(),
+            lowerCaseParameterName.begin(),
+            [](unsigned char c)
+            {
+                return std::tolower(c);
+            });
+
+        lowerCaseParameterName.erase(
+            std::remove_if(
+                lowerCaseParameterName.begin(),
+                lowerCaseParameterName.end(),
+                [](unsigned char c)
+                {
+                    return std::isspace(c);
+                }),
+            lowerCaseParameterName.end());
+
+        if (lowerCaseParameterName == "temperature")
+        {
+            m_temperature = AZStd::stof(parameterValue);
+        }
+        else if (lowerCaseParameterName == "usedefaulttemperature")
+        {
+            auto booleanOutcome = GetBooleanValue(parameterValue);
+            if (booleanOutcome.IsSuccess())
+            {
+                m_useDefaultTemperature = booleanOutcome.GetValue();
+            }
+            else
+            {
+                return AZ::Failure(AZStd::string::format("Parameter value is invalid"));
+            }
+        }
+        else if (lowerCaseParameterName == "topp")
+        {
+            m_topP = AZStd::stof(parameterValue);
+        }
+        else if (lowerCaseParameterName == "usedefaulttopp")
+        {
+            auto booleanOutcome = GetBooleanValue(parameterValue);
+            if (booleanOutcome.IsSuccess())
+            {
+                m_useDefaultTopP = booleanOutcome.GetValue();
+            }
+            else
+            {
+                return AZ::Failure(AZStd::string::format("Parameter value is invalid"));
+            }
+        }
+        else if (lowerCaseParameterName == "topk")
+        {
+            m_topK = AZStd::stoi(parameterValue);
+        }
+        else if (lowerCaseParameterName == "usedefaulttopk")
+        {
+            auto booleanOutcome = GetBooleanValue(parameterValue);
+            if (booleanOutcome.IsSuccess())
+            {
+                m_useDefaultTopK = booleanOutcome.GetValue();
+            }
+            else
+            {
+                return AZ::Failure(AZStd::string::format("Parameter value is invalid"));
+            }
+        }
+        else if (lowerCaseParameterName == "stopsequence")
+        {
+            m_stopSequence = parameterValue;
+        }
+        else if (lowerCaseParameterName == "usedefaultstopsequence")
+        {
+            auto booleanOutcome = GetBooleanValue(parameterValue);
+            if (booleanOutcome.IsSuccess())
+            {
+                m_useDefaultStopSequence = booleanOutcome.GetValue();
+            }
+            else
+            {
+                return AZ::Failure(AZStd::string::format("Parameter value is invalid"));
+            }
+        }
+        else if (lowerCaseParameterName == "anthropic_version")
+        {
+            m_anthropicVersion = parameterValue;
+        }
+        else if (lowerCaseParameterName == "systemmessage")
+        {
+            m_systemMessage = parameterValue;
+        }
+        else if (lowerCaseParameterName == "usesystemmessage")
+        {
+            AZStd::string lowerCaseParameterValue = parameterValue;
+            std::transform(
+                lowerCaseParameterValue.begin(),
+                lowerCaseParameterValue.end(),
+                lowerCaseParameterValue.begin(),
+                [](unsigned char c)
+                {
+                    return std::tolower(c);
+                });
+            if (lowerCaseParameterValue == "true")
+            {
+                m_useSystemMessage = true;
+            }
+            else if (lowerCaseParameterValue == "false")
+            {
+                m_useSystemMessage = false;
+            }
+            else
+            {
+                return AZ::Failure(AZStd::string::format("Parameter value is invalid"));
+            }
+        }
+        else
+        {
+            return AZ::Failure(AZStd::string::format("Parameter %s is not supported", parameterName.GetCStr()));
+        }
+
+        return AZ::Success();
+    }
 } // namespace GenAIVendorBundle

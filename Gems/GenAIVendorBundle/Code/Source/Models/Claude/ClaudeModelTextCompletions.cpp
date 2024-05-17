@@ -120,4 +120,10 @@ namespace GenAIVendorBundle
             return AZ::Failure(AZStd::string::format("Failed to parse the response %s", modelAPIResponse.GetValue().c_str()));
         }
     };
+
+    AZ::Outcome<void, AZStd::string> ClaudeModelTextCompletions::SetModelParameter(
+        const AZ::Name& parameterName, const AZStd::string& parameterValue)
+    {
+        return m_configuration.SetModelParameter(parameterName, parameterValue);
+    }
 } // namespace GenAIVendorBundle

@@ -37,5 +37,7 @@ namespace GenAIVendorBundle
 
     private:
         ClaudeModelConfiguration m_configuration;
+
+        AZ::Outcome<void, AZStd::string> SetModelParameter(const AZ::Name& parameterName, const AZStd::string& parameterValue) override;
     };
 } // namespace GenAIVendorBundle
