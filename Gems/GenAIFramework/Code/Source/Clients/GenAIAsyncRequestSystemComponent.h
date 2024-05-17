@@ -48,6 +48,7 @@ namespace GenAIFramework
         AZ::Uuid SendPromptToLLM(const AZStd::string& prompt) override;
         bool IsResponseReady(AZ::Uuid promptId) override;
         AZStd::string GetResponse(AZ::Uuid promptId) override;
+        AZStd::string GetActiveModelConfigurationRegisteredName() override;
         void ResetModelHistory() override;
         void EnableModelHistory(bool enableHistory) override;
 

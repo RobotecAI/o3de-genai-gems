@@ -9,6 +9,7 @@
 #include "GenAIAsyncRequestSystemComponent.h"
 #include <AzCore/Component/Entity.h>
 #include <AzCore/RTTI/BehaviorContext.h>
+#include <AzCore/Serialization/EditContext.h>
 #include <AzCore/Serialization/SerializeContext.h>
 #include <GenAIFramework/Communication/AIModelRequestBus.h>
 #include <GenAIFramework/Communication/AIServiceProviderBus.h>
@@ -38,7 +39,8 @@ namespace GenAIFramework
                 ->Event("IsResponseReady", &AsyncRequestBus::Events::IsResponseReady)
                 ->Event("GetResponse", &AsyncRequestBus::Events::GetResponse)
                 ->Event("ResetModelHistory", &AsyncRequestBus::Events::ResetModelHistory)
-                ->Event("EnableModelHistory", &AsyncRequestBus::Events::EnableModelHistory);
+                ->Event("EnableModelHistory", &AsyncRequestBus::Events::EnableModelHistory)
+                ->Event("GetActiveModelConfigurationRegisteredName", &AsyncRequestBus::Events::GetActiveModelConfigurationRegisteredName);
         }
     }
 
@@ -253,6 +255,44 @@ namespace GenAIFramework
     {
         GenAIFramework::AIModelRequestBus::Event(
             m_modelConfigurationId, &GenAIFramework::AIModelRequestBus::Events::EnableModelHistory, enableHistory);
+    }
+
+    AZStd::string GenAIAsyncRequestSystemComponent::GetActiveModelConfigurationRegisteredName()
+    {
+        if (!m_modelConfigurationId.IsValid())
+        {
+            AZ_Warning("GenAIAsyncRequestSystemComponent", false, "No model configuration selected.");
+            return {};
+        }
+
+        AZ::SerializeContext* serializeContext = nullptr;
+        AZ::Entity* modelConfigurationEntity;
+        AZ::ComponentApplicationBus::BroadcastResult(
+            modelConfigurationEntity, &AZ::ComponentApplicationBus::Events::FindEntity, m_modelConfigurationId);
+
+        AZ::ComponentApplicationBus::BroadcastResult(serializeContext, &AZ::ComponentApplicationBus::Events::GetSerializeContext);
+
+        auto registeredModelConfigurations = GenAIFrameworkInterface::Get()->GetModelConfigurationNamesAndComponentTypeIds();
+
+        auto entityComponents = modelConfigurationEntity->GetComponents();
+
+        for (const auto& [name, typeId] : registeredModelConfigurations)
+        {
+            for (const auto& component : entityComponents)
+            {
+                if (typeId == component->RTTI_GetType())
+                {
+                    const auto classData = serializeContext->FindClassData(typeId);
+                    auto serializedName = classData ? classData->m_name : "";
+                    if (classData->m_editData)
+                    {
+                        serializedName = classData->m_editData->m_name;
+                    }
+                    return serializedName;
+                }
+            }
+        }
+        return "";
     }
 
 } // namespace GenAIFramework
