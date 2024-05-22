@@ -24,6 +24,8 @@ namespace GenAIFramework
     using ModelAPIResponse = AZ::Outcome<AZStd::string, AZStd::string>; //!< The type of response from the model provider
     using ModelAPIExtractedResponse =
         AZ::Outcome<AZStd::vector<AZStd::any>, AZStd::string>; //!< The type of extracted response from the model
+    using AIPromptReply = AZStd::pair<ModelAPIPrompt, ModelAPIExtractedResponse>; //!< The type of AI prompt reply
+    using AIHistory = AZStd::vector<AIPromptReply>; //!< The type of AI history
 
     class AIModelRequest : public AZ::ComponentBus
     {

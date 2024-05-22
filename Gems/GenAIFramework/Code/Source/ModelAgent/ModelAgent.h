@@ -16,11 +16,6 @@
 
 namespace GenAIFramework
 {
-    enum class HistoryTag
-    {
-        Prompt,
-        Response
-    };
 
     class ModelAgent
     {
@@ -35,7 +30,7 @@ namespace GenAIFramework
         void SetModelConfigurationId(const AZ::EntityId& modelConfigurationId);
 
     private:
-        AZStd::vector<AZStd::pair<HistoryTag, AZStd::any>> m_history;
+        AIHistory m_history;
 
         AZ::EntityId m_serviceProviderId;
         AZ::EntityId m_modelConfigurationId;

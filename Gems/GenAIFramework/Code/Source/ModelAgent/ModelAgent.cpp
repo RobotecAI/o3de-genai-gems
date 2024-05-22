@@ -37,11 +37,7 @@ namespace GenAIFramework
             // Add prompt and response to the history if the response is successful
             if (extractedResponse.IsSuccess())
             {
-                for (const auto& item : prompt)
-                {
-                    m_history.push_back({ HistoryTag::Prompt, item });
-                }
-                m_history.push_back({ HistoryTag::Response, extractedResponse.GetValue() });
+                m_history.push_back({ prompt, extractedResponse.GetValue() });
             }
 
             callback(extractedResponse);
