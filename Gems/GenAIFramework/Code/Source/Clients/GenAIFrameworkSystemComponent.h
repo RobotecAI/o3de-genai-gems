@@ -11,6 +11,10 @@
 #include "Clients/GenAIFrameworkSystemComponentConfiguration.h"
 #include "SettingsRegistryManager/SettingsRegistryManager.h"
 
+#include <Atom/Feature/Utils/FrameCaptureBus.h>
+#include <Atom/RPI.Public/Base.h>
+#include <Atom/RPI.Public/ViewportContext.h>
+#include <Atom/RPI.Public/ViewportContextBus.h>
 #include <AzCore/Component/Component.h>
 #include <AzCore/std/smart_ptr/shared_ptr.h>
 #include <GenAIFramework/GenAIFrameworkBus.h>
@@ -21,6 +25,7 @@ namespace GenAIFramework
     class GenAIFrameworkSystemComponent
         : public AZ::Component
         , protected GenAIFrameworkRequestBus::Handler
+        , private AZ::RPI::ViewportContextManagerNotificationsBus::Handler
     {
     public:
         AZ_COMPONENT_DECL(GenAIFrameworkSystemComponent);
@@ -50,6 +55,7 @@ namespace GenAIFramework
         void RemoveComponent(AZ::Component* component) override;
         void ActivateEntity(AZStd::shared_ptr<AZ::Entity> entity) override;
         void DeactivateEntity(AZStd::shared_ptr<AZ::Entity> entity) override;
+        AZ::Render::FrameCaptureOutcome GetViewportBase64Image(AZStd::function<void(AZStd::string)> imageReadyCallback) const override;
         ////////////////////////////////////////////////////////////////////////
 
         ////////////////////////////////////////////////////////////////////////
@@ -73,5 +79,13 @@ namespace GenAIFramework
         AZ::Component* CreateNewComponentEntity(const AZStd::string& name, const AZ::Uuid& componentTypeId, EntityIdToEntityMap& entities);
 
         AZStd::vector<AZStd::string> GetRegisteredComponentNames(const EntityIdToEntityMap& entities) const;
+        ////////////////////////////////////////////////////////////////////////
+        // AZ::RPI::ViewportContextManagerNotificationsBus interface implementation
+        void OnViewportContextAdded(AZ::RPI::ViewportContextPtr viewportContext) override;
+        ////////////////////////////////////////////////////////////////////////
+        void SetRenderPipeline(AZ::RPI::RenderPipelinePtr pipeline);
+
+        AZ::RPI::ViewportContext::PipelineChangedEvent::Handler m_pipelineChangedHandler;
+        AZStd::vector<AZStd::string> m_passHierarchy;
     };
 } // namespace GenAIFramework

@@ -10,6 +10,9 @@
 #include <Clients/GenAIFrameworkSystemComponentConfiguration.h>
 #include <GenAIFramework/GenAIFrameworkTypeIds.h>
 
+#include <Atom/RPI.Public/RenderPipeline.h>
+#include <Atom/RPI.Public/ViewportContext.h>
+#include <Atom/Utils/PpmFile.h>
 #include <AzCore/Component/ComponentApplication.h>
 #include <AzCore/Component/ComponentApplicationBus.h>
 #include <AzCore/Component/Entity.h>
@@ -17,6 +20,7 @@
 #include <AzCore/RTTI/BehaviorContext.h>
 #include <AzCore/Serialization/EditContext.h>
 #include <AzCore/Serialization/SerializeContext.h>
+#include <AzCore/std/ranges/split_view.h>
 #include <AzCore/std/smart_ptr/make_shared.h>
 
 namespace GenAIFramework
@@ -276,10 +280,18 @@ namespace GenAIFramework
         auto registeredGenerators = GetSystemRegistrationContext()->GetRegisteredModelConfigurations();
         AZ::SerializeContext* serializeContext = nullptr;
         AZ::ComponentApplicationBus::BroadcastResult(serializeContext, &AZ::ComponentApplicationBus::Events::GetSerializeContext);
+
+        m_pipelineChangedHandler = AZ::RPI::ViewportContext::PipelineChangedEvent::Handler(
+            [this](AZ::RPI::RenderPipelinePtr pipeline)
+            {
+                this->SetRenderPipeline(pipeline);
+            });
+        AZ::RPI::ViewportContextManagerNotificationsBus::Handler::BusConnect();
     }
 
     void GenAIFrameworkSystemComponent::Deactivate()
     {
+        AZ::RPI::ViewportContextManagerNotificationsBus::Handler::BusDisconnect();
         GenAIFrameworkRequestBus::Handler::BusDisconnect();
 
         DeactivateEntities(m_configuration.m_serviceProviders);
@@ -310,6 +322,58 @@ namespace GenAIFramework
             });
 
         return result;
+    }
+
+    void GenAIFrameworkSystemComponent::OnViewportContextAdded(AZ::RPI::ViewportContextPtr viewportContext)
+    {
+        auto pipeline = viewportContext->GetCurrentPipeline();
+        SetRenderPipeline(pipeline);
+
+        viewportContext->ConnectCurrentPipelineChangedHandler(m_pipelineChangedHandler);
+    }
+
+    void GenAIFrameworkSystemComponent::SetRenderPipeline(AZ::RPI::RenderPipelinePtr pipeline)
+    {
+        if (!pipeline)
+        {
+            m_passHierarchy.clear();
+            return;
+        }
+        auto passes = AZStd::ranges::views::split(pipeline->GetRootPass()->GetPathName().GetStringView(), '.');
+        m_passHierarchy.clear();
+        for (auto pass : passes)
+        {
+            m_passHierarchy.push_back(AZStd::string(pass));
+        }
+        m_passHierarchy.push_back("CopyToSwapChain");
+    }
+
+    AZ::Render::FrameCaptureOutcome GenAIFrameworkSystemComponent::GetViewportBase64Image(
+        AZStd::function<void(AZStd::string)> imageReadyCallback) const
+    {
+        AZStd::vector<AZStd::string> hierarchy;
+        AZ::Render::FrameCaptureOutcome outcome;
+
+        AZ::Render::FrameCaptureRequestBus::BroadcastResult(
+            outcome,
+            &AZ::Render::FrameCaptureRequestBus::Events::CapturePassAttachmentWithCallback,
+            [imageReadyCallback](const AZ::RPI::AttachmentReadback::ReadbackResult& result)
+            {
+                if (result.m_state != AZ::RPI::AttachmentReadback::ReadbackState::Success)
+                {
+                    return;
+                }
+                const AZStd::vector<uint8_t> outBuffer = AZ::Utils::PpmFile::CreatePpmFromImageBuffer(
+                    *result.m_dataBuffer.get(), result.m_imageDescriptor.m_size, result.m_imageDescriptor.m_format);
+
+                AZStd::string imageBase64 = AZ::StringFunc::Base64::Encode(outBuffer.data(), outBuffer.size());
+                imageReadyCallback(imageBase64);
+            },
+            m_passHierarchy,
+            AZStd::string("Output"),
+            AZ::RPI::PassAttachmentReadbackOption::Output);
+
+        return outcome;
     }
 
 } // namespace GenAIFramework

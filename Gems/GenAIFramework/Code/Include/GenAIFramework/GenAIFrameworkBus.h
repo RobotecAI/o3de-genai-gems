@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include <Atom/Feature/Utils/FrameCaptureBus.h>
 #include <AzCore/Component/Component.h>
 #include <AzCore/Component/EntityId.h>
 #include <AzCore/EBus/EBus.h>
@@ -72,6 +73,12 @@ namespace GenAIFramework
         //! Deactivate the entity and its components.
         //! @param entity A pointer to the entity to be deactivated.
         virtual void DeactivateEntity(AZStd::shared_ptr<AZ::Entity> entity) = 0;
+
+        //! Get a base64 encoded image of the current viewport.
+        //! @param imageReadyCallback A callback function that will be called when the image is ready. The argument is a base64 encoded ppm
+        //! image of the current viewport.
+        //! @return A FrameCaptureOutcome object.
+        virtual AZ::Render::FrameCaptureOutcome GetViewportBase64Image(AZStd::function<void(AZStd::string)> imageReadyCallback) const = 0;
     };
 
     class GenAIFrameworkBusTraits : public AZ::EBusTraits

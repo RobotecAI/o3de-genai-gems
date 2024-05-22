@@ -53,6 +53,9 @@ ly_add_target(
             AZ::AzCore
             AZ::AzFramework
             Gem::EditorPythonBindings.Static
+            Gem::Atom_RPI.Public
+            Gem::Atom_Feature_Common.Public
+            Atom_Utils.Static
 )
 
 # Here add ${gem_name} target, it depends on the Private Object library and Public API interface
@@ -128,6 +131,8 @@ if(PAL_TRAIT_BUILD_HOST_TOOLS)
                 Gem::EditorPythonBindings.Editor
                 Gem::EditorPythonBindings.Static
                 $<TARGET_OBJECTS:Gem::${gem_name}.Private.Object>
+                Gem::Atom_Feature_Common.Public
+                Atom_Utils.Static
     )
 
     ly_add_target(
