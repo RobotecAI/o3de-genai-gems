@@ -270,6 +270,11 @@ namespace GenAIFramework
         AZ::ComponentApplicationBus::BroadcastResult(
             modelConfigurationEntity, &AZ::ComponentApplicationBus::Events::FindEntity, m_modelConfigurationId);
 
+        if (!modelConfigurationEntity)
+        {
+            return {};
+        }
+
         AZ::ComponentApplicationBus::BroadcastResult(serializeContext, &AZ::ComponentApplicationBus::Events::GetSerializeContext);
 
         auto registeredModelConfigurations = GenAIFrameworkInterface::Get()->GetModelConfigurationNamesAndComponentTypeIds();
