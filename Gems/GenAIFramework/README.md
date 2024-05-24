@@ -88,5 +88,23 @@ azlmbr.ai.asyncRequestBus(bus.Broadcast, 'EnableModelHistory', True)
 azlmbr.ai.asyncRequestBus(bus.Broadcast, 'EnableModelHistory', False)
 ```
 
+## Viewport camera image capture
+The GenAIFrameworkGem provides a way to capture the current viewport camera image. The image is captured in the same resolution as the viewport and can be used for AI model. The result is a base64 encoded ppm image. All of these calls are available in python.
+
+Requesting an image:
+```python
+imageId = azlmbr.ai.CameraToolsBus(bus.Broadcast, 'RequestViewportBase64Image')
+```
+
+Checking if the image is ready:
+```python
+is_ready = azlmbr.ai.CameraToolsBus(bus.Broadcast, 'IsImageReady', imageId)
+```
+
+Getting the image:
+```python
+image = azlmbr.ai.CameraToolsBus(bus.Broadcast, 'GetImage', imageId)
+```
+
 ## License
 For terms please see the LICENSE*.TXT files at the root of this distribution.

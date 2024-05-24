@@ -11,4 +11,7 @@ set(FILES
     Source/Clients/GenAIFrameworkSystemComponent.h
     Source/Clients/GenAIFrameworkSystemComponentConfiguration.cpp
     Source/Clients/GenAIFrameworkSystemComponentConfiguration.h
+
+    Source/CameraTools/CameraToolsHandler.cpp
+    Source/CameraTools/CameraToolsHandler.h
 )

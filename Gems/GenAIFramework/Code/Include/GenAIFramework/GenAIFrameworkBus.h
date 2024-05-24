@@ -78,7 +78,10 @@ namespace GenAIFramework
         //! @param imageReadyCallback A callback function that will be called when the image is ready. The argument is a base64 encoded ppm
         //! image of the current viewport.
         //! @return A FrameCaptureOutcome object.
-        virtual AZ::Render::FrameCaptureOutcome GetViewportBase64Image(AZStd::function<void(AZStd::string)> imageReadyCallback) const = 0;
+        // virtual AZ::Render::FrameCaptureOutcome GetViewportBase64ImageCallback(AZStd::function<void(AZStd::string)> imageReadyCallback)
+        // const = 0;
+
+        // virtual AZ::Outcome<AZStd::string, void> GetViewportBase64ImageCallback() const = 0;
     };
 
     class GenAIFrameworkBusTraits : public AZ::EBusTraits
