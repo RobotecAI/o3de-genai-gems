@@ -12,6 +12,7 @@
 #include <AzCore/RTTI/RTTIMacros.h>
 #include <AzCore/Serialization/EditContext.h>
 #include <AzCore/Serialization/SerializeContext.h>
+#include <AzCore/std/any.h>
 #include <GenAIFramework/Communication/AIModelRequestBus.h>
 #include <GenAIFramework/SystemRegistrationContext/SystemRegistrationContext.h>
 #include <aws/core/utils/json/JsonSerializer.h>
@@ -63,10 +64,15 @@ namespace GenAIVendorBundle
         GenAIFramework::AIModelRequestBus::Handler::BusDisconnect();
     }
 
-    GenAIFramework::ModelAPIRequest ClaudeModelTextCompletions::PrepareRequest(const AZStd::string& prompt)
+    GenAIFramework::ModelAPIRequest ClaudeModelTextCompletions::PrepareRequest(const GenAIFramework::ModelAPIPrompt& prompt)
     {
         std::stringstream oss;
-        oss << "Human: \"" << prompt.c_str() << "\" Assistant: ";
+        oss << "Human: \"";
+        for (const auto& element : prompt)
+        {
+            oss << AZStd::any_cast<AZStd::string>(element).c_str();
+        }
+        oss << "\" Assistant: ";
         Aws::Utils::Json::JsonValue jsonPrompt;
         jsonPrompt.WithString("prompt", oss.str().c_str());
 
@@ -93,26 +99,25 @@ namespace GenAIVendorBundle
         return jsonString.c_str();
     }
 
-    AZ::Outcome<AZStd::string, AZStd::string> ClaudeModelTextCompletions::ExtractResult(
+    GenAIFramework::ModelAPIExtractedResponse ClaudeModelTextCompletions::ExtractResult(
         const GenAIFramework::ModelAPIResponse& modelAPIResponse)
     {
-        if (modelAPIResponse.IsSuccess())
+        if (!modelAPIResponse.IsSuccess())
         {
-            AZ_Printf("ClaudeModelTextCompletions", "Extracted result: %s", modelAPIResponse.GetValue().c_str());
-            Aws::Utils::Json::JsonValue jsonPrompt(modelAPIResponse.GetValue().c_str());
-            if (jsonPrompt.WasParseSuccessful())
-            {
-                auto view = jsonPrompt.View();
-                return AZ::Success(view.GetString("completion").c_str());
-            }
-            else
-            {
-                return AZ::Failure(AZStd::string::format("Failed to parse the response %s", modelAPIResponse.GetValue().c_str()));
-            }
+            return AZ::Failure(AZStd::string::format("Failed to get a response from the model: %s", modelAPIResponse.GetError().c_str()));
+        }
+        Aws::Utils::Json::JsonValue jsonPrompt(modelAPIResponse.GetValue().c_str());
+        if (jsonPrompt.WasParseSuccessful())
+        {
+            auto view = jsonPrompt.View();
+            auto completion = AZStd::any(AZStd::string(view.GetString("completion").c_str()));
+            AZStd::vector<AZStd::any> completionsVector;
+            completionsVector.push_back(completion);
+            return AZ::Success(completionsVector);
         }
         else
         {
-            return AZ::Failure(modelAPIResponse.GetError());
+            return AZ::Failure(AZStd::string::format("Failed to parse the response %s", modelAPIResponse.GetValue().c_str()));
         }
     };
 } // namespace GenAIVendorBundle

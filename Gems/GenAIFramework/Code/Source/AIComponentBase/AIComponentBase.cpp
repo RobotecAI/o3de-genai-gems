@@ -7,6 +7,7 @@
  */
 
 #include <AzCore/Component/Entity.h>
+#include <AzCore/Debug/Trace.h>
 #include <AzCore/Serialization/EditContext.h>
 #include <AzCore/Serialization/EditContextConstants.inl>
 #include <AzCore/Serialization/SerializeContext.h>
@@ -35,22 +36,21 @@ namespace GenAIFramework
                         "Service",
                         "Name of the service to be used for AI requests")
                     ->Attribute(AZ::Edit::Attributes::StringList, &AIComponentBase::GetServiceProviderNames)
-                    ->Attribute(AZ::Edit::Attributes::ChangeNotify, &AIComponentBase::UpdateNamedServiceProviderId)
+                    ->Attribute(AZ::Edit::Attributes::ChangeNotify, &AIComponentBase::UpdateComponent)
                     ->DataElement(
                         AZ::Edit::UIHandlers::ComboBox,
                         &AIComponentBase::m_modelConfigurationName,
                         "Model",
                         "Name of the model to be used for AI prompt generation")
                     ->Attribute(AZ::Edit::Attributes::StringList, &AIComponentBase::GetModelConfigurationNames)
-                    ->Attribute(AZ::Edit::Attributes::ChangeNotify, &AIComponentBase::UpdateNamedModelConfigurationId);
+                    ->Attribute(AZ::Edit::Attributes::ChangeNotify, &AIComponentBase::UpdateComponent);
             }
         }
     }
 
     void AIComponentBase::Activate()
     {
-        UpdateNamedServiceProviderId();
-        UpdateNamedModelConfigurationId();
+        UpdateComponent();
     }
 
     void AIComponentBase::Deactivate()
@@ -88,24 +88,19 @@ namespace GenAIFramework
         return interface ? interface->GetModelConfigurations() : AZStd::vector<AZ::Component*>();
     }
 
-    void AIComponentBase::GetNamedId(const AZStd::string& name, const AZStd::vector<AZ::Component*>& components, AZ::EntityId& id)
+    void AIComponentBase::UpdateComponent()
     {
-        for (auto* component : components)
+        auto frameworkInterface = GenAIFrameworkInterface::Get();
+        auto agentOutcome = frameworkInterface->CreateModelAgent(m_serviceProviderName, m_modelConfigurationName);
+        if (agentOutcome.IsSuccess())
         {
-            if (component->GetEntity()->GetName() == name)
-            {
-                id = component->GetEntityId();
-                return;
-            }
+            frameworkInterface->RemoveModelAgent(m_agentId);
+            m_agentId = agentOutcome.GetValue();
         }
-    }
-    void AIComponentBase::UpdateNamedServiceProviderId()
-    {
-        GetNamedId(m_serviceProviderName, GetServiceProviders(), m_serviceProviderId);
-    }
-    void AIComponentBase::UpdateNamedModelConfigurationId()
-    {
-        GetNamedId(m_modelConfigurationName, GetModelConfigurations(), m_modelConfigurationId);
+        else
+        {
+            AZ_Warning("AIComponentBase", false, "Failed to create model agent.");
+        }
     }
 
 } // namespace GenAIFramework
