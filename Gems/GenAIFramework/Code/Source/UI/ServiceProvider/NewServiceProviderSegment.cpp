@@ -26,7 +26,7 @@ namespace GenAIFramework
         return interface->GetServiceProviderNamesAndComponentTypeIds();
     }
 
-    AZ::Component* NewServiceProviderSegment::CreateNewComponentEntity(const AZStd::string& name, const AZ::Uuid& selectedComponentTypeId)
+    AZ::Component* NewServiceProviderSegment::CreateNewComponentEntity(const AZStd::string& name, AZ::Uuid selectedComponentTypeId)
     {
         auto interface = GenAIFrameworkInterface::Get();
         if (!interface)

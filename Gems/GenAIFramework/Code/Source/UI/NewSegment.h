@@ -35,7 +35,7 @@ namespace GenAIFramework
         virtual ~NewSegment() = default;
 
         virtual AZStd::vector<AZStd::pair<AZStd::string, AZ::Uuid>> GetRegisteredNameAndComponentTypeId() = 0;
-        virtual AZ::Component* CreateNewComponentEntity(const AZStd::string& name, const AZ::Uuid& selectedComponentTypeId) = 0;
+        virtual AZ::Component* CreateNewComponentEntity(const AZStd::string& name, AZ::Uuid selectedComponentTypeId) = 0;
 
     signals:
         void NewComponentAdded(AZ::Component* component, AZ::Uuid componentTypeId);

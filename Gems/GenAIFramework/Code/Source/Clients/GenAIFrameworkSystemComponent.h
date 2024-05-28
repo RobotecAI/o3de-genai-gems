@@ -48,8 +48,8 @@ namespace GenAIFramework
         AZStd::vector<AZ::Component*> GetServiceProviders() const override;
         AZStd::vector<AZStd::string> GetModelConfigurationNames() const override;
         AZStd::vector<AZStd::string> GetServiceProviderNames() const override;
-        AZ::Component* CreateModelConfiguration(const AZStd::string& modelConfigurationName, const AZ::Uuid& componentTypeId) override;
-        AZ::Component* CreateServiceProvider(const AZStd::string& providerName, const AZ::Uuid& componentTypeId) override;
+        AZ::Component* CreateModelConfiguration(const AZStd::string& modelConfigurationName, AZ::Uuid componentTypeId) override;
+        AZ::Component* CreateServiceProvider(const AZStd::string& providerName, AZ::Uuid componentTypeId) override;
         void RemoveComponent(AZ::Component* component) override;
         void ActivateEntity(AZStd::shared_ptr<AZ::Entity> entity) override;
         void DeactivateEntity(AZStd::shared_ptr<AZ::Entity> entity) override;
@@ -80,7 +80,7 @@ namespace GenAIFramework
         AZStd::vector<AZStd::pair<AZStd::string, AZ::Uuid>> GetRegisteredComponentsNameAndComponentTypeId(
             const AZStd::set<AZ::Uuid>& registeredComponent) const;
         AZStd::vector<AZ::Component*> GetActiveComponents(const EntityIdToEntityMap& entities) const;
-        AZ::Component* CreateNewComponentEntity(const AZStd::string& name, const AZ::Uuid& componentTypeId, EntityIdToEntityMap& entities);
+        AZ::Component* CreateNewComponentEntity(const AZStd::string& name, AZ::Uuid componentTypeId, EntityIdToEntityMap& entities);
 
         AZStd::vector<AZStd::string> GetRegisteredComponentNames(const EntityIdToEntityMap& entities) const;
 

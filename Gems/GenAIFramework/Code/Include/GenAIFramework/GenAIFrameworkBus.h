@@ -57,12 +57,12 @@ namespace GenAIFramework
         //! @param modelConfigurationName Name of the new model configuration.
         //! @param componentTypeId Uuid of the new model configuration component type.
         //! @return A pointer to created component of a requested type (or nullptr when failed).
-        virtual AZ::Component* CreateModelConfiguration(const AZStd::string& modelConfigurationName, const AZ::Uuid& componentTypeId) = 0;
+        virtual AZ::Component* CreateModelConfiguration(const AZStd::string& modelConfigurationName, AZ::Uuid componentTypeId) = 0;
         //! Create and register a new service provider.
         //! @param providerName Name of the new service provider.
         //! @param componentTypeId Uuid of the new service provider component type.
         //! @return A pointer to created component of a requested type (or nullptr when failed).
-        virtual AZ::Component* CreateServiceProvider(const AZStd::string& providerName, const AZ::Uuid& componentTypeId) = 0;
+        virtual AZ::Component* CreateServiceProvider(const AZStd::string& providerName, AZ::Uuid componentTypeId) = 0;
 
         //! Unregister and remove a model configuration or a service provider component.
         //! @param component A pointer to the component to be removed.
