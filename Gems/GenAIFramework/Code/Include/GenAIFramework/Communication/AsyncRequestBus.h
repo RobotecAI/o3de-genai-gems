@@ -61,6 +61,14 @@ namespace GenAIFramework
         //! @return Returns the response to the prompt when ready; an empty string otherwise.
         virtual AZStd::string GetResponse(AZ::Uuid promptId) = 0;
 
+        //! Get the registered name of the active model configuration.
+        //! @return The registered name of the active model configuration or an empty string if not set.
+        virtual AZStd::string GetModelConfigurationTypename() = 0;
+
+        //! Get the registered name of the active service provider.
+        //! @return The registered name of the active service provider or an empty string if not set.
+        virtual AZStd::string GetServiceProviderTypename() = 0;
+
         //! Reset the history of the currently selected model.
         virtual void ResetModelHistory() = 0;
 

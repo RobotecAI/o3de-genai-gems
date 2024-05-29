@@ -9,6 +9,7 @@
 #include "GenAIAsyncRequestSystemComponent.h"
 #include <AzCore/Component/Entity.h>
 #include <AzCore/RTTI/BehaviorContext.h>
+#include <AzCore/Serialization/EditContext.h>
 #include <AzCore/Serialization/SerializeContext.h>
 #include <GenAIFramework/Communication/AIModelRequestBus.h>
 #include <GenAIFramework/Communication/AIServiceProviderBus.h>
@@ -38,7 +39,9 @@ namespace GenAIFramework
                 ->Event("IsResponseReady", &AsyncRequestBus::Events::IsResponseReady)
                 ->Event("GetResponse", &AsyncRequestBus::Events::GetResponse)
                 ->Event("ResetModelHistory", &AsyncRequestBus::Events::ResetModelHistory)
-                ->Event("EnableModelHistory", &AsyncRequestBus::Events::EnableModelHistory);
+                ->Event("EnableModelHistory", &AsyncRequestBus::Events::EnableModelHistory)
+                ->Event("GetModelConfigurationTypename", &AsyncRequestBus::Events::GetModelConfigurationTypename)
+                ->Event("GetServiceProviderTypename", &AsyncRequestBus::Events::GetServiceProviderTypename);
         }
     }
 
@@ -269,6 +272,60 @@ namespace GenAIFramework
     {
         GenAIFramework::AIModelRequestBus::Event(
             m_modelConfigurationId, &GenAIFramework::AIModelRequestBus::Events::EnableModelHistory, enableHistory);
+    }
+
+    AZStd::string GenAIAsyncRequestSystemComponent::GetComponentTypename(
+        const AZStd::vector<AZStd::pair<AZStd::string, AZ::Uuid>>& registeredComponents, const AZ::EntityId& entityId)
+    {
+        if (!entityId.IsValid())
+        {
+            AZ_Warning("GenAIAsyncRequestSystemComponent", false, "The selected component is no valid.");
+            return {};
+        }
+
+        AZ::SerializeContext* serializeContext = nullptr;
+        AZ::Entity* componentEntity;
+        AZ::ComponentApplicationBus::BroadcastResult(componentEntity, &AZ::ComponentApplicationBus::Events::FindEntity, entityId);
+
+        if (!componentEntity)
+        {
+            return {};
+        }
+
+        AZ::ComponentApplicationBus::BroadcastResult(serializeContext, &AZ::ComponentApplicationBus::Events::GetSerializeContext);
+
+        auto entityComponents = componentEntity->GetComponents();
+
+        for (const auto& [name, typeId] : registeredComponents)
+        {
+            // The amount of components in the entity is only one. So this loop will run only once.
+            for (const auto& component : entityComponents)
+            {
+                if (typeId == component->RTTI_GetType())
+                {
+                    const auto classData = serializeContext->FindClassData(typeId);
+                    auto serializedName = classData ? classData->m_name : "";
+                    if (classData->m_editData)
+                    {
+                        serializedName = classData->m_editData->m_name;
+                    }
+                    return serializedName;
+                }
+            }
+        }
+        return {};
+    }
+
+    AZStd::string GenAIAsyncRequestSystemComponent::GetModelConfigurationTypename()
+    {
+        return GetComponentTypename(
+            GenAIFrameworkInterface::Get()->GetModelConfigurationNamesAndComponentTypeIds(), m_modelConfigurationId);
+    }
+
+    AZStd::string GenAIAsyncRequestSystemComponent::GetServiceProviderTypename()
+    {
+        return GetComponentTypename(
+            GenAIFrameworkInterface::Get()->GetServiceProviderNamesAndComponentTypeIds(), m_serviceProviderId);
     }
 
 } // namespace GenAIFramework

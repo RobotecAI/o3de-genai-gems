@@ -75,6 +75,12 @@ response = azlmbr.ai.asyncRequestBus(bus.Broadcast, 'GetResponse', ticket)
 print(response)
 ```
 
+To get registered name of the currently used model configuration or service provider use:
+```python
+registered_name = azlmbr.ai.asyncRequestBus(azlmbr.bus.Broadcast, "GetModelConfigurationTypename")
+registered_name = azlmbr.ai.asyncRequestBus(azlmbr.bus.Broadcast, "GetServiceProviderTypename")
+``` 
+
 To reset the model history, use the following code snippet:
 ```python
 azlmbr.ai.asyncRequestBus(bus.Broadcast, 'ResetModelHistory')
