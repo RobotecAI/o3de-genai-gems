@@ -11,6 +11,7 @@
 #include <AzCore/Component/Component.h>
 #include <AzCore/RTTI/RTTIMacros.h>
 #include <AzCore/RTTI/ReflectContext.h>
+#include <AzCore/std/containers/map.h>
 #include <AzCore/std/string/string.h>
 
 namespace GenAIVendorBundle
@@ -39,58 +40,42 @@ namespace GenAIVendorBundle
         AZStd::string m_systemMessage = "";
         bool m_useSystemMessage = true;
 
-        bool IsDefaultTemperature() const
+        inline bool IsDefaultTemperature() const
         {
             return m_useDefaultTemperature;
         }
-        bool IsDefaultTopP() const
+        inline bool IsDefaultTopP() const
         {
             return m_useDefaultTopP;
         }
-        bool IsDefaultTopK() const
+        inline bool IsDefaultTopK() const
         {
             return m_useDefaultTopK;
         }
-        bool IsDefaultStopSequence() const
+        inline bool IsDefaultStopSequence() const
         {
             return m_useDefaultStopSequence;
         }
 
+        enum class Parameters
+        {
+            MaxTokensToSample,
+            Temperature,
+            TopP,
+            TopK,
+            StopSequence,
+            AnthropicVersion,
+            SystemMessage,
+            useDefaultTemperature,
+            useDefaultTopP,
+            useDefaultTopK,
+            useDefaultStopSequence,
+            useSystemMessage
+        };
+
+        const static AZStd::map<AZStd::string_view, Parameters> m_parameterNameToEnum;
+
         AZ::Outcome<void, AZStd::string> SetModelParameter(const AZ::Name& parameterName, const AZStd::string& parameterValue);
 
-        static AZ::Outcome<bool, void> GetBooleanValue(const AZStd::string& value)
-        {
-            AZStd::string lowerCaseParameterValue = value;
-            std::transform(
-                lowerCaseParameterValue.begin(),
-                lowerCaseParameterValue.end(),
-                lowerCaseParameterValue.begin(),
-                [](unsigned char c)
-                {
-                    return std::tolower(c);
-                });
-
-            lowerCaseParameterValue.erase(
-                std::remove_if(
-                    lowerCaseParameterValue.begin(),
-                    lowerCaseParameterValue.end(),
-                    [](unsigned char c)
-                    {
-                        return std::isspace(c);
-                    }),
-                lowerCaseParameterValue.end());
-            if (lowerCaseParameterValue == "true")
-            {
-                return AZ::Success(true);
-            }
-            else if (lowerCaseParameterValue == "false")
-            {
-                return AZ::Success(false);
-            }
-            else
-            {
-                return AZ::Failure();
-            }
-        }
-    };
+    }; // namespace GenAIVendorBundle
 } // namespace GenAIVendorBundle
