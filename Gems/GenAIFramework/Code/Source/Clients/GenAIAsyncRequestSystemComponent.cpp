@@ -40,7 +40,8 @@ namespace GenAIFramework
                 ->Event("GetResponse", &AsyncRequestBus::Events::GetResponse)
                 ->Event("ResetModelHistory", &AsyncRequestBus::Events::ResetModelHistory)
                 ->Event("EnableModelHistory", &AsyncRequestBus::Events::EnableModelHistory)
-                ->Event("GetActiveModelConfigurationRegisteredName", &AsyncRequestBus::Events::GetActiveModelConfigurationRegisteredName);
+                ->Event("GetActiveModelConfigurationRegisteredName", &AsyncRequestBus::Events::GetActiveModelConfigurationRegisteredName)
+                ->Event("GetActiveServiceProviderRegisteredName", &AsyncRequestBus::Events::GetActiveServiceProviderRegisteredName);
         }
     }
 
@@ -257,31 +258,29 @@ namespace GenAIFramework
             m_modelConfigurationId, &GenAIFramework::AIModelRequestBus::Events::EnableModelHistory, enableHistory);
     }
 
-    AZStd::string GenAIAsyncRequestSystemComponent::GetActiveModelConfigurationRegisteredName()
+    AZStd::string GenAIAsyncRequestSystemComponent::GetActiveComponentRegisteredName(
+        const AZStd::vector<AZStd::pair<AZStd::string, AZ::Uuid>>& registeredComponents, const AZ::EntityId& entityId)
     {
-        if (!m_modelConfigurationId.IsValid())
+        if (!entityId.IsValid())
         {
-            AZ_Warning("GenAIAsyncRequestSystemComponent", false, "No model configuration selected.");
+            AZ_Warning("GenAIAsyncRequestSystemComponent", false, "The selected component is no valid.");
             return {};
         }
 
         AZ::SerializeContext* serializeContext = nullptr;
-        AZ::Entity* modelConfigurationEntity;
-        AZ::ComponentApplicationBus::BroadcastResult(
-            modelConfigurationEntity, &AZ::ComponentApplicationBus::Events::FindEntity, m_modelConfigurationId);
+        AZ::Entity* componentEntity;
+        AZ::ComponentApplicationBus::BroadcastResult(componentEntity, &AZ::ComponentApplicationBus::Events::FindEntity, entityId);
 
-        if (!modelConfigurationEntity)
+        if (!componentEntity)
         {
             return {};
         }
 
         AZ::ComponentApplicationBus::BroadcastResult(serializeContext, &AZ::ComponentApplicationBus::Events::GetSerializeContext);
 
-        auto registeredModelConfigurations = GenAIFrameworkInterface::Get()->GetModelConfigurationNamesAndComponentTypeIds();
+        auto entityComponents = componentEntity->GetComponents();
 
-        auto entityComponents = modelConfigurationEntity->GetComponents();
-
-        for (const auto& [name, typeId] : registeredModelConfigurations)
+        for (const auto& [name, typeId] : registeredComponents)
         {
             for (const auto& component : entityComponents)
             {
@@ -297,7 +296,19 @@ namespace GenAIFramework
                 }
             }
         }
-        return "";
+        return {};
+    }
+
+    AZStd::string GenAIAsyncRequestSystemComponent::GetActiveModelConfigurationRegisteredName()
+    {
+        return GetActiveComponentRegisteredName(
+            GenAIFrameworkInterface::Get()->GetModelConfigurationNamesAndComponentTypeIds(), m_modelConfigurationId);
+    }
+
+    AZStd::string GenAIAsyncRequestSystemComponent::GetActiveServiceProviderRegisteredName()
+    {
+        return GetActiveComponentRegisteredName(
+            GenAIFrameworkInterface::Get()->GetServiceProviderNamesAndComponentTypeIds(), m_serviceProviderId);
     }
 
 } // namespace GenAIFramework

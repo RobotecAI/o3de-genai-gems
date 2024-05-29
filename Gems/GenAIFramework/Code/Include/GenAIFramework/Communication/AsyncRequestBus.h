@@ -65,6 +65,10 @@ namespace GenAIFramework
         //! @return The registered name of the active model configuration or an empty string if not set.
         virtual AZStd::string GetActiveModelConfigurationRegisteredName() = 0;
 
+        //! Get the registered name of the active service provider.
+        //! @return The registered name of the active service provider or an empty string if not set.
+        virtual AZStd::string GetActiveServiceProviderRegisteredName() = 0;
+
         //! Reset the history of the currently selected model.
         virtual void ResetModelHistory() = 0;
 
