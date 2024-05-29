@@ -31,6 +31,7 @@ namespace GenAIFramework
 
     {
         m_ui->setupUi(this);
+        m_optionsWidget = new GenAIFrameworkWidget();
 
         AZ::SystemTickBus::QueueFunction(
             [this]()
@@ -45,6 +46,7 @@ namespace GenAIFramework
         connect(m_ui->models, &QComboBox::textActivated, this, &AIAssistantWidget::OnModelConfigurationSelected);
         connect(m_ui->providers, &QComboBox::textActivated, this, &AIAssistantWidget::OnServiceProviderSelected);
         connect(m_ui->SendBtn, &QPushButton::clicked, this, &AIAssistantWidget::OnRequestButton);
+        connect(m_ui->OptionsBtn, &QPushButton::clicked, this, &AIAssistantWidget::OnOptionsButton);
         connect(m_ui->actionResetHistory, &QAction::triggered, this, &AIAssistantWidget::OnResetAction);
     }
 
@@ -99,6 +101,12 @@ namespace GenAIFramework
     {
         // TODO: send the request
         m_ui->textEdit->setPlainText("This is a WIP code; sending requests from this window is not available yet");
+    }
+
+    void AIAssistantWidget::OnOptionsButton()
+    {
+        m_optionsWidget->resize(this->size());
+        m_optionsWidget->show();
     }
 
     void AIAssistantWidget::UpdateModelAndProviderLists()

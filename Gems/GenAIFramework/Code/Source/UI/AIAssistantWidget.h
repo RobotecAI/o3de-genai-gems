@@ -19,6 +19,8 @@
 #include <AzCore/std/containers/unordered_map.h>
 #include <GenAIFramework/GenAIFrameworkBus.h>
 
+#include "GenAIFrameworkWidget.h"
+
 namespace Ui
 {
     class AIAssistantUI;
@@ -40,6 +42,7 @@ namespace GenAIFramework
         void OnModelConfigurationSelected(const QString& modelName);
         void OnServiceProviderSelected(const QString& providerName);
         void OnRequestButton();
+        void OnOptionsButton();
         void OnResetAction();
 
     protected:
@@ -63,6 +66,7 @@ namespace GenAIFramework
         void SetModelAndProvider(const QString& modelName, const QString& providerName);
 
         Ui::AIAssistantUI* m_ui;
+        GenAIFrameworkWidget* m_optionsWidget;
 
         QMap<QString, AZ::EntityId> m_ServiceProviderNameToId;
         QMap<QString, AZ::EntityId> m_modelConfigurationNameToId;
