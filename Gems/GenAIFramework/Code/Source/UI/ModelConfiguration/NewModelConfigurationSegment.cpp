@@ -26,8 +26,7 @@ namespace GenAIFramework
         return interface->GetModelConfigurationNamesAndComponentTypeIds();
     }
 
-    AZ::Component* NewModelConfigurationSegment::CreateNewComponentEntity(
-        const AZStd::string& name, const AZ::Uuid& selectedComponentTypeId)
+    AZ::Component* NewModelConfigurationSegment::CreateNewComponentEntity(const AZStd::string& name, AZ::Uuid selectedComponentTypeId)
     {
         auto interface = GenAIFrameworkInterface::Get();
         if (!interface)

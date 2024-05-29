@@ -22,6 +22,6 @@ namespace GenAIFramework
         ~NewModelConfigurationSegment() = default;
 
         AZStd::vector<AZStd::pair<AZStd::string, AZ::Uuid>> GetRegisteredNameAndComponentTypeId() override;
-        AZ::Component* CreateNewComponentEntity(const AZStd::string& name, const AZ::Uuid& selectedComponentTypeId) override;
+        AZ::Component* CreateNewComponentEntity(const AZStd::string& name, AZ::Uuid selectedComponentTypeId) override;
     };
 } // namespace GenAIFramework

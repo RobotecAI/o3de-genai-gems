@@ -34,8 +34,9 @@ namespace GenAIFramework
             AZStd::string configurationPayload, AZStd::function<void(bool)> postSaveCallback)
         {
             return [payloadBuffer = AZStd::move(configurationPayload),
-                    postSaveCB = AZStd::move(postSaveCallback)](bool, const AzToolsFramework::SourceControlFileInfo& info)
+                    postSaveCB = AZStd::move(postSaveCallback)](bool success, const AzToolsFramework::SourceControlFileInfo& info)
             {
+
                 if (info.IsLockedByOther())
                 {
                     AZ_Warning(
@@ -54,6 +55,12 @@ namespace GenAIFramework
                 if (AZ::IO::SystemFile outputFile; outputFile.Open(info.m_filePath.c_str(), configurationMode))
                 {
                     saved = outputFile.Write(payloadBuffer.data(), payloadBuffer.size()) == payloadBuffer.size();
+                }
+
+                if (!success)
+                {
+                    AZ_Warning("GenAIFramework", false, "Registry file operation failed");
+                    return;
                 }
 
                 AZ_Warning("GenAIFramework", saved, "Failed to save GenAIFramework configuration");

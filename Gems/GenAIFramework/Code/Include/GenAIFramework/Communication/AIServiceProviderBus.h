@@ -14,6 +14,7 @@
 #include <AzCore/Outcome/Outcome.h>
 #include <AzCore/RTTI/TemplateInfo.h>
 #include <GenAIFramework/Communication/AIModelRequestBus.h>
+
 namespace GenAIFramework
 {
     class AIServiceProviderRequests : public AZ::ComponentBus

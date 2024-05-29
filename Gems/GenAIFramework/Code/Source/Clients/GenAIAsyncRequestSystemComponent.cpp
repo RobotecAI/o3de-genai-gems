@@ -196,19 +196,35 @@ namespace GenAIFramework
         }
 
         AZ::Uuid promptId = AZ::Uuid::CreateRandom();
+        GenAIFramework::ModelAPIPrompt modelPrompt;
+        modelPrompt.push_back(AZStd::any(prompt));
+
         GenAIFramework::ModelAPIRequest preparedRequest;
         GenAIFramework::AIModelRequestBus::EventResult(
-            preparedRequest, m_modelConfigurationId, &GenAIFramework::AIModelRequestBus::Events::PrepareRequest, prompt);
+            preparedRequest, m_modelConfigurationId, &GenAIFramework::AIModelRequestBus::Events::PrepareRequest, modelPrompt);
 
         auto callback = [this, promptId](GenAIFramework::ModelAPIResponse outcome)
         {
-            AZ::Outcome<AZStd::string, AZStd::string> extractedResponse;
+            if (!outcome.IsSuccess())
+            {
+                AZStd::unique_lock<AZStd::mutex> lock(m_promptMutex);
+                m_promptResponses[promptId] = "Error: " + outcome.GetError();
+                AZ_Warning("AiAssistantEditorSystemComponent", false, "Request returned with an error: %s", outcome.GetError().c_str());
+                return;
+            }
+
+            GenAIFramework::ModelAPIExtractedResponse extractedResponse;
             GenAIFramework::AIModelRequestBus::EventResult(
                 extractedResponse, m_modelConfigurationId, &GenAIFramework::AIModelRequestBus::Events::ExtractResult, outcome);
             if (extractedResponse.IsSuccess())
             {
+                AZStd::string response = "";
+                for (const auto& elem : extractedResponse.GetValue())
+                {
+                    response += AZStd::any_cast<AZStd::string>(elem);
+                }
                 AZStd::unique_lock<AZStd::mutex> lock(m_promptMutex);
-                m_promptResponses[promptId] = extractedResponse.GetValue();
+                m_promptResponses[promptId] = response;
             }
             else
             {

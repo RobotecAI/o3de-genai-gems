@@ -13,6 +13,8 @@
 #include <AzCore/Outcome/Outcome.h>
 #include <AzCore/Serialization/EditContext.h>
 #include <AzCore/Serialization/SerializeContext.h>
+#include <AzCore/std/any.h>
+#include <AzCore/std/string/string.h>
 
 namespace GenAIMock
 {
@@ -46,15 +48,23 @@ namespace GenAIMock
         GenAIFramework::AIModelRequestBus::Handler::BusDisconnect();
     }
 
-    GenAIFramework::ModelAPIRequest PassthroughModelComponent::PrepareRequest(const AZStd::string& prompt)
+    GenAIFramework::ModelAPIRequest PassthroughModelComponent::PrepareRequest(const GenAIFramework::ModelAPIPrompt& prompt)
     {
         // This mock model passes the data to the AI service provider unchanged
-        return prompt;
+        AZStd::string promptString = "";
+        for (const auto& elem : prompt)
+        {
+            promptString += AZStd::any_cast<AZStd::string>(elem);
+        }
+        return promptString;
     }
 
-    GenAIFramework::ModelAPIResponse PassthroughModelComponent::ExtractResult(const GenAIFramework::ModelAPIResponse& modelAPIResponse)
+    GenAIFramework::ModelAPIExtractedResponse PassthroughModelComponent::ExtractResult(
+        const GenAIFramework::ModelAPIResponse& modelAPIResponse)
     {
         // The mock model returns the data that does not need additional modifications
-        return modelAPIResponse;
+        AZStd::vector<AZStd::any> modelAPIResponseVector;
+        modelAPIResponseVector.push_back(AZStd::any(modelAPIResponse));
+        return modelAPIResponseVector;
     }
 } // namespace GenAIMock

@@ -61,8 +61,8 @@ namespace GenAIVendorBundle
     private:
         //////////////////////////////////////////////////////////////////////////
         // ModelConfigurationBus::Handler
-        AZStd::string PrepareRequest(const AZStd::string& prompt) override;
-        AZ::Outcome<AZStd::string, AZStd::string> ExtractResult(const GenAIFramework::ModelAPIResponse& modelAPIResponse) override;
+        GenAIFramework::ModelAPIRequest PrepareRequest(const GenAIFramework::ModelAPIPrompt& prompt) override;
+        GenAIFramework::ModelAPIExtractedResponse ExtractResult(const GenAIFramework::ModelAPIResponse& modelAPIResponse) override;
         //////////////////////////////////////////////////////////////////////////
 
         OllamaModelConfiguration m_configuration;

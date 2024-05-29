@@ -5,6 +5,9 @@ set(FILES
     Source/SettingsRegistryManager/SettingsRegistryManager.cpp
     Source/SettingsRegistryManager/SettingsRegistryManager.h
 
+    Source/ModelAgent/ModelAgent.cpp
+    Source/ModelAgent/ModelAgent.h
+
     Source/Clients/GenAIAsyncRequestSystemComponent.cpp
     Source/Clients/GenAIAsyncRequestSystemComponent.h
     Source/Clients/GenAIFrameworkSystemComponent.cpp

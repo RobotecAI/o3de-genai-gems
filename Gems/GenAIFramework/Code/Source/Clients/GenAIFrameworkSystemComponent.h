@@ -8,18 +8,21 @@
 
 #pragma once
 
-#include "Clients/GenAIFrameworkSystemComponentConfiguration.h"
-#include "SettingsRegistryManager/SettingsRegistryManager.h"
-
 #include <Atom/Feature/Utils/FrameCaptureBus.h>
 #include <Atom/RPI.Public/Base.h>
 #include <Atom/RPI.Public/ViewportContext.h>
 #include <Atom/RPI.Public/ViewportContextBus.h>
 #include <AzCore/Component/Component.h>
+#include <AzCore/Component/Entity.h>
+#include <AzCore/Component/EntityId.h>
+#include <AzCore/base.h>
 #include <AzCore/std/smart_ptr/shared_ptr.h>
 #include <CameraTools/CameraToolsHandler.h>
+#include <Clients/GenAIFrameworkSystemComponentConfiguration.h>
 #include <GenAIFramework/GenAIFrameworkBus.h>
 #include <GenAIFramework/SystemRegistrationContext/SystemRegistrationContext.h>
+#include <ModelAgent/ModelAgent.h>
+#include <SettingsRegistryManager/SettingsRegistryManager.h>
 
 namespace GenAIFramework
 {
@@ -50,11 +53,18 @@ namespace GenAIFramework
         AZStd::vector<AZ::Component*> GetServiceProviders() const override;
         AZStd::vector<AZStd::string> GetModelConfigurationNames() const override;
         AZStd::vector<AZStd::string> GetServiceProviderNames() const override;
-        AZ::Component* CreateModelConfiguration(const AZStd::string& modelConfigurationName, const AZ::Uuid& componentTypeId) override;
-        AZ::Component* CreateServiceProvider(const AZStd::string& providerName, const AZ::Uuid& componentTypeId) override;
+        AZ::Component* CreateModelConfiguration(const AZStd::string& modelConfigurationName, AZ::Uuid componentTypeId) override;
+        AZ::Component* CreateServiceProvider(const AZStd::string& providerName, AZ::Uuid componentTypeId) override;
         void RemoveComponent(AZ::Component* component) override;
         void ActivateEntity(AZStd::shared_ptr<AZ::Entity> entity) override;
         void DeactivateEntity(AZStd::shared_ptr<AZ::Entity> entity) override;
+        AZ::Outcome<AZ::u64, void> CreateModelAgent(
+            const AZStd::string& serviceProviderName, const AZStd::string modelModelConfigurationName) override;
+        bool RemoveModelAgent(AZ::u64 modelAgentId) override;
+        bool SendPromptToModelAgent(
+            const AZ::u64 modelAgentId,
+            const AZStd::vector<AZStd::any>& prompt,
+            const AZStd::function<void(const AZ::Outcome<AZStd::vector<AZStd::any>, AZStd::string>&)>& callback) override;
         ////////////////////////////////////////////////////////////////////////
 
         ////////////////////////////////////////////////////////////////////////
@@ -75,7 +85,7 @@ namespace GenAIFramework
         AZStd::vector<AZStd::pair<AZStd::string, AZ::Uuid>> GetRegisteredComponentsNameAndComponentTypeId(
             const AZStd::set<AZ::Uuid>& registeredComponent) const;
         AZStd::vector<AZ::Component*> GetActiveComponents(const EntityIdToEntityMap& entities) const;
-        AZ::Component* CreateNewComponentEntity(const AZStd::string& name, const AZ::Uuid& componentTypeId, EntityIdToEntityMap& entities);
+        AZ::Component* CreateNewComponentEntity(const AZStd::string& name, AZ::Uuid componentTypeId, EntityIdToEntityMap& entities);
 
         AZStd::vector<AZStd::string> GetRegisteredComponentNames(const EntityIdToEntityMap& entities) const;
 
@@ -83,5 +93,9 @@ namespace GenAIFramework
 
         AZ::RPI::ViewportContext::PipelineChangedEvent::Handler m_pipelineChangedHandler;
         AZStd::vector<AZStd::string> m_passHierarchy;
+
+        AZ::EntityId GetEntityIdByName(const AZStd::string& name, const EntityIdToEntityMap& entities) const;
+
+        AZStd::map<AZ::u64, ModelAgent> m_modelAgents;
     };
 } // namespace GenAIFramework

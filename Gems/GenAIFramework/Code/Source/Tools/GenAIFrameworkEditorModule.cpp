@@ -36,9 +36,11 @@ namespace GenAIFramework
             // EditContext. This happens through the [MyComponent]::Reflect() function.
             m_descriptors.insert(
                 m_descriptors.end(),
-                { GenAIFrameworkEditorSystemComponent::CreateDescriptor(),
-                  GenAIAsyncRequestEditorSystemComponent::CreateDescriptor(),
-                  PromptComponent::CreateDescriptor() });
+                {
+                    GenAIFrameworkEditorSystemComponent::CreateDescriptor(),
+                    GenAIAsyncRequestEditorSystemComponent::CreateDescriptor(),
+                    PromptComponent::CreateDescriptor(),
+                });
         }
 
         /**
