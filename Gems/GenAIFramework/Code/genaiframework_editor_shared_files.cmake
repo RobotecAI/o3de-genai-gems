@@ -2,6 +2,9 @@ set(FILES
     ../Assets/Editor/Icons/Toolbar/GenAIFramework.qrc
     ../Assets/Editor/Icons/Toolbar/AI.svg
     Source/Tools/GenAIFrameworkEditorModule.cpp
+    Source/UI/AIAssistantWidget.h
+    Source/UI/AIAssistantWidget.cpp
+    Source/UI/AIAssistantWidget.ui
     Source/UI/GenAIFrameworkWidget.cpp
     Source/UI/GenAIFrameworkWidget.h
     Source/UI/ModelConfiguration/NewModelConfigurationSegment.cpp
