@@ -49,12 +49,12 @@ namespace GenAIFramework
         AZ::Uuid SendPromptToLLM(const AZStd::string& prompt) override;
         bool IsResponseReady(AZ::Uuid promptId) override;
         AZStd::string GetResponse(AZ::Uuid promptId) override;
-        AZStd::string GetActiveModelConfigurationRegisteredName() override;
-        AZStd::string GetActiveServiceProviderRegisteredName() override;
+        AZStd::string GetModelConfigurationTypename() override;
+        AZStd::string GetServiceProviderTypename() override;
         void ResetModelHistory() override;
         void EnableModelHistory(bool enableHistory) override;
 
-        AZStd::string GetActiveComponentRegisteredName(
+        AZStd::string GetComponentTypename(
             const AZStd::vector<AZStd::pair<AZStd::string, AZ::Uuid>>& registeredComponents, const AZ::EntityId& entityId);
 
         bool SetEntityIdByName(const AZStd::vector<AZ::Component*>& components, const AZStd::string& entityName, AZ::EntityId& entityId);

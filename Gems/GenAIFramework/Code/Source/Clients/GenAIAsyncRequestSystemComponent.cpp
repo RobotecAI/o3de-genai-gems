@@ -40,8 +40,8 @@ namespace GenAIFramework
                 ->Event("GetResponse", &AsyncRequestBus::Events::GetResponse)
                 ->Event("ResetModelHistory", &AsyncRequestBus::Events::ResetModelHistory)
                 ->Event("EnableModelHistory", &AsyncRequestBus::Events::EnableModelHistory)
-                ->Event("GetActiveModelConfigurationRegisteredName", &AsyncRequestBus::Events::GetActiveModelConfigurationRegisteredName)
-                ->Event("GetActiveServiceProviderRegisteredName", &AsyncRequestBus::Events::GetActiveServiceProviderRegisteredName);
+                ->Event("GetModelConfigurationTypename", &AsyncRequestBus::Events::GetModelConfigurationTypename)
+                ->Event("GetServiceProviderTypename", &AsyncRequestBus::Events::GetServiceProviderTypename);
         }
     }
 
@@ -258,7 +258,7 @@ namespace GenAIFramework
             m_modelConfigurationId, &GenAIFramework::AIModelRequestBus::Events::EnableModelHistory, enableHistory);
     }
 
-    AZStd::string GenAIAsyncRequestSystemComponent::GetActiveComponentRegisteredName(
+    AZStd::string GenAIAsyncRequestSystemComponent::GetComponentTypename(
         const AZStd::vector<AZStd::pair<AZStd::string, AZ::Uuid>>& registeredComponents, const AZ::EntityId& entityId)
     {
         if (!entityId.IsValid())
@@ -282,6 +282,7 @@ namespace GenAIFramework
 
         for (const auto& [name, typeId] : registeredComponents)
         {
+            // The amount of components in the entity is only one. So this loop will run only once.
             for (const auto& component : entityComponents)
             {
                 if (typeId == component->RTTI_GetType())
@@ -299,15 +300,15 @@ namespace GenAIFramework
         return {};
     }
 
-    AZStd::string GenAIAsyncRequestSystemComponent::GetActiveModelConfigurationRegisteredName()
+    AZStd::string GenAIAsyncRequestSystemComponent::GetModelConfigurationTypename()
     {
-        return GetActiveComponentRegisteredName(
+        return GetComponentTypename(
             GenAIFrameworkInterface::Get()->GetModelConfigurationNamesAndComponentTypeIds(), m_modelConfigurationId);
     }
 
-    AZStd::string GenAIAsyncRequestSystemComponent::GetActiveServiceProviderRegisteredName()
+    AZStd::string GenAIAsyncRequestSystemComponent::GetServiceProviderTypename()
     {
-        return GetActiveComponentRegisteredName(
+        return GetComponentTypename(
             GenAIFrameworkInterface::Get()->GetServiceProviderNamesAndComponentTypeIds(), m_serviceProviderId);
     }
 
