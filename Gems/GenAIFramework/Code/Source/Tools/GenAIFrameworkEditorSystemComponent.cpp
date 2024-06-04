@@ -8,6 +8,7 @@
 
 #include "GenAIFrameworkEditorSystemComponent.h"
 #include "SettingsRegistryManager/SettingsRegistryManager.h"
+#include "UI/AIAssistantWidget.h"
 
 #include <API/ViewPaneOptions.h>
 #include <AzCore/Component/Entity.h>
@@ -125,7 +126,7 @@ namespace GenAIFramework
         options.isDeletable = false;
         options.toolbarIcon = ":/GenAIFramework/AI.svg";
 
-        AzToolsFramework::RegisterViewPane<GenAIFrameworkWidget>("GenAIFramework", "GenAIFramework", options);
+        AzToolsFramework::RegisterViewPane<AIAssistantWidget>("AIAssistant", "AIAssistant", options);
     }
 
     void GenAIFrameworkEditorSystemComponent::OnServiceProviderAdded([[maybe_unused]] const AZ::EntityId& serviceProviderId)

@@ -134,6 +134,7 @@ if(PAL_TRAIT_BUILD_HOST_TOOLS)
         NAME ${gem_name}.Editor GEM_MODULE
         NAMESPACE Gem
         AUTOMOC
+        AUTOUIC
         AUTORCC
         FILES_CMAKE
             genaiframework_editor_shared_files.cmake
