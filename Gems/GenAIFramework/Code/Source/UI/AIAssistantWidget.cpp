@@ -16,8 +16,11 @@
 #include <AzCore/Component/ComponentApplicationBus.h>
 #include <GenAIFramework/Communication/AsyncRequestBus.h>
 #include <GenAIFramework/GenAIFrameworkBus.h>
+#include <GenAIFramework/Communication/AIModelRequestBus.h>
+#include <GenAIFramework/Communication/AIServiceProviderBus.h>
 #include <QMessageBox>
 #include <QSettings>
+#include <QScrollBar>
 #include <Source/UI/ui_AIAssistantWidget.h>
 
 namespace GenAIFramework
@@ -32,6 +35,20 @@ namespace GenAIFramework
     {
         m_ui->setupUi(this);
         m_optionsWidget = new GenAIFrameworkWidget();
+
+        m_uiChatLayout = new QVBoxLayout();
+        m_uiChatLayout->setAlignment(Qt::AlignBottom);
+        m_ui->scrollArea->setWidgetResizable(true);
+        m_ui->scrollArea->widget()->setLayout(m_uiChatLayout);
+        m_ui->scrollArea->setStyleSheet("QLabel { border-radius: 15px; padding: 15px; }");
+        m_ui->scrollArea->verticalScrollBar()->connect(
+                m_ui->scrollArea->verticalScrollBar(),
+                &QScrollBar::rangeChanged,
+                [this] ()
+                {
+                    m_ui->scrollArea->verticalScrollBar()->setValue(m_ui->scrollArea->verticalScrollBar()->maximum());
+                }
+        );
 
         AZ::SystemTickBus::QueueFunction(
             [this]()
@@ -99,8 +116,40 @@ namespace GenAIFramework
 
     void AIAssistantWidget::OnRequestButton()
     {
-        // TODO: send the request
-        m_ui->textEdit->setPlainText("This is a WIP code; sending requests from this window is not available yet");
+        AZ::EntityId modelConfigurationId = m_modelConfigurationNameToId[m_ui->models->currentText()];
+        AZ::EntityId serviceProviderId = m_ServiceProviderNameToId[m_ui->providers->currentText()];
+
+        std::string modelInputStdString = m_ui->textEdit->toPlainText().toStdString();
+        AZStd::string modelInput = modelInputStdString.c_str();
+
+        // prepare the request
+        GenAIFramework::ModelAPIRequest preparedRequest;
+        GenAIFramework::AIModelRequestBus::EventResult(
+                preparedRequest, modelConfigurationId, &GenAIFramework::AIModelRequestBus::Events::PrepareRequest, modelInput);
+
+
+        // send the request
+        auto callback = [=](GenAIFramework::ModelAPIResponse outcome)
+        {
+            AZStd::string modelOutput;
+            AZ::Outcome<AZStd::string, AZStd::string> extractedResponse;
+            GenAIFramework::AIModelRequestBus::EventResult(
+                    extractedResponse, modelConfigurationId, &GenAIFramework::AIModelRequestBus::Events::ExtractResult, outcome);
+            if (extractedResponse.IsSuccess())
+            {
+                modelOutput = extractedResponse.GetValue();
+            }
+            else
+            {
+                modelOutput = "Error: " + extractedResponse.GetError();
+                AZ_Warning("AI Assistant", false, "Cannot get a response from the model: %s", modelOutput.c_str());
+            }
+
+            UiAppendChatMessage(modelOutput, true);
+        };
+
+        UiAppendChatMessage(modelInput);
+        AIServiceProviderBus::Event(serviceProviderId, &AIServiceProviderBus::Events::SendRequest, preparedRequest, callback);
     }
 
     void AIAssistantWidget::OnOptionsButton()
@@ -214,14 +263,44 @@ namespace GenAIFramework
         }
     }
 
+    void AIAssistantWidget::UiAppendChatMessage(const AZStd::string &message, bool response)
+    {
+        auto label = new QLabel(message.c_str());
+        label->setWordWrap(true);
+        label->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
+
+        if (response)
+        {
+            label->setStyleSheet("QLabel { background-color: #303030; margin-right: 100px; }");
+        }
+        else
+        {
+            label->setStyleSheet("QLabel { background-color: #202020; margin-left: 100px; }");
+        }
+
+        m_uiChatLayout->addWidget(label);
+    }
+
+    void AIAssistantWidget::UiClearMessages()
+    {
+        QLayoutItem* item;
+        while ((item = m_uiChatLayout->takeAt(0)) != nullptr)
+        {
+            delete item->widget();
+            delete item;
+        }
+    }
+
     void AIAssistantWidget::OnResetAction()
     {
         // TODO: reset history
+        UiClearMessages();
     }
 
     void AIAssistantWidget::closeEvent(QCloseEvent* event)
     {
         // TODO: reset history
+        UiClearMessages();
         QMainWindow::closeEvent(event);
     }
 

@@ -65,7 +65,11 @@ namespace GenAIFramework
         //! @param providerName The name of the service provider.
         void SetModelAndProvider(const QString& modelName, const QString& providerName);
 
+        void UiAppendChatMessage(const AZStd::string& message, bool response = false);
+        void UiClearMessages();
+
         Ui::AIAssistantUI* m_ui;
+        QVBoxLayout* m_uiChatLayout;
         GenAIFrameworkWidget* m_optionsWidget;
 
         QMap<QString, AZ::EntityId> m_ServiceProviderNameToId;
