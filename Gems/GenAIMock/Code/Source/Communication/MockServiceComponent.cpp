@@ -76,7 +76,7 @@ namespace GenAIMock
 
         if (auto registrationContext = azrtti_cast<GenAIFramework::SystemRegistrationContext*>(context))
         {
-            registrationContext->RegisterGenAIFrameworkServiceProvider<MockServiceComponent>();
+            registrationContext->RegisterServiceProvider<MockServiceComponent>();
         }
     }
 

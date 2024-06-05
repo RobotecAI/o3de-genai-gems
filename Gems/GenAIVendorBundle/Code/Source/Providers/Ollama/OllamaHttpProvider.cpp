@@ -77,7 +77,7 @@ namespace GenAIVendorBundle
 
         if (auto registrationContext = azrtti_cast<GenAIFramework::SystemRegistrationContext*>(context))
         {
-            registrationContext->RegisterGenAIFrameworkServiceProvider<OllamaHttpServiceComponent>();
+            registrationContext->RegisterServiceProvider<OllamaHttpServiceComponent>();
         }
     }
 
