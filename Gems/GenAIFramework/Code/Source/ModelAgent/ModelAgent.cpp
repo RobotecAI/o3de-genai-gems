@@ -9,26 +9,33 @@
 #include "ModelAgent.h"
 #include <GenAIFramework/Communication/AIModelRequestBus.h>
 #include <GenAIFramework/Communication/AIServiceProviderBus.h>
+#include <GenAIFramework/GenAIFrameworkModelAgentBus.h>
 
 namespace GenAIFramework
 {
-    ModelAgent::ModelAgent(const AZ::EntityId& serviceProviderId, const AZ::EntityId& modelConfigurationId)
+    ModelAgent::ModelAgent(const AZ::EntityId& serviceProviderId, const AZ::EntityId& modelConfigurationId, AZ::u64 agentId)
         : m_serviceProviderId(serviceProviderId)
         , m_modelConfigurationId(modelConfigurationId)
+        , m_agentId(agentId)
     {
+        GenAIFrameworkModelAgentBus::Handler::BusConnect(m_agentId);
     }
 
-    void ModelAgent::SendPrompt(
-        const AZStd::vector<AZStd::any>& prompt, AZStd::function<void(AZ::Outcome<AZStd::vector<AZStd::any>, AZStd::string>)> callback)
+    ModelAgent::~ModelAgent()
+    {
+        GenAIFrameworkModelAgentBus::Handler::BusDisconnect(m_agentId);
+    }
+
+    void ModelAgent::SendPrompt(const AZStd::vector<AZStd::any>& prompt)
     {
         ModelAPIRequest preparedRequest;
         AIModelRequestBus::EventResult(preparedRequest, m_modelConfigurationId, &AIModelRequestBus::Events::PrepareRequest, prompt);
-
-        auto callbackWrapper = [this, callback, prompt](ModelAPIResponse outcome)
+        auto callbackWrapper = [this, prompt](ModelAPIResponse outcome)
         {
             if (!outcome.IsSuccess())
             {
-                callback(AZ::Failure(outcome.GetError()));
+                GenAIFrameworkModelAgentNotificationBus::Event(
+                    m_agentId, &GenAIFrameworkModelAgentNotifications::OnPromptResponse, AZ::Failure(outcome.GetError()));
                 return;
             }
             ModelAPIExtractedResponse extractedResponse;
@@ -40,10 +47,16 @@ namespace GenAIFramework
                 m_history.push_back({ prompt, extractedResponse.GetValue() });
             }
 
-            callback(extractedResponse);
+            GenAIFrameworkModelAgentNotificationBus::Event(
+                m_agentId, &GenAIFrameworkModelAgentNotifications::OnPromptResponse, extractedResponse);
         };
 
         AIServiceProviderBus::Event(m_serviceProviderId, &AIServiceProviderBus::Events::SendRequest, preparedRequest, callbackWrapper);
+    }
+
+    AIHistory ModelAgent::GetHistory() const
+    {
+        return m_history;
     }
 
     void ModelAgent::SetServiceProviderId(const AZ::EntityId& serviceProviderId)

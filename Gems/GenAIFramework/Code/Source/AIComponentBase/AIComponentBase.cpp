@@ -94,8 +94,12 @@ namespace GenAIFramework
         auto agentOutcome = frameworkInterface->CreateModelAgent(m_serviceProviderName, m_modelConfigurationName);
         if (agentOutcome.IsSuccess())
         {
+            auto oldId = m_agentId;
+
             frameworkInterface->RemoveModelAgent(m_agentId);
             m_agentId = agentOutcome.GetValue();
+
+            OnAgentChanged(oldId);
         }
         else
         {

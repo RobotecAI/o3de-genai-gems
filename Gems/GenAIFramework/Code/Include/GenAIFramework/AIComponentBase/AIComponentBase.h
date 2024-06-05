@@ -41,6 +41,11 @@ namespace GenAIFramework
 
         void UpdateComponent();
 
+        virtual void OnAgentChanged(AZ::u64 oldId)
+        {
+            AZ_UNUSED(oldId);
+        };
+
     private:
         AZStd::vector<AZStd::string> GetNames(const AZStd::vector<AZ::Component*>& components) const;
         AZStd::vector<AZ::Component*> GetServiceProviders() const;

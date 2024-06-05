@@ -341,7 +341,7 @@ namespace GenAIFramework
         AZ::u32 idTime = static_cast<AZ::u64>(currentTime.time_since_epoch().count());
         AZ::u64 id = m_modelAgents.size() << 32 | idTime;
 
-        m_modelAgents[id] = ModelAgent(serviceProviderId, modelConfigurationId);
+        m_modelAgents[id] = AZStd::make_shared<ModelAgent>(serviceProviderId, modelConfigurationId, id);
 
         return AZ::Success(id);
     }
@@ -349,20 +349,6 @@ namespace GenAIFramework
     bool GenAIFrameworkSystemComponent::RemoveModelAgent(AZ::u64 modelAgentId)
     {
         return (m_modelAgents.erase(modelAgentId) > 0);
-    }
-
-    bool GenAIFrameworkSystemComponent::SendPromptToModelAgent(
-        const AZ::u64 modelAgentId,
-        const AZStd::vector<AZStd::any>& prompt,
-        const AZStd::function<void(const AZ::Outcome<AZStd::vector<AZStd::any>, AZStd::string>&)>& callback)
-    {
-        if (auto modelAgent = m_modelAgents.find(modelAgentId); modelAgent != m_modelAgents.end())
-        {
-            // Send prompt to model agent
-            modelAgent->second.SendPrompt(prompt, callback);
-            return true;
-        }
-        return false;
     }
 
 } // namespace GenAIFramework

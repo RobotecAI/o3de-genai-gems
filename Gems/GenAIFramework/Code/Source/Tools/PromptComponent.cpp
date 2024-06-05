@@ -7,15 +7,16 @@
  */
 
 #include "PromptComponent.h"
-#include "GenAIFramework/GenAIFrameworkBus.h"
+#include <AzCore/Component/TickBus.h>
+#include <AzCore/Outcome/Outcome.h>
 #include <AzCore/Serialization/EditContext.h>
 #include <AzCore/Serialization/SerializeContext.h>
 #include <AzCore/std/string/string.h>
-
-#include <AzCore/Component/TickBus.h>
 #include <AzToolsFramework/UI/UICore/WidgetHelpers.h>
 #include <GenAIFramework/Communication/AIModelRequestBus.h>
 #include <GenAIFramework/Communication/AIServiceProviderBus.h>
+#include <GenAIFramework/GenAIFrameworkBus.h>
+#include <GenAIFramework/GenAIFrameworkModelAgentBus.h>
 #include <QMessageBox>
 
 namespace GenAIFramework
@@ -50,10 +51,12 @@ namespace GenAIFramework
     void PromptComponent::Activate()
     {
         AIComponentBase::Activate();
+        GenAIFrameworkModelAgentNotificationBus::Handler::BusConnect(m_agentId);
     }
 
     void PromptComponent::Deactivate()
     {
+        GenAIFrameworkModelAgentNotificationBus::Handler::BusDisconnect();
         AIComponentBase::Deactivate();
     }
 
@@ -65,39 +68,48 @@ namespace GenAIFramework
         prompt.push_back(AZStd::any(m_modelInput));
 
         // send the request
-        auto callback = [this](GenAIFramework::ModelAPIExtractedResponse outcome)
-        {
-            if (outcome.IsSuccess())
-            {
-                AZStd::string responseString = "";
-                for (const auto& element : outcome.GetValue())
-                {
-                    responseString += AZStd::any_cast<AZStd::string>(element).c_str();
-                }
-
-                m_modelOutput = responseString;
-                AZ::SystemTickBus::QueueFunction(
-                    [=]()
-                    {
-                        QMessageBox::information(
-                            AzToolsFramework::GetActiveWindow(), "PromptComponent", QString(m_modelOutput.c_str()), QMessageBox::Ok);
-                    });
-            }
-            else
-            {
-                m_modelOutput = "Error: " + outcome.GetError();
-                AZ_Warning("PromptComponent", false, "Cannot get a response from the model: %s", m_modelOutput.c_str());
-                AZ::SystemTickBus::QueueFunction(
-                    [=]()
-                    {
-                        QMessageBox::warning(
-                            AzToolsFramework::GetActiveWindow(), "PromptComponent", QString(m_modelOutput.c_str()), QMessageBox::Ok);
-                    });
-            }
-        };
-
-        GenAIFrameworkInterface::Get()->SendPromptToModelAgent(m_agentId, prompt, callback);
+        GenAIFrameworkModelAgentBus::Event(m_agentId, &GenAIFrameworkModelAgentRequests::SendPrompt, prompt);
 
         return AZ::Edit::PropertyRefreshLevels::EntireTree;
+    }
+
+    void PromptComponent::OnPromptResponse(ModelAPIExtractedResponse response)
+    {
+        if (response.IsSuccess())
+        {
+            AZStd::string responseString = "";
+            for (const auto& element : response.GetValue())
+            {
+                responseString += AZStd::any_cast<AZStd::string>(element).c_str();
+            }
+
+            m_modelOutput = responseString;
+            AZ::SystemTickBus::QueueFunction(
+                [=]()
+                {
+                    QMessageBox::information(
+                        AzToolsFramework::GetActiveWindow(), "PromptComponent", QString(m_modelOutput.c_str()), QMessageBox::Ok);
+                });
+        }
+        else
+        {
+            m_modelOutput = "Error: " + response.GetError();
+            AZ_Warning("PromptComponent", false, "Cannot get a response from the model: %s", m_modelOutput.c_str());
+            AZ::SystemTickBus::QueueFunction(
+                [=]()
+                {
+                    QMessageBox::warning(
+                        AzToolsFramework::GetActiveWindow(), "PromptComponent", QString(m_modelOutput.c_str()), QMessageBox::Ok);
+                });
+        }
+    }
+
+    void PromptComponent::OnAgentChanged(AZ::u64 oldId)
+    {
+        if (GenAIFrameworkModelAgentNotificationBus::Handler::BusIsConnectedId(oldId))
+        {
+            GenAIFrameworkModelAgentNotificationBus::Handler::BusDisconnect();
+        }
+        GenAIFrameworkModelAgentNotificationBus::Handler::BusConnect(m_agentId);
     }
 } // namespace GenAIFramework

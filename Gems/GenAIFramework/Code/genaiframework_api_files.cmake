@@ -4,4 +4,5 @@ set(FILES
     Include/GenAIFramework/GenAIFrameworkBus.h
     Include/GenAIFramework/GenAIFrameworkTypeIds.h
     Include/GenAIFramework/SystemRegistrationContext/SystemRegistrationContext.h
+    Include/GenAIFramework/GenAIFrameworkModelAgentBus.h
 )
