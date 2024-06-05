@@ -14,9 +14,12 @@
 #include <AzCore/std/containers/vector.h>
 
 #include <AzCore/Component/ComponentApplicationBus.h>
+#include <GenAIFramework/Communication/AIModelRequestBus.h>
+#include <GenAIFramework/Communication/AIServiceProviderBus.h>
 #include <GenAIFramework/Communication/AsyncRequestBus.h>
 #include <GenAIFramework/GenAIFrameworkBus.h>
 #include <QMessageBox>
+#include <QScrollBar>
 #include <QSettings>
 #include <Source/UI/ui_AIAssistantWidget.h>
 
@@ -33,6 +36,19 @@ namespace GenAIFramework
         m_ui->setupUi(this);
         m_optionsWidget = new GenAIFrameworkWidget();
 
+        m_uiChatLayout = new QVBoxLayout();
+        m_uiChatLayout->setAlignment(Qt::AlignBottom);
+        m_ui->scrollArea->setWidgetResizable(true);
+        m_ui->scrollArea->widget()->setLayout(m_uiChatLayout);
+        m_ui->scrollArea->setStyleSheet("QLabel { border-radius: 15px; padding: 15px; }");
+        m_ui->scrollArea->verticalScrollBar()->connect(
+            m_ui->scrollArea->verticalScrollBar(),
+            &QScrollBar::rangeChanged,
+            [this]()
+            {
+                m_ui->scrollArea->verticalScrollBar()->setValue(m_ui->scrollArea->verticalScrollBar()->maximum());
+            });
+
         AZ::SystemTickBus::QueueFunction(
             [this]()
             {
@@ -42,7 +58,6 @@ namespace GenAIFramework
             });
 
         // listen to the provider and model configuration changes
-
         connect(m_ui->models, &QComboBox::textActivated, this, &AIAssistantWidget::OnModelConfigurationSelected);
         connect(m_ui->providers, &QComboBox::textActivated, this, &AIAssistantWidget::OnServiceProviderSelected);
         connect(m_ui->SendBtn, &QPushButton::clicked, this, &AIAssistantWidget::OnRequestButton);
@@ -99,8 +114,10 @@ namespace GenAIFramework
 
     void AIAssistantWidget::OnRequestButton()
     {
-        // TODO: send the request
-        m_ui->textEdit->setPlainText("This is a WIP code; sending requests from this window is not available yet");
+        AZStd::string modelInput = m_ui->textEdit->toPlainText().toStdString().c_str();
+        UiAppendChatMessage(modelInput);
+        constexpr bool isAssistantReply = true;
+        UiAppendChatMessage("This PoC implementation is not connected to any assistant", isAssistantReply);
     }
 
     void AIAssistantWidget::OnOptionsButton()
@@ -214,14 +231,44 @@ namespace GenAIFramework
         }
     }
 
+    void AIAssistantWidget::UiAppendChatMessage(const AZStd::string& message, bool response)
+    {
+        auto label = new QLabel(message.c_str());
+        label->setWordWrap(true);
+        label->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
+
+        if (response)
+        {
+            label->setStyleSheet("QLabel { background-color: #303030; margin-right: 100px; }");
+        }
+        else
+        {
+            label->setStyleSheet("QLabel { background-color: #202020; margin-left: 100px; }");
+        }
+
+        m_uiChatLayout->addWidget(label);
+    }
+
+    void AIAssistantWidget::UiClearMessages()
+    {
+        QLayoutItem* item;
+        while ((item = m_uiChatLayout->takeAt(0)) != nullptr)
+        {
+            delete item->widget();
+            delete item;
+        }
+    }
+
     void AIAssistantWidget::OnResetAction()
     {
         // TODO: reset history
+        UiClearMessages();
     }
 
     void AIAssistantWidget::closeEvent(QCloseEvent* event)
     {
         // TODO: reset history
+        UiClearMessages();
         QMainWindow::closeEvent(event);
     }
 
