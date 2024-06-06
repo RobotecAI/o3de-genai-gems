@@ -145,4 +145,10 @@ namespace GenAIVendorBundle
         }
     };
 
+    AZ::Outcome<void, AZStd::string> ClaudeModelMessagesAPI::SetModelParameter(
+        const AZ::Name& parameterName, const AZStd::string& parameterValue)
+    {
+        return m_configuration.SetModelParameter(parameterName, parameterValue);
+    }
+
 } // namespace GenAIVendorBundle

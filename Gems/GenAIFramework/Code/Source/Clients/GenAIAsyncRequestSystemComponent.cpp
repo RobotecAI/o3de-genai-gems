@@ -40,6 +40,7 @@ namespace GenAIFramework
                 ->Event("GetResponse", &AsyncRequestBus::Events::GetResponse)
                 ->Event("ResetModelHistory", &AsyncRequestBus::Events::ResetModelHistory)
                 ->Event("EnableModelHistory", &AsyncRequestBus::Events::EnableModelHistory)
+                ->Event("SetModelParameter", &AsyncRequestBus::Events::SetModelParameter)
                 ->Event("GetModelConfigurationTypename", &AsyncRequestBus::Events::GetModelConfigurationTypename)
                 ->Event("GetServiceProviderTypename", &AsyncRequestBus::Events::GetServiceProviderTypename);
         }
@@ -272,6 +273,21 @@ namespace GenAIFramework
     {
         GenAIFramework::AIModelRequestBus::Event(
             m_modelConfigurationId, &GenAIFramework::AIModelRequestBus::Events::EnableModelHistory, enableHistory);
+    }
+
+    AZStd::string GenAIAsyncRequestSystemComponent::SetModelParameter(
+        const AZStd::string& parameterName, const AZStd::string& parameterValue)
+    {
+        AZStd::string result = "";
+        AZ::Outcome<void, AZStd::string> outcome;
+        AZ::Name parameterNameI = AZ::Name::FromStringLiteral(parameterName.c_str(), nullptr);
+        GenAIFramework::AIModelRequestBus::EventResult(
+            outcome, m_modelConfigurationId, &GenAIFramework::AIModelRequestBus::Events::SetModelParameter, parameterNameI, parameterValue);
+        if (!outcome.IsSuccess())
+        {
+            result = outcome.GetError();
+        }
+        return result;
     }
 
     AZStd::string GenAIAsyncRequestSystemComponent::GetComponentTypename(

@@ -53,6 +53,7 @@ namespace GenAIFramework
         AZStd::string GetServiceProviderTypename() override;
         void ResetModelHistory() override;
         void EnableModelHistory(bool enableHistory) override;
+        AZStd::string SetModelParameter(const AZStd::string& parameterName, const AZStd::string& parameterValue) override;
 
         AZStd::string GetComponentTypename(
             const AZStd::vector<AZStd::pair<AZStd::string, AZ::Uuid>>& registeredComponents, const AZ::EntityId& entityId);

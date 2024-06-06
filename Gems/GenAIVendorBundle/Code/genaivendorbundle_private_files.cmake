@@ -16,4 +16,6 @@ set(FILES
     Source/Models/Claude/ClaudeModelTextCompletions.h
     Source/Models/Claude/ClaudeModelConfiguration.cpp
     Source/Models/Claude/ClaudeModelConfiguration.h
+
+    Source/Utils/StringManipulation.h
 )
