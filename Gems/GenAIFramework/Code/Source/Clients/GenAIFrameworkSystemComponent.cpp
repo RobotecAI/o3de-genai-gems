@@ -84,7 +84,7 @@ namespace GenAIFramework
     }
 
     AZStd::vector<AZStd::pair<AZStd::string, AZ::Uuid>> GenAIFrameworkSystemComponent::GetRegisteredComponentsNameAndComponentTypeId(
-        const AZStd::set<AZ::Uuid>& registeredComponents) const
+        const AZStd::unordered_set<AZ::Uuid>& registeredComponents) const
     {
         AZStd::vector<AZStd::pair<AZStd::string, AZ::Uuid>> result;
 
@@ -152,8 +152,7 @@ namespace GenAIFramework
         return component;
     }
 
-    AZ::Component* GenAIFrameworkSystemComponent::CreateModelConfiguration(
-        const AZStd::string& configurationName, AZ::Uuid componentTypeId)
+    AZ::Component* GenAIFrameworkSystemComponent::CreateModelConfiguration(const AZStd::string& configurationName, AZ::Uuid componentTypeId)
     {
         auto* component = CreateNewComponentEntity(configurationName, componentTypeId, m_configuration.m_modelConfigurations);
         GenAIFrameworkNotificationBus::Broadcast(
