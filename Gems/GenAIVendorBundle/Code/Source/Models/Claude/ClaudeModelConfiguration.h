@@ -11,6 +11,7 @@
 #include <AzCore/Component/Component.h>
 #include <AzCore/RTTI/RTTIMacros.h>
 #include <AzCore/RTTI/ReflectContext.h>
+#include <AzCore/std/containers/map.h>
 #include <AzCore/std/string/string.h>
 
 namespace GenAIVendorBundle
@@ -37,23 +38,44 @@ namespace GenAIVendorBundle
         bool m_useDefaultStopSequence = true;
         AZStd::string m_anthropicVersion = "";
         AZStd::string m_systemMessage = "";
-        bool m_useSystemMessage = false;
+        bool m_useSystemMessage = true;
 
-        bool IsDefaultTemperature() const
+        inline bool IsDefaultTemperature() const
         {
             return m_useDefaultTemperature;
         }
-        bool IsDefaultTopP() const
+        inline bool IsDefaultTopP() const
         {
             return m_useDefaultTopP;
         }
-        bool IsDefaultTopK() const
+        inline bool IsDefaultTopK() const
         {
             return m_useDefaultTopK;
         }
-        bool IsDefaultStopSequence() const
+        inline bool IsDefaultStopSequence() const
         {
             return m_useDefaultStopSequence;
         }
-    };
+
+        enum class Parameters
+        {
+            MaxTokensToSample,
+            Temperature,
+            TopP,
+            TopK,
+            StopSequence,
+            AnthropicVersion,
+            SystemMessage,
+            useDefaultTemperature,
+            useDefaultTopP,
+            useDefaultTopK,
+            useDefaultStopSequence,
+            useSystemMessage
+        };
+
+        const static AZStd::map<AZStd::string_view, Parameters> m_parameterNameToEnum;
+
+        AZ::Outcome<void, AZStd::string> SetModelParameter(const AZ::Name& parameterName, const AZStd::string& parameterValue);
+
+    }; // namespace GenAIVendorBundle
 } // namespace GenAIVendorBundle

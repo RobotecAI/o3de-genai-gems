@@ -76,7 +76,7 @@ namespace GenAIMock
 
         if (auto registrationContext = azrtti_cast<GenAIFramework::SystemRegistrationContext*>(context))
         {
-            registrationContext->RegisterGenAIFrameworkServiceProvider<MockServiceComponent>();
+            registrationContext->RegisterServiceProvider<MockServiceComponent>();
         }
     }
 
@@ -167,7 +167,7 @@ namespace GenAIMock
     }
 
     void MockServiceComponent::SendRequest(
-        const AZStd::string& request, AZStd::function<void(AZ::Outcome<AZStd::string, AZStd::string>)> callback)
+        const GenAIFramework::ModelAPIRequest& request, AZStd::function<void(GenAIFramework::ModelAPIResponse)> callback)
     {
         if (m_testData.empty())
         {

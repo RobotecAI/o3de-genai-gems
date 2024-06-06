@@ -13,6 +13,7 @@
 #include <Clients/GenAIFrameworkSystemComponent.h>
 #include <GenAIFramework/GenAIFrameworkTypeIds.h>
 #include <GenAIFramework/SystemRegistrationContext/SystemRegistrationContext.h>
+#include <Tools/PromptComponent.h>
 
 namespace GenAIFramework
 {

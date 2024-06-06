@@ -34,17 +34,12 @@ namespace GenAIVendorBundle
         void Deactivate() override;
 
         // GenAIFramework::ModelConfigurationBus overrides
-        GenAIFramework::ModelAPIRequest PrepareRequest(const AZStd::string& prompt) override;
-        GenAIFramework::ModelAPIResponse ExtractResult(const GenAIFramework::ModelAPIResponse& modelAPIResponse) override;
-        void ResetModelHistory() override;
-        void EnableModelHistory(bool enableHistory) override;
+        GenAIFramework::ModelAPIRequest PrepareRequest(const GenAIFramework::ModelAPIPrompt& prompt) override;
+        GenAIFramework::ModelAPIExtractedResponse ExtractResult(const GenAIFramework::ModelAPIResponse& modelAPIResponse) override;
+
+        AZ::Outcome<void, AZStd::string> SetModelParameter(const AZ::Name& parameterName, const AZStd::string& parameterValue) override;
 
     private:
         ClaudeModelConfiguration m_configuration;
-
-        using ClaudeMessage = AZStd::pair<AZStd::string, AZStd::string>;
-
-        bool m_enableHistory = true;
-        AZStd::vector<ClaudeMessage> m_history;
     };
 } // namespace GenAIVendorBundle

@@ -7,6 +7,7 @@
  */
 
 #include "PromptComponent.h"
+#include "GenAIFramework/GenAIFrameworkBus.h"
 #include <AzCore/Serialization/EditContext.h>
 #include <AzCore/Serialization/SerializeContext.h>
 #include <AzCore/std/string/string.h>
@@ -38,8 +39,8 @@ namespace GenAIFramework
                     ->Attribute(AZ::Edit::Attributes::AutoExpand, true)
                     ->DataElement(AZ::Edit::UIHandlers::Default, &PromptComponent::m_modelInput, "Model Input", "Input to the model")
                     ->UIElement(AZ::Edit::UIHandlers::Button, "")
-                    ->Attribute(AZ::Edit::Attributes::ButtonText, "Prompt input")
-                    ->Attribute(AZ::Edit::Attributes::ChangeNotify, &PromptComponent::PromptInput)
+                    ->Attribute(AZ::Edit::Attributes::ButtonText, "Send")
+                    ->Attribute(AZ::Edit::Attributes::ChangeNotify, &PromptComponent::Send)
                     ->DataElement(AZ::Edit::UIHandlers::Default, &PromptComponent::m_modelOutput, "Model Output", "Output from the model")
                     ->Attribute(AZ::Edit::Attributes::ReadOnly, true);
             }
@@ -56,33 +57,25 @@ namespace GenAIFramework
         AIComponentBase::Deactivate();
     }
 
-    AZ::Crc32 PromptComponent::PromptInput()
+    AZ::Crc32 PromptComponent::Send()
     {
-        if (!m_serviceProviderId.IsValid())
-        {
-            UpdateNamedServiceProviderId();
-        }
-        if (!m_modelConfigurationId.IsValid())
-        {
-            UpdateNamedModelConfigurationId();
-        }
-        AZ_Assert(m_modelConfigurationId.IsValid(), "Selected model configuration id is not valid!");
-        AZ_Assert(m_serviceProviderId.IsValid(), "Selected service provider id is not valid!");
-
         // prepare the request
-        GenAIFramework::ModelAPIRequest preparedRequest;
-        GenAIFramework::AIModelRequestBus::EventResult(
-            preparedRequest, m_modelConfigurationId, &GenAIFramework::AIModelRequestBus::Events::PrepareRequest, m_modelInput);
+        ModelAPIPrompt prompt;
+
+        prompt.push_back(AZStd::any(m_modelInput));
 
         // send the request
-        auto callback = [this](GenAIFramework::ModelAPIResponse outcome)
+        auto callback = [this](GenAIFramework::ModelAPIExtractedResponse outcome)
         {
-            AZ::Outcome<AZStd::string, AZStd::string> extractedResponse;
-            GenAIFramework::AIModelRequestBus::EventResult(
-                extractedResponse, m_modelConfigurationId, &GenAIFramework::AIModelRequestBus::Events::ExtractResult, outcome);
-            if (extractedResponse.IsSuccess())
+            if (outcome.IsSuccess())
             {
-                m_modelOutput = extractedResponse.GetValue();
+                AZStd::string responseString = "";
+                for (const auto& element : outcome.GetValue())
+                {
+                    responseString += AZStd::any_cast<AZStd::string>(element).c_str();
+                }
+
+                m_modelOutput = responseString;
                 AZ::SystemTickBus::QueueFunction(
                     [=]()
                     {
@@ -92,7 +85,7 @@ namespace GenAIFramework
             }
             else
             {
-                m_modelOutput = "Error: " + extractedResponse.GetError();
+                m_modelOutput = "Error: " + outcome.GetError();
                 AZ_Warning("PromptComponent", false, "Cannot get a response from the model: %s", m_modelOutput.c_str());
                 AZ::SystemTickBus::QueueFunction(
                     [=]()
@@ -103,7 +96,7 @@ namespace GenAIFramework
             }
         };
 
-        AIServiceProviderBus::Event(m_serviceProviderId, &AIServiceProviderBus::Events::SendRequest, preparedRequest, callback);
+        GenAIFrameworkInterface::Get()->SendPromptToModelAgent(m_agentId, prompt, callback);
 
         return AZ::Edit::PropertyRefreshLevels::EntireTree;
     }

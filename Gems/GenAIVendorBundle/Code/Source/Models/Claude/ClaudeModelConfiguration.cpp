@@ -11,6 +11,7 @@
 #include <AzCore/Serialization/EditContext.h>
 #include <AzCore/Serialization/EditContextConstants.inl>
 #include <AzCore/Serialization/SerializeContext.h>
+#include <Utils/StringManipulation.h>
 
 namespace GenAIVendorBundle
 {
@@ -109,5 +110,133 @@ namespace GenAIVendorBundle
                     ->Attribute(AZ::Edit::Attributes::ChangeNotify, AZ::Edit::PropertyRefreshLevels::EntireTree);
             }
         }
+    }
+
+    const AZStd::map<AZStd::string_view, ClaudeModelConfiguration::Parameters> ClaudeModelConfiguration::m_parameterNameToEnum = {
+        { "temperature", Parameters::Temperature },
+        { "topp", Parameters::TopP },
+        { "topk", Parameters::TopK },
+        { "stopsequence", Parameters::StopSequence },
+        { "anthropicversion", Parameters::AnthropicVersion },
+        { "system", Parameters::SystemMessage },
+        { "maxtokens", Parameters::MaxTokensToSample },
+        { "usedefaulttemperature", Parameters::useDefaultTemperature },
+        { "usedefaulttopp", Parameters::useDefaultTopP },
+        { "usedefaulttopk", Parameters::useDefaultTopK },
+        { "usedefaultstopsequence", Parameters::useDefaultStopSequence },
+        { "usesystemmessage", Parameters::useSystemMessage },
+    };
+
+    AZ::Outcome<void, AZStd::string> ClaudeModelConfiguration::SetModelParameter(
+        const AZ::Name& parameterName, const AZStd::string& parameterValue)
+    {
+        AZStd::string lowerCaseParameterName = AZStd::tolower(parameterValue);
+
+        lowerCaseParameterName.erase(
+            std::remove_if(
+                lowerCaseParameterName.begin(),
+                lowerCaseParameterName.end(),
+                [](unsigned char c)
+                {
+                    return std::isspace(c);
+                }),
+            lowerCaseParameterName.end());
+
+        auto parameterEnum = m_parameterNameToEnum.find(lowerCaseParameterName);
+        if (parameterEnum == m_parameterNameToEnum.end())
+        {
+            return AZ::Failure(AZStd::string::format("Parameter %s is not supported", parameterName.GetCStr()));
+        }
+        switch (parameterEnum->second)
+        {
+        case Parameters::MaxTokensToSample:
+            m_maxTokensToSample = AZStd::stoi(parameterValue);
+            break;
+        case Parameters::Temperature:
+            m_temperature = AZStd::stof(parameterValue);
+            break;
+        case Parameters::useDefaultTemperature:
+            {
+                auto booleanOutcome = Utils::GetBooleanValue(parameterValue);
+                if (booleanOutcome.IsSuccess())
+                {
+                    m_useDefaultTemperature = booleanOutcome.GetValue();
+                }
+                else
+                {
+                    return AZ::Failure(AZStd::string::format("Parameter value is invalid"));
+                }
+            }
+            break;
+        case Parameters::TopP:
+            m_topP = AZStd::stof(parameterValue);
+            break;
+        case Parameters::useDefaultTopP:
+            {
+                auto booleanOutcome = Utils::GetBooleanValue(parameterValue);
+                if (booleanOutcome.IsSuccess())
+                {
+                    m_useDefaultTopP = booleanOutcome.GetValue();
+                }
+                else
+                {
+                    return AZ::Failure(AZStd::string::format("Parameter value is invalid"));
+                }
+            }
+            break;
+        case Parameters::TopK:
+            m_topK = AZStd::stoi(parameterValue);
+            break;
+        case Parameters::useDefaultTopK:
+            {
+                auto booleanOutcome = Utils::GetBooleanValue(parameterValue);
+                if (booleanOutcome.IsSuccess())
+                {
+                    m_useDefaultTopK = booleanOutcome.GetValue();
+                }
+                else
+                {
+                    return AZ::Failure(AZStd::string::format("Parameter value is invalid"));
+                }
+            }
+            break;
+        case Parameters::StopSequence:
+            m_stopSequence = parameterValue;
+            break;
+        case Parameters::useDefaultStopSequence:
+            {
+                auto booleanOutcome = Utils::GetBooleanValue(parameterValue);
+                if (booleanOutcome.IsSuccess())
+                {
+                    m_useDefaultStopSequence = booleanOutcome.GetValue();
+                }
+                else
+                {
+                    return AZ::Failure(AZStd::string::format("Parameter value is invalid"));
+                }
+            }
+            break;
+        case Parameters::AnthropicVersion:
+            m_anthropicVersion = parameterValue;
+            break;
+        case Parameters::SystemMessage:
+            m_systemMessage = parameterValue;
+            break;
+        case Parameters::useSystemMessage:
+            {
+                auto booleanOutcome = Utils::GetBooleanValue(parameterValue);
+                if (booleanOutcome.IsSuccess())
+                {
+                    m_useSystemMessage = booleanOutcome.GetValue();
+                }
+                else
+                {
+                    return AZ::Failure(AZStd::string::format("Parameter value is invalid"));
+                }
+            }
+            break;
+        }
+
+        return AZ::Success();
     }
 } // namespace GenAIVendorBundle

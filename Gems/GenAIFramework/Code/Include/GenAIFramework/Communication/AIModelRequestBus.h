@@ -13,13 +13,19 @@
 #include <AzCore/Name/Name.h>
 #include <AzCore/Outcome/Outcome.h>
 #include <AzCore/RTTI/RTTIMacros.h>
+#include <AzCore/std/any.h>
+#include <AzCore/std/containers/vector.h>
 #include <AzCore/std/string/string.h>
 
 namespace GenAIFramework
 {
-    using ModelResponse = AZ::Outcome<AZStd::string, AZStd::string>; //!< The type answer from the model
-    using ModelAPIRequest = AZStd::string; //!< The type of request to send to the model
-    using ModelAPIResponse = AZ::Outcome<AZStd::string, AZStd::string>; //!< The type of response from the model
+    using ModelAPIPrompt = AZStd::vector<AZStd::any>; //!< The type of prompt to send to the model
+    using ModelAPIRequest = AZStd::string; //!< The type of request to send to the model provider
+    using ModelAPIResponse = AZ::Outcome<AZStd::string, AZStd::string>; //!< The type of response from the model provider
+    using ModelAPIExtractedResponse =
+        AZ::Outcome<AZStd::vector<AZStd::any>, AZStd::string>; //!< The type of extracted response from the model
+    using AIPromptReply = AZStd::pair<ModelAPIPrompt, ModelAPIExtractedResponse>; //!< The type of AI prompt reply
+    using AIHistory = AZStd::vector<AIPromptReply>; //!< The type of AI history
 
     class AIModelRequest : public AZ::ComponentBus
     {
@@ -34,12 +40,12 @@ namespace GenAIFramework
         //! The request is any string that can be sent to the model to generate a response.
         //! @param prompt The prompt to use.
         //! @return The request to send to the model - it should be ready to use the model's API request.
-        virtual ModelAPIRequest PrepareRequest(const AZStd::string& prompt) = 0;
+        virtual ModelAPIRequest PrepareRequest(const ModelAPIPrompt& prompt) = 0;
 
         //! Extract the actual response from the model API response
         //! @param modelAPIResponse The response from the model, can be a JSON string that API around the model produced.
         //! @return The response from the model, or an error message if the response could not be extracted.
-        virtual ModelAPIResponse ExtractResult(const ModelAPIResponse& modelAPIResponse) = 0;
+        virtual ModelAPIExtractedResponse ExtractResult(const ModelAPIResponse& modelAPIResponse) = 0;
 
         //! Reset the model history. This will clear any history that the model has stored.
         virtual void ResetModelHistory()

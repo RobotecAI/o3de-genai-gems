@@ -13,6 +13,9 @@
 #include <AzCore/EBus/EBus.h>
 #include <AzCore/Interface/Interface.h>
 #include <AzCore/Math/Uuid.h>
+#include <AzCore/base.h>
+#include <AzCore/std/containers/vector.h>
+#include <AzCore/std/string/string.h>
 #include <GenAIFramework/GenAIFrameworkTypeIds.h>
 #include <GenAIFramework/SystemRegistrationContext/SystemRegistrationContext.h>
 
@@ -54,12 +57,12 @@ namespace GenAIFramework
         //! @param modelConfigurationName Name of the new model configuration.
         //! @param componentTypeId Uuid of the new model configuration component type.
         //! @return A pointer to created component of a requested type (or nullptr when failed).
-        virtual AZ::Component* CreateModelConfiguration(const AZStd::string& modelConfigurationName, const AZ::Uuid& componentTypeId) = 0;
+        virtual AZ::Component* CreateModelConfiguration(const AZStd::string& modelConfigurationName, AZ::Uuid componentTypeId) = 0;
         //! Create and register a new service provider.
         //! @param providerName Name of the new service provider.
         //! @param componentTypeId Uuid of the new service provider component type.
         //! @return A pointer to created component of a requested type (or nullptr when failed).
-        virtual AZ::Component* CreateServiceProvider(const AZStd::string& providerName, const AZ::Uuid& componentTypeId) = 0;
+        virtual AZ::Component* CreateServiceProvider(const AZStd::string& providerName, AZ::Uuid componentTypeId) = 0;
 
         //! Unregister and remove a model configuration or a service provider component.
         //! @param component A pointer to the component to be removed.
@@ -72,6 +75,15 @@ namespace GenAIFramework
         //! Deactivate the entity and its components.
         //! @param entity A pointer to the entity to be deactivated.
         virtual void DeactivateEntity(AZStd::shared_ptr<AZ::Entity> entity) = 0;
+
+        // Model Agent
+        virtual AZ::Outcome<AZ::u64, void> CreateModelAgent(
+            const AZStd::string& serviceProviderName, const AZStd::string modelModelConfigurationName) = 0;
+        virtual bool RemoveModelAgent(AZ::u64 modelAgentId) = 0;
+        virtual bool SendPromptToModelAgent(
+            const AZ::u64 modelAgentId,
+            const AZStd::vector<AZStd::any>& prompt,
+            const AZStd::function<void(const AZ::Outcome<AZStd::vector<AZStd::any>, AZStd::string>&)>& callback) = 0;
     };
 
     class GenAIFrameworkBusTraits : public AZ::EBusTraits

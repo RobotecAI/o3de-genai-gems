@@ -12,7 +12,6 @@
 #include <AzCore/Component/Component.h>
 #include <AzCore/Serialization/EditContext.h>
 #include <AzCore/Serialization/SerializeContext.h>
-#include <AzCore/std/string/string.h>
 
 #include <aws/core/utils/json/JsonSerializer.h>
 
@@ -168,7 +167,7 @@ namespace GenAIVendorBundle
         GenAIFramework::AIModelRequestBus::Handler::BusDisconnect();
     }
 
-    AZStd::string OllamaModel::PrepareRequest(const AZStd::string& prompt)
+    GenAIFramework::ModelAPIRequest OllamaModel::PrepareRequest(const GenAIFramework::ModelAPIPrompt& prompt)
     {
         Aws::Utils::Json::JsonValue jsonValue;
 
@@ -194,34 +193,37 @@ namespace GenAIVendorBundle
         }
 
         jsonValue.WithBool("stream", m_configuration.m_stream);
-        jsonValue.WithString("prompt", prompt.c_str());
+        AZStd::string promptString = "";
+        for (const auto& element : prompt)
+        {
+            promptString += AZStd::any_cast<AZStd::string>(element).c_str();
+        }
+        jsonValue.WithString("prompt", promptString.c_str());
 
         jsonValue.WithString("model", m_configuration.m_model.c_str());
 
         return jsonValue.View().WriteReadable().c_str();
     }
 
-    AZ::Outcome<AZStd::string, AZStd::string> OllamaModel::ExtractResult(const GenAIFramework::ModelAPIResponse& modelAPIResponse)
+    GenAIFramework::ModelAPIExtractedResponse OllamaModel::ExtractResult(const GenAIFramework::ModelAPIResponse& modelAPIResponse)
     {
-        AZStd::string response;
-
-        if (modelAPIResponse.IsSuccess())
+        if (!modelAPIResponse.IsSuccess())
         {
-            Aws::Utils::Json::JsonValue jsonRequest(modelAPIResponse.GetValue().c_str());
-            auto jsonRequestView = jsonRequest.View();
+            return AZ::Failure(AZStd::string::format("Failed to get a response from the model: %s", modelAPIResponse.GetError().c_str()));
+        }
 
-            if (jsonRequestView.ValueExists("response"))
-            {
-                response = jsonRequestView.GetString("response").c_str();
-            }
-            else
-            {
-                return AZ::Failure("No response found in the request");
-            }
+        AZStd::vector<AZStd::any> response;
+
+        Aws::Utils::Json::JsonValue jsonRequest(modelAPIResponse.GetValue().c_str());
+        auto jsonRequestView = jsonRequest.View();
+
+        if (jsonRequestView.ValueExists("response"))
+        {
+            response.push_back(AZStd::any(AZStd::string(jsonRequestView.GetString("response").c_str())));
         }
         else
         {
-            return AZ::Failure("Request failed with error: " + modelAPIResponse.GetError());
+            return AZ::Failure("Failed to parse the response: response field not found in the response JSON.");
         }
 
         return AZ::Success(response);

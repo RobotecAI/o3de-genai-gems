@@ -25,7 +25,7 @@ namespace GenAIFramework
         void Activate() override;
         void Deactivate() override;
 
-        AZ::Crc32 PromptInput();
+        AZ::Crc32 Send();
 
         AZStd::string m_modelOutput;
         AZStd::string m_modelInput;

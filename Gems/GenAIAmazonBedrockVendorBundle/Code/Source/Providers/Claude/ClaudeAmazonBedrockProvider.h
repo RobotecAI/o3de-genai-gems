@@ -60,6 +60,9 @@ namespace GenAIAmazonBedrockVendorBundle
         // GenAIFramework::AIServiceProviderBus::Handler overrides
         void SendRequest(const AZStd::string& request, AZStd::function<void(AZ::Outcome<AZStd::string, AZStd::string>)> callback) override;
 
+        // Detects if the AWS credentials are detected
+        bool AreAwsCredentialsNotDetected() const;
+
         // Internal configuration for the AWS SDK client
         AZStd::unique_ptr<Aws::BedrockRuntime::BedrockRuntimeClientConfiguration> m_runtimeClientConfiguration;
         AZStd::unique_ptr<Aws::BedrockRuntime::BedrockRuntimeClient> m_runtimeClient;

@@ -9,6 +9,7 @@
 #include "GenAIAsyncRequestSystemComponent.h"
 #include <AzCore/Component/Entity.h>
 #include <AzCore/RTTI/BehaviorContext.h>
+#include <AzCore/Serialization/EditContext.h>
 #include <AzCore/Serialization/SerializeContext.h>
 #include <GenAIFramework/Communication/AIModelRequestBus.h>
 #include <GenAIFramework/Communication/AIServiceProviderBus.h>
@@ -38,7 +39,10 @@ namespace GenAIFramework
                 ->Event("IsResponseReady", &AsyncRequestBus::Events::IsResponseReady)
                 ->Event("GetResponse", &AsyncRequestBus::Events::GetResponse)
                 ->Event("ResetModelHistory", &AsyncRequestBus::Events::ResetModelHistory)
-                ->Event("EnableModelHistory", &AsyncRequestBus::Events::EnableModelHistory);
+                ->Event("EnableModelHistory", &AsyncRequestBus::Events::EnableModelHistory)
+                ->Event("SetModelParameter", &AsyncRequestBus::Events::SetModelParameter)
+                ->Event("GetModelConfigurationTypename", &AsyncRequestBus::Events::GetModelConfigurationTypename)
+                ->Event("GetServiceProviderTypename", &AsyncRequestBus::Events::GetServiceProviderTypename);
         }
     }
 
@@ -196,19 +200,35 @@ namespace GenAIFramework
         }
 
         AZ::Uuid promptId = AZ::Uuid::CreateRandom();
+        GenAIFramework::ModelAPIPrompt modelPrompt;
+        modelPrompt.push_back(AZStd::any(prompt));
+
         GenAIFramework::ModelAPIRequest preparedRequest;
         GenAIFramework::AIModelRequestBus::EventResult(
-            preparedRequest, m_modelConfigurationId, &GenAIFramework::AIModelRequestBus::Events::PrepareRequest, prompt);
+            preparedRequest, m_modelConfigurationId, &GenAIFramework::AIModelRequestBus::Events::PrepareRequest, modelPrompt);
 
         auto callback = [this, promptId](GenAIFramework::ModelAPIResponse outcome)
         {
-            AZ::Outcome<AZStd::string, AZStd::string> extractedResponse;
+            if (!outcome.IsSuccess())
+            {
+                AZStd::unique_lock<AZStd::mutex> lock(m_promptMutex);
+                m_promptResponses[promptId] = "Error: " + outcome.GetError();
+                AZ_Warning("AiAssistantEditorSystemComponent", false, "Request returned with an error: %s", outcome.GetError().c_str());
+                return;
+            }
+
+            GenAIFramework::ModelAPIExtractedResponse extractedResponse;
             GenAIFramework::AIModelRequestBus::EventResult(
                 extractedResponse, m_modelConfigurationId, &GenAIFramework::AIModelRequestBus::Events::ExtractResult, outcome);
             if (extractedResponse.IsSuccess())
             {
+                AZStd::string response = "";
+                for (const auto& elem : extractedResponse.GetValue())
+                {
+                    response += AZStd::any_cast<AZStd::string>(elem);
+                }
                 AZStd::unique_lock<AZStd::mutex> lock(m_promptMutex);
-                m_promptResponses[promptId] = extractedResponse.GetValue();
+                m_promptResponses[promptId] = response;
             }
             else
             {
@@ -253,6 +273,75 @@ namespace GenAIFramework
     {
         GenAIFramework::AIModelRequestBus::Event(
             m_modelConfigurationId, &GenAIFramework::AIModelRequestBus::Events::EnableModelHistory, enableHistory);
+    }
+
+    AZStd::string GenAIAsyncRequestSystemComponent::SetModelParameter(
+        const AZStd::string& parameterName, const AZStd::string& parameterValue)
+    {
+        AZStd::string result = "";
+        AZ::Outcome<void, AZStd::string> outcome;
+        AZ::Name parameterNameI = AZ::Name::FromStringLiteral(parameterName.c_str(), nullptr);
+        GenAIFramework::AIModelRequestBus::EventResult(
+            outcome, m_modelConfigurationId, &GenAIFramework::AIModelRequestBus::Events::SetModelParameter, parameterNameI, parameterValue);
+        if (!outcome.IsSuccess())
+        {
+            result = outcome.GetError();
+        }
+        return result;
+    }
+
+    AZStd::string GenAIAsyncRequestSystemComponent::GetComponentTypename(
+        const AZStd::vector<AZStd::pair<AZStd::string, AZ::Uuid>>& registeredComponents, const AZ::EntityId& entityId)
+    {
+        if (!entityId.IsValid())
+        {
+            AZ_Warning("GenAIAsyncRequestSystemComponent", false, "The selected component is no valid.");
+            return {};
+        }
+
+        AZ::SerializeContext* serializeContext = nullptr;
+        AZ::Entity* componentEntity;
+        AZ::ComponentApplicationBus::BroadcastResult(componentEntity, &AZ::ComponentApplicationBus::Events::FindEntity, entityId);
+
+        if (!componentEntity)
+        {
+            return {};
+        }
+
+        AZ::ComponentApplicationBus::BroadcastResult(serializeContext, &AZ::ComponentApplicationBus::Events::GetSerializeContext);
+
+        auto entityComponents = componentEntity->GetComponents();
+
+        for (const auto& [name, typeId] : registeredComponents)
+        {
+            // The amount of components in the entity is only one. So this loop will run only once.
+            for (const auto& component : entityComponents)
+            {
+                if (typeId == component->RTTI_GetType())
+                {
+                    const auto classData = serializeContext->FindClassData(typeId);
+                    auto serializedName = classData ? classData->m_name : "";
+                    if (classData->m_editData)
+                    {
+                        serializedName = classData->m_editData->m_name;
+                    }
+                    return serializedName;
+                }
+            }
+        }
+        return {};
+    }
+
+    AZStd::string GenAIAsyncRequestSystemComponent::GetModelConfigurationTypename()
+    {
+        return GetComponentTypename(
+            GenAIFrameworkInterface::Get()->GetModelConfigurationNamesAndComponentTypeIds(), m_modelConfigurationId);
+    }
+
+    AZStd::string GenAIAsyncRequestSystemComponent::GetServiceProviderTypename()
+    {
+        return GetComponentTypename(
+            GenAIFrameworkInterface::Get()->GetServiceProviderNamesAndComponentTypeIds(), m_serviceProviderId);
     }
 
 } // namespace GenAIFramework

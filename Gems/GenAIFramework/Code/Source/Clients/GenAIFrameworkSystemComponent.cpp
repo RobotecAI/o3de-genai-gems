@@ -84,7 +84,7 @@ namespace GenAIFramework
     }
 
     AZStd::vector<AZStd::pair<AZStd::string, AZ::Uuid>> GenAIFrameworkSystemComponent::GetRegisteredComponentsNameAndComponentTypeId(
-        const AZStd::set<AZ::Uuid>& registeredComponents) const
+        const AZStd::unordered_set<AZ::Uuid>& registeredComponents) const
     {
         AZStd::vector<AZStd::pair<AZStd::string, AZ::Uuid>> result;
 
@@ -141,7 +141,7 @@ namespace GenAIFramework
     }
 
     AZ::Component* GenAIFrameworkSystemComponent::CreateNewComponentEntity(
-        const AZStd::string& name, const AZ::Uuid& componentTypeId, EntityIdToEntityMap& entities)
+        const AZStd::string& name, AZ::Uuid componentTypeId, EntityIdToEntityMap& entities)
     {
         AZStd::shared_ptr<AZ::Entity> newEntity = nullptr;
         newEntity = AZStd::make_shared<AZ::Entity>(name);
@@ -152,8 +152,7 @@ namespace GenAIFramework
         return component;
     }
 
-    AZ::Component* GenAIFrameworkSystemComponent::CreateModelConfiguration(
-        const AZStd::string& configurationName, const AZ::Uuid& componentTypeId)
+    AZ::Component* GenAIFrameworkSystemComponent::CreateModelConfiguration(const AZStd::string& configurationName, AZ::Uuid componentTypeId)
     {
         auto* component = CreateNewComponentEntity(configurationName, componentTypeId, m_configuration.m_modelConfigurations);
         GenAIFrameworkNotificationBus::Broadcast(
@@ -161,7 +160,7 @@ namespace GenAIFramework
         return component;
     }
 
-    AZ::Component* GenAIFrameworkSystemComponent::CreateServiceProvider(const AZStd::string& providerName, const AZ::Uuid& componentTypeId)
+    AZ::Component* GenAIFrameworkSystemComponent::CreateServiceProvider(const AZStd::string& providerName, AZ::Uuid componentTypeId)
     {
         auto* component = CreateNewComponentEntity(providerName, componentTypeId, m_configuration.m_serviceProviders);
         GenAIFrameworkNotificationBus::Broadcast(
@@ -310,6 +309,59 @@ namespace GenAIFramework
             });
 
         return result;
+    }
+
+    AZ::EntityId GenAIFrameworkSystemComponent::GetEntityIdByName(const AZStd::string& name, const EntityIdToEntityMap& entities) const
+    {
+        for (const auto& [entityId, entity] : entities)
+        {
+            if (entity && entity->GetName() == name)
+            {
+                return entityId;
+            }
+        }
+        return AZ::EntityId();
+    }
+
+    AZ::Outcome<AZ::u64, void> GenAIFrameworkSystemComponent::CreateModelAgent(
+        const AZStd::string& serviceProviderName, const AZStd::string modelModelConfigurationName)
+    {
+        // Find service provider and model configuration
+        AZ::EntityId serviceProviderId = GetEntityIdByName(serviceProviderName, m_configuration.m_serviceProviders);
+        AZ::EntityId modelConfigurationId = GetEntityIdByName(modelModelConfigurationName, m_configuration.m_modelConfigurations);
+
+        if (!serviceProviderId.IsValid() || !modelConfigurationId.IsValid())
+        {
+            return AZ::Failure();
+        }
+
+        // Generate a unique id for the model agent
+        auto currentTime = AZStd::chrono::system_clock::now();
+        AZ::u32 idTime = static_cast<AZ::u64>(currentTime.time_since_epoch().count());
+        AZ::u64 id = m_modelAgents.size() << 32 | idTime;
+
+        m_modelAgents[id] = ModelAgent(serviceProviderId, modelConfigurationId);
+
+        return AZ::Success(id);
+    }
+
+    bool GenAIFrameworkSystemComponent::RemoveModelAgent(AZ::u64 modelAgentId)
+    {
+        return (m_modelAgents.erase(modelAgentId) > 0);
+    }
+
+    bool GenAIFrameworkSystemComponent::SendPromptToModelAgent(
+        const AZ::u64 modelAgentId,
+        const AZStd::vector<AZStd::any>& prompt,
+        const AZStd::function<void(const AZ::Outcome<AZStd::vector<AZStd::any>, AZStd::string>&)>& callback)
+    {
+        if (auto modelAgent = m_modelAgents.find(modelAgentId); modelAgent != m_modelAgents.end())
+        {
+            // Send prompt to model agent
+            modelAgent->second.SendPrompt(prompt, callback);
+            return true;
+        }
+        return false;
     }
 
 } // namespace GenAIFramework

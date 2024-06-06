@@ -17,8 +17,6 @@
 #include <GenAIFramework/GenAIFrameworkBus.h>
 #include <GenAIFramework/GenAIFrameworkEditorBus.h>
 
-#include "UI/GenAIFrameworkWidget.h"
-
 namespace GenAIFramework
 {
     /// System component for GenAIFramework editor
