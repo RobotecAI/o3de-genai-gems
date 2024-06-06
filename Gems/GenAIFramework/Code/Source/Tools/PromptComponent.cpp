@@ -13,10 +13,10 @@
 #include <AzCore/Serialization/SerializeContext.h>
 #include <AzCore/std/string/string.h>
 #include <AzToolsFramework/UI/UICore/WidgetHelpers.h>
+#include <GenAIFramework/Communication/AIModelAgentBus.h>
 #include <GenAIFramework/Communication/AIModelRequestBus.h>
 #include <GenAIFramework/Communication/AIServiceProviderBus.h>
 #include <GenAIFramework/GenAIFrameworkBus.h>
-#include <GenAIFramework/GenAIFrameworkModelAgentBus.h>
 #include <QMessageBox>
 
 namespace GenAIFramework
@@ -51,12 +51,12 @@ namespace GenAIFramework
     void PromptComponent::Activate()
     {
         AIComponentBase::Activate();
-        GenAIFrameworkModelAgentNotificationBus::Handler::BusConnect(m_agentId);
+        AIModelAgentNotificationBus::Handler::BusConnect(m_agentId);
     }
 
     void PromptComponent::Deactivate()
     {
-        GenAIFrameworkModelAgentNotificationBus::Handler::BusDisconnect();
+        AIModelAgentNotificationBus::Handler::BusDisconnect();
         AIComponentBase::Deactivate();
     }
 
@@ -68,7 +68,7 @@ namespace GenAIFramework
         prompt.push_back(AZStd::any(m_modelInput));
 
         // send the request
-        GenAIFrameworkModelAgentBus::Event(m_agentId, &GenAIFrameworkModelAgentRequests::SendPrompt, prompt);
+        AIModelAgentBus::Event(m_agentId, &AIModelAgentRequests::SendPrompt, prompt);
 
         return AZ::Edit::PropertyRefreshLevels::EntireTree;
     }
@@ -106,10 +106,10 @@ namespace GenAIFramework
 
     void PromptComponent::OnAgentChanged(AZ::u64 oldId)
     {
-        if (GenAIFrameworkModelAgentNotificationBus::Handler::BusIsConnectedId(oldId))
+        if (AIModelAgentNotificationBus::Handler::BusIsConnectedId(oldId))
         {
-            GenAIFrameworkModelAgentNotificationBus::Handler::BusDisconnect();
+            AIModelAgentNotificationBus::Handler::BusDisconnect();
         }
-        GenAIFrameworkModelAgentNotificationBus::Handler::BusConnect(m_agentId);
+        AIModelAgentNotificationBus::Handler::BusConnect(m_agentId);
     }
 } // namespace GenAIFramework

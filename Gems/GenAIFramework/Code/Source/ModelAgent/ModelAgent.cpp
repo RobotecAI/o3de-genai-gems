@@ -9,7 +9,6 @@
 #include "ModelAgent.h"
 #include <GenAIFramework/Communication/AIModelRequestBus.h>
 #include <GenAIFramework/Communication/AIServiceProviderBus.h>
-#include <GenAIFramework/GenAIFrameworkModelAgentBus.h>
 
 namespace GenAIFramework
 {
@@ -18,12 +17,12 @@ namespace GenAIFramework
         , m_modelConfigurationId(modelConfigurationId)
         , m_agentId(agentId)
     {
-        GenAIFrameworkModelAgentBus::Handler::BusConnect(m_agentId);
+        AIModelAgentBus::Handler::BusConnect(m_agentId);
     }
 
     ModelAgent::~ModelAgent()
     {
-        GenAIFrameworkModelAgentBus::Handler::BusDisconnect(m_agentId);
+        AIModelAgentBus::Handler::BusDisconnect(m_agentId);
     }
 
     void ModelAgent::SendPrompt(const AZStd::vector<AZStd::any>& prompt)
@@ -34,8 +33,8 @@ namespace GenAIFramework
         {
             if (!outcome.IsSuccess())
             {
-                GenAIFrameworkModelAgentNotificationBus::Event(
-                    m_agentId, &GenAIFrameworkModelAgentNotifications::OnPromptResponse, AZ::Failure(outcome.GetError()));
+                AIModelAgentNotificationBus::Event(
+                    m_agentId, &AIModelAgentNotifications::OnPromptResponse, AZ::Failure(outcome.GetError()));
                 return;
             }
             ModelAPIExtractedResponse extractedResponse;
@@ -47,8 +46,7 @@ namespace GenAIFramework
                 m_history.push_back({ prompt, extractedResponse.GetValue() });
             }
 
-            GenAIFrameworkModelAgentNotificationBus::Event(
-                m_agentId, &GenAIFrameworkModelAgentNotifications::OnPromptResponse, extractedResponse);
+            AIModelAgentNotificationBus::Event(m_agentId, &AIModelAgentNotifications::OnPromptResponse, extractedResponse);
         };
 
         AIServiceProviderBus::Event(m_serviceProviderId, &AIServiceProviderBus::Events::SendRequest, preparedRequest, callbackWrapper);

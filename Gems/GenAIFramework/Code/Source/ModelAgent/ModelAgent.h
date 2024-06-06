@@ -12,19 +12,19 @@
 #include <AzCore/Outcome/Outcome.h>
 #include <AzCore/std/any.h>
 #include <AzCore/std/containers/vector.h>
-#include <GenAIFramework/Communication/AIModelRequestBus.h>
-#include <GenAIFramework/GenAIFrameworkModelAgentBus.h>
+#include <GenAIFramework/Communication/AIModelAgentBus.h>
 
 namespace GenAIFramework
 {
 
-    class ModelAgent : public GenAIFrameworkModelAgentBus::Handler
+    class ModelAgent : public AIModelAgentBus::Handler
     {
     public:
+        ModelAgent() = delete; // Do not allow to construct the agent without ids
         ModelAgent(const AZ::EntityId& serviceProviderId, const AZ::EntityId& modelConfigurationId, AZ::u64 agentId);
         ~ModelAgent();
 
-        // GenAIFrameworkModelAgentBus::Handler
+        // AIModelAgentBus::Handler
         void SendPrompt(const ModelAPIPrompt& prompt) override;
         AIHistory GetHistory() const override;
 

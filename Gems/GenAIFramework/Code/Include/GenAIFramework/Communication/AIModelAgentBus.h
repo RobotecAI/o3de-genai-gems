@@ -15,11 +15,11 @@
 
 namespace GenAIFramework
 {
-    class GenAIFrameworkModelAgentRequests : public AZ::EBusTraits
+    class AIModelAgentRequests : public AZ::EBusTraits
     {
     public:
-        AZ_RTTI(GenAIFrameworkModelAgentRequests, "{e66d5979-457b-4dfd-a749-ae722101649c}");
-        virtual ~GenAIFrameworkModelAgentRequests() = default;
+        AZ_RTTI(AIModelAgentRequests, "{e66d5979-457b-4dfd-a749-ae722101649c}");
+        virtual ~AIModelAgentRequests() = default;
 
         static constexpr AZ::EBusHandlerPolicy HandlerPolicy = AZ::EBusHandlerPolicy::Single;
         static constexpr AZ::EBusAddressPolicy AddressPolicy = AZ::EBusAddressPolicy::ById;
@@ -35,11 +35,11 @@ namespace GenAIFramework
         virtual AIHistory GetHistory() const = 0;
     };
 
-    class GenAIFrameworkModelAgentNotifications : public AZ::EBusTraits
+    class AIModelAgentNotifications : public AZ::EBusTraits
     {
     public:
-        AZ_RTTI(GenAIFrameworkModelAgentNotifications, "{c317848a-4d75-4e3d-a3a0-e86e621db350}");
-        virtual ~GenAIFrameworkModelAgentNotifications() = default;
+        AZ_RTTI(AIModelAgentNotifications, "{c317848a-4d75-4e3d-a3a0-e86e621db350}");
+        virtual ~AIModelAgentNotifications() = default;
 
         static constexpr AZ::EBusHandlerPolicy HandlerPolicy = AZ::EBusHandlerPolicy::Single;
         static constexpr AZ::EBusAddressPolicy AddressPolicy = AZ::EBusAddressPolicy::ById;
@@ -53,6 +53,6 @@ namespace GenAIFramework
         };
     };
 
-    using GenAIFrameworkModelAgentBus = AZ::EBus<GenAIFrameworkModelAgentRequests>;
-    using GenAIFrameworkModelAgentNotificationBus = AZ::EBus<GenAIFrameworkModelAgentNotifications>;
+    using AIModelAgentBus = AZ::EBus<AIModelAgentRequests>;
+    using AIModelAgentNotificationBus = AZ::EBus<AIModelAgentNotifications>;
 } // namespace GenAIFramework

@@ -95,11 +95,10 @@ namespace GenAIFramework
         if (agentOutcome.IsSuccess())
         {
             auto oldId = m_agentId;
-
-            frameworkInterface->RemoveModelAgent(m_agentId);
             m_agentId = agentOutcome.GetValue();
 
             OnAgentChanged(oldId);
+            frameworkInterface->RemoveModelAgent(oldId);
         }
         else
         {
