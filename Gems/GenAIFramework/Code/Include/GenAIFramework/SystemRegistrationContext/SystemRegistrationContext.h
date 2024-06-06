@@ -12,7 +12,7 @@
 #include <AzCore/Memory/Memory_fwd.h>
 #include <AzCore/RTTI/RTTIMacros.h>
 #include <AzCore/RTTI/ReflectContext.h>
-#include <AzCore/std/containers/set.h>
+#include <AzCore/std/containers/unordered_set.h>
 
 namespace GenAIFramework
 {
@@ -26,7 +26,7 @@ namespace GenAIFramework
         AZ_RTTI(SystemRegistrationContext, "{e162937c-0177-4ced-87b3-3b037a44c394}", AZ::ReflectContext);
 
         template<class C>
-        void RegisterGenAIFrameworkServiceProvider()
+        void RegisterServiceProvider()
         {
             m_registeredServiceProviders.emplace(C::RTTI_Type());
         }
@@ -37,18 +37,18 @@ namespace GenAIFramework
             m_registeredModelConfigurations.emplace(C::RTTI_Type());
         }
 
-        inline AZStd::set<AZ::Uuid> GetRegisteredServiceProviders() const
+        inline AZStd::unordered_set<AZ::Uuid> GetRegisteredServiceProviders() const
         {
             return m_registeredServiceProviders;
         }
 
-        inline AZStd::set<AZ::Uuid> GetRegisteredModelConfigurations() const
+        inline AZStd::unordered_set<AZ::Uuid> GetRegisteredModelConfigurations() const
         {
             return m_registeredModelConfigurations;
         }
 
     private:
-        AZStd::set<AZ::Uuid> m_registeredServiceProviders;
-        AZStd::set<AZ::Uuid> m_registeredModelConfigurations;
+        AZStd::unordered_set<AZ::Uuid> m_registeredServiceProviders;
+        AZStd::unordered_set<AZ::Uuid> m_registeredModelConfigurations;
     };
 } // namespace GenAIFramework

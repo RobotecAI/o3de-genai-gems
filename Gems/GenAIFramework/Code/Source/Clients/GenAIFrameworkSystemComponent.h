@@ -74,7 +74,7 @@ namespace GenAIFramework
         static void DeactivateEntities(const EntityIdToEntityMap& entities);
 
         AZStd::vector<AZStd::pair<AZStd::string, AZ::Uuid>> GetRegisteredComponentsNameAndComponentTypeId(
-            const AZStd::set<AZ::Uuid>& registeredComponent) const;
+            const AZStd::unordered_set<AZ::Uuid>& registeredComponent) const;
         AZStd::vector<AZ::Component*> GetActiveComponents(const EntityIdToEntityMap& entities) const;
         AZ::Component* CreateNewComponentEntity(const AZStd::string& name, AZ::Uuid componentTypeId, EntityIdToEntityMap& entities);
 
@@ -82,6 +82,6 @@ namespace GenAIFramework
 
         AZ::EntityId GetEntityIdByName(const AZStd::string& name, const EntityIdToEntityMap& entities) const;
 
-        AZStd::map<AZ::u64, AZStd::shared_ptr<ModelAgent>> m_modelAgents;
+        AZStd::unordered_map<AZ::u64, AZStd::shared_ptr<ModelAgent>> m_modelAgents;
     };
 } // namespace GenAIFramework
