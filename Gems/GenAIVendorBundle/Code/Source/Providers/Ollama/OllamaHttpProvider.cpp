@@ -25,7 +25,8 @@ namespace GenAIVendorBundle
             serializeContext->Class<OllamaHttpServiceConfiguration, AZ::ComponentConfig>()
                 ->Version(0)
                 ->Field("url", &OllamaHttpServiceConfiguration::m_url)
-                ->Field("contentType", &OllamaHttpServiceConfiguration::m_contentType);
+                ->Field("contentType", &OllamaHttpServiceConfiguration::m_contentType)
+                ->Field("timeout", &OllamaHttpServiceConfiguration::m_timeout);
 
             if (auto editContext = serializeContext->GetEditContext())
             {
@@ -42,7 +43,8 @@ namespace GenAIVendorBundle
                         AZ::Edit::UIHandlers::Default,
                         &OllamaHttpServiceConfiguration::m_contentType,
                         "Content type",
-                        "Content type of the request");
+                        "Content type of the request")
+                    ->DataElement(AZ::Edit::UIHandlers::Default, &OllamaHttpServiceConfiguration::m_timeout, "Request timeout (ms)", "");
             }
         }
     }
@@ -97,6 +99,11 @@ namespace GenAIVendorBundle
         HttpRequestor::Headers headers;
         headers["Content-Type"] = m_configuration.m_contentType.c_str();
 
+        Aws::Client::ClientConfiguration clientConfiguration;
+        clientConfiguration.connectTimeoutMs = m_configuration.m_timeout;
+        clientConfiguration.requestTimeoutMs = m_configuration.m_timeout;
+        clientConfiguration.httpRequestTimeoutMs = m_configuration.m_timeout;
+
         HttpRequestor::Callback innerCallback =
             [callback](const Aws::Utils::Json::JsonView& jsonView, Aws::Http::HttpResponseCode responseCode)
         {
@@ -114,12 +121,13 @@ namespace GenAIVendorBundle
         };
 
         HttpRequestor::HttpRequestorRequestBus::Broadcast(
-            &HttpRequestor::HttpRequestorRequests::AddRequestWithHeadersAndBody,
+            &HttpRequestor::HttpRequestorRequests::AddRequestWithHeadersBodyAndClientConfiguration,
             m_configuration.m_url,
             Aws::Http::HttpMethod::HTTP_POST,
             headers,
             request,
-            innerCallback);
+            innerCallback,
+            clientConfiguration);
     }
 
 } // namespace GenAIVendorBundle
