@@ -63,6 +63,11 @@ namespace GenAIFramework
         connect(m_ui->SendBtn, &QPushButton::clicked, this, &AIAssistantWidget::OnRequestButton);
         connect(m_ui->OptionsBtn, &QPushButton::clicked, this, &AIAssistantWidget::OnOptionsButton);
         connect(m_ui->actionResetHistory, &QAction::triggered, this, &AIAssistantWidget::OnResetAction);
+        connect(m_ui->actionNewChat, &QAction::triggered, this, &AIAssistantWidget::OnNewChatAction);
+        connect(m_ui->conversations, &QTabWidget::tabCloseRequested, [this](int index)
+            {
+                m_ui->conversations->removeTab(index);
+            };
     }
 
     AIAssistantWidget::~AIAssistantWidget()
@@ -263,6 +268,11 @@ namespace GenAIFramework
     {
         // TODO: reset history
         UiClearMessages();
+    }
+
+    void AIAssistantWidget::OnNewChatAction()
+    {
+      m_ui->conversations->addTab(new QWidget(), "New Chat");
     }
 
     void AIAssistantWidget::closeEvent(QCloseEvent* event)

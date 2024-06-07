@@ -44,6 +44,7 @@ namespace GenAIFramework
         void OnRequestButton();
         void OnOptionsButton();
         void OnResetAction();
+        void OnNewChatAction();
 
     protected:
         // QWidget overrides
