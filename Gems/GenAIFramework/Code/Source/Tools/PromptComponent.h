@@ -9,10 +9,13 @@
 #pragma once
 
 #include <GenAIFramework/AIComponentBase/AIComponentBase.h>
+#include <GenAIFramework/Communication/AIModelAgentBus.h>
 
 namespace GenAIFramework
 {
-    class PromptComponent : public AIComponentBase
+    class PromptComponent
+        : public AIComponentBase
+        , public AIModelAgentNotificationBus::Handler
     {
     public:
         AZ_COMPONENT(PromptComponent, "{649a1139-ed22-4fe3-a81d-76c77faeea4e}", AIComponentBase);
@@ -27,6 +30,12 @@ namespace GenAIFramework
 
         AZ::Crc32 Send();
 
+    protected:
+        // AIModelAgentNotificationBus overrides
+        void OnPromptResponse(ModelAPIExtractedResponse response) override;
+        void OnAgentChanged(AZ::u64 oldId) override;
+
+    private:
         AZStd::string m_modelOutput;
         AZStd::string m_modelInput;
     };

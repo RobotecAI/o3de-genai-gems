@@ -56,10 +56,6 @@ namespace GenAIFramework
         AZ::Outcome<AZ::u64, void> CreateModelAgent(
             const AZStd::string& serviceProviderName, const AZStd::string modelModelConfigurationName) override;
         bool RemoveModelAgent(AZ::u64 modelAgentId) override;
-        bool SendPromptToModelAgent(
-            const AZ::u64 modelAgentId,
-            const AZStd::vector<AZStd::any>& prompt,
-            const AZStd::function<void(const AZ::Outcome<AZStd::vector<AZStd::any>, AZStd::string>&)>& callback) override;
         ////////////////////////////////////////////////////////////////////////
 
         ////////////////////////////////////////////////////////////////////////
@@ -86,6 +82,6 @@ namespace GenAIFramework
 
         AZ::EntityId GetEntityIdByName(const AZStd::string& name, const EntityIdToEntityMap& entities) const;
 
-        AZStd::unordered_map<AZ::u64, ModelAgent> m_modelAgents;
+        AZStd::unordered_map<AZ::u64, AZStd::shared_ptr<ModelAgent>> m_modelAgents;
     };
 } // namespace GenAIFramework
