@@ -27,6 +27,7 @@ namespace GenAIVendorBundle
 
         AZStd::string m_url = "";
         AZStd::string m_contentType = "application/json";
+        int m_timeout = 10000;
     };
 
     class OllamaHttpServiceComponent
