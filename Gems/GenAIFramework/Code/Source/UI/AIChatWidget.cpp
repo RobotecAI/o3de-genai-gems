@@ -21,7 +21,7 @@
 #include <QMessageBox>
 #include <QScrollBar>
 #include <QSettings>
-#include <Source/UI/ui_AIAssistantWidget.h>
+#include <Source/UI/ui_AIChatWidget.h>
 
 namespace GenAIFramework
 {
@@ -46,5 +46,11 @@ namespace GenAIFramework
                 m_ui->scrollArea->verticalScrollBar()->setValue(m_ui->scrollArea->verticalScrollBar()->maximum());
             });
 
-    }
   }
+  
+  AIChatWidget::~AIChatWidget()
+  {
+  }
+
+
+}

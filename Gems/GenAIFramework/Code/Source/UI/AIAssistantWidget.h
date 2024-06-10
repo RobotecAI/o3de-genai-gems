@@ -30,50 +30,48 @@ namespace GenAIFramework
 {
     class AIAssistantWidget
         : public QMainWindow
-        , private GenAIFramework::GenAIFrameworkNotificationBus::Handler
+        //, private GenAIFramework::GenAIFrameworkNotificationBus::Handler
     {
         Q_OBJECT
     public:
         explicit AIAssistantWidget(QWidget* parent = nullptr);
-        void UpdateModelAndProviderLists();
+        // void UpdateModelAndProviderLists();
         ~AIAssistantWidget() override;
 
-    private slots:
-        void OnModelConfigurationSelected(const QString& modelName);
-        void OnServiceProviderSelected(const QString& providerName);
-        void OnRequestButton();
-        void OnOptionsButton();
-        void OnResetAction();
-        void OnNewChatAction();
+    //private slots:
+    //    void OnModelConfigurationSelected(const QString& modelName);
+    //    void OnServiceProviderSelected(const QString& providerName);
+    //    void OnRequestButton();
+    //    void OnOptionsButton();
+    //    void OnResetAction();
+    //    void OnNewChatAction();
 
-    protected:
-        // QWidget overrides
-        void closeEvent(QCloseEvent* event) override;
-        void showEvent(QShowEvent* event) override;
+    //protected:
+    //    // QWidget overrides
+    //    void closeEvent(QCloseEvent* event) override;
+    //    void showEvent(QShowEvent* event) override;
 
-    private:
-        // GenAIFramework::GenAIFrameworkNotificationBus::Handler
-        void OnServiceProviderAdded(const AZ::EntityId& serviceProviderId) override;
-        void OnServiceProviderRemoved(const AZ::EntityId& serviceProviderId) override;
-        void OnModelConfigurationAdded(const AZ::EntityId& modelConfigurationId) override;
-        void OnModelConfigurationRemoved(const AZ::EntityId& modelConfigurationId) override;
+    //private:
+    //    // GenAIFramework::GenAIFrameworkNotificationBus::Handler
+    //    void OnServiceProviderAdded(const AZ::EntityId& serviceProviderId) override;
+    //    void OnServiceProviderRemoved(const AZ::EntityId& serviceProviderId) override;
+    //    void OnModelConfigurationAdded(const AZ::EntityId& modelConfigurationId) override;
+    //    void OnModelConfigurationRemoved(const AZ::EntityId& modelConfigurationId) override;
 
-        //! Refresh the list of service providers and model configurations, loads the default model and provider from QSettings.
-        void RefreshDefaultModelConfiguration();
+    //    //! Refresh the list of service providers and model configurations, loads the default model and provider from QSettings.
+    //    void RefreshDefaultModelConfiguration();
 
-        //! Set the model and provider to the given names.
-        //! @param modelName The name of the model configuration.
-        //! @param providerName The name of the service provider.
-        void SetModelAndProvider(const QString& modelName, const QString& providerName);
+    //    //! Set the model and provider to the given names.
+    //    //! @param modelName The name of the model configuration.
+    //    //! @param providerName The name of the service provider.
+    //    void SetModelAndProvider(const QString& modelName, const QString& providerName);
 
-        void UiAppendChatMessage(const AZStd::string& message, bool response = false);
-        void UiClearMessages();
+    //    void UiAppendChatMessage(const AZStd::string& message, bool response = false);
+    //    void UiClearMessages();
 
         Ui::AIAssistantUI* m_ui;
-        QVBoxLayout* m_uiChatLayout;
-        GenAIFrameworkWidget* m_optionsWidget;
 
-        QMap<QString, AZ::EntityId> m_ServiceProviderNameToId;
-        QMap<QString, AZ::EntityId> m_modelConfigurationNameToId;
+    //    QMap<QString, AZ::EntityId> m_ServiceProviderNameToId;
+    //    QMap<QString, AZ::EntityId> m_modelConfigurationNameToId;
     };
 } // namespace GenAIFramework

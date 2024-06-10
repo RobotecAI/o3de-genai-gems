@@ -23,7 +23,7 @@
 
 namespace Ui
 {
-    class AIAssistantUI;
+    class AIChatWidgetUI;
 }
 
 namespace GenAIFramework
@@ -68,9 +68,9 @@ namespace GenAIFramework
     //    void UiAppendChatMessage(const AZStd::string& message, bool response = false);
     //    void UiClearMessages();
 
-    //    Ui::AIAssistantUI* m_ui;
-    //    QVBoxLayout* m_uiChatLayout;
-    //    GenAIFrameworkWidget* m_optionsWidget;
+        Ui::AIChatWidgetUI* m_ui;
+        QVBoxLayout* m_uiChatLayout;
+        GenAIFrameworkWidget* m_optionsWidget;
 
     //    QMap<QString, AZ::EntityId> m_ServiceProviderNameToId;
     //    QMap<QString, AZ::EntityId> m_modelConfigurationNameToId;
