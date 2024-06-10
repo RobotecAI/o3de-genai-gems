@@ -31,23 +31,23 @@
     <property name="title">
      <string>Model</string>
     </property>
-    <addaction name="actionResetHistory"/>
     <addaction name="actionNewChat"/>
+    <addaction name="actionConfigure"/>
    </widget>
    <addaction name="menuChats"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
-  <action name="actionResetHistory">
-   <property name="text">
-    <string>Reset context</string>
-   </property>
-  </action>
   <action name="actionNewChat">
    <property name="text">
     <string>New chat</string>
    </property>
    <property name="toolTip">
     <string>Starts a new conversation with assistant</string>
+   </property>
+  </action>
+  <action name="actionConfigure">
+   <property name="text">
+    <string>Configure</string>
    </property>
   </action>
  </widget>

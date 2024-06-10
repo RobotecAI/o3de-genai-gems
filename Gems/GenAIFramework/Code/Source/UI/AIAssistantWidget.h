@@ -38,40 +38,18 @@ namespace GenAIFramework
         // void UpdateModelAndProviderLists();
         ~AIAssistantWidget() override;
 
-    //private slots:
-    //    void OnModelConfigurationSelected(const QString& modelName);
-    //    void OnServiceProviderSelected(const QString& providerName);
-    //    void OnRequestButton();
-    //    void OnOptionsButton();
-    //    void OnResetAction();
-    //    void OnNewChatAction();
+    private slots:
+        void OnNewChatAction();
+        void OnConfigureAction();
 
-    //protected:
-    //    // QWidget overrides
-    //    void closeEvent(QCloseEvent* event) override;
-    //    void showEvent(QShowEvent* event) override;
+    protected:
+        // QWidget overrides
+        void closeEvent(QCloseEvent* event) override;
+        void showEvent(QShowEvent* event) override;
 
-    //private:
-    //    // GenAIFramework::GenAIFrameworkNotificationBus::Handler
-    //    void OnServiceProviderAdded(const AZ::EntityId& serviceProviderId) override;
-    //    void OnServiceProviderRemoved(const AZ::EntityId& serviceProviderId) override;
-    //    void OnModelConfigurationAdded(const AZ::EntityId& modelConfigurationId) override;
-    //    void OnModelConfigurationRemoved(const AZ::EntityId& modelConfigurationId) override;
-
-    //    //! Refresh the list of service providers and model configurations, loads the default model and provider from QSettings.
-    //    void RefreshDefaultModelConfiguration();
-
-    //    //! Set the model and provider to the given names.
-    //    //! @param modelName The name of the model configuration.
-    //    //! @param providerName The name of the service provider.
-    //    void SetModelAndProvider(const QString& modelName, const QString& providerName);
-
-    //    void UiAppendChatMessage(const AZStd::string& message, bool response = false);
-    //    void UiClearMessages();
+    private:
 
         Ui::AIAssistantUI* m_ui;
-
-    //    QMap<QString, AZ::EntityId> m_ServiceProviderNameToId;
-    //    QMap<QString, AZ::EntityId> m_modelConfigurationNameToId;
+        GenAIFrameworkWidget* m_optionsWidget;
     };
 } // namespace GenAIFramework

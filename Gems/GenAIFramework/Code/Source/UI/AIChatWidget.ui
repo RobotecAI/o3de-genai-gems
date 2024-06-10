@@ -15,48 +15,6 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_2">
-     <property name="spacing">
-      <number>6</number>
-     </property>
-     <item>
-      <layout class="QVBoxLayout" name="verticalLayout_4">
-       <item>
-        <widget class="QLabel" name="label">
-         <property name="text">
-          <string>Model</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QComboBox" name="models"/>
-       </item>
-      </layout>
-     </item>
-     <item>
-      <layout class="QVBoxLayout" name="verticalLayout_3">
-       <item>
-        <widget class="QLabel" name="label_2">
-         <property name="text">
-          <string>Service</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QComboBox" name="providers"/>
-       </item>
-      </layout>
-     </item>
-     <item>
-      <widget class="QPushButton" name="OptionsBtn">
-       <property name="text">
-        <string>Options</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item>
     <widget class="QScrollArea" name="scrollArea">
      <property name="alignment">
       <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>

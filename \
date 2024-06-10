@@ -51,6 +51,7 @@ namespace GenAIFramework
     {
     }
 
+
     void AIChatWidget::OnRequestButton()
     {
         AZStd::string modelInput = m_ui->textEdit->toPlainText().toStdString().c_str();
