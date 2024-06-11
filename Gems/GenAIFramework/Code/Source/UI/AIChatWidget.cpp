@@ -31,7 +31,7 @@ namespace GenAIFramework
 
     {
         m_ui->setupUi(this);
-        
+
         QString description = QString("Model: %1 Provider: %2").arg(modelName, providerName);
         m_ui->configDescription->setText(description);
 
@@ -48,10 +48,6 @@ namespace GenAIFramework
                 m_ui->scrollArea->verticalScrollBar()->setValue(m_ui->scrollArea->verticalScrollBar()->maximum());
             });
         connect(m_ui->SendBtn, &QPushButton::clicked, this, &AIChatWidget::OnRequestButton);
-  }
-  
-    AIChatWidget::~AIChatWidget()
-    {
     }
 
     void AIChatWidget::OnRequestButton()
@@ -62,7 +58,7 @@ namespace GenAIFramework
         UiAppendChatMessage("This PoC implementation is not connected to any assistant", isAssistantReply);
     }
 
-    void AIChatWidget::UiAppendChatMessage(const AZStd::string& message, bool response)
+    void AIChatWidget::UiAppendChatMessage(const AZStd::string& message, const bool response)
     {
         auto label = new QLabel(message.c_str());
         label->setWordWrap(true);
@@ -90,4 +86,4 @@ namespace GenAIFramework
         }
     }
 
-}
+} // namespace GenAIFramework

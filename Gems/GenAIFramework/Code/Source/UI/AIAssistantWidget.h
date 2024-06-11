@@ -21,7 +21,6 @@
 #include "NewChatWidget.h"
 #endif
 
-
 namespace Ui
 {
     class AIAssistantUI;
@@ -29,15 +28,11 @@ namespace Ui
 
 namespace GenAIFramework
 {
-    class AIAssistantWidget
-        : public QMainWindow
-        //, private GenAIFramework::GenAIFrameworkNotificationBus::Handler
+    class AIAssistantWidget : public QMainWindow
     {
         Q_OBJECT
     public:
         explicit AIAssistantWidget(QWidget* parent = nullptr);
-        // void UpdateModelAndProviderLists();
-        ~AIAssistantWidget() override;
 
     private slots:
         void OnNewChatAction();
@@ -50,7 +45,6 @@ namespace GenAIFramework
         void showEvent(QShowEvent* event) override;
 
     private:
-
         Ui::AIAssistantUI* m_ui;
         GenAIFrameworkWidget* m_optionsWidget;
         NewChatWidget* m_newChatWidget;

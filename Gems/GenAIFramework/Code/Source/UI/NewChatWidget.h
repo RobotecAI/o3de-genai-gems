@@ -12,13 +12,13 @@
 #include <QLabel>
 #include <QMap>
 #include <QWidget>
-#endif
 
 #include <AzCore/Component/Entity.h>
 #include <AzCore/std/containers/unordered_map.h>
 #include <GenAIFramework/GenAIFrameworkBus.h>
 
 #include "GenAIFrameworkWidget.h"
+#endif
 
 namespace Ui
 {
@@ -38,7 +38,8 @@ namespace GenAIFramework
         ~NewChatWidget() override;
 
     signals:
-        // NOTE: For UI purposes these can be only strings, but given that this is connected in AIAssistantWidget, it could be useful to provide more data on providers
+        // NOTE: For UI purposes these can be only strings, but given that this is connected in AIAssistantWidget, it could be useful to
+        // provide more data on providers
         void chatCreated(const QString& chatName, const QString& modelName, const QString& providerName);
 
     private slots:
@@ -47,11 +48,6 @@ namespace GenAIFramework
         void OnChatNameChanged(const QString& chatName);
         void OnSaveButton();
 
-    // protected:
-    //     // QWidget overrides
-    //     void closeEvent(QCloseEvent* event) override;
-    //     void showEvent(QShowEvent* event) override;
-
     private:
         // GenAIFramework::GenAIFrameworkNotificationBus::Handler
         void OnServiceProviderAdded(const AZ::EntityId& serviceProviderId) override;
@@ -59,7 +55,7 @@ namespace GenAIFramework
         void OnModelConfigurationAdded(const AZ::EntityId& modelConfigurationId) override;
         void OnModelConfigurationRemoved(const AZ::EntityId& modelConfigurationId) override;
 
-    //    //! Refresh the list of service providers and model configurations, loads the default model and provider from QSettings.
+        //! Refresh the list of service providers and model configurations, loads the default model and provider from QSettings.
         void RefreshDefaultModelConfiguration();
 
         //! Set the model and provider to the given names.
@@ -69,9 +65,9 @@ namespace GenAIFramework
 
         Ui::NewChatWidgetUI* m_ui;
         QVBoxLayout* m_uiChatLayout;
-        QString chat_name;
-        QString model_name;
-        QString provider_name;
+        QString m_chatName;
+        QString m_modelName;
+        QString m_providerName;
 
         QMap<QString, AZ::EntityId> m_ServiceProviderNameToId;
         QMap<QString, AZ::EntityId> m_modelConfigurationNameToId;

@@ -16,6 +16,9 @@
 
 namespace GenAIFramework
 {
+    static constexpr const char SetModelConfiguration[] = "AIAssistant/Model";
+    static constexpr const char SetServiceProvider[] = "AIAssistant/Provider";
+
     NewChatWidget::NewChatWidget(QWidget* parent)
         : QWidget(parent)
         , m_ui(new Ui::NewChatWidgetUI)
@@ -33,18 +36,15 @@ namespace GenAIFramework
         connect(m_ui->providers, &QComboBox::textActivated, this, &NewChatWidget::OnServiceProviderSelected);
         connect(m_ui->chatName, &QLineEdit::textChanged, this, &NewChatWidget::OnChatNameChanged);
         connect(m_ui->saveButton, &QPushButton::clicked, this, &NewChatWidget::OnSaveButton);
+    }
 
-  }
-  
     NewChatWidget::~NewChatWidget()
     {
-
         if (GenAIFramework::GenAIFrameworkNotificationBus::Handler::BusIsConnected())
         {
             GenAIFramework::GenAIFrameworkNotificationBus::Handler::BusDisconnect();
         }
     }
-
 
     QString GetEntityName(AZ::EntityId entityId)
     {
@@ -64,12 +64,14 @@ namespace GenAIFramework
         settings.setValue(SetServiceProvider, providerName);
     }
 
-    void NewChatWidget::OnChatNameChanged(const QString& chatName){
-        chat_name = chatName;
+    void NewChatWidget::OnChatNameChanged(const QString& chatName)
+    {
+        m_chatName = chatName;
     }
 
-    void NewChatWidget::OnSaveButton(){
-        emit chatCreated(chat_name, model_name, provider_name);
+    void NewChatWidget::OnSaveButton()
+    {
+        emit chatCreated(m_chatName, m_modelName, m_providerName);
     }
 
     void NewChatWidget::OnServiceProviderAdded(const AZ::EntityId& serviceProviderId)
@@ -119,7 +121,7 @@ namespace GenAIFramework
         QString providerName = m_ui->providers->currentText();
         SetModelAndProvider(modelName, providerName);
         SetToQSettings(providerName, modelName);
-        model_name = modelName;
+        m_modelName = modelName;
     }
 
     void NewChatWidget::OnServiceProviderSelected(const QString& providerName)
@@ -127,7 +129,7 @@ namespace GenAIFramework
         QString modelName = m_ui->models->currentText();
         SetModelAndProvider(modelName, providerName);
         SetToQSettings(providerName, modelName);
-        provider_name = providerName;
+        m_providerName = providerName;
     }
 
     void NewChatWidget::SetModelAndProvider(const QString& modelName, const QString& providerName)
@@ -165,7 +167,7 @@ namespace GenAIFramework
             }
         }
 
-        provider_name = m_ui->providers->currentText();
+        m_providerName = m_ui->providers->currentText();
 
         AZStd::vector<AZ::Component*> modelConfigurations;
         GenAIFramework::GenAIFrameworkRequestBus::BroadcastResult(
@@ -183,7 +185,7 @@ namespace GenAIFramework
             }
         }
 
-        model_name = m_ui->models->currentText();
+        m_modelName = m_ui->models->currentText();
     }
 
     void NewChatWidget::RefreshDefaultModelConfiguration()
@@ -204,4 +206,4 @@ namespace GenAIFramework
         }
     }
 
-}
+} // namespace GenAIFramework

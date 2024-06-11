@@ -27,9 +27,6 @@
 
 namespace GenAIFramework
 {
-    static constexpr const char SetModelConfiguration[] = "AIAssistant/Model";
-    static constexpr const char SetServiceProvider[] = "AIAssistant/Provider";
-
     AIAssistantWidget::AIAssistantWidget(QWidget* parent)
         : QMainWindow(parent)
         , m_ui(new Ui::AIAssistantUI)
@@ -41,33 +38,33 @@ namespace GenAIFramework
 
         connect(m_ui->actionNewChat, &QAction::triggered, this, &AIAssistantWidget::OnNewChatAction);
         connect(m_ui->actionConfigure, &QAction::triggered, this, &AIAssistantWidget::OnConfigureAction);
-        connect(m_ui->conversations, &QTabWidget::tabCloseRequested, [this](int index)
+        connect(
+            m_ui->conversations,
+            &QTabWidget::tabCloseRequested,
+            [this](int index)
             {
-              m_ui->conversations->removeTab(index);
+                m_ui->conversations->removeTab(index);
             });
         connect(m_newChatWidget, &NewChatWidget::chatCreated, this, &AIAssistantWidget::OnChatCreated);
     }
 
-    AIAssistantWidget::~AIAssistantWidget()
-    {
-    }
-
     void AIAssistantWidget::OnConfigureAction()
     {
-        //TODO: fix bug where the widget doesn't open after closing
+        // TODO: the widget doesn't open after closing
         m_optionsWidget->resize(this->size());
         m_optionsWidget->show();
     }
 
     void AIAssistantWidget::OnNewChatAction()
     {
-      m_newChatWidget->resize(this->size());
-      m_newChatWidget->show();
+        m_newChatWidget->resize(this->size());
+        m_newChatWidget->show();
     }
 
-    void AIAssistantWidget::OnChatCreated(const QString& chatName, const QString& modelName, const QString& providerName){
-      m_ui->conversations->addTab(new AIChatWidget(this, modelName, providerName), chatName);
-      m_newChatWidget->hide();
+    void AIAssistantWidget::OnChatCreated(const QString& chatName, const QString& modelName, const QString& providerName)
+    {
+        m_ui->conversations->addTab(new AIChatWidget(this, modelName, providerName), chatName);
+        m_newChatWidget->hide();
     }
 
     void AIAssistantWidget::closeEvent(QCloseEvent* event)
