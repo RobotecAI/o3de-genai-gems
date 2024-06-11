@@ -32,6 +32,7 @@ namespace GenAIFramework
         connect(m_ui->models, &QComboBox::textActivated, this, &NewChatWidget::OnModelConfigurationSelected);
         connect(m_ui->providers, &QComboBox::textActivated, this, &NewChatWidget::OnServiceProviderSelected);
         connect(m_ui->chatName, &QLineEdit::textChanged, this, &NewChatWidget::OnChatNameChanged);
+        connect(m_ui->saveButton, &QPushButton::clicked, this, &NewChatWidget::OnSaveButton);
 
   }
   
@@ -67,12 +68,8 @@ namespace GenAIFramework
         chat_name = chatName;
     }
 
-    void NewChatWidget::OnSaveButtion(){
-        if (chat_name.isEmpty() || model_name.isEmpty() || provider_name.isEmpty()){
-            QMessageBox::warning(this, "Warning", "Please fill in all fields");
-            return;
-        }
-        this->close();
+    void NewChatWidget::OnSaveButton(){
+        emit chatCreated(chat_name, model_name, provider_name);
     }
 
     void NewChatWidget::OnServiceProviderAdded(const AZ::EntityId& serviceProviderId)
@@ -168,6 +165,8 @@ namespace GenAIFramework
             }
         }
 
+        provider_name = m_ui->providers->currentText();
+
         AZStd::vector<AZ::Component*> modelConfigurations;
         GenAIFramework::GenAIFrameworkRequestBus::BroadcastResult(
             modelConfigurations, &GenAIFramework::GenAIFrameworkRequests::GetModelConfigurations);
@@ -183,6 +182,8 @@ namespace GenAIFramework
                 m_ui->models->addItem(qName);
             }
         }
+
+        model_name = m_ui->models->currentText();
     }
 
     void NewChatWidget::RefreshDefaultModelConfiguration()

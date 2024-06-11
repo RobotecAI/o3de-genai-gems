@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>350</width>
-    <height>268</height>
+    <height>300</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,29 +16,19 @@
   <widget class="QWidget" name="verticalLayoutWidget">
    <property name="geometry">
     <rect>
-     <x>-1</x>
-     <y>-1</y>
-     <width>351</width>
-     <height>235</height>
+     <x>0</x>
+     <y>0</y>
+     <width>350</width>
+     <height>300</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
-    <item>
-     <widget class="QLabel" name="label">
-      <property name="text">
-       <string>Create new chat</string>
-      </property>
-     </widget>
-    </item>
     <item>
      <layout class="QHBoxLayout" name="horizontalChatName">
       <item>
        <widget class="QLabel" name="label_2">
         <property name="text">
          <string>Chat name</string>
-        </property>
-        <property name="margin">
-         <number>15</number>
         </property>
        </widget>
       </item>
@@ -54,9 +44,6 @@
         <property name="text">
          <string>Model</string>
         </property>
-        <property name="margin">
-         <number>15</number>
-        </property>
        </widget>
       </item>
       <item>
@@ -71,9 +58,6 @@
         <property name="text">
          <string>Service</string>
         </property>
-        <property name="margin">
-         <number>15</number>
-        </property>
        </widget>
       </item>
       <item>
@@ -81,9 +65,8 @@
       </item>
      </layout>
     </item>
-   </layout>
-  </widget>
-  <widget class="QPushButton" name="pushButton">
+    <item>
+  <widget class="QPushButton" name="saveButton">
    <property name="geometry">
     <rect>
      <x>120</x>
@@ -95,6 +78,9 @@
    <property name="text">
     <string>Create</string>
    </property>
+  </widget>
+</item>
+   </layout>
   </widget>
  </widget>
  <resources/>

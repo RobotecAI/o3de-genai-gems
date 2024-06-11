@@ -20,6 +20,7 @@
 #include <GenAIFramework/GenAIFrameworkBus.h>
 
 #include "GenAIFrameworkWidget.h"
+#include "NewChatWidget.h"
 
 namespace Ui
 {
@@ -41,6 +42,7 @@ namespace GenAIFramework
     private slots:
         void OnNewChatAction();
         void OnConfigureAction();
+        void OnChatCreated(const QString& chatName, const QString& modelName, const QString& providerName);
 
     protected:
         // QWidget overrides
@@ -51,5 +53,6 @@ namespace GenAIFramework
 
         Ui::AIAssistantUI* m_ui;
         GenAIFrameworkWidget* m_optionsWidget;
+        NewChatWidget* m_newChatWidget;
     };
 } // namespace GenAIFramework

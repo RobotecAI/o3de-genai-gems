@@ -25,12 +25,15 @@
 
 namespace GenAIFramework
 {
-    AIChatWidget::AIChatWidget(QWidget* parent)
+    AIChatWidget::AIChatWidget(QWidget* parent, QString modelName, QString providerName)
         : QWidget(parent)
         , m_ui(new Ui::AIChatWidgetUI)
 
     {
         m_ui->setupUi(this);
+        
+        QString description = QString("Model: %1 Provider: %2").arg(modelName, providerName);
+        m_ui->configDescription->setText(description);
 
         m_uiChatLayout = new QVBoxLayout();
         m_uiChatLayout->setAlignment(Qt::AlignBottom);

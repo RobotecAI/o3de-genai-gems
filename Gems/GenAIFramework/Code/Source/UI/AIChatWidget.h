@@ -34,7 +34,7 @@ namespace GenAIFramework
     {
         Q_OBJECT
     public:
-        explicit AIChatWidget(QWidget* parent = nullptr);
+        explicit AIChatWidget(QWidget* parent = nullptr, QString modelName = "", QString providerName = "");
         ~AIChatWidget() override;
 
     private slots:

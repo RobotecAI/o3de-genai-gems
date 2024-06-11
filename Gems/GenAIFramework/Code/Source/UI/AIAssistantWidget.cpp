@@ -37,6 +37,7 @@ namespace GenAIFramework
     {
         m_ui->setupUi(this);
         m_optionsWidget = new GenAIFrameworkWidget();
+        m_newChatWidget = new NewChatWidget();
 
         connect(m_ui->actionNewChat, &QAction::triggered, this, &AIAssistantWidget::OnNewChatAction);
         connect(m_ui->actionConfigure, &QAction::triggered, this, &AIAssistantWidget::OnConfigureAction);
@@ -44,6 +45,7 @@ namespace GenAIFramework
             {
               m_ui->conversations->removeTab(index);
             });
+        connect(m_newChatWidget, &NewChatWidget::chatCreated, this, &AIAssistantWidget::OnChatCreated);
     }
 
     AIAssistantWidget::~AIAssistantWidget()
@@ -59,9 +61,13 @@ namespace GenAIFramework
 
     void AIAssistantWidget::OnNewChatAction()
     {
-      QWidget * chatConfig = new NewChatWidget();
-      chatConfig->show();
-      //m_ui->conversations->addTab(new AIChatWidget(this), "New Chat");
+      m_newChatWidget->resize(this->size());
+      m_newChatWidget->show();
+    }
+
+    void AIAssistantWidget::OnChatCreated(const QString& chatName, const QString& modelName, const QString& providerName){
+      m_ui->conversations->addTab(new AIChatWidget(this, modelName, providerName), chatName);
+      m_newChatWidget->hide();
     }
 
     void AIAssistantWidget::closeEvent(QCloseEvent* event)

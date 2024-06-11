@@ -37,11 +37,15 @@ namespace GenAIFramework
         void UpdateModelAndProviderLists();
         ~NewChatWidget() override;
 
+    signals:
+        // NOTE: For UI purposes these can be only strings, but given that this is connected in AIAssistantWidget, it could be useful to provide more data on providers
+        void chatCreated(const QString& chatName, const QString& modelName, const QString& providerName);
+
     private slots:
         void OnModelConfigurationSelected(const QString& modelName);
         void OnServiceProviderSelected(const QString& providerName);
         void OnChatNameChanged(const QString& chatName);
-        void OnSaveButtion();
+        void OnSaveButton();
 
     // protected:
     //     // QWidget overrides
