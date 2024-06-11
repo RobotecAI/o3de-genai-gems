@@ -18,7 +18,7 @@
 #include <AzCore/std/containers/unordered_map.h>
 #include <GenAIFramework/GenAIFrameworkBus.h>
 
-#include "GenAIFrameworkWidget.h"
+#include <UI/AIConfigurationWidget/GenAIFrameworkWidget.h>
 #endif
 
 namespace Ui

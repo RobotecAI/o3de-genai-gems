@@ -7,8 +7,8 @@
  */
 
 #include "GenAIFrameworkEditorSystemComponent.h"
-#include "SettingsRegistryManager/SettingsRegistryManager.h"
-#include "UI/AIAssistantWidget.h"
+#include <SettingsRegistryManager/SettingsRegistryManager.h>
+#include <UI/AIAssistantWidget.h>
 
 #include <API/ViewPaneOptions.h>
 #include <AzCore/Component/Entity.h>

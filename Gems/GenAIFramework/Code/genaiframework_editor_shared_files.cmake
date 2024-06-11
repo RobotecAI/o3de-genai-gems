@@ -5,8 +5,8 @@ set(FILES
     Source/UI/AIAssistantWidget.h
     Source/UI/AIAssistantWidget.cpp
     Source/UI/AIAssistantWidget.ui
-    Source/UI/GenAIFrameworkWidget.cpp
-    Source/UI/GenAIFrameworkWidget.h
+    Source/UI/AIConfigurationWidget/GenAIFrameworkWidget.cpp
+    Source/UI/AIConfigurationWidget/GenAIFrameworkWidget.h
     Source/UI/AIChatWidget.cpp
     Source/UI/AIChatWidget.h
     Source/UI/AIChatWidget.ui
