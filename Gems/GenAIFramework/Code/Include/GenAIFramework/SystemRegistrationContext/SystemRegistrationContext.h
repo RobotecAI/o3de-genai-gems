@@ -13,6 +13,9 @@
 #include <AzCore/RTTI/RTTIMacros.h>
 #include <AzCore/RTTI/ReflectContext.h>
 #include <AzCore/std/containers/unordered_set.h>
+#include <AzCore/std/smart_ptr/make_shared.h>
+#include <AzCore/std/smart_ptr/shared_ptr.h>
+#include <GenAIFramework/Feature/FeatureBase.h>
 
 namespace GenAIFramework
 {
@@ -37,6 +40,39 @@ namespace GenAIFramework
             m_registeredModelConfigurations.emplace(C::RTTI_Type());
         }
 
+        template<class C>
+        void RegisterFeature(const AZStd::string& name)
+        {
+            static_assert(AZStd::is_base_of<FeatureBase, C>::value);
+            if (m_featuresFactory.find(C::RTTI_Type()) == m_featuresFactory.end())
+            {
+                m_featureNames[C::RTTI_Type()] = name;
+                m_featuresFactory[C::RTTI_Type()] = [](AZ::u64 agentId, AZ::u64 conversationId)
+                {
+                    return AZStd::make_shared<C>(agentId, conversationId);
+                };
+            }
+            else
+            {
+                AZ_Error("SystemRegistrationContext", false, "Feature %s already registered", name.c_str());
+            }
+        }
+
+        inline AZStd::shared_ptr<FeatureBase> CreateFeature(AZ::Uuid feature, AZ::u64 agentId, AZ::u64 conversationId) const
+        {
+            auto it = m_featuresFactory.find(feature);
+            if (it != m_featuresFactory.end())
+            {
+                return it->second(agentId, conversationId);
+            }
+            return nullptr;
+        }
+
+        inline AZStd::unordered_map<AZ::Uuid, AZStd::string> GetFeatureNamesAndUuids() const
+        {
+            return m_featureNames;
+        }
+
         inline AZStd::unordered_set<AZ::Uuid> GetRegisteredServiceProviders() const
         {
             return m_registeredServiceProviders;
@@ -50,5 +86,8 @@ namespace GenAIFramework
     private:
         AZStd::unordered_set<AZ::Uuid> m_registeredServiceProviders;
         AZStd::unordered_set<AZ::Uuid> m_registeredModelConfigurations;
+
+        AZStd::unordered_map<AZ::Uuid, AZStd::function<AZStd::shared_ptr<FeatureBase>(AZ::u64, AZ::u64)>> m_featuresFactory;
+        AZStd::unordered_map<AZ::Uuid, AZStd::string> m_featureNames;
     };
 } // namespace GenAIFramework

@@ -9,18 +9,18 @@
 #pragma once
 
 #if !defined(Q_MOC_RUN)
+#include <AzCore/Component/Entity.h>
+#include <AzCore/std/containers/unordered_map.h>
+#include <GenAIFramework/GenAIFrameworkBus.h>
 #include <QLabel>
 #include <QMainWindow>
 #include <QMap>
 #include <QWidget>
-#endif
-
-#include <AzCore/Component/Entity.h>
-#include <AzCore/std/containers/unordered_map.h>
-#include <GenAIFramework/GenAIFrameworkBus.h>
 
 #include "GenAIFrameworkWidget.h"
 #include "NewChatWidget.h"
+#endif
+
 
 namespace Ui
 {
