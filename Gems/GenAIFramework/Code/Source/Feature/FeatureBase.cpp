@@ -16,10 +16,12 @@ namespace GenAIFramework
         , m_conversationId(conversationId)
     {
         ConversationNotificationBus::Handler::BusConnect(conversationId);
+        AIModelAgentNotificationBus::Handler::BusConnect(agentId);
     }
 
     FeatureBase::~FeatureBase()
     {
+        AIModelAgentNotificationBus::Handler::BusDisconnect();
         ConversationNotificationBus::Handler::BusDisconnect();
     }
 
@@ -27,7 +29,7 @@ namespace GenAIFramework
     {
         if (auto* serializeContext = azrtti_cast<AZ::SerializeContext*>(context))
         {
-            serializeContext->Class<FeatureBase>()->Version(1);
+            serializeContext->Class<FeatureBase>()->Version(0);
         }
     }
 

@@ -7,9 +7,8 @@
  */
 
 #include "GenAIFrameworkSystemComponent.h"
-#include "GenAIFrameworkSystemComponentConfiguration.h"
 
-#include <GenAIFramework/Feature/ConversationBus.h>
+#include <Clients/GenAIFrameworkSystemComponentConfiguration.h>
 #include <GenAIFramework/Feature/FeatureBase.h>
 #include <GenAIFramework/GenAIFrameworkTypeIds.h>
 #include <GenAIFramework/SystemRegistrationContext/SystemRegistrationContext.h>
