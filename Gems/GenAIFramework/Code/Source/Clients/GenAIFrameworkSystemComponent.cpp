@@ -7,8 +7,11 @@
  */
 
 #include "GenAIFrameworkSystemComponent.h"
+
 #include <Clients/GenAIFrameworkSystemComponentConfiguration.h>
+#include <GenAIFramework/Feature/FeatureBase.h>
 #include <GenAIFramework/GenAIFrameworkTypeIds.h>
+#include <GenAIFramework/SystemRegistrationContext/SystemRegistrationContext.h>
 
 #include <AzCore/Component/ComponentApplication.h>
 #include <AzCore/Component/ComponentApplicationBus.h>
@@ -25,7 +28,9 @@ namespace GenAIFramework
 
     void GenAIFrameworkSystemComponent::Reflect(AZ::ReflectContext* context)
     {
+        FeatureBase::Reflect(context);
         GenAIFrameworkSystemComponentConfiguration::Reflect(context);
+
         if (auto serializeContext = azrtti_cast<AZ::SerializeContext*>(context))
         {
             serializeContext->Class<GenAIFrameworkSystemComponent, AZ::Component>()->Version(0);
