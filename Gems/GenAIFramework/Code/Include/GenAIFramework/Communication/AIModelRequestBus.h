@@ -19,13 +19,20 @@
 
 namespace GenAIFramework
 {
-    using ModelAPIPrompt = AZStd::vector<AZStd::any>; //!< The type of prompt to send to the model
+    enum class Role
+    {
+        User,
+        Assistant,
+        System
+    };
+
+    using AIContent = AZStd::vector<AZStd::any>; //!< The type of content sent and received by the AI
+    using AIMessage = AZStd::pair<Role, AIContent>; //!< The type of message sent and received by the AI
+    using AIMessages = AZStd::vector<AIMessage>; //!< The array of messages received and sent to the AI
     using ModelAPIRequest = AZStd::string; //!< The type of request to send to the model provider
     using ModelAPIResponse = AZ::Outcome<AZStd::string, AZStd::string>; //!< The type of response from the model provider
-    using ModelAPIExtractedResponse =
-        AZ::Outcome<AZStd::vector<AZStd::any>, AZStd::string>; //!< The type of extracted response from the model
-    using AIPromptReply = AZStd::pair<ModelAPIPrompt, ModelAPIExtractedResponse>; //!< The type of AI prompt reply
-    using AIHistory = AZStd::vector<AIPromptReply>; //!< The type of AI history
+    using ModelAPIExtractedResponse = AZ::Outcome<AIMessage, AZStd::string>; //!< The type of extracted response from the model
+    using AIHistory = AIMessages; //!< The type of AI history
 
     class AIModelRequest : public AZ::ComponentBus
     {
@@ -40,7 +47,7 @@ namespace GenAIFramework
         //! The request is any string that can be sent to the model to generate a response.
         //! @param prompt The prompt to use.
         //! @return The request to send to the model - it should be ready to use the model's API request.
-        virtual ModelAPIRequest PrepareRequest(const ModelAPIPrompt& prompt) = 0;
+        virtual ModelAPIRequest PrepareRequest(const AIMessages& prompt) = 0;
 
         //! Extract the actual response from the model API response
         //! @param modelAPIResponse The response from the model, can be a JSON string that API around the model produced.

@@ -63,9 +63,9 @@ namespace GenAIFramework
     AZ::Crc32 PromptComponent::Send()
     {
         // prepare the request
-        ModelAPIPrompt prompt;
+        AIMessages prompt;
 
-        prompt.push_back(AZStd::any(m_modelInput));
+        // prompt.push_back(AZStd::any(m_modelInput));
 
         // send the request
         AIModelAgentBus::Event(m_agentId, &AIModelAgentRequests::SendPrompt, prompt);
@@ -75,33 +75,33 @@ namespace GenAIFramework
 
     void PromptComponent::OnPromptResponse(ModelAPIExtractedResponse response)
     {
-        if (response.IsSuccess())
-        {
-            AZStd::string responseString = "";
-            for (const auto& element : response.GetValue())
-            {
-                responseString += AZStd::any_cast<AZStd::string>(element).c_str();
-            }
+        // if (response.IsSuccess())
+        // {
+        //     AZStd::string responseString = "";
+        //     for (const auto& element : response.GetValue())
+        //     {
+        //         responseString += AZStd::any_cast<AZStd::string>(element).c_str();
+        //     }
 
-            m_modelOutput = responseString;
-            AZ::SystemTickBus::QueueFunction(
-                [=]()
-                {
-                    QMessageBox::information(
-                        AzToolsFramework::GetActiveWindow(), "PromptComponent", QString(m_modelOutput.c_str()), QMessageBox::Ok);
-                });
-        }
-        else
-        {
-            m_modelOutput = "Error: " + response.GetError();
-            AZ_Warning("PromptComponent", false, "Cannot get a response from the model: %s", m_modelOutput.c_str());
-            AZ::SystemTickBus::QueueFunction(
-                [=]()
-                {
-                    QMessageBox::warning(
-                        AzToolsFramework::GetActiveWindow(), "PromptComponent", QString(m_modelOutput.c_str()), QMessageBox::Ok);
-                });
-        }
+        //     m_modelOutput = responseString;
+        //     AZ::SystemTickBus::QueueFunction(
+        //         [=]()
+        //         {
+        //             QMessageBox::information(
+        //                 AzToolsFramework::GetActiveWindow(), "PromptComponent", QString(m_modelOutput.c_str()), QMessageBox::Ok);
+        //         });
+        // }
+        // else
+        // {
+        //     m_modelOutput = "Error: " + response.GetError();
+        //     AZ_Warning("PromptComponent", false, "Cannot get a response from the model: %s", m_modelOutput.c_str());
+        //     AZ::SystemTickBus::QueueFunction(
+        //         [=]()
+        //         {
+        //             QMessageBox::warning(
+        //                 AzToolsFramework::GetActiveWindow(), "PromptComponent", QString(m_modelOutput.c_str()), QMessageBox::Ok);
+        //         });
+        // }
     }
 
     void PromptComponent::OnAgentChanged(AZ::u64 oldId)

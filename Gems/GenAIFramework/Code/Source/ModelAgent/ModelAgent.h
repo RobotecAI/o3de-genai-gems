@@ -25,7 +25,7 @@ namespace GenAIFramework
         ~ModelAgent();
 
         // AIModelAgentBus::Handler
-        void SendPrompt(const ModelAPIPrompt& prompt) override;
+        void SendPrompt(const AIMessages& prompt) override;
         AIHistory GetHistory() const override;
 
         void SetServiceProviderId(const AZ::EntityId& serviceProviderId);

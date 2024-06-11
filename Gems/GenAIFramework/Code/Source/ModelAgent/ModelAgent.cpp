@@ -25,7 +25,7 @@ namespace GenAIFramework
         AIModelAgentBus::Handler::BusDisconnect(m_agentId);
     }
 
-    void ModelAgent::SendPrompt(const AZStd::vector<AZStd::any>& prompt)
+    void ModelAgent::SendPrompt(const AIMessages& prompt)
     {
         ModelAPIRequest preparedRequest;
         AIModelRequestBus::EventResult(preparedRequest, m_modelConfigurationId, &AIModelRequestBus::Events::PrepareRequest, prompt);
@@ -43,7 +43,10 @@ namespace GenAIFramework
             // Add prompt and response to the history if the response is successful
             if (extractedResponse.IsSuccess())
             {
-                m_history.push_back({ prompt, extractedResponse.GetValue() });
+                for (const auto& promptItem : prompt)
+                {
+                    m_history.push_back(promptItem);
+                }
             }
 
             AIModelAgentNotificationBus::Event(m_agentId, &AIModelAgentNotifications::OnPromptResponse, extractedResponse);

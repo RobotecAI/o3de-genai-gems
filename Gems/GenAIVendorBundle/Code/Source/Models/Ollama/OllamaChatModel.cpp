@@ -7,7 +7,6 @@
  */
 
 #include "OllamaModel.h"
-#include "GenAIFramework/Communication/AIModelRequestBus.h"
 #include <GenAIFramework/SystemRegistrationContext/SystemRegistrationContext.h>
 
 #include <AzCore/Component/Component.h>
@@ -197,10 +196,7 @@ namespace GenAIVendorBundle
         AZStd::string promptString = "";
         for (const auto& element : prompt)
         {
-            for (const auto& promptPart : element.second)
-            {
-                promptString += AZStd::any_cast<AZStd::string>(promptPart).c_str();
-            }
+            promptString += AZStd::any_cast<AZStd::string>(element).c_str();
         }
         jsonValue.WithString("prompt", promptString.c_str());
 
@@ -230,9 +226,7 @@ namespace GenAIVendorBundle
             return AZ::Failure("Failed to parse the response: response field not found in the response JSON.");
         }
 
-        GenAIFramework::AIMessage responseMessage = { GenAIFramework::Role::Assistant, response };
-
-        return AZ::Success(responseMessage);
+        return AZ::Success(response);
     }
 
 } // namespace GenAIVendorBundle

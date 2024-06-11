@@ -48,14 +48,14 @@ namespace GenAIMock
         GenAIFramework::AIModelRequestBus::Handler::BusDisconnect();
     }
 
-    GenAIFramework::ModelAPIRequest PassthroughModelComponent::PrepareRequest(const GenAIFramework::ModelAPIPrompt& prompt)
+    GenAIFramework::ModelAPIRequest PassthroughModelComponent::PrepareRequest(const GenAIFramework::AIMessages& prompt)
     {
         // This mock model passes the data to the AI service provider unchanged
         AZStd::string promptString = "";
-        for (const auto& elem : prompt)
-        {
-            promptString += AZStd::any_cast<AZStd::string>(elem);
-        }
+        // for (const auto& elem : prompt)
+        // {
+        //     promptString += AZStd::any_cast<AZStd::string>(elem);
+        // }
         return promptString;
     }
 
@@ -65,6 +65,7 @@ namespace GenAIMock
         // The mock model returns the data that does not need additional modifications
         AZStd::vector<AZStd::any> modelAPIResponseVector;
         modelAPIResponseVector.push_back(AZStd::any(modelAPIResponse));
-        return modelAPIResponseVector;
+        GenAIFramework::AIMessage message = { GenAIFramework::Role::Assistant, modelAPIResponseVector };
+        return message;
     }
 } // namespace GenAIMock

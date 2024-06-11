@@ -28,7 +28,7 @@ namespace GenAIFramework
         //! Send a prompt to the model agent.
         //! @param prompt The prompt to send.
         //! The response will be sent to the OnPromptResponse notification.
-        virtual void SendPrompt(const AZStd::vector<AZStd::any>& prompt) = 0;
+        virtual void SendPrompt(const AIMessages& prompt) = 0;
 
         //! Get the history of the model agent.
         //! @return The history of the model agent.

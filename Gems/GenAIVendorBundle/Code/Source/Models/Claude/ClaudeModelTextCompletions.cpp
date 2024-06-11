@@ -64,14 +64,15 @@ namespace GenAIVendorBundle
         GenAIFramework::AIModelRequestBus::Handler::BusDisconnect();
     }
 
-    GenAIFramework::ModelAPIRequest ClaudeModelTextCompletions::PrepareRequest(const GenAIFramework::ModelAPIPrompt& prompt)
+    GenAIFramework::ModelAPIRequest ClaudeModelTextCompletions::PrepareRequest(const GenAIFramework::AIMessages& prompt)
     {
         std::stringstream oss;
         oss << "Human: \"";
-        for (const auto& element : prompt)
-        {
-            oss << AZStd::any_cast<AZStd::string>(element).c_str();
-        }
+        // TODO unsupported
+        // for (const auto& element : prompt)
+        // {
+        //     oss << AZStd::any_cast<AZStd::string>(element).c_str();
+        // }
         oss << "\" Assistant: ";
         Aws::Utils::Json::JsonValue jsonPrompt;
         jsonPrompt.WithString("prompt", oss.str().c_str());
@@ -111,9 +112,10 @@ namespace GenAIVendorBundle
         {
             auto view = jsonPrompt.View();
             auto completion = AZStd::any(AZStd::string(view.GetString("completion").c_str()));
-            AZStd::vector<AZStd::any> completionsVector;
+            GenAIFramework::AIContent completionsVector;
             completionsVector.push_back(completion);
-            return AZ::Success(completionsVector);
+            GenAIFramework::AIMessage response = { GenAIFramework::Role::Assistant, completionsVector };
+            return AZ::Success(response);
         }
         else
         {
