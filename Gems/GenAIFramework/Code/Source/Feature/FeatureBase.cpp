@@ -8,6 +8,8 @@
 
 #include <GenAIFramework/Feature/FeatureBase.h>
 
+#include <iostream>
+
 namespace GenAIFramework
 {
 
@@ -17,12 +19,18 @@ namespace GenAIFramework
     {
         ConversationNotificationBus::Handler::BusConnect(conversationId);
         AIModelAgentNotificationBus::Handler::BusConnect(agentId);
+
+        std::cout << "FeatureBase constructor" << std::endl;
+        std::cout << "agentId: " << agentId << std::endl;
+        std::cout << "conversationId: " << conversationId << std::endl;
     }
 
     FeatureBase::~FeatureBase()
     {
         AIModelAgentNotificationBus::Handler::BusDisconnect();
         ConversationNotificationBus::Handler::BusDisconnect();
+
+        std::cout << "FeatureBase destructor" << std::endl;
     }
 
     void FeatureBase::Reflect(AZ::ReflectContext* context)
