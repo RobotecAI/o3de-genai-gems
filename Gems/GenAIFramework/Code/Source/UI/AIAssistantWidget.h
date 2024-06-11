@@ -18,6 +18,7 @@
 #include <QWidget>
 
 #include "GenAIFrameworkWidget.h"
+#include "NewChatWidget.h"
 #endif
 
 namespace Ui
@@ -27,22 +28,16 @@ namespace Ui
 
 namespace GenAIFramework
 {
-    class AIAssistantWidget
-        : public QMainWindow
-        , private GenAIFramework::GenAIFrameworkNotificationBus::Handler
+    class AIAssistantWidget : public QMainWindow
     {
         Q_OBJECT
     public:
         explicit AIAssistantWidget(QWidget* parent = nullptr);
-        void UpdateModelAndProviderLists();
-        ~AIAssistantWidget() override;
 
     private slots:
-        void OnModelConfigurationSelected(const QString& modelName);
-        void OnServiceProviderSelected(const QString& providerName);
-        void OnRequestButton();
-        void OnOptionsButton();
-        void OnResetAction();
+        void OnNewChatAction();
+        void OnConfigureAction();
+        void OnChatCreated(const QString& chatName, const QString& modelName, const QString& providerName);
 
     protected:
         // QWidget overrides
@@ -50,28 +45,8 @@ namespace GenAIFramework
         void showEvent(QShowEvent* event) override;
 
     private:
-        // GenAIFramework::GenAIFrameworkNotificationBus::Handler
-        void OnServiceProviderAdded(const AZ::EntityId& serviceProviderId) override;
-        void OnServiceProviderRemoved(const AZ::EntityId& serviceProviderId) override;
-        void OnModelConfigurationAdded(const AZ::EntityId& modelConfigurationId) override;
-        void OnModelConfigurationRemoved(const AZ::EntityId& modelConfigurationId) override;
-
-        //! Refresh the list of service providers and model configurations, loads the default model and provider from QSettings.
-        void RefreshDefaultModelConfiguration();
-
-        //! Set the model and provider to the given names.
-        //! @param modelName The name of the model configuration.
-        //! @param providerName The name of the service provider.
-        void SetModelAndProvider(const QString& modelName, const QString& providerName);
-
-        void UiAppendChatMessage(const AZStd::string& message, bool response = false);
-        void UiClearMessages();
-
         Ui::AIAssistantUI* m_ui;
-        QVBoxLayout* m_uiChatLayout;
         GenAIFrameworkWidget* m_optionsWidget;
-
-        QMap<QString, AZ::EntityId> m_ServiceProviderNameToId;
-        QMap<QString, AZ::EntityId> m_modelConfigurationNameToId;
+        NewChatWidget* m_newChatWidget;
     };
 } // namespace GenAIFramework

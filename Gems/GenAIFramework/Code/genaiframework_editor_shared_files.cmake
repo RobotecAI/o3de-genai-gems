@@ -7,6 +7,12 @@ set(FILES
     Source/UI/AIAssistantWidget.ui
     Source/UI/GenAIFrameworkWidget.cpp
     Source/UI/GenAIFrameworkWidget.h
+    Source/UI/AIChatWidget.cpp
+    Source/UI/AIChatWidget.h
+    Source/UI/AIChatWidget.ui
+    Source/UI/NewChatWidget.cpp
+    Source/UI/NewChatWidget.h
+    Source/UI/NewChatWidget.ui
     Source/UI/ModelConfiguration/NewModelConfigurationSegment.cpp
     Source/UI/ModelConfiguration/NewModelConfigurationSegment.h
     Source/UI/NewSegment.cpp
