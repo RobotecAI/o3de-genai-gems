@@ -14,9 +14,6 @@
    <string>MainWindow</string>
   </property>
   <widget class="QTabWidget" name="conversations">
-   <property name="tabsClosable">
-    <bool>true</bool>
-   </property>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -31,7 +28,6 @@
     <property name="title">
      <string>Model</string>
     </property>
-    <addaction name="actionNewChat"/>
     <addaction name="actionConfigure"/>
    </widget>
    <addaction name="menuChats"/>

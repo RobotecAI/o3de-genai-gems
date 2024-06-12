@@ -36,16 +36,10 @@ namespace GenAIFramework
         m_agentConfigurationWidget = new AgentConfigurationWidget();
         m_newChatWidget = new NewChatWidget();
 
-        connect(m_ui->actionNewChat, &QAction::triggered, this, &AIAssistantWidget::OnNewChatAction);
         connect(m_ui->actionConfigure, &QAction::triggered, this, &AIAssistantWidget::OnConfigureAction);
-        connect(
-            m_ui->conversations,
-            &QTabWidget::tabCloseRequested,
-            [this](int index)
-            {
-                m_ui->conversations->removeTab(index);
-            });
         connect(m_newChatWidget, &NewChatWidget::chatCreated, this, &AIAssistantWidget::OnChatCreated);
+
+        m_ui->conversations->addTab(m_newChatWidget, "+");
     }
 
     void AIAssistantWidget::OnConfigureAction()
@@ -54,16 +48,18 @@ namespace GenAIFramework
         m_agentConfigurationWidget->show();
     }
 
-    void AIAssistantWidget::OnNewChatAction()
-    {
-        m_newChatWidget->resize(this->size());
-        m_newChatWidget->show();
-    }
-
     void AIAssistantWidget::OnChatCreated(const QString& chatName, const QString& modelName, const QString& providerName)
     {
-        m_ui->conversations->addTab(new AIChatWidget(this, modelName, providerName), chatName);
-        m_newChatWidget->hide();
+        auto* newChatWidget = new AIChatWidget(this, modelName, providerName);
+        const auto tabIndex = m_ui->conversations->insertTab(0, newChatWidget, chatName);
+        m_ui->conversations->setCurrentIndex(tabIndex);
+        connect(newChatWidget, &AIChatWidget::chatClosed, this, &AIAssistantWidget::OnChatClosed);
+    }
+
+    void AIAssistantWidget::OnChatClosed()
+    {
+        const auto tabIndex = m_ui->conversations->currentIndex();
+        m_ui->conversations->removeTab(tabIndex);
     }
 
     void AIAssistantWidget::closeEvent(QCloseEvent* event)

@@ -21,6 +21,7 @@
 #include <QMessageBox>
 #include <QScrollBar>
 #include <QSettings>
+#include <QStyle>
 #include <Source/UI/ui_AIChatWidget.h>
 
 namespace GenAIFramework
@@ -35,6 +36,10 @@ namespace GenAIFramework
         QString description = QString("Model: %1 Provider: %2").arg(modelName, providerName);
         m_ui->configDescription->setText(description);
 
+        QStyle* style = qApp->style();
+        QIcon closeIcon = style->standardIcon(QStyle::SP_TitleBarCloseButton);
+        m_ui->closeButton->setIcon(closeIcon);
+
         m_uiChatLayout = new QVBoxLayout();
         m_uiChatLayout->setAlignment(Qt::AlignBottom);
         m_ui->scrollArea->setWidgetResizable(true);
@@ -48,6 +53,7 @@ namespace GenAIFramework
                 m_ui->scrollArea->verticalScrollBar()->setValue(m_ui->scrollArea->verticalScrollBar()->maximum());
             });
         connect(m_ui->SendBtn, &QPushButton::clicked, this, &AIChatWidget::OnRequestButton);
+        connect(m_ui->closeButton, &QPushButton::clicked, this, &AIChatWidget::OnCloseButton);
     }
 
     void AIChatWidget::OnRequestButton()
@@ -56,6 +62,11 @@ namespace GenAIFramework
         UiAppendChatMessage(modelInput);
         constexpr bool isAssistantReply = true;
         UiAppendChatMessage("This PoC implementation is not connected to any assistant", isAssistantReply);
+    }
+
+    void AIChatWidget::OnCloseButton()
+    {
+        emit chatClosed();
     }
 
     void AIChatWidget::UiAppendChatMessage(const AZStd::string& message, const bool response)
