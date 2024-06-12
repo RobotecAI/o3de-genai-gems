@@ -7,23 +7,17 @@
  */
 
 #include "ChatFeature.h"
-#include "AzCore/std/containers/vector.h"
-#include "GenAIFramework/Communication/AIModelAgentBus.h"
-#include "GenAIFramework/Communication/AIModelRequestBus.h"
-#include "GenAIFramework/Feature/ConversationBus.h"
 
+#include <AzCore/std/containers/vector.h>
+#include <GenAIFramework/Communication/AIModelAgentBus.h>
+#include <GenAIFramework/Communication/AIModelRequestBus.h>
+#include <GenAIFramework/Feature/ConversationBus.h>
 #include <GenAIFramework/SystemRegistrationContext/SystemRegistrationContext.h>
-
-#include <iostream>
 
 namespace GenAIFramework
 {
     ChatFeature::ChatFeature(AZ::u64 agentId, AZ::u64 conversationId)
         : FeatureBase(agentId, conversationId)
-    {
-    }
-
-    ChatFeature::~ChatFeature()
     {
     }
 
@@ -51,10 +45,10 @@ namespace GenAIFramework
 
         AIMessage systemMessage = {
             Role::System,
-            { AZStd::any(AZStd::string(
-                "Hello! I am your AI assistant for the Open 3D Engine. I am here to help you with any questions you have regarding the "
-                "workings of the engine. Whether you need guidance on using specific features, troubleshooting issues, or understanding "
-                "the best practices, feel free to ask. Let's create something amazing together with Open 3D Engine!")) }
+            { AZStd::any(
+                AZStd::string("You are an AI assistant for the Open 3D Engine. You are here to help you with any questions regarding the "
+                              "workings of the engine. Guidance on using specific features, troubleshooting issues, or understanding "
+                              "the best practices are some things that you will help with.")) }
         };
         messages.push_back(systemMessage);
 
@@ -72,22 +66,14 @@ namespace GenAIFramework
             return;
         }
 
-        std::cout << "ChatFeature::OnPromptResponse" << std::endl;
-
         for (const auto& responseItem : response.GetValue().second)
         {
             if (responseItem.is<AZStd::string>())
             {
                 AZStd::string responseString = AZStd::any_cast<AZStd::string>(responseItem);
                 AZStd::vector<AZStd::string> summary = {};
-                std::cout << ConversationNotificationBus::HasHandlers(m_conversationId) << std::endl;
-                std::cout << "ID: " << m_conversationId << std::endl;
                 ConversationNotificationBus::Event(
                     m_conversationId, &ConversationNotificationBus::Events::OnFeatureResponse, responseString, summary);
-            }
-            else
-            {
-                std::cout << "No string" << std::endl;
             }
         }
     }

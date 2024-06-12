@@ -22,7 +22,7 @@ namespace GenAIFramework
 
         ChatFeature() = default;
         ChatFeature(AZ::u64 agentId, AZ::u64 conversationId);
-        ~ChatFeature() override;
+        ~ChatFeature() = default;
 
         static void Reflect(AZ::ReflectContext* context);
 

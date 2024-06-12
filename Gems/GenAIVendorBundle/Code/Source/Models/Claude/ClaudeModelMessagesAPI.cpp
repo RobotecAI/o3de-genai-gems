@@ -79,7 +79,6 @@ namespace GenAIVendorBundle
             switch (prompt[i].first)
             {
             case GenAIFramework::Role::System:
-                std::cout << "System message: " << std::endl;
                 for (int j = 0; j < prompt[i].second.size(); j++)
                 {
                     if (prompt[i].second[j].is<AZStd::string>())

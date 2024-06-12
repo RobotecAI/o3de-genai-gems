@@ -8,26 +8,23 @@
  */
 
 #include "AIChatWidget.h"
-#include "AzCore/std/parallel/lock.h"
-#include "AzCore/std/parallel/mutex.h"
-#include "GenAIFramework/Feature/ConversationBus.h"
+
+#include <AzCore/Component/ComponentApplicationBus.h>
 #include <AzCore/Component/Entity.h>
 #include <AzCore/Component/TickBus.h>
 #include <AzCore/Serialization/SerializeContext.h>
 #include <AzCore/std/containers/vector.h>
-
-#include <AzCore/Component/ComponentApplicationBus.h>
+#include <AzCore/std/parallel/lock.h>
 #include <GenAIFramework/Communication/AIModelRequestBus.h>
 #include <GenAIFramework/Communication/AIServiceProviderBus.h>
 #include <GenAIFramework/Communication/AsyncRequestBus.h>
+#include <GenAIFramework/Feature/ConversationBus.h>
 #include <GenAIFramework/GenAIFrameworkBus.h>
 #include <QMessageBox>
 #include <QScrollBar>
 #include <QSettings>
 #include <QStyle>
 #include <Source/UI/ui_AIChatWidget.h>
-
-#include <iostream>
 
 namespace GenAIFramework
 {
@@ -36,12 +33,9 @@ namespace GenAIFramework
         , m_ui(new Ui::AIChatWidgetUI)
 
     {
-        // TODO add error box when featureIdOutcome is not successful
         auto featureIdOutcome = GenAIFrameworkInterface::Get()->CreateNewFeatureConversation(
             providerName.toStdString().c_str(), modelName.toStdString().c_str(), featureName.toStdString().c_str());
         m_featureId = featureIdOutcome.IsSuccess() ? featureIdOutcome.GetValue() : 0;
-
-        std::cout << "Feature ID: " << m_featureId << std::endl;
 
         ConversationNotificationBus::Handler::BusConnect(m_featureId);
         AZ::TickBus::Handler::BusConnect();
@@ -88,7 +82,6 @@ namespace GenAIFramework
     {
         AZStd::string modelInput = m_ui->textEdit->toPlainText().toStdString().c_str();
         UiAppendChatMessage(modelInput);
-        std::cout << "COnvo handlers" << ConversationNotificationBus::HasHandlers(m_featureId) << std::endl;
         ConversationNotificationBus::Event(m_featureId, &ConversationNotificationBus::Events::OnNewMessage, modelInput);
     }
 
