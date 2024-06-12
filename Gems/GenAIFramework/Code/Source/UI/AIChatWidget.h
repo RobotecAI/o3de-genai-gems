@@ -8,13 +8,14 @@
 
 #pragma once
 
+#include "AzCore/std/parallel/mutex.h"
 #if !defined(Q_MOC_RUN)
 #include <QVBoxLayout>
 #include <QWidget>
 
 #include <AzCore/Component/Entity.h>
+#include <AzCore/Component/TickBus.h>
 #include <GenAIFramework/GenAIFrameworkBus.h>
-
 #endif
 
 namespace Ui
@@ -24,11 +25,15 @@ namespace Ui
 
 namespace GenAIFramework
 {
-    class AIChatWidget : public QWidget
+    class AIChatWidget
+        : public QWidget
+        , private GenAIFramework::ConversationNotificationBus::Handler
+        , private AZ::TickBus::Handler
     {
         Q_OBJECT
     public:
-        explicit AIChatWidget(QWidget* parent = nullptr, QString modelName = "", QString providerName = "");
+        explicit AIChatWidget(QWidget* parent = nullptr, QString modelName = "", QString providerName = "", QString featureName = "");
+        ~AIChatWidget();
 
     signals:
         void chatClosed();
@@ -41,7 +46,17 @@ namespace GenAIFramework
         void UiAppendChatMessage(const AZStd::string& message, const bool response = false);
         void UiClearMessages();
 
+        // AZ::TickBus::Handler
+        void OnTick(float deltaTime, AZ::ScriptTimePoint time) override;
+        // GenAIFramework::ConversationNotificationBus::Handler
+        void OnFeatureResponse(const AZStd::string& summary, const AZStd::vector<AZStd::string>& detailedResponse) override;
+
         Ui::AIChatWidgetUI* m_ui;
         QVBoxLayout* m_uiChatLayout;
+
+        AZ::u64 m_featureId;
+        using SummaryDetailedPair = AZStd::pair<AZStd::string, AZStd::vector<AZStd::string>>;
+        AZStd::queue<AZStd::pair<SummaryDetailedPair, bool>> m_chatMessagesQueue;
+        AZStd::mutex m_chatMessagesQueueMutex;
     };
 } // namespace GenAIFramework

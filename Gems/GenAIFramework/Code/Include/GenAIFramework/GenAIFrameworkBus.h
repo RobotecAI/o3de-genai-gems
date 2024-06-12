@@ -78,8 +78,15 @@ namespace GenAIFramework
 
         // Model Agent
         virtual AZ::Outcome<AZ::u64, void> CreateModelAgent(
-            const AZStd::string& serviceProviderName, const AZStd::string modelModelConfigurationName) = 0;
+            const AZStd::string& serviceProviderName, const AZStd::string& modelModelConfigurationName) = 0;
         virtual bool RemoveModelAgent(AZ::u64 modelAgentId) = 0;
+
+        virtual AZ::Outcome<AZ::u64, void> CreateNewFeatureConversation(
+            const AZStd::string& serviceProviderName,
+            const AZStd::string& modelModelConfigurationName,
+            const AZStd::string& featureName) = 0;
+
+        virtual bool RemoveFeatureConversation(AZ::u64 featureConversationId) = 0;
     };
 
     class GenAIFrameworkBusTraits : public AZ::EBusTraits

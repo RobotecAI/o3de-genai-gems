@@ -45,7 +45,14 @@ namespace GenAIFramework
             {
                 for (const auto& promptItem : prompt)
                 {
-                    m_history.push_back(promptItem);
+                    if (promptItem.first == Role::System)
+                    {
+                        m_systemMessage = promptItem;
+                    }
+                    else
+                    {
+                        m_history.push_back(promptItem);
+                    }
                 }
                 m_history.push_back(extractedResponse.GetValue());
             }
@@ -58,7 +65,15 @@ namespace GenAIFramework
 
     AIHistory ModelAgent::GetHistory() const
     {
-        return m_history;
+        if (m_systemMessage.second.empty())
+        {
+            return m_history;
+        }
+
+        AIHistory historyWithSystemMessage = m_history;
+        historyWithSystemMessage.insert(historyWithSystemMessage.begin(), m_systemMessage);
+
+        return historyWithSystemMessage;
     }
 
     void ModelAgent::SetServiceProviderId(const AZ::EntityId& serviceProviderId)

@@ -8,6 +8,7 @@
 
 #include "GenAIFrameworkSystemComponent.h"
 
+#include <ChatFeature/ChatFeature.h>
 #include <Clients/GenAIFrameworkSystemComponentConfiguration.h>
 #include <GenAIFramework/Feature/FeatureBase.h>
 #include <GenAIFramework/GenAIFrameworkTypeIds.h>
@@ -30,6 +31,8 @@ namespace GenAIFramework
     {
         FeatureBase::Reflect(context);
         GenAIFrameworkSystemComponentConfiguration::Reflect(context);
+
+        ChatFeature::Reflect(context);
 
         if (auto serializeContext = azrtti_cast<AZ::SerializeContext*>(context))
         {
@@ -329,7 +332,7 @@ namespace GenAIFramework
     }
 
     AZ::Outcome<AZ::u64, void> GenAIFrameworkSystemComponent::CreateModelAgent(
-        const AZStd::string& serviceProviderName, const AZStd::string modelModelConfigurationName)
+        const AZStd::string& serviceProviderName, const AZStd::string& modelModelConfigurationName)
     {
         // Find service provider and model configuration
         AZ::EntityId serviceProviderId = GetEntityIdByName(serviceProviderName, m_configuration.m_serviceProviders);
@@ -353,6 +356,34 @@ namespace GenAIFramework
     bool GenAIFrameworkSystemComponent::RemoveModelAgent(AZ::u64 modelAgentId)
     {
         return (m_modelAgents.erase(modelAgentId) > 0);
+    }
+
+    AZ::Outcome<AZ::u64, void> GenAIFrameworkSystemComponent::CreateNewFeatureConversation(
+        const AZStd::string& serviceProviderName, const AZStd::string& modelModelConfigurationName, const AZStd::string& featureName)
+    {
+        auto features = GetSystemRegistrationContext()->GetFeatureNamesAndUuids();
+        auto featureUuid = features.find(featureName);
+        if (featureUuid == features.end())
+        {
+            return AZ::Failure();
+        }
+
+        auto modelAgentId = CreateModelAgent(serviceProviderName, modelModelConfigurationName);
+        if (!modelAgentId.IsSuccess())
+        {
+            return AZ::Failure();
+        }
+        auto conversationId = modelAgentId;
+        auto feature =
+            GetSystemRegistrationContext()->CreateFeature(featureUuid->second, modelAgentId.GetValue(), conversationId.GetValue());
+        m_featureConversations[conversationId.GetValue()] = feature;
+
+        return conversationId;
+    }
+
+    bool GenAIFrameworkSystemComponent::RemoveFeatureConversation(AZ::u64 featureConversationId)
+    {
+        return RemoveModelAgent(featureConversationId) ? m_featureConversations.erase(featureConversationId) > 0 : false;
     }
 
 } // namespace GenAIFramework

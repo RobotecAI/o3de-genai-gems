@@ -33,6 +33,7 @@ namespace GenAIFramework
 
     private:
         AIHistory m_history;
+        AIMessage m_systemMessage = { Role::System, "System message" };
         AZ::u64 m_agentId;
 
         AZ::EntityId m_serviceProviderId;

@@ -42,8 +42,23 @@ namespace GenAIFramework
 
     void ChatFeature::OnNewMessage(const AZStd::string& message)
     {
-        AZStd::vector<AZStd::any> prompt = { AZStd::any(message) };
-        AIModelAgentBus::Event(m_agentId, &AIModelAgentBus::Events::SendPrompt, prompt);
+        AIHistory history;
+        AIModelAgentBus::EventResult(history, m_agentId, &AIModelAgentBus::Events::GetHistory);
+
+        AIMessages messages = history;
+        AIMessage newMessage = { Role::User, { AZStd::any(message) } };
+        messages.push_back(newMessage);
+
+        AIMessage systemMessage = {
+            Role::System,
+            { AZStd::any(AZStd::string(
+                "Hello! I am your AI assistant for the Open 3D Engine. I am here to help you with any questions you have regarding the "
+                "workings of the engine. Whether you need guidance on using specific features, troubleshooting issues, or understanding "
+                "the best practices, feel free to ask. Let's create something amazing together with Open 3D Engine!")) }
+        };
+        messages.push_back(systemMessage);
+
+        AIModelAgentBus::Event(m_agentId, &AIModelAgentBus::Events::SendPrompt, messages);
     }
 
     void ChatFeature::OnPromptResponse(ModelAPIExtractedResponse response)
@@ -59,7 +74,7 @@ namespace GenAIFramework
 
         std::cout << "ChatFeature::OnPromptResponse" << std::endl;
 
-        for (const auto& responseItem : response.GetValue())
+        for (const auto& responseItem : response.GetValue().second)
         {
             if (responseItem.is<AZStd::string>())
             {
