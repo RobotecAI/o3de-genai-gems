@@ -11,13 +11,12 @@
 #if !defined(Q_MOC_RUN)
 #include <QLabel>
 #include <QMap>
+#include <QVBoxLayout>
 #include <QWidget>
 
 #include <AzCore/Component/Entity.h>
-#include <AzCore/std/containers/unordered_map.h>
 #include <GenAIFramework/GenAIFrameworkBus.h>
 
-#include "GenAIFrameworkWidget.h"
 #endif
 
 namespace Ui
@@ -47,6 +46,10 @@ namespace GenAIFramework
         void OnServiceProviderSelected(const QString& providerName);
         void OnChatNameChanged(const QString& chatName);
         void OnSaveButton();
+
+    protected:
+        // QWidget overrides
+        void closeEvent(QCloseEvent* event) override;
 
     private:
         // GenAIFramework::GenAIFrameworkNotificationBus::Handler

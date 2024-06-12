@@ -9,23 +9,27 @@
 #pragma once
 
 #if !defined(Q_MOC_RUN)
-#include "UI/ModelConfiguration/NewModelConfigurationSegment.h"
-#include "UI/ServiceProvider/NewServiceProviderSegment.h"
-#include "UI/Tab.h"
-#include <qwindowdefs.h>
+#include <UI/AgentConfigurationWidget/Tab.h>
+#include <UI/ModelConfiguration/NewModelConfigurationSegment.h>
+#include <UI/ServiceProvider/NewServiceProviderSegment.h>
 
 #include <AzQtComponents/Components/Widgets/TabWidget.h>
 #include <QWidget>
 #include <qboxlayout.h>
+#include <qwindowdefs.h>
 #endif
 
 namespace GenAIFramework
 {
-    class GenAIFrameworkWidget : public QWidget
+    class AgentConfigurationWidget : public QWidget
     {
         Q_OBJECT
     public:
-        explicit GenAIFrameworkWidget(QWidget* parent = nullptr);
+        explicit AgentConfigurationWidget(QWidget* parent = nullptr);
+
+    protected:
+        // QWidget overrides
+        void closeEvent(QCloseEvent* event) override;
 
     private:
         AzQtComponents::TabWidget* m_tabs;

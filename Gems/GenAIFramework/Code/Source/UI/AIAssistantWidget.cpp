@@ -33,7 +33,7 @@ namespace GenAIFramework
 
     {
         m_ui->setupUi(this);
-        m_optionsWidget = new GenAIFrameworkWidget();
+        m_agentConfigurationWidget = new AgentConfigurationWidget();
         m_newChatWidget = new NewChatWidget();
 
         connect(m_ui->actionNewChat, &QAction::triggered, this, &AIAssistantWidget::OnNewChatAction);
@@ -50,9 +50,8 @@ namespace GenAIFramework
 
     void AIAssistantWidget::OnConfigureAction()
     {
-        // TODO: the widget doesn't open after closing
-        m_optionsWidget->resize(this->size());
-        m_optionsWidget->show();
+        m_agentConfigurationWidget->resize(this->size());
+        m_agentConfigurationWidget->show();
     }
 
     void AIAssistantWidget::OnNewChatAction()

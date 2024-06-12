@@ -74,6 +74,11 @@ namespace GenAIFramework
         emit chatCreated(m_chatName, m_modelName, m_providerName);
     }
 
+    void NewChatWidget::closeEvent([[maybe_unused]] QCloseEvent* event)
+    {
+        this->hide();
+    }
+
     void NewChatWidget::OnServiceProviderAdded(const AZ::EntityId& serviceProviderId)
     {
         QString serviceProviderName = GetEntityName(serviceProviderId);
