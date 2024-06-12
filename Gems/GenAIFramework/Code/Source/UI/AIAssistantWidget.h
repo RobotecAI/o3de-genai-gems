@@ -17,7 +17,7 @@
 #include <QMap>
 #include <QWidget>
 
-#include <UI/AgentConfigurationWidget/GenAIFrameworkWidget.h>
+#include <UI/AgentConfigurationWidget/AgentConfigurationWidget.h>
 #include <UI/NewChatWidget.h>
 
 #endif
@@ -47,7 +47,7 @@ namespace GenAIFramework
 
     private:
         Ui::AIAssistantUI* m_ui;
-        GenAIFrameworkWidget* m_optionsWidget;
+        AgentConfigurationWidget* m_optionsWidget;
         NewChatWidget* m_newChatWidget;
     };
 } // namespace GenAIFramework

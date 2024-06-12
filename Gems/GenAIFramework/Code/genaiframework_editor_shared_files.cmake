@@ -2,8 +2,8 @@ set(FILES
     ../Assets/Editor/Icons/Toolbar/GenAIFramework.qrc
     ../Assets/Editor/Icons/Toolbar/AI.svg
     Source/Tools/GenAIFrameworkEditorModule.cpp
-    Source/UI/AgentConfigurationWidget/GenAIFrameworkWidget.cpp
-    Source/UI/AgentConfigurationWidget/GenAIFrameworkWidget.h
+    Source/UI/AgentConfigurationWidget/AgentConfigurationWidget.cpp
+    Source/UI/AgentConfigurationWidget/AgentConfigurationWidget.h
     Source/UI/AgentConfigurationWidget/NewSegment.cpp
     Source/UI/AgentConfigurationWidget/NewSegment.h
     Source/UI/AgentConfigurationWidget/Segment.cpp

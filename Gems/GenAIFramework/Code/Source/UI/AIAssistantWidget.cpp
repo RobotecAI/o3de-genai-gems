@@ -33,7 +33,7 @@ namespace GenAIFramework
 
     {
         m_ui->setupUi(this);
-        m_optionsWidget = new GenAIFrameworkWidget();
+        m_optionsWidget = new AgentConfigurationWidget();
         m_newChatWidget = new NewChatWidget();
 
         connect(m_ui->actionNewChat, &QAction::triggered, this, &AIAssistantWidget::OnNewChatAction);

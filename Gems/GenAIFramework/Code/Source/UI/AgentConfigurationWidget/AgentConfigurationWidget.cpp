@@ -6,14 +6,14 @@
  *
  */
 
-#include "GenAIFrameworkWidget.h"
-#include "UI/ModelConfiguration/NewModelConfigurationSegment.h"
-#include "UI/ServiceProvider/NewServiceProviderSegment.h"
+#include "AgentConfigurationWidget.h"
 #include <GenAIFramework/GenAIFrameworkBus.h>
+#include <UI/ModelConfiguration/NewModelConfigurationSegment.h>
+#include <UI/ServiceProvider/NewServiceProviderSegment.h>
 
 namespace GenAIFramework
 {
-    GenAIFrameworkWidget::GenAIFrameworkWidget(QWidget* parent)
+    AgentConfigurationWidget::AgentConfigurationWidget(QWidget* parent)
         : QWidget(parent)
     {
         QVBoxLayout* verticalLayout = new QVBoxLayout(this);

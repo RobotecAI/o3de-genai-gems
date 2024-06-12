@@ -21,11 +21,11 @@
 
 namespace GenAIFramework
 {
-    class GenAIFrameworkWidget : public QWidget
+    class AgentConfigurationWidget : public QWidget
     {
         Q_OBJECT
     public:
-        explicit GenAIFrameworkWidget(QWidget* parent = nullptr);
+        explicit AgentConfigurationWidget(QWidget* parent = nullptr);
 
     private:
         AzQtComponents::TabWidget* m_tabs;
