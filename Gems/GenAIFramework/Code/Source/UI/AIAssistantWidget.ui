@@ -31,7 +31,6 @@
     <property name="title">
      <string>Model</string>
     </property>
-    <addaction name="actionNewChat"/>
     <addaction name="actionConfigure"/>
    </widget>
    <addaction name="menuChats"/>

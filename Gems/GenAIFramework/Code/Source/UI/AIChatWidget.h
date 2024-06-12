@@ -30,8 +30,12 @@ namespace GenAIFramework
     public:
         explicit AIChatWidget(QWidget* parent = nullptr, QString modelName = "", QString providerName = "");
 
+    signals:
+        void chatClosed();
+
     private slots:
         void OnRequestButton();
+        void OnCloseButton();
 
     private:
         void UiAppendChatMessage(const AZStd::string& message, const bool response = false);
