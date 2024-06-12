@@ -27,6 +27,10 @@ namespace GenAIFramework
     public:
         explicit AgentConfigurationWidget(QWidget* parent = nullptr);
 
+    protected:
+        // QWidget overrides
+        void closeEvent(QCloseEvent* event) override;
+
     private:
         AzQtComponents::TabWidget* m_tabs;
         Tab* m_modelsConfigurationTab;

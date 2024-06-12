@@ -50,7 +50,6 @@ namespace GenAIFramework
 
     void AIAssistantWidget::OnConfigureAction()
     {
-        // TODO: the widget doesn't open after closing
         m_agentConfigurationWidget->resize(this->size());
         m_agentConfigurationWidget->show();
     }

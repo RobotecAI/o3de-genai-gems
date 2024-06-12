@@ -39,4 +39,9 @@ namespace GenAIFramework
 
         verticalLayout->addWidget(m_tabs);
     }
+
+    void AgentConfigurationWidget::closeEvent([[maybe_unused]] QCloseEvent* event)
+    {
+        this->hide();
+    }
 } // namespace GenAIFramework

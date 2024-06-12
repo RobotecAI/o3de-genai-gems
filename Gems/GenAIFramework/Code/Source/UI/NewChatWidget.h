@@ -47,6 +47,10 @@ namespace GenAIFramework
         void OnChatNameChanged(const QString& chatName);
         void OnSaveButton();
 
+    protected:
+        // QWidget overrides
+        void closeEvent(QCloseEvent* event) override;
+
     private:
         // GenAIFramework::GenAIFrameworkNotificationBus::Handler
         void OnServiceProviderAdded(const AZ::EntityId& serviceProviderId) override;
