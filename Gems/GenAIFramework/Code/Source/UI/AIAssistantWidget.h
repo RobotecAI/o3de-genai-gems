@@ -47,7 +47,7 @@ namespace GenAIFramework
 
     private:
         Ui::AIAssistantUI* m_ui;
-        AgentConfigurationWidget* m_optionsWidget;
+        AgentConfigurationWidget* m_agentConfigurationWidget;
         NewChatWidget* m_newChatWidget;
     };
 } // namespace GenAIFramework
