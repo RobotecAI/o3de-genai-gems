@@ -28,7 +28,6 @@ namespace GenAIVendorBundle
         AZStd::string m_format = "";
         AZStd::string m_options = "";
         bool m_stream = false;
-        bool m_raw = false;
         AZStd::string m_keepAlive = "5m";
         bool m_useDefaultFormat = true;
         bool m_useDefaultOptions = true;
