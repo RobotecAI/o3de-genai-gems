@@ -76,16 +76,34 @@ namespace GenAIFramework
         //! @param entity A pointer to the entity to be deactivated.
         virtual void DeactivateEntity(AZStd::shared_ptr<AZ::Entity> entity) = 0;
 
-        // Model Agent
+        //! Creates a new model agent that allows for AI endpoint communication using EBuses.
+        //! The id is randomized using timestamp, appended with the sequence number.
+        //! @param serviceProviderName Name of the service provider.
+        //! @param modelModelConfigurationName Name of the model configuration.
+        //! @return The model agent id used in EBuses.
         virtual AZ::Outcome<AZ::u64, void> CreateModelAgent(
             const AZStd::string& serviceProviderName, const AZStd::string& modelModelConfigurationName) = 0;
+
+        //! Removes a model agent.
+        //! @param modelAgentId The model agent id.
+        //! @return True if the model agent was removed, false otherwise.
         virtual bool RemoveModelAgent(AZ::u64 modelAgentId) = 0;
 
+        //! Creates a new conversation with a specified feature. Communication with the feature is done through EBuses.
+        //! Creates its own agent, and uses the same id as the agent.
+        //! @param serviceProviderName Name of the service provider.
+        //! @param modelModelConfigurationName Name of the model configuration.
+        //! @param featureName Name of the feature.
+        //! @return The feature conversation id used in EBuses.
         virtual AZ::Outcome<AZ::u64, void> CreateNewFeatureConversation(
             const AZStd::string& serviceProviderName,
             const AZStd::string& modelModelConfigurationName,
             const AZStd::string& featureName) = 0;
 
+        //! Removes a conversation with a specified feature.
+        //! Additionally removes the agent which is used for this feature.
+        //! @param featureConversationId The feature conversation id.
+        //! @return True if the conversation was removed, false otherwise.
         virtual bool RemoveFeatureConversation(AZ::u64 featureConversationId) = 0;
     };
 
