@@ -16,6 +16,7 @@
 #include <QWidget>
 #include <QPushButton>
 #include <QVector>
+#include <QPainter>
 #endif
 
 namespace GenAIFramework
@@ -29,16 +30,16 @@ namespace GenAIFramework
     {
 
         m_layout = new QVBoxLayout();
-        setStyleSheet("border-radius: 15px; padding: 15px;");
+        setStyleSheet("");
         if( isAssistantReply ){
             m_layout->setAlignment(Qt::AlignLeft);
             auto msg_label = new QLabel(message.c_str());
-            setStyleSheet("background-color: #303030");
+            setStyleSheet("border-radius: 15px; padding: 15px; background-color: #303030");
             m_layout->addWidget(msg_label);
         } else {
             m_layout->setAlignment(Qt::AlignRight);
             auto msg_label = new QLabel(message.c_str());
-            setStyleSheet("background-color: #202020");
+            setStyleSheet("border-radius: 15px; padding: 15px; background-color: #202020");
             m_layout->addWidget(msg_label);
         }
 
@@ -51,6 +52,7 @@ namespace GenAIFramework
         }
 
         details_button = new QPushButton("Details");
+        details_button->setStyleSheet("max-width: 100px; min-width: 100px; padding: 0px; margin: 5px;");
         m_layout->addWidget(details_button);
         show_details = false;
         setLayout(m_layout);
@@ -78,5 +80,13 @@ namespace GenAIFramework
 
     AIChatMessage::~AIChatMessage()
     {
+    }
+
+    void AIChatMessage::paintEvent (QPaintEvent *)
+    {
+        QStyleOption opt;
+        opt.init(this);
+        QPainter p(this);
+        style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
     }
 }

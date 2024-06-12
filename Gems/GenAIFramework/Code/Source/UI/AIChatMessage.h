@@ -36,6 +36,9 @@ namespace GenAIFramework
     public slots:
         void OnDetailsButton();
 
+    protected:
+      void paintEvent(QPaintEvent* event) override;
+
     private:
         const AZStd::string message;
         const AZStd::vector<AZStd::string> details;
