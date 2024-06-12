@@ -8,6 +8,7 @@
  */
 
 #include "AIChatWidget.h"
+#include "AIChatMessage.h"
 #include <AzCore/Component/Entity.h>
 #include <AzCore/Component/TickBus.h>
 #include <AzCore/Serialization/SerializeContext.h>
@@ -44,7 +45,7 @@ namespace GenAIFramework
         m_uiChatLayout->setAlignment(Qt::AlignBottom);
         m_ui->scrollArea->setWidgetResizable(true);
         m_ui->scrollArea->widget()->setLayout(m_uiChatLayout);
-        m_ui->scrollArea->setStyleSheet("QLabel { border-radius: 15px; padding: 15px; }");
+        // m_ui->scrollArea->setStyleSheet("QLabel { border-radius: 15px; padding: 15px; }");
         m_ui->scrollArea->verticalScrollBar()->connect(
             m_ui->scrollArea->verticalScrollBar(),
             &QScrollBar::rangeChanged,
@@ -71,20 +72,17 @@ namespace GenAIFramework
 
     void AIChatWidget::UiAppendChatMessage(const AZStd::string& message, const bool response)
     {
-        auto label = new QLabel(message.c_str());
-        label->setWordWrap(true);
-        label->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
-
-        if (response)
+        AIChatMessage * chatMessage;
+        AZStd::vector<AZStd::string> details;
+        details.push_back("Detail 1");
+        details.push_back("Detail 2");
+        if(response)
         {
-            label->setStyleSheet("QLabel { background-color: #303030; margin-right: 100px; }");
+          chatMessage = new AIChatMessage(this, message, details, response);
+        }else{
+          chatMessage = new AIChatMessage(this, message, {}, response);
         }
-        else
-        {
-            label->setStyleSheet("QLabel { background-color: #202020; margin-left: 100px; }");
-        }
-
-        m_uiChatLayout->addWidget(label);
+          m_uiChatLayout->addWidget(chatMessage);
     }
 
     void AIChatWidget::UiClearMessages()
