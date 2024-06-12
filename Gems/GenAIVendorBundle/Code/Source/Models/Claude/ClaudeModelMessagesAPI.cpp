@@ -79,6 +79,7 @@ namespace GenAIVendorBundle
             switch (prompt[i].first)
             {
             case GenAIFramework::Role::System:
+                std::cout << "System message: " << std::endl;
                 for (int j = 0; j < prompt[i].second.size(); j++)
                 {
                     if (prompt[i].second[j].is<AZStd::string>())
@@ -136,15 +137,14 @@ namespace GenAIVendorBundle
         {
             jsonPrompt.WithString("stop_sequence", m_configuration.m_stopSequence.c_str());
         }
-        if (m_configuration.m_useSystemMessage)
-        {
-            jsonPrompt.WithString("system", m_configuration.m_systemMessage.c_str());
-        }
-
         // Override the system message if it is in the prompt
         if (!systemMessage.empty())
         {
             jsonPrompt.WithString("system", systemMessage.c_str());
+        }
+        else if (m_configuration.m_useSystemMessage)
+        {
+            jsonPrompt.WithString("system", m_configuration.m_systemMessage.c_str());
         }
 
         Aws::String jsonString = jsonPrompt.View().WriteReadable();

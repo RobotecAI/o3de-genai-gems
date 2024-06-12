@@ -15,6 +15,9 @@
 #include <AzCore/Serialization/SerializeContext.h>
 #include <AzCore/std/any.h>
 #include <AzCore/std/string/string.h>
+#include <rapidjson/document.h>
+#include <rapidjson/stringbuffer.h>
+#include <rapidjson/writer.h>
 
 namespace GenAIMock
 {
@@ -50,13 +53,46 @@ namespace GenAIMock
 
     GenAIFramework::ModelAPIRequest PassthroughModelComponent::PrepareRequest(const GenAIFramework::AIMessages& prompt)
     {
-        // This mock model passes the data to the AI service provider unchanged
-        AZStd::string promptString = "";
-        // for (const auto& elem : prompt)
-        // {
-        //     promptString += AZStd::any_cast<AZStd::string>(elem);
-        // }
-        return promptString;
+        rapidjson::Document document;
+        document.SetArray();
+        rapidjson::Document::AllocatorType& allocator = document.GetAllocator();
+
+        for (int i = 0; i < prompt.size(); i++)
+        {
+            AZStd::string role;
+            switch (prompt[i].first)
+            {
+            case GenAIFramework::Role::System:
+                role = "system";
+                break;
+            case GenAIFramework::Role::User:
+                role = "user";
+                break;
+            case GenAIFramework::Role::Assistant:
+                role = "assistant";
+                break;
+            }
+
+            AZStd::string fullPrompt = "";
+            for (const auto& promptPart : prompt[i].second)
+            {
+                if (promptPart.is<AZStd::string>())
+                {
+                    fullPrompt += AZStd::any_cast<AZStd::string>(promptPart).c_str();
+                }
+            }
+
+            rapidjson::Value message(rapidjson::kObjectType);
+            message.AddMember("role", rapidjson::Value().SetString(role.c_str(), allocator), allocator);
+            message.AddMember("content", rapidjson::Value().SetString(fullPrompt.c_str(), allocator), allocator);
+            document.PushBack(message, allocator);
+        }
+
+        rapidjson::StringBuffer buffer;
+        rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
+        document.Accept(writer);
+
+        return AZStd::string(buffer.GetString());
     }
 
     GenAIFramework::ModelAPIExtractedResponse PassthroughModelComponent::ExtractResult(

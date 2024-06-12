@@ -44,7 +44,12 @@ namespace GenAIVendorBundle
                         &ClaudeModelTextCompletions::m_configuration,
                         "Default Configuration",
                         "The default configuration to use when generating prompts")
-                    ->Attribute(AZ::Edit::Attributes::Visibility, AZ::Edit::PropertyVisibility::ShowChildrenOnly);
+                    ->Attribute(AZ::Edit::Attributes::Visibility, AZ::Edit::PropertyVisibility::ShowChildrenOnly)
+                    ->UIElement(AZ::Edit::UIHandlers::Label, "Reset to default configuration")
+                    ->Attribute(
+                        AZ::Edit::Attributes::ValueText,
+                        "This is a legacy model for Anthropic's Claude API. It is recommended to use the Messages API. This model does not "
+                        "support history.");
             }
         }
 
@@ -67,17 +72,33 @@ namespace GenAIVendorBundle
     GenAIFramework::ModelAPIRequest ClaudeModelTextCompletions::PrepareRequest(const GenAIFramework::AIMessages& prompt)
     {
         std::stringstream oss;
-        oss << "Human: \"";
-        // TODO unsupported
-        // for (const auto& element : prompt)
-        // {
-        //     oss << AZStd::any_cast<AZStd::string>(element).c_str();
-        // }
-        oss << "\" Assistant: ";
+        AZStd::string lastUserMessage;
+        AZStd::string lastAssistantMessage;
+        oss << "\n\nHuman: ";
+        for (const auto& element : prompt)
+        {
+            if (element.first == GenAIFramework::Role::User)
+            {
+                lastUserMessage = AZStd::any_cast<AZStd::string>(element.second[0]);
+                lastAssistantMessage = "";
+            }
+            else if (element.first == GenAIFramework::Role::Assistant)
+            {
+                lastAssistantMessage = AZStd::any_cast<AZStd::string>(element.second[0]);
+            }
+        }
+        oss << lastUserMessage.c_str();
+        oss << "\n\nAssistant: ";
+        if (!lastAssistantMessage.empty())
+        {
+            oss << lastAssistantMessage.c_str();
+        }
         Aws::Utils::Json::JsonValue jsonPrompt;
         jsonPrompt.WithString("prompt", oss.str().c_str());
 
         jsonPrompt.WithInteger("max_tokens_to_sample", m_configuration.m_maxTokensToSample);
+
+        jsonPrompt.WithString("anthropic_version", m_configuration.m_anthropicVersion.c_str());
 
         if (!m_configuration.m_useDefaultTemperature)
         {

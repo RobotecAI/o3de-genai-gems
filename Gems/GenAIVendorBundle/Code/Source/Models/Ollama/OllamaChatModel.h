@@ -15,40 +15,36 @@
 
 namespace GenAIVendorBundle
 {
-    class OllamaModelConfiguration : public AZ::ComponentConfig
+    class OllamaChatModelConfiguration : public AZ::ComponentConfig
     {
     public:
-        AZ_RTTI(OllamaModelConfiguration, "{c5fa34ff-2bbb-4df4-9aa2-c27320b57f93}");
-        OllamaModelConfiguration() = default;
-        ~OllamaModelConfiguration() = default;
+        AZ_RTTI(OllamaChatModelConfiguration, "{ce2d1912-94ee-4bcd-9015-e118900f4051}");
+        OllamaChatModelConfiguration() = default;
+        ~OllamaChatModelConfiguration() = default;
 
         static void Reflect(AZ::ReflectContext* context);
 
         AZStd::string m_model = "";
         AZStd::string m_format = "";
         AZStd::string m_options = "";
-        AZStd::string m_system = "";
-        AZStd::string m_template = "";
         bool m_stream = false;
         bool m_raw = false;
         AZStd::string m_keepAlive = "5m";
         bool m_useDefaultFormat = true;
         bool m_useDefaultOptions = true;
-        bool m_useDefaultSystem = true;
-        bool m_useDefaultTemplate = true;
         bool m_useDefaultKeepAlive = true;
     };
 
-    class OllamaModel
+    class OllamaChatModel
         : public AZ::Component
         , public GenAIFramework::AIModelRequestBus::Handler
     {
     public:
-        AZ_COMPONENT(OllamaModel, "{3782988d-058f-4943-9862-874ebc90a240}", AZ::Component);
+        AZ_COMPONENT(OllamaChatModel, "{e82c0c54-0658-419a-8170-033ef06aea96}", AZ::Component);
 
-        OllamaModel() = default;
-        OllamaModel(const OllamaModelConfiguration& other);
-        ~OllamaModel() = default;
+        OllamaChatModel() = default;
+        OllamaChatModel(const OllamaChatModelConfiguration& other);
+        ~OllamaChatModel() = default;
 
         static void Reflect(AZ::ReflectContext* context);
 
@@ -65,6 +61,6 @@ namespace GenAIVendorBundle
         GenAIFramework::ModelAPIExtractedResponse ExtractResult(const GenAIFramework::ModelAPIResponse& modelAPIResponse) override;
         //////////////////////////////////////////////////////////////////////////
 
-        OllamaModelConfiguration m_configuration;
+        OllamaChatModelConfiguration m_configuration;
     };
 } // namespace GenAIVendorBundle

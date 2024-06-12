@@ -7,6 +7,8 @@ set(FILES
     Source/Providers/Ollama/OllamaHttpProvider.h
     Source/Models/Ollama/OllamaModel.cpp
     Source/Models/Ollama/OllamaModel.h
+    Source/Models/Ollama/OllamaChatModel.cpp
+    Source/Models/Ollama/OllamaChatModel.h
 
     Source/Providers/Claude/ClaudeHttpProvider.cpp
     Source/Providers/Claude/ClaudeHttpProvider.h

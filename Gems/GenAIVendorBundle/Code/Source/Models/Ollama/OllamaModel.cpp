@@ -7,7 +7,8 @@
  */
 
 #include "OllamaModel.h"
-#include "GenAIFramework/Communication/AIModelRequestBus.h"
+
+#include <GenAIFramework/Communication/AIModelRequestBus.h>
 #include <GenAIFramework/SystemRegistrationContext/SystemRegistrationContext.h>
 
 #include <AzCore/Component/Component.h>
@@ -170,43 +171,67 @@ namespace GenAIVendorBundle
 
     GenAIFramework::ModelAPIRequest OllamaModel::PrepareRequest(const GenAIFramework::AIMessages& prompt)
     {
-        Aws::Utils::Json::JsonValue jsonValue;
+        Aws::Utils::Json::JsonValue jsonRequest;
+        AZStd::string systemMessage = "";
+        AZStd::string promptString = "";
+
+        for (const auto& element : prompt)
+        {
+            switch (element.first)
+            {
+            case GenAIFramework::Role::System:
+                for (const auto& promptPart : element.second)
+                {
+                    if (promptPart.is<AZStd::string>())
+                    {
+                        systemMessage += AZStd::any_cast<AZStd::string>(promptPart).c_str();
+                    }
+                }
+                break;
+            case GenAIFramework::Role::User:
+                for (const auto& promptPart : element.second)
+                {
+                    if (promptPart.is<AZStd::string>())
+                    {
+                        promptString += AZStd::any_cast<AZStd::string>(promptPart).c_str();
+                    }
+                }
+                break;
+            case GenAIFramework::Role::Assistant:
+                break;
+            }
+        }
 
         if (!m_configuration.m_useDefaultFormat)
         {
-            jsonValue.WithString("format", m_configuration.m_format.c_str());
+            jsonRequest.WithString("format", m_configuration.m_format.c_str());
         }
         if (!m_configuration.m_useDefaultKeepAlive)
         {
-            jsonValue.WithString("keep_alive", m_configuration.m_keepAlive.c_str());
+            jsonRequest.WithString("keep_alive", m_configuration.m_keepAlive.c_str());
         }
         if (!m_configuration.m_useDefaultOptions)
         {
-            jsonValue.WithString("options", m_configuration.m_options.c_str());
+            jsonRequest.WithString("options", m_configuration.m_options.c_str());
         }
-        if (!m_configuration.m_useDefaultSystem)
+        if (!systemMessage.empty())
         {
-            jsonValue.WithString("system", m_configuration.m_system.c_str());
+            jsonRequest.WithString("system", systemMessage.c_str());
+        }
+        else if (!m_configuration.m_useDefaultSystem)
+        {
+            jsonRequest.WithString("system", m_configuration.m_system.c_str());
         }
         if (!m_configuration.m_useDefaultTemplate)
         {
-            jsonValue.WithString("template", m_configuration.m_template.c_str());
+            jsonRequest.WithString("template", m_configuration.m_template.c_str());
         }
 
-        jsonValue.WithBool("stream", m_configuration.m_stream);
-        AZStd::string promptString = "";
-        for (const auto& element : prompt)
-        {
-            for (const auto& promptPart : element.second)
-            {
-                promptString += AZStd::any_cast<AZStd::string>(promptPart).c_str();
-            }
-        }
-        jsonValue.WithString("prompt", promptString.c_str());
+        jsonRequest.WithBool("stream", m_configuration.m_stream);
+        jsonRequest.WithString("prompt", promptString.c_str());
+        jsonRequest.WithString("model", m_configuration.m_model.c_str());
 
-        jsonValue.WithString("model", m_configuration.m_model.c_str());
-
-        return jsonValue.View().WriteReadable().c_str();
+        return jsonRequest.View().WriteReadable().c_str();
     }
 
     GenAIFramework::ModelAPIExtractedResponse OllamaModel::ExtractResult(const GenAIFramework::ModelAPIResponse& modelAPIResponse)

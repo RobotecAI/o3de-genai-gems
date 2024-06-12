@@ -47,6 +47,7 @@ namespace GenAIFramework
                 {
                     m_history.push_back(promptItem);
                 }
+                m_history.push_back(extractedResponse.GetValue());
             }
 
             AIModelAgentNotificationBus::Event(m_agentId, &AIModelAgentNotifications::OnPromptResponse, extractedResponse);
