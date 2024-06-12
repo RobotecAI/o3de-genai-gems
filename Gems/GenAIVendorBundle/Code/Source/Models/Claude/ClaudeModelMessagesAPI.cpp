@@ -66,16 +66,51 @@ namespace GenAIVendorBundle
         GenAIFramework::AIModelRequestBus::Handler::BusDisconnect();
     }
 
-    GenAIFramework::ModelAPIRequest ClaudeModelMessagesAPI::PrepareRequest(const GenAIFramework::ModelAPIPrompt& prompt)
+    GenAIFramework::ModelAPIRequest ClaudeModelMessagesAPI::PrepareRequest(const GenAIFramework::AIMessages& prompt)
     {
         Aws::Utils::Json::JsonValue messagesArrayJson;
         Aws::Utils::Array<Aws::Utils::Json::JsonValue> messagesArray(prompt.size());
 
+        AZStd::string systemMessage = "";
+
         for (int i = 0; i < prompt.size(); i++)
         {
             Aws::Utils::Json::JsonValue message;
-            message.WithString("role", "user");
-            message.WithString("content", AZStd::any_cast<AZStd::string>(prompt[i]).c_str());
+            switch (prompt[i].first)
+            {
+            case GenAIFramework::Role::System:
+                std::cout << "System message: " << std::endl;
+                for (int j = 0; j < prompt[i].second.size(); j++)
+                {
+                    if (prompt[i].second[j].is<AZStd::string>())
+                    {
+                        systemMessage += AZStd::any_cast<AZStd::string>(prompt[i].second[j]);
+                    }
+                }
+                continue;
+                break;
+
+            case GenAIFramework::Role::User:
+                message.WithString("role", "user");
+                break;
+
+            case GenAIFramework::Role::Assistant:
+                message.WithString("role", "assistant");
+                break;
+            }
+            Aws::Utils::Array<Aws::Utils::Json::JsonValue> contentArray(prompt[i].second.size());
+            for (int j = 0; j < prompt[i].second.size(); j++)
+            {
+                if (prompt[i].second[j].is<AZStd::string>())
+                {
+                    Aws::Utils::Json::JsonValue content;
+                    content.WithString("type", "text");
+                    content.WithString("text", AZStd::any_cast<AZStd::string>(prompt[i].second[j]).c_str());
+                    contentArray[j] = content;
+                }
+            }
+
+            message.WithArray("content", contentArray);
             messagesArray[i] = message;
         }
         messagesArrayJson.AsArray(messagesArray);
@@ -102,7 +137,12 @@ namespace GenAIVendorBundle
         {
             jsonPrompt.WithString("stop_sequence", m_configuration.m_stopSequence.c_str());
         }
-        if (m_configuration.m_useSystemMessage)
+        // Override the system message if it is in the prompt
+        if (!systemMessage.empty())
+        {
+            jsonPrompt.WithString("system", systemMessage.c_str());
+        }
+        else if (m_configuration.m_useSystemMessage)
         {
             jsonPrompt.WithString("system", m_configuration.m_systemMessage.c_str());
         }
@@ -125,7 +165,7 @@ namespace GenAIVendorBundle
         if (jsonPrompt.WasParseSuccessful())
         {
             auto content = jsonPrompt.View().GetArray("content");
-            AZStd::vector<AZStd::any> completion;
+            GenAIFramework::AIContent completion;
 
             for (int i = 0; i < content.GetLength(); i++)
             {
@@ -137,7 +177,9 @@ namespace GenAIVendorBundle
                 }
             }
 
-            return AZ::Success(completion);
+            GenAIFramework::AIMessage response = { GenAIFramework::Role::Assistant, completion };
+
+            return AZ::Success(response);
         }
         else
         {

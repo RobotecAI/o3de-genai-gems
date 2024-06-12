@@ -44,7 +44,8 @@ namespace GenAIVendorBundle
                         &ClaudeModelTextCompletions::m_configuration,
                         "Default Configuration",
                         "The default configuration to use when generating prompts")
-                    ->Attribute(AZ::Edit::Attributes::Visibility, AZ::Edit::PropertyVisibility::ShowChildrenOnly);
+                    ->Attribute(AZ::Edit::Attributes::Visibility, AZ::Edit::PropertyVisibility::ShowChildrenOnly)
+                    ->UIElement(AZ::Edit::UIHandlers::Label, "Reset to default configuration");
             }
         }
 
@@ -64,19 +65,37 @@ namespace GenAIVendorBundle
         GenAIFramework::AIModelRequestBus::Handler::BusDisconnect();
     }
 
-    GenAIFramework::ModelAPIRequest ClaudeModelTextCompletions::PrepareRequest(const GenAIFramework::ModelAPIPrompt& prompt)
+    GenAIFramework::ModelAPIRequest ClaudeModelTextCompletions::PrepareRequest(const GenAIFramework::AIMessages& prompt)
     {
         std::stringstream oss;
-        oss << "Human: \"";
+
         for (const auto& element : prompt)
         {
-            oss << AZStd::any_cast<AZStd::string>(element).c_str();
+            if (element.first == GenAIFramework::Role::User || element.first == GenAIFramework::Role::System)
+            {
+                oss << "\n\nHuman: ";
+            }
+            else if (element.first == GenAIFramework::Role::Assistant)
+            {
+                oss << "\n\nAssistant: ";
+            }
+            for (const auto& promptPart : element.second)
+            {
+                if (promptPart.is<AZStd::string>())
+                {
+                    oss << AZStd::any_cast<AZStd::string>(promptPart).c_str();
+                }
+            }
         }
-        oss << "\" Assistant: ";
+
+        oss << "\n\nAssistant: ";
+
         Aws::Utils::Json::JsonValue jsonPrompt;
         jsonPrompt.WithString("prompt", oss.str().c_str());
 
         jsonPrompt.WithInteger("max_tokens_to_sample", m_configuration.m_maxTokensToSample);
+
+        jsonPrompt.WithString("anthropic_version", m_configuration.m_anthropicVersion.c_str());
 
         if (!m_configuration.m_useDefaultTemperature)
         {
@@ -111,9 +130,10 @@ namespace GenAIVendorBundle
         {
             auto view = jsonPrompt.View();
             auto completion = AZStd::any(AZStd::string(view.GetString("completion").c_str()));
-            AZStd::vector<AZStd::any> completionsVector;
+            GenAIFramework::AIContent completionsVector;
             completionsVector.push_back(completion);
-            return AZ::Success(completionsVector);
+            GenAIFramework::AIMessage response = { GenAIFramework::Role::Assistant, completionsVector };
+            return AZ::Success(response);
         }
         else
         {

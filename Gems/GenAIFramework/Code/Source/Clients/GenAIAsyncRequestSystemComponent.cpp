@@ -200,8 +200,8 @@ namespace GenAIFramework
         }
 
         AZ::Uuid promptId = AZ::Uuid::CreateRandom();
-        GenAIFramework::ModelAPIPrompt modelPrompt;
-        modelPrompt.push_back(AZStd::any(prompt));
+        GenAIFramework::AIMessages modelPrompt;
+        modelPrompt.push_back({ Role::User, { AZStd::any(prompt) } });
 
         GenAIFramework::ModelAPIRequest preparedRequest;
         GenAIFramework::AIModelRequestBus::EventResult(
@@ -223,7 +223,7 @@ namespace GenAIFramework
             if (extractedResponse.IsSuccess())
             {
                 AZStd::string response = "";
-                for (const auto& elem : extractedResponse.GetValue())
+                for (const auto& elem : extractedResponse.GetValue().second)
                 {
                     response += AZStd::any_cast<AZStd::string>(elem);
                 }
