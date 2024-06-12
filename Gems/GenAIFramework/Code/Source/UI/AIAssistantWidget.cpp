@@ -40,7 +40,6 @@ namespace GenAIFramework
         connect(m_newChatWidget, &NewChatWidget::chatCreated, this, &AIAssistantWidget::OnChatCreated);
 
         m_ui->conversations->addTab(m_newChatWidget, "+");
-        m_ui->conversations->setTabsClosable(false);
     }
 
     void AIAssistantWidget::OnConfigureAction()

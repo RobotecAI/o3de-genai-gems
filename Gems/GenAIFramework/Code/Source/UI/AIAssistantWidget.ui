@@ -14,9 +14,6 @@
    <string>MainWindow</string>
   </property>
   <widget class="QTabWidget" name="conversations">
-   <property name="tabsClosable">
-    <bool>true</bool>
-   </property>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
