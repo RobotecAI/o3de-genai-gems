@@ -9,13 +9,13 @@
 #pragma once
 
 #if !defined(Q_MOC_RUN)
-#include "NewSegment.h"
-#include "Segment.h"
 #include <AzQtComponents/Components/Widgets/SegmentControl.h>
 #include <AzToolsFramework/API/ToolsApplicationAPI.h>
 #include <QWidget>
 #include <QtCore/qstringliteral.h>
 #include <SettingsRegistryManager/SettingsRegistryManager.h>
+#include <UI/AgentConfigurationWidget/NewSegment.h>
+#include <UI/AgentConfigurationWidget/Segment.h>
 #include <UI/PropertyEditor/ReflectedPropertyEditor.hxx>
 #include <qobjectdefs.h>
 

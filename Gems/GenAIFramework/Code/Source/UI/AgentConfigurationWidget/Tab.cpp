@@ -7,8 +7,8 @@
  */
 
 #include "Tab.h"
-#include "UI/NewSegment.h"
 #include <AzCore/std/algorithm.h>
+#include <UI/AgentConfigurationWidget/NewSegment.h>
 #include <qwidget.h>
 
 namespace GenAIFramework

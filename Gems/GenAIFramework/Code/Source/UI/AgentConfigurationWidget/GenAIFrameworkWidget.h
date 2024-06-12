@@ -9,14 +9,14 @@
 #pragma once
 
 #if !defined(Q_MOC_RUN)
-#include "UI/ModelConfiguration/NewModelConfigurationSegment.h"
-#include "UI/ServiceProvider/NewServiceProviderSegment.h"
-#include "UI/Tab.h"
-#include <qwindowdefs.h>
+#include <UI/AgentConfigurationWidget/Tab.h>
+#include <UI/ModelConfiguration/NewModelConfigurationSegment.h>
+#include <UI/ServiceProvider/NewServiceProviderSegment.h>
 
 #include <AzQtComponents/Components/Widgets/TabWidget.h>
 #include <QWidget>
 #include <qboxlayout.h>
+#include <qwindowdefs.h>
 #endif
 
 namespace GenAIFramework

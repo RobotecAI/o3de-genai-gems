@@ -9,7 +9,7 @@
 #pragma once
 
 #if !defined(Q_MOC_RUN)
-#include "UI/NewSegment.h"
+#include <UI/AgentConfigurationWidget/NewSegment.h>
 
 #endif
 

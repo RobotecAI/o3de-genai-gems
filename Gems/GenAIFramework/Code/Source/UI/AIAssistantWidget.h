@@ -17,7 +17,7 @@
 #include <QMap>
 #include <QWidget>
 
-#include <UI/AIConfigurationWidget/GenAIFrameworkWidget.h>
+#include <UI/AgentConfigurationWidget/GenAIFrameworkWidget.h>
 #include <UI/NewChatWidget.h>
 
 #endif
