@@ -12,6 +12,7 @@
 #include <QMessageBox>
 #include <QScrollBar>
 #include <QSettings>
+#include <QStyle>
 #include <Source/UI/ui_NewChatWidget.h>
 
 namespace GenAIFramework
@@ -19,12 +20,18 @@ namespace GenAIFramework
     static constexpr const char SetModelConfiguration[] = "AIAssistant/Model";
     static constexpr const char SetServiceProvider[] = "AIAssistant/Provider";
 
-    NewChatWidget::NewChatWidget(QWidget* parent)
+    NewChatWidget::NewChatWidget(AgentConfigurationWidget* agentConfigurationWidget, QWidget* parent)
         : QWidget(parent)
         , m_ui(new Ui::NewChatWidgetUI)
+        , m_agentConfigurationWidget(agentConfigurationWidget)
 
     {
         m_ui->setupUi(this);
+
+        QStyle* style = qApp->style();
+        m_ui->pushButtonModels->setIcon(style->standardIcon(QStyle::SP_FileDialogDetailedView));
+        m_ui->pushButtonProviders->setIcon(style->standardIcon(QStyle::SP_FileDialogDetailedView));
+
         AZ::SystemTickBus::QueueFunction(
             [this]()
             {
@@ -33,10 +40,9 @@ namespace GenAIFramework
                 RefreshDefaultModelConfiguration();
                 GenAIFramework::GenAIFrameworkNotificationBus::Handler::BusConnect();
             });
-        connect(m_ui->models, &QComboBox::textActivated, this, &NewChatWidget::OnModelConfigurationSelected);
-        connect(m_ui->providers, &QComboBox::textActivated, this, &NewChatWidget::OnServiceProviderSelected);
-        connect(m_ui->chatName, &QLineEdit::textChanged, this, &NewChatWidget::OnChatNameChanged);
-        connect(m_ui->saveButton, &QPushButton::clicked, this, &NewChatWidget::OnSaveButton);
+        connect(m_ui->createButton, &QPushButton::clicked, this, &NewChatWidget::OnCreateButton);
+        connect(m_ui->pushButtonModels, &QPushButton::clicked, this, &NewChatWidget::OnAgentConfigurationButton);
+        connect(m_ui->pushButtonProviders, &QPushButton::clicked, this, &NewChatWidget::OnAgentConfigurationButton);
     }
 
     NewChatWidget::~NewChatWidget()
@@ -65,15 +71,33 @@ namespace GenAIFramework
         settings.setValue(SetServiceProvider, providerName);
     }
 
-    void NewChatWidget::OnChatNameChanged(const QString& chatName)
+    void NewChatWidget::OnCreateButton()
     {
-        m_chatName = chatName;
+        const auto featureName = m_ui->features->currentText();
+        const auto providerName = m_ui->providers->currentText();
+        const auto modelName = m_ui->models->currentText();
+        const auto chatName = m_ui->chatName->text();
+
+        SetModelAndProvider(modelName, providerName);
+        SetToQSettings(providerName, modelName);
+
+        emit chatCreated(chatName, modelName, providerName, featureName);
     }
 
-    void NewChatWidget::OnSaveButton()
+    void NewChatWidget::OnAgentConfigurationButton()
     {
-        auto featureName = m_ui->features->currentText();
-        emit chatCreated(m_chatName, m_modelName, m_providerName, featureName);
+        QPushButton* buttonSender = qobject_cast<QPushButton*>(sender());
+        if (buttonSender == m_ui->pushButtonModels)
+        {
+            m_agentConfigurationWidget->SetActiveTab(static_cast<int>(AgentConfiguration::TabIndex::ModelsConfiguration));
+        }
+        else
+        {
+            m_agentConfigurationWidget->SetActiveTab(static_cast<int>(AgentConfiguration::TabIndex::ProvidersConfiguration));
+        }
+
+        m_agentConfigurationWidget->resize(this->size());
+        m_agentConfigurationWidget->show();
     }
 
     void NewChatWidget::closeEvent([[maybe_unused]] QCloseEvent* event)
@@ -123,22 +147,6 @@ namespace GenAIFramework
         }
     };
 
-    void NewChatWidget::OnModelConfigurationSelected(const QString& modelName)
-    {
-        QString providerName = m_ui->providers->currentText();
-        SetModelAndProvider(modelName, providerName);
-        SetToQSettings(providerName, modelName);
-        m_modelName = modelName;
-    }
-
-    void NewChatWidget::OnServiceProviderSelected(const QString& providerName)
-    {
-        QString modelName = m_ui->models->currentText();
-        SetModelAndProvider(modelName, providerName);
-        SetToQSettings(providerName, modelName);
-        m_providerName = providerName;
-    }
-
     void NewChatWidget::SetModelAndProvider(const QString& modelName, const QString& providerName)
     {
         AZ_Assert(m_ServiceProviderNameToId.contains(providerName), "Provider name not found in the map");
@@ -174,8 +182,6 @@ namespace GenAIFramework
             }
         }
 
-        m_providerName = m_ui->providers->currentText();
-
         AZStd::vector<AZ::Component*> modelConfigurations;
         GenAIFramework::GenAIFrameworkRequestBus::BroadcastResult(
             modelConfigurations, &GenAIFramework::GenAIFrameworkRequests::GetModelConfigurations);
@@ -191,8 +197,6 @@ namespace GenAIFramework
                 m_ui->models->addItem(qName);
             }
         }
-
-        m_modelName = m_ui->models->currentText();
     }
 
     void NewChatWidget::UpdateFeaturesList()

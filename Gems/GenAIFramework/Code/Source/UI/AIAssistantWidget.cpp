@@ -34,18 +34,11 @@ namespace GenAIFramework
     {
         m_ui->setupUi(this);
         m_agentConfigurationWidget = new AgentConfigurationWidget();
-        m_newChatWidget = new NewChatWidget();
+        m_newChatWidget = new NewChatWidget(m_agentConfigurationWidget);
 
-        connect(m_ui->actionConfigure, &QAction::triggered, this, &AIAssistantWidget::OnConfigureAction);
         connect(m_newChatWidget, &NewChatWidget::chatCreated, this, &AIAssistantWidget::OnChatCreated);
 
         m_ui->conversations->addTab(m_newChatWidget, "+");
-    }
-
-    void AIAssistantWidget::OnConfigureAction()
-    {
-        m_agentConfigurationWidget->resize(this->size());
-        m_agentConfigurationWidget->show();
     }
 
     void AIAssistantWidget::OnChatCreated(

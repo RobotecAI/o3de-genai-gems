@@ -36,12 +36,11 @@ namespace GenAIFramework
     {
         m_ui->setupUi(this);
 
-        QString description = QString("Model: %1 Provider: %2").arg(modelName, providerName);
+        const QString description = QString("Feature: %1 Model: %2 Provider: %3").arg(featureName, modelName, providerName);
         m_ui->configDescription->setText(description);
 
         QStyle* style = qApp->style();
-        QIcon closeIcon = style->standardIcon(QStyle::SP_TitleBarCloseButton);
-        m_ui->closeButton->setIcon(closeIcon);
+        m_ui->closeButton->setIcon(style->standardIcon(QStyle::SP_TitleBarCloseButton));
 
         m_uiChatLayout = new QVBoxLayout();
         m_uiChatLayout->setAlignment(Qt::AlignBottom);
