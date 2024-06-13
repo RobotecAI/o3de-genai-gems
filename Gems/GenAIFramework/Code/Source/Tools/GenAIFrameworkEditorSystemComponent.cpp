@@ -15,7 +15,6 @@
 #include <AzCore/Serialization/SerializeContext.h>
 #include <AzCore/std/containers/vector.h>
 #include <AzCore/std/smart_ptr/make_shared.h>
-#include <GenAIFramework/AIComponentBase/AIComponentBase.h>
 #include <GenAIFramework/GenAIFrameworkBus.h>
 #include <GenAIFramework/GenAIFrameworkEditorBus.h>
 #include <GenAIFramework/GenAIFrameworkTypeIds.h>
@@ -30,7 +29,6 @@ namespace GenAIFramework
 
     void GenAIFrameworkEditorSystemComponent::Reflect(AZ::ReflectContext* context)
     {
-        AIComponentBase::Reflect(context);
         if (auto serializeContext = azrtti_cast<AZ::SerializeContext*>(context))
         {
             serializeContext->Class<GenAIFrameworkEditorSystemComponent, GenAIFrameworkSystemComponent>()->Version(0);

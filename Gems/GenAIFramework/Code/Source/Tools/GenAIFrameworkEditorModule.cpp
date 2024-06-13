@@ -8,10 +8,10 @@
 
 #include "GenAIAsyncRequestEditorSystemComponent.h"
 #include "GenAIFrameworkEditorSystemComponent.h"
-#include "PromptComponent.h"
 #include <GenAIFramework/GenAIFrameworkTypeIds.h>
 #include <GenAIFrameworkModuleInterface.h>
 #include <QtCore/qglobal.h>
+
 void InitQtResources()
 {
     // Registration of Qt (GenAIFramework.qrc) resources
@@ -36,11 +36,7 @@ namespace GenAIFramework
             // EditContext. This happens through the [MyComponent]::Reflect() function.
             m_descriptors.insert(
                 m_descriptors.end(),
-                {
-                    GenAIFrameworkEditorSystemComponent::CreateDescriptor(),
-                    GenAIAsyncRequestEditorSystemComponent::CreateDescriptor(),
-                    PromptComponent::CreateDescriptor(),
-                });
+                { GenAIFrameworkEditorSystemComponent::CreateDescriptor(), GenAIAsyncRequestEditorSystemComponent::CreateDescriptor() });
         }
 
         /**
