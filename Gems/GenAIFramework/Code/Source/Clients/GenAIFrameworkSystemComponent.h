@@ -54,8 +54,13 @@ namespace GenAIFramework
         void ActivateEntity(AZStd::shared_ptr<AZ::Entity> entity) override;
         void DeactivateEntity(AZStd::shared_ptr<AZ::Entity> entity) override;
         AZ::Outcome<AZ::u64, void> CreateModelAgent(
-            const AZStd::string& serviceProviderName, const AZStd::string modelModelConfigurationName) override;
+            const AZStd::string& serviceProviderName, const AZStd::string& modelModelConfigurationName) override;
         bool RemoveModelAgent(AZ::u64 modelAgentId) override;
+        AZ::Outcome<AZ::u64, void> CreateNewFeatureConversation(
+            const AZStd::string& serviceProviderName,
+            const AZStd::string& modelModelConfigurationName,
+            const AZStd::string& featureName) override;
+        bool RemoveFeatureConversation(AZ::u64 featureConversationId) override;
         ////////////////////////////////////////////////////////////////////////
 
         ////////////////////////////////////////////////////////////////////////
@@ -83,5 +88,6 @@ namespace GenAIFramework
         AZ::EntityId GetEntityIdByName(const AZStd::string& name, const EntityIdToEntityMap& entities) const;
 
         AZStd::unordered_map<AZ::u64, AZStd::shared_ptr<ModelAgent>> m_modelAgents;
+        AZStd::unordered_map<AZ::u64, AZStd::shared_ptr<FeatureBase>> m_featureConversations;
     };
 } // namespace GenAIFramework

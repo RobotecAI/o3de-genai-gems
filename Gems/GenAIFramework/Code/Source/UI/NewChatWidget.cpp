@@ -29,6 +29,7 @@ namespace GenAIFramework
             [this]()
             {
                 UpdateModelAndProviderLists();
+                UpdateFeaturesList();
                 RefreshDefaultModelConfiguration();
                 GenAIFramework::GenAIFrameworkNotificationBus::Handler::BusConnect();
             });
@@ -71,7 +72,8 @@ namespace GenAIFramework
 
     void NewChatWidget::OnSaveButton()
     {
-        emit chatCreated(m_chatName, m_modelName, m_providerName);
+        auto featureName = m_ui->features->currentText();
+        emit chatCreated(m_chatName, m_modelName, m_providerName, featureName);
     }
 
     void NewChatWidget::closeEvent([[maybe_unused]] QCloseEvent* event)
@@ -191,6 +193,15 @@ namespace GenAIFramework
         }
 
         m_modelName = m_ui->models->currentText();
+    }
+
+    void NewChatWidget::UpdateFeaturesList()
+    {
+        auto registeredFeatures = GenAIFrameworkInterface::Get()->GetSystemRegistrationContext()->GetFeatureNamesAndUuids();
+        for (const auto& feature : registeredFeatures)
+        {
+            m_ui->features->addItem(QString::fromUtf8(feature.first.c_str(), feature.first.size()));
+        }
     }
 
     void NewChatWidget::RefreshDefaultModelConfiguration()

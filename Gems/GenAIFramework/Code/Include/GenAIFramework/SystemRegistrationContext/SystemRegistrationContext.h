@@ -46,7 +46,7 @@ namespace GenAIFramework
             static_assert(AZStd::is_base_of<FeatureBase, C>::value);
             if (m_featuresFactory.find(C::RTTI_Type()) == m_featuresFactory.end())
             {
-                m_featureNames[C::RTTI_Type()] = name;
+                m_featureNames[name] = C::RTTI_Type();
                 m_featuresFactory[C::RTTI_Type()] = [](AZ::u64 agentId, AZ::u64 conversationId)
                 {
                     return AZStd::make_shared<C>(agentId, conversationId);
@@ -68,7 +68,7 @@ namespace GenAIFramework
             return nullptr;
         }
 
-        inline AZStd::unordered_map<AZ::Uuid, AZStd::string> GetFeatureNamesAndUuids() const
+        inline AZStd::unordered_map<AZStd::string, AZ::Uuid> GetFeatureNamesAndUuids() const
         {
             return m_featureNames;
         }
@@ -88,6 +88,6 @@ namespace GenAIFramework
         AZStd::unordered_set<AZ::Uuid> m_registeredModelConfigurations;
 
         AZStd::unordered_map<AZ::Uuid, AZStd::function<AZStd::shared_ptr<FeatureBase>(AZ::u64, AZ::u64)>> m_featuresFactory;
-        AZStd::unordered_map<AZ::Uuid, AZStd::string> m_featureNames;
+        AZStd::unordered_map<AZStd::string, AZ::Uuid> m_featureNames;
     };
 } // namespace GenAIFramework

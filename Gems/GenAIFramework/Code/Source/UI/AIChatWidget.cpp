@@ -8,15 +8,18 @@
  */
 
 #include "AIChatWidget.h"
+
+#include <AzCore/Component/ComponentApplicationBus.h>
 #include <AzCore/Component/Entity.h>
 #include <AzCore/Component/TickBus.h>
 #include <AzCore/Serialization/SerializeContext.h>
 #include <AzCore/std/containers/vector.h>
-
-#include <AzCore/Component/ComponentApplicationBus.h>
+#include <AzCore/std/parallel/lock.h>
+#include <AzToolsFramework/UI/UICore/WidgetHelpers.h>
 #include <GenAIFramework/Communication/AIModelRequestBus.h>
 #include <GenAIFramework/Communication/AIServiceProviderBus.h>
 #include <GenAIFramework/Communication/AsyncRequestBus.h>
+#include <GenAIFramework/Feature/ConversationBus.h>
 #include <GenAIFramework/GenAIFrameworkBus.h>
 #include <QMessageBox>
 #include <QScrollBar>
@@ -26,7 +29,7 @@
 
 namespace GenAIFramework
 {
-    AIChatWidget::AIChatWidget(QWidget* parent, QString modelName, QString providerName)
+    AIChatWidget::AIChatWidget(QWidget* parent, QString modelName, QString providerName, QString featureName)
         : QWidget(parent)
         , m_ui(new Ui::AIChatWidgetUI)
 
@@ -54,14 +57,67 @@ namespace GenAIFramework
             });
         connect(m_ui->SendBtn, &QPushButton::clicked, this, &AIChatWidget::OnRequestButton);
         connect(m_ui->closeButton, &QPushButton::clicked, this, &AIChatWidget::OnCloseButton);
+
+        auto featureIdOutcome = GenAIFrameworkInterface::Get()->CreateNewFeatureConversation(
+            providerName.toStdString().c_str(), modelName.toStdString().c_str(), featureName.toStdString().c_str());
+
+        if (featureIdOutcome.IsSuccess())
+        {
+            m_featureId = featureIdOutcome.GetValue();
+            ConversationNotificationBus::Handler::BusConnect(m_featureId);
+            AZ::TickBus::Handler::BusConnect();
+        }
+        else
+        {
+            AZ::SystemTickBus::QueueFunction(
+                [=]()
+                {
+                    QMessageBox::warning(
+                        AzToolsFramework::GetActiveWindow(), "AIChatWidget", QString("Failed to connect to AI Feature."), QMessageBox::Ok);
+                });
+        }
+    }
+
+    AIChatWidget::~AIChatWidget()
+    {
+        if (ConversationNotificationBus::Handler::BusIsConnected())
+        {
+            ConversationNotificationBus::Handler::BusDisconnect();
+        }
+        if (AZ::TickBus::Handler::BusIsConnected())
+        {
+            AZ::TickBus::Handler::BusDisconnect();
+        }
+        GenAIFrameworkInterface::Get()->RemoveFeatureConversation(m_featureId);
     }
 
     void AIChatWidget::OnRequestButton()
     {
         AZStd::string modelInput = m_ui->textEdit->toPlainText().toStdString().c_str();
+        m_ui->textEdit->clear();
         UiAppendChatMessage(modelInput);
-        constexpr bool isAssistantReply = true;
-        UiAppendChatMessage("This PoC implementation is not connected to any assistant", isAssistantReply);
+        ConversationNotificationBus::Event(m_featureId, &ConversationNotificationBus::Events::OnNewMessage, modelInput);
+    }
+
+    void AIChatWidget::OnFeatureResponse(const AZStd::string& summary, const AZStd::vector<AZStd::string>& detailedResponse)
+    {
+        AZStd::lock_guard<AZStd::mutex> lock(m_chatMessagesQueueMutex);
+        m_chatMessagesQueue.push({ { summary, detailedResponse }, true });
+    }
+
+    // This on tick function is required due to the fact that updating the QT UI must be done on the main thread
+    // The OnFeatureResponse function can be called from any thread, so messages need to be queued
+    void AIChatWidget::OnTick(float deltaTime, AZ::ScriptTimePoint time)
+    {
+        AZ_UNUSED(deltaTime);
+        AZ_UNUSED(time);
+        if (!m_chatMessagesQueue.empty())
+        {
+            AZStd::lock_guard<AZStd::mutex> lock(m_chatMessagesQueueMutex);
+            auto message = m_chatMessagesQueue.front();
+            UiAppendChatMessage(message.first.first, message.second);
+            m_chatMessagesQueue.pop();
+        }
     }
 
     void AIChatWidget::OnCloseButton()

@@ -16,4 +16,7 @@ set(FILES
     Source/Clients/GenAIFrameworkSystemComponentConfiguration.h
 
     Source/Feature/FeatureBase.cpp
+
+    Source/ChatFeature/ChatFeature.cpp
+    Source/ChatFeature/ChatFeature.h
 )
