@@ -14,15 +14,15 @@
 
 namespace GenAIFramework
 {
-    class ChatFeature : public FeatureBase
+    class O3DEAssistantFeature : public FeatureBase
     {
     public:
-        AZ_RTTI(ChatFeature, "{2c753228-4d1c-4632-9182-2f2e39970d9b}", FeatureBase);
-        AZ_CLASS_ALLOCATOR(ChatFeature, AZ::SystemAllocator, 0);
+        AZ_RTTI(O3DEAssistantFeature, "{2c753228-4d1c-4632-9182-2f2e39970d9b}", FeatureBase);
+        AZ_CLASS_ALLOCATOR(O3DEAssistantFeature, AZ::SystemAllocator, 0);
 
-        ChatFeature() = default;
-        ChatFeature(AZ::u64 agentId, AZ::u64 conversationId);
-        ~ChatFeature() = default;
+        O3DEAssistantFeature() = default;
+        O3DEAssistantFeature(AZ::u64 agentId, AZ::u64 conversationId);
+        ~O3DEAssistantFeature() = default;
 
         static void Reflect(AZ::ReflectContext* context);
 

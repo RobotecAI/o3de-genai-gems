@@ -8,11 +8,11 @@
 
 #include "GenAIFrameworkSystemComponent.h"
 
-#include <ChatFeature/ChatFeature.h>
 #include <Clients/GenAIFrameworkSystemComponentConfiguration.h>
 #include <GenAIFramework/Feature/FeatureBase.h>
 #include <GenAIFramework/GenAIFrameworkTypeIds.h>
 #include <GenAIFramework/SystemRegistrationContext/SystemRegistrationContext.h>
+#include <O3DEAssistantFeature/O3DEAssistantFeature.h>
 
 #include <AzCore/Component/ComponentApplication.h>
 #include <AzCore/Component/ComponentApplicationBus.h>
@@ -32,7 +32,7 @@ namespace GenAIFramework
         FeatureBase::Reflect(context);
         GenAIFrameworkSystemComponentConfiguration::Reflect(context);
 
-        ChatFeature::Reflect(context);
+        O3DEAssistantFeature::Reflect(context);
 
         if (auto serializeContext = azrtti_cast<AZ::SerializeContext*>(context))
         {

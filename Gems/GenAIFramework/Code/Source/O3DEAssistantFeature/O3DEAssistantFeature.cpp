@@ -6,7 +6,7 @@
  *
  */
 
-#include "ChatFeature.h"
+#include "O3DEAssistantFeature.h"
 
 #include <AzCore/std/containers/vector.h>
 #include <GenAIFramework/Communication/AIModelAgentBus.h>
@@ -16,25 +16,25 @@
 
 namespace GenAIFramework
 {
-    ChatFeature::ChatFeature(AZ::u64 agentId, AZ::u64 conversationId)
+    O3DEAssistantFeature::O3DEAssistantFeature(AZ::u64 agentId, AZ::u64 conversationId)
         : FeatureBase(agentId, conversationId)
     {
     }
 
-    void ChatFeature::Reflect(AZ::ReflectContext* context)
+    void O3DEAssistantFeature::Reflect(AZ::ReflectContext* context)
     {
         if (auto* serializeContext = azrtti_cast<AZ::SerializeContext*>(context))
         {
-            serializeContext->Class<ChatFeature, FeatureBase>()->Version(0);
+            serializeContext->Class<O3DEAssistantFeature, FeatureBase>()->Version(0);
         }
 
         if (auto registrationContext = azrtti_cast<GenAIFramework::SystemRegistrationContext*>(context))
         {
-            registrationContext->RegisterFeature<ChatFeature>("Chat");
+            registrationContext->RegisterFeature<O3DEAssistantFeature>("O3DE Assistant");
         }
     }
 
-    void ChatFeature::OnNewMessage(const AZStd::string& message)
+    void O3DEAssistantFeature::OnNewMessage(const AZStd::string& message)
     {
         AIHistory history;
         AIModelAgentBus::EventResult(history, m_agentId, &AIModelAgentBus::Events::GetHistory);
@@ -55,7 +55,7 @@ namespace GenAIFramework
         AIModelAgentBus::Event(m_agentId, &AIModelAgentBus::Events::SendPrompt, messages);
     }
 
-    void ChatFeature::OnPromptResponse(ModelAPIExtractedResponse response)
+    void O3DEAssistantFeature::OnPromptResponse(ModelAPIExtractedResponse response)
     {
         if (!response.IsSuccess())
         {
