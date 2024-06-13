@@ -43,10 +43,7 @@ namespace GenAIFramework
         void chatCreated(const QString& chatName, const QString& modelName, const QString& providerName, const QString& featureName);
 
     private slots:
-        void OnModelConfigurationSelected(const QString& modelName);
-        void OnServiceProviderSelected(const QString& providerName);
-        void OnChatNameChanged(const QString& chatName);
-        void OnSaveButton();
+        void OnCreateButton();
 
     protected:
         // QWidget overrides
@@ -68,10 +65,6 @@ namespace GenAIFramework
         void SetModelAndProvider(const QString& modelName, const QString& providerName);
 
         Ui::NewChatWidgetUI* m_ui;
-        QVBoxLayout* m_uiChatLayout;
-        QString m_chatName;
-        QString m_modelName;
-        QString m_providerName;
 
         QMap<QString, AZ::EntityId> m_ServiceProviderNameToId;
         QMap<QString, AZ::EntityId> m_modelConfigurationNameToId;
