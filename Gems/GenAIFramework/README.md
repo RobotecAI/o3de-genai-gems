@@ -24,15 +24,6 @@ A sample screenshot of AI Service Configuration named _basic JSON_ follows (note
 
 ![Widget: AI Service Configuration](docs/images/AIServiceConfiguration.png)
 
-### Test Components
-Two test components (Editor) are provided for the tests. The first one, `AI Test Prompt Component`, connects to the Gen AI _vendor_ Gem using the configurations set in the widget and allows to send a prompt (and receive the outcome). 
-
-![Prompt Test Component](docs/images/TestPromptComponent.png)
-
-The latter, `Test Editor Component`, was implemented to test O3DE functionalities that could be further used in the AI. The output is printed to the _console_.
-
-![Prompt Test Component](docs/images/TestComponent.png)
-
 ## Asynchronous AI API for Python usage
 The API allows you to get responses from AI services in an asynchronous way. 
 It is based on the `AZ::EBus` and `AZ::BehaviorContext`. 
