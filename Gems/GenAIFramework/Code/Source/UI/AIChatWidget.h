@@ -8,13 +8,13 @@
 
 #pragma once
 
-#include "AzCore/std/parallel/mutex.h"
 #if !defined(Q_MOC_RUN)
 #include <QVBoxLayout>
 #include <QWidget>
 
 #include <AzCore/Component/Entity.h>
 #include <AzCore/Component/TickBus.h>
+#include <AzCore/std/parallel/mutex.h>
 #include <GenAIFramework/GenAIFrameworkBus.h>
 #endif
 
@@ -54,7 +54,7 @@ namespace GenAIFramework
         Ui::AIChatWidgetUI* m_ui;
         QVBoxLayout* m_uiChatLayout;
 
-        AZ::u64 m_featureId;
+        AZ::u64 m_featureId = 0;
         using SummaryDetailedPair = AZStd::pair<AZStd::string, AZStd::vector<AZStd::string>>;
         AZStd::queue<AZStd::pair<SummaryDetailedPair, bool>> m_chatMessagesQueue;
         AZStd::mutex m_chatMessagesQueueMutex;

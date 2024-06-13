@@ -15,6 +15,7 @@
 #include <AzCore/Serialization/SerializeContext.h>
 #include <AzCore/std/containers/vector.h>
 #include <AzCore/std/parallel/lock.h>
+#include <AzToolsFramework/UI/UICore/WidgetHelpers.h>
 #include <GenAIFramework/Communication/AIModelRequestBus.h>
 #include <GenAIFramework/Communication/AIServiceProviderBus.h>
 #include <GenAIFramework/Communication/AsyncRequestBus.h>
@@ -33,13 +34,6 @@ namespace GenAIFramework
         , m_ui(new Ui::AIChatWidgetUI)
 
     {
-        auto featureIdOutcome = GenAIFrameworkInterface::Get()->CreateNewFeatureConversation(
-            providerName.toStdString().c_str(), modelName.toStdString().c_str(), featureName.toStdString().c_str());
-        m_featureId = featureIdOutcome.IsSuccess() ? featureIdOutcome.GetValue() : 0;
-
-        ConversationNotificationBus::Handler::BusConnect(m_featureId);
-        AZ::TickBus::Handler::BusConnect();
-
         m_ui->setupUi(this);
 
         QString description = QString("Model: %1 Provider: %2").arg(modelName, providerName);
@@ -63,6 +57,25 @@ namespace GenAIFramework
             });
         connect(m_ui->SendBtn, &QPushButton::clicked, this, &AIChatWidget::OnRequestButton);
         connect(m_ui->closeButton, &QPushButton::clicked, this, &AIChatWidget::OnCloseButton);
+
+        auto featureIdOutcome = GenAIFrameworkInterface::Get()->CreateNewFeatureConversation(
+            providerName.toStdString().c_str(), modelName.toStdString().c_str(), featureName.toStdString().c_str());
+
+        if (featureIdOutcome.IsSuccess())
+        {
+            m_featureId = featureIdOutcome.GetValue();
+            ConversationNotificationBus::Handler::BusConnect(m_featureId);
+            AZ::TickBus::Handler::BusConnect();
+        }
+        else
+        {
+            AZ::SystemTickBus::QueueFunction(
+                [=]()
+                {
+                    QMessageBox::warning(
+                        AzToolsFramework::GetActiveWindow(), "AIChatWidget", QString("Failed to connect to AI Feature."), QMessageBox::Ok);
+                });
+        }
     }
 
     AIChatWidget::~AIChatWidget()
@@ -81,6 +94,7 @@ namespace GenAIFramework
     void AIChatWidget::OnRequestButton()
     {
         AZStd::string modelInput = m_ui->textEdit->toPlainText().toStdString().c_str();
+        m_ui->textEdit->clear();
         UiAppendChatMessage(modelInput);
         ConversationNotificationBus::Event(m_featureId, &ConversationNotificationBus::Events::OnNewMessage, modelInput);
     }

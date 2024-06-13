@@ -26,7 +26,7 @@
     <item>
      <layout class="QHBoxLayout" name="horizontalChatName">
       <item>
-       <widget class="QLabel" name="label_2">
+       <widget class="QLabel" name="labelChat">
         <property name="text">
          <string>Chat name</string>
         </property>
@@ -40,7 +40,7 @@
     <item>
      <layout class="QHBoxLayout" name="horizontalModel">
       <item>
-       <widget class="QLabel" name="label_3">
+       <widget class="QLabel" name="labelModel">
         <property name="text">
          <string>Model</string>
         </property>
@@ -54,7 +54,7 @@
     <item>
      <layout class="QHBoxLayout" name="horizontalService">
       <item>
-       <widget class="QLabel" name="label_4">
+       <widget class="QLabel" name="labelService">
         <property name="text">
          <string>Service</string>
         </property>
@@ -68,7 +68,7 @@
     <item>
      <layout class="QHBoxLayout" name="horizontalFeature">
       <item>
-       <widget class="QLabel" name="label_6">
+       <widget class="QLabel" name="labelFeature">
         <property name="text">
          <string>Feature</string>
         </property>

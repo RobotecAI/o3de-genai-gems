@@ -373,6 +373,8 @@ namespace GenAIFramework
         {
             return AZ::Failure();
         }
+
+        // The system is currently limited to one feature (connected to one agent) per one conversation. Hence, the same id is used.
         auto conversationId = modelAgentId;
         auto feature =
             GetSystemRegistrationContext()->CreateFeature(featureUuid->second, modelAgentId.GetValue(), conversationId.GetValue());
