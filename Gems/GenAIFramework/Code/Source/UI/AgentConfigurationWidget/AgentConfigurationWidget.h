@@ -21,11 +21,21 @@
 
 namespace GenAIFramework
 {
+    namespace AgentConfiguration
+    {
+        enum class TabIndex : int
+        {
+            ModelsConfiguration = 0,
+            ProvidersConfiguration
+        };
+    }
+
     class AgentConfigurationWidget : public QWidget
     {
         Q_OBJECT
     public:
         explicit AgentConfigurationWidget(QWidget* parent = nullptr);
+        void SetActiveTab(const int index);
 
     protected:
         // QWidget overrides

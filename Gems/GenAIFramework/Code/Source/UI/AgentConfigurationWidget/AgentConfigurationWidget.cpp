@@ -40,6 +40,11 @@ namespace GenAIFramework
         verticalLayout->addWidget(m_tabs);
     }
 
+    void AgentConfigurationWidget::SetActiveTab(const int index)
+    {
+        m_tabs->setCurrentIndex(index);
+    }
+
     void AgentConfigurationWidget::closeEvent([[maybe_unused]] QCloseEvent* event)
     {
         this->hide();

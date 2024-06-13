@@ -16,6 +16,7 @@
 
 #include <AzCore/Component/Entity.h>
 #include <GenAIFramework/GenAIFrameworkBus.h>
+#include <UI/AgentConfigurationWidget/AgentConfigurationWidget.h>
 
 #endif
 
@@ -32,7 +33,7 @@ namespace GenAIFramework
     {
         Q_OBJECT
     public:
-        explicit NewChatWidget(QWidget* parent = nullptr);
+        explicit NewChatWidget(AgentConfigurationWidget* agentConfigurationWidget, QWidget* parent = nullptr);
         void UpdateModelAndProviderLists();
         void UpdateFeaturesList();
         ~NewChatWidget() override;
@@ -44,6 +45,7 @@ namespace GenAIFramework
 
     private slots:
         void OnCreateButton();
+        void OnAgentConfigurationButton();
 
     protected:
         // QWidget overrides
@@ -65,6 +67,7 @@ namespace GenAIFramework
         void SetModelAndProvider(const QString& modelName, const QString& providerName);
 
         Ui::NewChatWidgetUI* m_ui;
+        AgentConfigurationWidget* m_agentConfigurationWidget;
 
         QMap<QString, AZ::EntityId> m_ServiceProviderNameToId;
         QMap<QString, AZ::EntityId> m_modelConfigurationNameToId;

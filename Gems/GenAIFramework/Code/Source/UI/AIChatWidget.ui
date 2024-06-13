@@ -33,8 +33,8 @@
        </property>
        <property name="maximumSize">
         <size>
-         <width>25</width>
-         <height>25</height>
+         <width>26</width>
+         <height>24</height>
         </size>
        </property>
        <property name="toolTip">
@@ -44,7 +44,7 @@
         <string/>
        </property>
        <property name="flat">
-        <bool>true</bool>
+        <bool>false</bool>
        </property>
       </widget>
      </item>

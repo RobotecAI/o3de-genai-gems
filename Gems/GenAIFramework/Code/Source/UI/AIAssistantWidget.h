@@ -36,7 +36,6 @@ namespace GenAIFramework
         explicit AIAssistantWidget(QWidget* parent = nullptr);
 
     private slots:
-        void OnConfigureAction();
         void OnChatCreated(const QString& chatName, const QString& modelName, const QString& providerName, const QString& featureName);
         void OnChatClosed();
 

@@ -12,6 +12,7 @@
 #include <QMessageBox>
 #include <QScrollBar>
 #include <QSettings>
+#include <QStyle>
 #include <Source/UI/ui_NewChatWidget.h>
 
 namespace GenAIFramework
@@ -19,12 +20,18 @@ namespace GenAIFramework
     static constexpr const char SetModelConfiguration[] = "AIAssistant/Model";
     static constexpr const char SetServiceProvider[] = "AIAssistant/Provider";
 
-    NewChatWidget::NewChatWidget(QWidget* parent)
+    NewChatWidget::NewChatWidget(AgentConfigurationWidget* agentConfigurationWidget, QWidget* parent)
         : QWidget(parent)
         , m_ui(new Ui::NewChatWidgetUI)
+        , m_agentConfigurationWidget(agentConfigurationWidget)
 
     {
         m_ui->setupUi(this);
+
+        QStyle* style = qApp->style();
+        m_ui->pushButtonModels->setIcon(style->standardIcon(QStyle::SP_FileDialogDetailedView));
+        m_ui->pushButtonProviders->setIcon(style->standardIcon(QStyle::SP_FileDialogDetailedView));
+
         AZ::SystemTickBus::QueueFunction(
             [this]()
             {
@@ -34,6 +41,8 @@ namespace GenAIFramework
                 GenAIFramework::GenAIFrameworkNotificationBus::Handler::BusConnect();
             });
         connect(m_ui->createButton, &QPushButton::clicked, this, &NewChatWidget::OnCreateButton);
+        connect(m_ui->pushButtonModels, &QPushButton::clicked, this, &NewChatWidget::OnAgentConfigurationButton);
+        connect(m_ui->pushButtonProviders, &QPushButton::clicked, this, &NewChatWidget::OnAgentConfigurationButton);
     }
 
     NewChatWidget::~NewChatWidget()
@@ -73,6 +82,22 @@ namespace GenAIFramework
         SetToQSettings(providerName, modelName);
 
         emit chatCreated(chatName, modelName, providerName, featureName);
+    }
+
+    void NewChatWidget::OnAgentConfigurationButton()
+    {
+        QPushButton* buttonSender = qobject_cast<QPushButton*>(sender());
+        if (buttonSender == m_ui->pushButtonModels)
+        {
+            m_agentConfigurationWidget->SetActiveTab(static_cast<int>(AgentConfiguration::TabIndex::ModelsConfiguration));
+        }
+        else
+        {
+            m_agentConfigurationWidget->SetActiveTab(static_cast<int>(AgentConfiguration::TabIndex::ProvidersConfiguration));
+        }
+
+        m_agentConfigurationWidget->resize(this->size());
+        m_agentConfigurationWidget->show();
     }
 
     void NewChatWidget::closeEvent([[maybe_unused]] QCloseEvent* event)

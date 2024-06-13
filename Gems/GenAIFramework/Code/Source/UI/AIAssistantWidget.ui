@@ -13,25 +13,7 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
-  <widget class="QTabWidget" name="conversations">
-  </widget>
-  <widget class="QMenuBar" name="menubar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>660</width>
-     <height>22</height>
-    </rect>
-   </property>
-   <widget class="QMenu" name="menuChats">
-    <property name="title">
-     <string>Model</string>
-    </property>
-    <addaction name="actionConfigure"/>
-   </widget>
-   <addaction name="menuChats"/>
-  </widget>
+  <widget class="QTabWidget" name="conversations"/>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionNewChat">
    <property name="text">
