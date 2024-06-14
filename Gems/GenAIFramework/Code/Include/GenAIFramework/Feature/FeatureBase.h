@@ -23,10 +23,26 @@ namespace GenAIFramework
         AZ_RTTI(FeatureBase, "{4050040a-31c3-4949-8ce0-52fad7562f4d}");
 
         FeatureBase() = default;
-        FeatureBase(AZ::u64 agentId, AZ::u64 conversationId);
-        virtual ~FeatureBase();
+        FeatureBase(AZ::u64 agentId, AZ::u64 conversationId)
+            : m_agentId(agentId)
+            , m_conversationId(conversationId)
+        {
+            ConversationNotificationBus::Handler::BusConnect(conversationId);
+            AIModelAgentNotificationBus::Handler::BusConnect(agentId);
+        }
+        virtual ~FeatureBase()
+        {
+            AIModelAgentNotificationBus::Handler::BusDisconnect();
+            ConversationNotificationBus::Handler::BusDisconnect();
+        }
 
-        static void Reflect(AZ::ReflectContext* context);
+        static void Reflect(AZ::ReflectContext* context)
+        {
+            if (auto* serializeContext = azrtti_cast<AZ::SerializeContext*>(context))
+            {
+                serializeContext->Class<FeatureBase>()->Version(0);
+            }
+        }
 
     protected:
         AZ::u64 m_agentId;
