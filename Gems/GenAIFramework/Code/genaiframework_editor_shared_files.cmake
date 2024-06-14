@@ -14,9 +14,9 @@ set(FILES
     Source/UI/ModelConfiguration/NewModelConfigurationSegment.h
     Source/UI/ServiceProvider/NewServiceProviderSegment.cpp
     Source/UI/ServiceProvider/NewServiceProviderSegment.h
-    Source/UI/AIChatWidget.cpp
-    Source/UI/AIChatWidget.h
-    Source/UI/AIChatWidget.ui
+    Source/UI/ChatWidget.cpp
+    Source/UI/ChatWidget.h
+    Source/UI/ChatWidget.ui
     Source/UI/AIAssistantWidget.h
     Source/UI/AIAssistantWidget.cpp
     Source/UI/AIAssistantWidget.ui

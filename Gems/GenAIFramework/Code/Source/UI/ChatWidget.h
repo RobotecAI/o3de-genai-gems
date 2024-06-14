@@ -20,20 +20,20 @@
 
 namespace Ui
 {
-    class AIChatWidgetUI;
+    class ChatWidgetUI;
 }
 
 namespace GenAIFramework
 {
-    class AIChatWidget
+    class ChatWidget
         : public QWidget
         , private GenAIFramework::ConversationNotificationBus::Handler
         , private AZ::TickBus::Handler
     {
         Q_OBJECT
     public:
-        explicit AIChatWidget(QWidget* parent = nullptr, QString modelName = "", QString providerName = "", QString featureName = "");
-        ~AIChatWidget();
+        explicit ChatWidget(QWidget* parent = nullptr, QString modelName = "", QString providerName = "", QString featureName = "");
+        ~ChatWidget();
 
     signals:
         void chatClosed();
@@ -51,7 +51,7 @@ namespace GenAIFramework
         // GenAIFramework::ConversationNotificationBus::Handler
         void OnFeatureResponse(const AZStd::string& summary, const AZStd::vector<AZStd::string>& detailedResponse) override;
 
-        Ui::AIChatWidgetUI* m_ui;
+        Ui::ChatWidgetUI* m_ui;
         QVBoxLayout* m_uiChatLayout;
 
         AZ::u64 m_featureId = 0;

@@ -7,7 +7,7 @@
  *
  */
 
-#include "AIChatWidget.h"
+#include "ChatWidget.h"
 
 #include <AzCore/Component/ComponentApplicationBus.h>
 #include <AzCore/Component/Entity.h>
@@ -25,13 +25,13 @@
 #include <QScrollBar>
 #include <QSettings>
 #include <QStyle>
-#include <Source/UI/ui_AIChatWidget.h>
+#include <Source/UI/ui_ChatWidget.h>
 
 namespace GenAIFramework
 {
-    AIChatWidget::AIChatWidget(QWidget* parent, QString modelName, QString providerName, QString featureName)
+    ChatWidget::ChatWidget(QWidget* parent, QString modelName, QString providerName, QString featureName)
         : QWidget(parent)
-        , m_ui(new Ui::AIChatWidgetUI)
+        , m_ui(new Ui::ChatWidgetUI)
 
     {
         m_ui->setupUi(this);
@@ -54,8 +54,8 @@ namespace GenAIFramework
             {
                 m_ui->scrollArea->verticalScrollBar()->setValue(m_ui->scrollArea->verticalScrollBar()->maximum());
             });
-        connect(m_ui->SendBtn, &QPushButton::clicked, this, &AIChatWidget::OnRequestButton);
-        connect(m_ui->closeButton, &QPushButton::clicked, this, &AIChatWidget::OnCloseButton);
+        connect(m_ui->SendBtn, &QPushButton::clicked, this, &ChatWidget::OnRequestButton);
+        connect(m_ui->closeButton, &QPushButton::clicked, this, &ChatWidget::OnCloseButton);
 
         auto featureIdOutcome = GenAIFrameworkInterface::Get()->CreateNewFeatureConversation(
             providerName.toStdString().c_str(), modelName.toStdString().c_str(), featureName.toStdString().c_str());
@@ -72,12 +72,12 @@ namespace GenAIFramework
                 [=]()
                 {
                     QMessageBox::warning(
-                        AzToolsFramework::GetActiveWindow(), "AIChatWidget", QString("Failed to connect to AI Feature."), QMessageBox::Ok);
+                        AzToolsFramework::GetActiveWindow(), "ChatWidget", QString("Failed to connect to AI Feature."), QMessageBox::Ok);
                 });
         }
     }
 
-    AIChatWidget::~AIChatWidget()
+    ChatWidget::~ChatWidget()
     {
         if (ConversationNotificationBus::Handler::BusIsConnected())
         {
@@ -90,7 +90,7 @@ namespace GenAIFramework
         GenAIFrameworkInterface::Get()->RemoveFeatureConversation(m_featureId);
     }
 
-    void AIChatWidget::OnRequestButton()
+    void ChatWidget::OnRequestButton()
     {
         AZStd::string modelInput = m_ui->textEdit->toPlainText().toStdString().c_str();
         m_ui->textEdit->clear();
@@ -98,7 +98,7 @@ namespace GenAIFramework
         ConversationNotificationBus::Event(m_featureId, &ConversationNotificationBus::Events::OnNewMessage, modelInput);
     }
 
-    void AIChatWidget::OnFeatureResponse(const AZStd::string& summary, const AZStd::vector<AZStd::string>& detailedResponse)
+    void ChatWidget::OnFeatureResponse(const AZStd::string& summary, const AZStd::vector<AZStd::string>& detailedResponse)
     {
         AZStd::lock_guard<AZStd::mutex> lock(m_chatMessagesQueueMutex);
         m_chatMessagesQueue.push({ { summary, detailedResponse }, true });
@@ -106,7 +106,7 @@ namespace GenAIFramework
 
     // This on tick function is required due to the fact that updating the QT UI must be done on the main thread
     // The OnFeatureResponse function can be called from any thread, so messages need to be queued
-    void AIChatWidget::OnTick(float deltaTime, AZ::ScriptTimePoint time)
+    void ChatWidget::OnTick(float deltaTime, AZ::ScriptTimePoint time)
     {
         AZ_UNUSED(deltaTime);
         AZ_UNUSED(time);
@@ -119,12 +119,12 @@ namespace GenAIFramework
         }
     }
 
-    void AIChatWidget::OnCloseButton()
+    void ChatWidget::OnCloseButton()
     {
         emit chatClosed();
     }
 
-    void AIChatWidget::UiAppendChatMessage(const AZStd::string& message, const bool response)
+    void ChatWidget::UiAppendChatMessage(const AZStd::string& message, const bool response)
     {
         auto label = new QLabel(message.c_str());
         label->setWordWrap(true);
@@ -142,7 +142,7 @@ namespace GenAIFramework
         m_uiChatLayout->addWidget(label);
     }
 
-    void AIChatWidget::UiClearMessages()
+    void ChatWidget::UiClearMessages()
     {
         QLayoutItem* item;
         while ((item = m_uiChatLayout->takeAt(0)) != nullptr)

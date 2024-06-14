@@ -8,7 +8,7 @@
  */
 
 #include "AIAssistantWidget.h"
-#include "AIChatWidget.h"
+#include "ChatWidget.h"
 #include "NewChatWidget.h"
 #include <AzCore/Component/Entity.h>
 #include <AzCore/Component/TickBus.h>
@@ -44,10 +44,10 @@ namespace GenAIFramework
     void AIAssistantWidget::OnChatCreated(
         const QString& chatName, const QString& modelName, const QString& providerName, const QString& featureName)
     {
-        auto* newChatWidget = new AIChatWidget(this, modelName, providerName, featureName);
+        auto* newChatWidget = new ChatWidget(this, modelName, providerName, featureName);
         const auto tabIndex = m_ui->conversations->insertTab(0, newChatWidget, chatName);
         m_ui->conversations->setCurrentIndex(tabIndex);
-        connect(newChatWidget, &AIChatWidget::chatClosed, this, &AIAssistantWidget::OnChatClosed);
+        connect(newChatWidget, &ChatWidget::chatClosed, this, &AIAssistantWidget::OnChatClosed);
     }
 
     void AIAssistantWidget::OnChatClosed()
