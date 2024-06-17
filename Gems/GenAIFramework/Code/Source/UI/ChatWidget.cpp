@@ -96,7 +96,7 @@ namespace GenAIFramework
         QPushButton* buttonSender = qobject_cast<QPushButton*>(sender());
         if (m_chatDetails.contains(buttonSender))
         {
-            AZ_Warning("ChatWidget", false, "Not implemented yet: %s", m_chatDetails[buttonSender].front().c_str());
+            AZ_Warning("ChatWidget", false, "Displaying details is not implemented yet.");
         }
         else
         {
@@ -146,18 +146,16 @@ namespace GenAIFramework
 
         if (response)
         {
-            QPushButton* detailsButton = new QPushButton("?");
-            detailsButton->setFixedSize(26, 24);
             label->setStyleSheet("QLabel { background-color: #303030; margin-right: 100px; }");
             m_uiChatLayout->addWidget(label);
-            m_uiChatLayout->addWidget(detailsButton);
-            m_chatDetails[detailsButton] = AZStd::move(message.second);
-            connect(detailsButton, &QPushButton::clicked, this, &ChatWidget::OnDetailsButton);
-
-            static int debugTestVar = 0;
-            m_chatDetails[detailsButton].push_back("test " + AZStd::to_string(debugTestVar));
-            debugTestVar++;
-            AZ_Warning("JHDebug", false, "Append: %s", m_chatDetails[detailsButton].front().c_str());
+            if (!message.second.empty())
+            {
+                QPushButton* detailsButton = new QPushButton("?");
+                detailsButton->setFixedSize(26, 24);
+                m_uiChatLayout->addWidget(detailsButton);
+                m_chatDetails[detailsButton] = AZStd::move(message.second);
+                connect(detailsButton, &QPushButton::clicked, this, &ChatWidget::OnDetailsButton);
+            }
         }
         else
         {
