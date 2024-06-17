@@ -17,6 +17,8 @@ set(FILES
     Source/UI/ChatWidget.cpp
     Source/UI/ChatWidget.h
     Source/UI/ChatWidget.ui
+    Source/UI/DetailsWidget.cpp
+    Source/UI/DetailsWidget.h
     Source/UI/AIAssistantWidget.h
     Source/UI/AIAssistantWidget.cpp
     Source/UI/AIAssistantWidget.ui

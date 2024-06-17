@@ -27,6 +27,7 @@
 #include <QSettings>
 #include <QStyle>
 #include <Source/UI/ui_ChatWidget.h>
+#include <UI/DetailsWidget.h>
 
 namespace GenAIFramework
 {
@@ -96,7 +97,8 @@ namespace GenAIFramework
         QPushButton* buttonSender = qobject_cast<QPushButton*>(sender());
         if (m_chatDetails.contains(buttonSender))
         {
-            AZ_Warning("ChatWidget", false, "Displaying details is not implemented yet.");
+            DetailsWidget* details = new DetailsWidget(m_chatDetails[buttonSender]);
+            details->show();
         }
         else
         {
