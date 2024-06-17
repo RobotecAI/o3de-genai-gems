@@ -22,6 +22,7 @@
 #include <GenAIFramework/Feature/ConversationBus.h>
 #include <GenAIFramework/GenAIFrameworkBus.h>
 #include <QMessageBox>
+#include <QPushButton>
 #include <QScrollBar>
 #include <QSettings>
 #include <QStyle>
@@ -90,11 +91,24 @@ namespace GenAIFramework
         GenAIFrameworkInterface::Get()->RemoveFeatureConversation(m_featureId);
     }
 
+    void ChatWidget::OnDetailsButton()
+    {
+        QPushButton* buttonSender = qobject_cast<QPushButton*>(sender());
+        if (m_chatDetails.contains(buttonSender))
+        {
+            AZ_Warning("ChatWidget", false, "Not implemented yet: %s", m_chatDetails[buttonSender].front().c_str());
+        }
+        else
+        {
+            AZ_Warning("ChatWidget", false, "Detailed chat message not available.");
+        }
+    }
+
     void ChatWidget::OnRequestButton()
     {
         AZStd::string modelInput = m_ui->textEdit->toPlainText().toStdString().c_str();
         m_ui->textEdit->clear();
-        UiAppendChatMessage(modelInput);
+        UiAppendChatMessage({ modelInput, AZStd::vector<AZStd::string>() });
         ConversationNotificationBus::Event(m_featureId, &ConversationNotificationBus::Events::OnNewMessage, modelInput);
     }
 
@@ -113,8 +127,8 @@ namespace GenAIFramework
         if (!m_chatMessagesQueue.empty())
         {
             AZStd::lock_guard<AZStd::mutex> lock(m_chatMessagesQueueMutex);
-            auto message = m_chatMessagesQueue.front();
-            UiAppendChatMessage(message.first.first, message.second);
+            auto& message = m_chatMessagesQueue.front();
+            UiAppendChatMessage(message.first, message.second);
             m_chatMessagesQueue.pop();
         }
     }
@@ -124,22 +138,32 @@ namespace GenAIFramework
         emit chatClosed();
     }
 
-    void ChatWidget::UiAppendChatMessage(const AZStd::string& message, const bool response)
+    void ChatWidget::UiAppendChatMessage(const SummaryDetailedPair& message, const bool response)
     {
-        auto label = new QLabel(message.c_str());
+        auto label = new QLabel(message.first.c_str());
         label->setWordWrap(true);
         label->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
 
         if (response)
         {
+            QPushButton* detailsButton = new QPushButton("?");
+            detailsButton->setFixedSize(26, 24);
             label->setStyleSheet("QLabel { background-color: #303030; margin-right: 100px; }");
+            m_uiChatLayout->addWidget(label);
+            m_uiChatLayout->addWidget(detailsButton);
+            m_chatDetails[detailsButton] = AZStd::move(message.second);
+            connect(detailsButton, &QPushButton::clicked, this, &ChatWidget::OnDetailsButton);
+
+            static int debugTestVar = 0;
+            m_chatDetails[detailsButton].push_back("test " + AZStd::to_string(debugTestVar));
+            debugTestVar++;
+            AZ_Warning("JHDebug", false, "Append: %s", m_chatDetails[detailsButton].front().c_str());
         }
         else
         {
             label->setStyleSheet("QLabel { background-color: #202020; margin-left: 100px; }");
+            m_uiChatLayout->addWidget(label);
         }
-
-        m_uiChatLayout->addWidget(label);
     }
 
     void ChatWidget::UiClearMessages()

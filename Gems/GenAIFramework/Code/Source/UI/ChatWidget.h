@@ -9,6 +9,7 @@
 #pragma once
 
 #if !defined(Q_MOC_RUN)
+#include <QPushButton>
 #include <QVBoxLayout>
 #include <QWidget>
 
@@ -39,11 +40,13 @@ namespace GenAIFramework
         void chatClosed();
 
     private slots:
+        void OnDetailsButton();
         void OnRequestButton();
         void OnCloseButton();
 
     private:
-        void UiAppendChatMessage(const AZStd::string& message, const bool response = false);
+        using SummaryDetailedPair = AZStd::pair<AZStd::string, AZStd::vector<AZStd::string>>;
+        void UiAppendChatMessage(const SummaryDetailedPair& message, const bool response = false);
         void UiClearMessages();
 
         // AZ::TickBus::Handler
@@ -55,8 +58,9 @@ namespace GenAIFramework
         QVBoxLayout* m_uiChatLayout;
 
         AZ::u64 m_featureId = 0;
-        using SummaryDetailedPair = AZStd::pair<AZStd::string, AZStd::vector<AZStd::string>>;
         AZStd::queue<AZStd::pair<SummaryDetailedPair, bool>> m_chatMessagesQueue;
         AZStd::mutex m_chatMessagesQueueMutex;
+
+        AZStd::unordered_map<QPushButton*, AZStd::vector<AZStd::string>> m_chatDetails;
     };
 } // namespace GenAIFramework
