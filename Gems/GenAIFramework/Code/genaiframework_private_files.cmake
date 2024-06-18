@@ -17,6 +17,6 @@ set(FILES
 
     Source/Feature/FeatureBase.cpp
 
-    Source/ChatFeature/ChatFeature.cpp
-    Source/ChatFeature/ChatFeature.h
+    Source/O3DEAssistantFeature/O3DEAssistantFeature.cpp
+    Source/O3DEAssistantFeature/O3DEAssistantFeature.h
 )
