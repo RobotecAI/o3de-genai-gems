@@ -20,7 +20,6 @@ namespace GenAIMock
     public:
         AZ_RTTI(GenAIMockRequests, GenAIMockRequestsTypeId);
         virtual ~GenAIMockRequests() = default;
-        // Put your public methods here
     };
 
     class GenAIMockBusTraits : public AZ::EBusTraits

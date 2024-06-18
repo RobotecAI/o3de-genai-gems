@@ -9,10 +9,10 @@
 #pragma once
 
 #include <GenAIFramework/Communication/AIServiceProviderBus.h>
+#include <GenAIMock/GenAIMockTypeIds.h>
 
 #include <AzCore/Asset/AssetCommon.h>
 #include <AzCore/Component/Component.h>
-#include <AzCore/IO/FileIO.h>
 #include <AzCore/IO/Path/Path.h>
 #include <AzCore/RTTI/RTTIMacros.h>
 #include <AzCore/std/containers/vector.h>
@@ -23,7 +23,7 @@ namespace GenAIMock
     class MockServiceComponentConfiguration : public AZ::ComponentConfig
     {
     public:
-        AZ_RTTI(MockServiceComponentConfiguration, "{47ab736f-33f1-453b-9cdb-96faffd5d33e}");
+        AZ_RTTI(MockServiceComponentConfiguration, MockServiceComponentConfigurationTypeId);
         AZ_CLASS_ALLOCATOR(MockServiceComponentConfiguration, AZ::SystemAllocator);
 
         MockServiceComponentConfiguration() = default;
@@ -41,7 +41,7 @@ namespace GenAIMock
         , public GenAIFramework::AIServiceProviderBus::Handler
     {
     public:
-        AZ_COMPONENT(MockServiceComponent, "{db01be29-ec0b-41e1-bf68-12d70dd6b630}");
+        AZ_COMPONENT(MockServiceComponent, MockServiceComponentTypeId);
 
         MockServiceComponent() = default;
         explicit MockServiceComponent(const MockServiceComponentConfiguration& config);
@@ -65,7 +65,7 @@ namespace GenAIMock
 
     private:
         MockServiceComponentConfiguration m_configuration;
-        AZStd::vector<AZStd::string> m_testData;
+        AZStd::vector<AZStd::string> m_testData; //!< Buffer with loaded mock prompt responses
         int m_lastCompleted{ -1 }; //!< Interator (number) of the last call that was completed (it can be reset)
 
         void ReloadAsset();

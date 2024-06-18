@@ -1,20 +1,26 @@
+/*
+ * Copyright (c) Contributors to the Open 3D Engine Project.
+ * For complete copyright and license terms please see the LICENSE at the root of this distribution.
+ *
+ * SPDX-License-Identifier: Apache-2.0 OR MIT
+ *
+ */
+
+#include "GenAIMockEditorSystemComponent.h"
+#include <GenAIMock/GenAIMockTypeIds.h>
 
 #include <AzCore/Serialization/SerializeContext.h>
-#include "GenAIMockEditorSystemComponent.h"
-
-#include <GenAIMock/GenAIMockTypeIds.h>
 
 namespace GenAIMock
 {
-    AZ_COMPONENT_IMPL(GenAIMockEditorSystemComponent, "GenAIMockEditorSystemComponent",
-        GenAIMockEditorSystemComponentTypeId, BaseSystemComponent);
+    AZ_COMPONENT_IMPL(
+        GenAIMockEditorSystemComponent, "GenAIMockEditorSystemComponent", GenAIMockEditorSystemComponentTypeId, BaseSystemComponent);
 
     void GenAIMockEditorSystemComponent::Reflect(AZ::ReflectContext* context)
     {
         if (auto serializeContext = azrtti_cast<AZ::SerializeContext*>(context))
         {
-            serializeContext->Class<GenAIMockEditorSystemComponent, GenAIMockSystemComponent>()
-                ->Version(0);
+            serializeContext->Class<GenAIMockEditorSystemComponent, GenAIMockSystemComponent>()->Version(0);
         }
     }
 

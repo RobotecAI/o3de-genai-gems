@@ -7,7 +7,6 @@
  */
 
 #include "GenAIMockSystemComponent.h"
-
 #include <GenAIMock/GenAIMockTypeIds.h>
 
 #include <AzCore/Serialization/SerializeContext.h>

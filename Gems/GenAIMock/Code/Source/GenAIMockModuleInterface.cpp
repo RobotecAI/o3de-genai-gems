@@ -7,12 +7,12 @@
  */
 
 #include "GenAIMockModuleInterface.h"
-#include <AzCore/Memory/Memory.h>
-
 #include <Clients/GenAIMockSystemComponent.h>
 #include <Communication/MockServiceComponent.h>
 #include <GenAIMock/GenAIMockTypeIds.h>
 #include <ModelConfigurations/PassthroughModelComponent.h>
+
+#include <AzCore/Memory/Memory.h>
 
 namespace GenAIMock
 {
