@@ -7,15 +7,18 @@
  */
 
 #include "DetailsWidget.h"
+
 #include <AzCore/Utils/Utils.h>
+
 #include <QCloseEvent>
 #include <QVBoxLayout>
 
 namespace GenAIFramework
 {
-    DetailsWidget::DetailsWidget(const AZStd::vector<AZStd::string>& messageDetails)
+    DetailsWidget::DetailsWidget(const AZStd::vector<AZStd::string>& messageDetails, QWidget* parent)
+        : QWidget(parent)
     {
-        m_details = new QTextEdit();
+        m_details = new QTextEdit(this);
 
         int index = 1;
         QString outputText;
@@ -30,7 +33,7 @@ namespace GenAIFramework
         m_details->acceptRichText();
         m_details->setReadOnly(true);
         setWindowTitle(tr("Message details"));
-        QVBoxLayout* layout = new QVBoxLayout;
+        QVBoxLayout* layout = new QVBoxLayout(this);
         layout->addWidget(m_details);
         this->setLayout(layout);
     }

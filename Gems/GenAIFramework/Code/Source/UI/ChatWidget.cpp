@@ -74,7 +74,10 @@ namespace GenAIFramework
                 [=]()
                 {
                     QMessageBox::warning(
-                        AzToolsFramework::GetActiveWindow(), "ChatWidget", QString("Failed to connect to AI Feature."), QMessageBox::Ok);
+                        AzToolsFramework::GetActiveWindow(),
+                        "ChatWidget",
+                        QString(tr("Failed to connect to AI Feature.")),
+                        QMessageBox::Ok);
                 });
         }
     }
@@ -95,9 +98,10 @@ namespace GenAIFramework
     void ChatWidget::OnDetailsButton()
     {
         QPushButton* buttonSender = qobject_cast<QPushButton*>(sender());
+        AZ_Assert(buttonSender != nullptr, "Cannot open DetailsWidget: event sender not known");
         if (m_chatDetails.contains(buttonSender))
         {
-            DetailsWidget* details = new DetailsWidget(m_chatDetails[buttonSender]);
+            DetailsWidget* details = new DetailsWidget(m_chatDetails[buttonSender], this);
             details->show();
         }
         else

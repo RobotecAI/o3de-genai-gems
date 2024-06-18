@@ -20,7 +20,7 @@ namespace GenAIFramework
     {
         Q_OBJECT
     public:
-        DetailsWidget(const AZStd::vector<AZStd::string>& messageDetails);
+        DetailsWidget(const AZStd::vector<AZStd::string>& messageDetails, QWidget* parent = nullptr);
 
     private:
         QTextEdit* m_details;
