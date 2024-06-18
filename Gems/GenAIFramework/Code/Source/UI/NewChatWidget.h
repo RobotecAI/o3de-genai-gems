@@ -9,14 +9,15 @@
 #pragma once
 
 #if !defined(Q_MOC_RUN)
+#include <GenAIFramework/GenAIFrameworkBus.h>
+#include <UI/AgentConfigurationWidget/AgentConfigurationWidget.h>
+
+#include <AzCore/Component/Entity.h>
+
 #include <QLabel>
 #include <QMap>
 #include <QVBoxLayout>
 #include <QWidget>
-
-#include <AzCore/Component/Entity.h>
-#include <GenAIFramework/GenAIFrameworkBus.h>
-#include <UI/AgentConfigurationWidget/AgentConfigurationWidget.h>
 
 #endif
 

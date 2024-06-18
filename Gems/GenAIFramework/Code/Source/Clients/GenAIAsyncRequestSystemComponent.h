@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include <GenAIFramework/Communication/AsyncRequestBus.h>
+
 #include "AzCore/Component/EntityId.h"
 #include <AzCore/Component/Component.h>
 #include <AzCore/Component/Entity.h>
@@ -15,7 +17,6 @@
 #include <AzCore/std/containers/unordered_map.h>
 #include <AzCore/std/parallel/mutex.h>
 #include <AzCore/std/string/string.h>
-#include <GenAIFramework/Communication/AsyncRequestBus.h>
 
 namespace GenAIFramework
 {

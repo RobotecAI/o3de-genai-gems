@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include <GenAIFramework/GenAIFrameworkTypeIds.h>
+
 #include <AzCore/Component/ComponentBus.h>
 #include <AzCore/EBus/EBus.h>
 #include <AzCore/Interface/Interface.h>
@@ -21,7 +23,7 @@ namespace GenAIFramework
     class AsyncRequests
     {
     public:
-        AZ_RTTI(AsyncRequests, "{018e7a12-5db2-7daa-a764-78d7703c8efa}");
+        AZ_RTTI(AsyncRequests, AsyncRequestsTypeId);
 
         //! Set the selected model configuration and service provider with entity ids.
         //! @param modelConfigurationId Entity id of the target model configuration.

@@ -9,6 +9,7 @@
 #pragma once
 
 #include <GenAIFramework/GenAIFrameworkTypeIds.h>
+
 #include <AzCore/Component/Component.h>
 #include <AzCore/Component/Entity.h>
 #include <AzCore/EBus/EBus.h>
@@ -20,7 +21,7 @@ namespace GenAIFramework
     class GenAIFrameworkEditorRequests
     {
     public:
-        AZ_RTTI(GenAIFrameworkEditorRequests, "{b20ba166-2237-4f0c-afcd-fb17b63a9cf6}");
+        AZ_RTTI(GenAIFrameworkEditorRequests, GenAIFrameworkEditorRequestsTypeId);
         virtual ~GenAIFrameworkEditorRequests() = default;
 
         virtual void SaveSystemConfiguration() = 0;

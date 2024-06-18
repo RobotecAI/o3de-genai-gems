@@ -7,7 +7,6 @@
  */
 
 #include "GenAIFrameworkSystemComponent.h"
-
 #include <Clients/GenAIFrameworkSystemComponentConfiguration.h>
 #include <GenAIFramework/Feature/FeatureBase.h>
 #include <GenAIFramework/GenAIFrameworkTypeIds.h>

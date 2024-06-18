@@ -8,17 +8,18 @@
 
 #pragma once
 
+#include <GenAIFramework/Communication/AIModelRequestBus.h>
+#include <GenAIFramework/GenAIFrameworkTypeIds.h>
+
 #include <AzCore/EBus/EBus.h>
 #include <AzCore/RTTI/RTTI.h>
-#include <AzCore/std/any.h>
-#include <GenAIFramework/Communication/AIModelRequestBus.h>
 
 namespace GenAIFramework
 {
     class AIModelAgentRequests : public AZ::EBusTraits
     {
     public:
-        AZ_RTTI(AIModelAgentRequests, "{e66d5979-457b-4dfd-a749-ae722101649c}");
+        AZ_RTTI(AIModelAgentRequests, AIModelAgentRequestsTypeId);
         virtual ~AIModelAgentRequests() = default;
 
         static constexpr AZ::EBusHandlerPolicy HandlerPolicy = AZ::EBusHandlerPolicy::Single;
@@ -38,7 +39,7 @@ namespace GenAIFramework
     class AIModelAgentNotifications : public AZ::EBusTraits
     {
     public:
-        AZ_RTTI(AIModelAgentNotifications, "{c317848a-4d75-4e3d-a3a0-e86e621db350}");
+        AZ_RTTI(AIModelAgentNotifications, AIModelAgentNotificationsTypeId);
         virtual ~AIModelAgentNotifications() = default;
 
         static constexpr AZ::EBusHandlerPolicy HandlerPolicy = AZ::EBusHandlerPolicy::Single;
@@ -53,6 +54,6 @@ namespace GenAIFramework
         };
     };
 
-    using AIModelAgentBus = AZ::EBus<AIModelAgentRequests>;
+    using AIModelAgentRequestBus = AZ::EBus<AIModelAgentRequests>;
     using AIModelAgentNotificationBus = AZ::EBus<AIModelAgentNotifications>;
 } // namespace GenAIFramework

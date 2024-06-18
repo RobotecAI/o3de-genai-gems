@@ -8,7 +8,8 @@
 
 #pragma once
 
-#include "Clients/GenAIAsyncRequestSystemComponent.h"
+#include <Clients/GenAIAsyncRequestSystemComponent.h>
+
 #include <AzToolsFramework/API/ToolsApplicationAPI.h>
 #include <AzToolsFramework/Entity/EditorEntityContextBus.h>
 

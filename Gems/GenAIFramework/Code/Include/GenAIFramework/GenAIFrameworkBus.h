@@ -27,7 +27,6 @@ namespace GenAIFramework
         AZ_RTTI(GenAIFrameworkRequests, GenAIFrameworkRequestsTypeId);
         virtual ~GenAIFrameworkRequests() = default;
 
-
         //! Get a system registration context.
         //! @return A pointer to the SystemRegistrationContext object.
         virtual SystemRegistrationContext* GetSystemRegistrationContext() const = 0;

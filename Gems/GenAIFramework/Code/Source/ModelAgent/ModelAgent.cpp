@@ -17,12 +17,12 @@ namespace GenAIFramework
         , m_modelConfigurationId(modelConfigurationId)
         , m_agentId(agentId)
     {
-        AIModelAgentBus::Handler::BusConnect(m_agentId);
+        AIModelAgentRequestBus::Handler::BusConnect(m_agentId);
     }
 
     ModelAgent::~ModelAgent()
     {
-        AIModelAgentBus::Handler::BusDisconnect(m_agentId);
+        AIModelAgentRequestBus::Handler::BusDisconnect(m_agentId);
     }
 
     void ModelAgent::SendPrompt(const AIMessages& prompt)

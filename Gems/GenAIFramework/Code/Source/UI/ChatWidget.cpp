@@ -8,6 +8,12 @@
  */
 
 #include "ChatWidget.h"
+#include <GenAIFramework/Communication/AIModelRequestBus.h>
+#include <GenAIFramework/Communication/AIServiceProviderBus.h>
+#include <GenAIFramework/Communication/AsyncRequestBus.h>
+#include <GenAIFramework/Feature/ConversationBus.h>
+#include <GenAIFramework/GenAIFrameworkBus.h>
+#include <UI/DetailsWidget.h>
 
 #include <AzCore/Component/ComponentApplicationBus.h>
 #include <AzCore/Component/Entity.h>
@@ -16,18 +22,14 @@
 #include <AzCore/std/containers/vector.h>
 #include <AzCore/std/parallel/lock.h>
 #include <AzToolsFramework/UI/UICore/WidgetHelpers.h>
-#include <GenAIFramework/Communication/AIModelRequestBus.h>
-#include <GenAIFramework/Communication/AIServiceProviderBus.h>
-#include <GenAIFramework/Communication/AsyncRequestBus.h>
-#include <GenAIFramework/Feature/ConversationBus.h>
-#include <GenAIFramework/GenAIFrameworkBus.h>
+
 #include <QMessageBox>
 #include <QPushButton>
 #include <QScrollBar>
 #include <QSettings>
 #include <QStyle>
+
 #include <Source/UI/ui_ChatWidget.h>
-#include <UI/DetailsWidget.h>
 
 namespace GenAIFramework
 {

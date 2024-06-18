@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include <GenAIFramework/GenAIFrameworkTypeIds.h>
+
 #include <AzCore/Component/Entity.h>
 #include <AzCore/RTTI/RTTIMacros.h>
 #include <AzCore/Serialization/SerializeContext.h>
@@ -20,7 +22,7 @@ namespace GenAIFramework
     class GenAIFrameworkSystemComponentConfiguration
     {
     public:
-        AZ_RTTI(GenAIFrameworkSystemComponentConfiguration, "{6ab6e636-60dc-4377-bd45-2326cf6a0069}");
+        AZ_RTTI(GenAIFrameworkSystemComponentConfiguration, GenAIFrameworkSystemComponentConfigurationTypeId);
         AZ_CLASS_ALLOCATOR(GenAIFrameworkSystemComponentConfiguration, AZ::SystemAllocator);
 
         static void Reflect(AZ::ReflectContext* context);

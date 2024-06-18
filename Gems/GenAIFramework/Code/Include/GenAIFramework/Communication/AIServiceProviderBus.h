@@ -8,19 +8,21 @@
 
 #pragma once
 
+#include <GenAIFramework/Communication/AIModelRequestBus.h>
+#include <GenAIFramework/GenAIFrameworkTypeIds.h>
+
 #include <AzCore/Component/ComponentBus.h>
 #include <AzCore/EBus/EBus.h>
 #include <AzCore/Interface/Interface.h>
 #include <AzCore/Outcome/Outcome.h>
 #include <AzCore/RTTI/TemplateInfo.h>
-#include <GenAIFramework/Communication/AIModelRequestBus.h>
 
 namespace GenAIFramework
 {
     class AIServiceProviderRequests : public AZ::ComponentBus
     {
     public:
-        AZ_RTTI(AIServiceProviderRequests, "{0bcac4e2-09a9-4702-98dd-ef37006664a7}", AZ::ComponentBus);
+        AZ_RTTI(AIServiceProviderRequests, AIServiceProviderRequestsTypeId, AZ::ComponentBus);
 
         static const AZ::EBusHandlerPolicy HandlerPolicy = AZ::EBusHandlerPolicy::Single;
         static const AZ::EBusAddressPolicy AddressPolicy = AZ::EBusAddressPolicy::ById;

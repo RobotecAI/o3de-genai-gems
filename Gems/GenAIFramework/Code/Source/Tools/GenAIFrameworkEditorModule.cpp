@@ -10,7 +10,6 @@
 #include "GenAIFrameworkEditorSystemComponent.h"
 #include <GenAIFramework/GenAIFrameworkTypeIds.h>
 #include <GenAIFrameworkModuleInterface.h>
-#include <QtCore/qglobal.h>
 
 void InitQtResources()
 {

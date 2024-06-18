@@ -7,12 +7,12 @@
  */
 
 #include "O3DEAssistantFeature.h"
-
-#include <AzCore/std/containers/vector.h>
 #include <GenAIFramework/Communication/AIModelAgentBus.h>
 #include <GenAIFramework/Communication/AIModelRequestBus.h>
 #include <GenAIFramework/Feature/ConversationBus.h>
 #include <GenAIFramework/SystemRegistrationContext/SystemRegistrationContext.h>
+
+#include <AzCore/std/containers/vector.h>
 
 namespace GenAIFramework
 {
@@ -37,7 +37,7 @@ namespace GenAIFramework
     void O3DEAssistantFeature::OnNewMessage(const AZStd::string& message)
     {
         AIHistory history;
-        AIModelAgentBus::EventResult(history, m_agentId, &AIModelAgentBus::Events::GetHistory);
+        AIModelAgentRequestBus::EventResult(history, m_agentId, &AIModelAgentRequestBus::Events::GetHistory);
 
         AIMessages messages = history;
         AIMessage newMessage = { Role::User, { AZStd::any(message) } };
@@ -52,7 +52,7 @@ namespace GenAIFramework
         };
         messages.push_back(systemMessage);
 
-        AIModelAgentBus::Event(m_agentId, &AIModelAgentBus::Events::SendPrompt, messages);
+        AIModelAgentRequestBus::Event(m_agentId, &AIModelAgentRequestBus::Events::SendPrompt, messages);
     }
 
     void O3DEAssistantFeature::OnPromptResponse(ModelAPIExtractedResponse response)

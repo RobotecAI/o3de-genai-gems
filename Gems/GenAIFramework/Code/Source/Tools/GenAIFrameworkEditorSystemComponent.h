@@ -8,14 +8,13 @@
 
 #pragma once
 
-#include "SettingsRegistryManager/Editor/EditorSettingsRegistryManager.h"
-#include <AzCore/Math/Uuid.h>
-#include <AzCore/std/string/string_view.h>
-#include <AzToolsFramework/API/ToolsApplicationAPI.h>
-#include <AzToolsFramework/Entity/EditorEntityContextBus.h>
 #include <Clients/GenAIFrameworkSystemComponent.h>
 #include <GenAIFramework/GenAIFrameworkBus.h>
 #include <GenAIFramework/GenAIFrameworkEditorBus.h>
+#include <SettingsRegistryManager/Editor/EditorSettingsRegistryManager.h>
+
+#include <AzToolsFramework/API/ToolsApplicationAPI.h>
+#include <AzToolsFramework/Entity/EditorEntityContextBus.h>
 
 namespace GenAIFramework
 {
