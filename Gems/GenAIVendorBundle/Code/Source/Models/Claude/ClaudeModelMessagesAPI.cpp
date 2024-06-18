@@ -8,16 +8,13 @@
 
 #include "ClaudeModelMessagesAPI.h"
 #include "ClaudeModelConfiguration.h"
+#include <GenAIFramework/Communication/AIModelRequestBus.h>
+#include <GenAIFramework/SystemRegistrationContext/SystemRegistrationContext.h>
 
-#include <AzCore/Component/Component.h>
 #include <AzCore/RTTI/RTTIMacros.h>
 #include <AzCore/Serialization/EditContext.h>
 #include <AzCore/Serialization/SerializeContext.h>
-#include <AzCore/std/containers/vector.h>
-#include <AzCore/std/string/string.h>
-#include <AzCore/std/utility/pair.h>
-#include <GenAIFramework/Communication/AIModelRequestBus.h>
-#include <GenAIFramework/SystemRegistrationContext/SystemRegistrationContext.h>
+
 #include <aws/core/utils/Array.h>
 #include <aws/core/utils/json/JsonSerializer.h>
 #include <aws/core/utils/memory/stl/AWSVector.h>

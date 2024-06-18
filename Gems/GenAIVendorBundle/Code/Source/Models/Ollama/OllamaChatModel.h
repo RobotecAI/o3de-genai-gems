@@ -9,6 +9,7 @@
 #pragma once
 
 #include <GenAIFramework/Communication/AIModelRequestBus.h>
+#include <GenAIVendorBundle/GenAIVendorBundleTypeIds.h>
 
 #include <AzCore/Component/Component.h>
 #include <AzFramework/Components/ComponentAdapter.h>
@@ -18,7 +19,7 @@ namespace GenAIVendorBundle
     class OllamaChatModelConfiguration : public AZ::ComponentConfig
     {
     public:
-        AZ_RTTI(OllamaChatModelConfiguration, "{ce2d1912-94ee-4bcd-9015-e118900f4051}");
+        AZ_RTTI(OllamaChatModelConfiguration, OllamaChatModelConfigurationTypeId);
         OllamaChatModelConfiguration() = default;
         ~OllamaChatModelConfiguration() = default;
 
@@ -39,7 +40,7 @@ namespace GenAIVendorBundle
         , public GenAIFramework::AIModelRequestBus::Handler
     {
     public:
-        AZ_COMPONENT(OllamaChatModel, "{e82c0c54-0658-419a-8170-033ef06aea96}", AZ::Component);
+        AZ_COMPONENT(OllamaChatModel, OllamaChatModelTypeId, AZ::Component);
 
         OllamaChatModel() = default;
         OllamaChatModel(const OllamaChatModelConfiguration& other);

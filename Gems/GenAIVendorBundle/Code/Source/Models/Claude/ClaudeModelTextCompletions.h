@@ -9,8 +9,12 @@
 #pragma once
 
 #include "ClaudeModelConfiguration.h"
-#include <AzCore/Component/Component.h>
 #include <GenAIFramework/Communication/AIModelRequestBus.h>
+#include <GenAIVendorBundle/GenAIVendorBundleTypeIds.h>
+
+#include <AzCore/Component/Component.h>
+#include <AzCore/std/string/string.h>
+
 #include <aws/core/utils/json/JsonSerializer.h>
 
 namespace GenAIVendorBundle
@@ -20,7 +24,7 @@ namespace GenAIVendorBundle
         , public GenAIFramework::AIModelRequestBus::Handler
     {
     public:
-        AZ_COMPONENT(ClaudeModelTextCompletions, "{0310426d-3035-4240-b9e5-d1556af98b47}");
+        AZ_COMPONENT(ClaudeModelTextCompletions, ClaudeModelTextCompletionsTypeId);
 
         static void Reflect(AZ::ReflectContext* context);
 

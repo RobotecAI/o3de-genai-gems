@@ -9,8 +9,10 @@
 #pragma once
 
 #include <GenAIFramework/Communication/AIServiceProviderBus.h>
+#include <GenAIVendorBundle/GenAIVendorBundleTypeIds.h>
 
 #include <AzCore/Component/Component.h>
+#include <AzCore/std/string/string.h>
 #include <AzFramework/Components/ComponentAdapter.h>
 
 namespace GenAIVendorBundle
@@ -18,14 +20,14 @@ namespace GenAIVendorBundle
     class OllamaHttpServiceConfiguration : public AZ::ComponentConfig
     {
     public:
-        AZ_RTTI(OllamaHttpServiceConfiguration, "{18ddba8f-1fe5-4dde-a0f4-90dccbda5f33}");
+        AZ_RTTI(OllamaHttpServiceConfiguration, OllamaHttpServiceConfigurationTypeId);
 
         OllamaHttpServiceConfiguration() = default;
         ~OllamaHttpServiceConfiguration() = default;
 
         static void Reflect(AZ::ReflectContext* context);
 
-        AZStd::string m_url = "";
+        AZStd::string m_url = "http://localhost:11434/api/generate";
         AZStd::string m_contentType = "application/json";
         int m_timeout = 10000;
     };
@@ -36,7 +38,7 @@ namespace GenAIVendorBundle
 
     {
     public:
-        AZ_COMPONENT(OllamaHttpServiceComponent, "{aad62d35-c628-4141-b759-0d3764013b29}", AZ::Component)
+        AZ_COMPONENT(OllamaHttpServiceComponent, OllamaHttpServiceComponentTypeId, AZ::Component)
 
         OllamaHttpServiceComponent() = default;
         OllamaHttpServiceComponent(const OllamaHttpServiceConfiguration& config);

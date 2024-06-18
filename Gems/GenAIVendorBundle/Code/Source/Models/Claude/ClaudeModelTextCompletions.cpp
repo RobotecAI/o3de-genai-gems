@@ -8,13 +8,15 @@
 
 #include "ClaudeModelTextCompletions.h"
 #include "ClaudeModelConfiguration.h"
+#include <GenAIFramework/Communication/AIModelRequestBus.h>
+#include <GenAIFramework/SystemRegistrationContext/SystemRegistrationContext.h>
+
 #include <AzCore/Component/Component.h>
 #include <AzCore/RTTI/RTTIMacros.h>
 #include <AzCore/Serialization/EditContext.h>
 #include <AzCore/Serialization/SerializeContext.h>
 #include <AzCore/std/any.h>
-#include <GenAIFramework/Communication/AIModelRequestBus.h>
-#include <GenAIFramework/SystemRegistrationContext/SystemRegistrationContext.h>
+
 #include <aws/core/utils/json/JsonSerializer.h>
 #include <sstream>
 

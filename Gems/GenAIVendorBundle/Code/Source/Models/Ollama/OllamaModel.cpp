@@ -7,7 +7,6 @@
  */
 
 #include "OllamaModel.h"
-
 #include <GenAIFramework/Communication/AIModelRequestBus.h>
 #include <GenAIFramework/SystemRegistrationContext/SystemRegistrationContext.h>
 

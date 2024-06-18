@@ -11,7 +11,7 @@ namespace GenAIVendorBundle::Utils
         output.reserve(input.size());
         for (const char c : input)
         {
-            if (!std::isspace(c))
+            if (!AZStd::isspace(c))
             {
                 output.push_back(c);
             }
@@ -22,22 +22,22 @@ namespace GenAIVendorBundle::Utils
     inline AZ::Outcome<bool, void> GetBooleanValue(const AZStd::string& value)
     {
         AZStd::string lowerCaseParameterValue = value;
-        std::transform(
+        AZStd::transform(
             lowerCaseParameterValue.begin(),
             lowerCaseParameterValue.end(),
             lowerCaseParameterValue.begin(),
             [](unsigned char c)
             {
-                return std::tolower(c);
+                return AZStd::tolower(c);
             });
 
         lowerCaseParameterValue.erase(
-            std::remove_if(
+            AZStd::remove_if(
                 lowerCaseParameterValue.begin(),
                 lowerCaseParameterValue.end(),
                 [](unsigned char c)
                 {
-                    return std::isspace(c);
+                    return AZStd::isspace(c);
                 }),
             lowerCaseParameterValue.end());
         if (lowerCaseParameterValue == "true")

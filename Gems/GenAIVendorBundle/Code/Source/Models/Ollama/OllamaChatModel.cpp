@@ -7,7 +7,6 @@
  */
 
 #include "OllamaChatModel.h"
-
 #include <GenAIFramework/SystemRegistrationContext/SystemRegistrationContext.h>
 
 #include <AzCore/Component/Component.h>
