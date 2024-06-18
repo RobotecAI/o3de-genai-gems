@@ -7,16 +7,14 @@
  */
 
 #include "ClaudeAmazonBedrockProvider.h"
-#include <AzCore/Component/Component.h>
+#include <GenAIFramework/SystemRegistrationContext/SystemRegistrationContext.h>
+
 #include <AzCore/Outcome/Outcome.h>
 #include <AzCore/Serialization/EditContext.h>
 #include <AzCore/Serialization/EditContextConstants.inl>
 #include <AzCore/Serialization/SerializeContext.h>
-#include <AzCore/std/string/string.h>
-#include <GenAIFramework/SystemRegistrationContext/SystemRegistrationContext.h>
-
 #include <Credential/AWSCredentialBus.h>
-#include <aws/bedrock-runtime/BedrockRuntimeErrors.h>
+
 #include <aws/bedrock-runtime/BedrockRuntimeServiceClientModel.h>
 #include <aws/bedrock-runtime/model/InvokeModelRequest.h>
 #include <aws/bedrock-runtime/model/InvokeModelResult.h>

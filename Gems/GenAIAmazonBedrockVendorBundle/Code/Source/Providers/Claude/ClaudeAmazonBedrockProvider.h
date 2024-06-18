@@ -7,11 +7,13 @@
  */
 
 #pragma once
+#include <GenAIAmazonBedrockVendorBundle/GenAIAmazonBedrockVendorBundleTypeIds.h>
+#include <GenAIFramework/Communication/AIServiceProviderBus.h>
 
 #include <AzCore/Component/Component.h>
 #include <AzCore/RTTI/RTTIMacros.h>
 #include <AzCore/std/string/string.h>
-#include <GenAIFramework/Communication/AIServiceProviderBus.h>
+
 #include <aws/bedrock-runtime/BedrockRuntimeClient.h>
 #include <aws/bedrock-runtime/BedrockRuntimeErrors.h>
 #include <aws/bedrock-runtime/BedrockRuntimeServiceClientModel.h>
@@ -23,7 +25,7 @@ namespace GenAIAmazonBedrockVendorBundle
     class ClaudeAmazonBedrockProviderConfiguration : public AZ::ComponentConfig
     {
     public:
-        AZ_RTTI(ClaudeAmazonBedrockProviderConfiguration, "{769166cb-bd18-4fb0-b9ff-93dbaaaf82a8}");
+        AZ_RTTI(ClaudeAmazonBedrockProviderConfiguration, ClaudeAmazonBedrockProviderConfigurationTypeId);
         AZ_CLASS_ALLOCATOR(ClaudeAmazonBedrockProviderConfiguration, AZ::SystemAllocator);
 
         ClaudeAmazonBedrockProviderConfiguration() = default;
@@ -40,7 +42,7 @@ namespace GenAIAmazonBedrockVendorBundle
         , private GenAIFramework::AIServiceProviderBus::Handler
     {
     public:
-        AZ_COMPONENT(ClaudeAmazonBedrockProvider, "{77f1b8e1-e616-44c0-a6c6-9d1bd26cf751}");
+        AZ_COMPONENT(ClaudeAmazonBedrockProvider, ClaudeAmazonBedrockProviderTypeId);
 
         ClaudeAmazonBedrockProvider() = default;
         explicit ClaudeAmazonBedrockProvider(const ClaudeAmazonBedrockProviderConfiguration& config);
