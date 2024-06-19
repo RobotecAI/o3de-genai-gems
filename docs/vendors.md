@@ -1,16 +1,16 @@
 # Vendor Gems
 The following vendors are available:
-- `Claude`
+- `Anthropic`
 - `Ollama`  
 
-Each of these vendors supports text communication with the models.
+Each of these vendors supports text communication with their models.
 
 ## Available Gems
 Two gems are available for vendor communication:
 - `GenAIVendorBundle` - supports `Claude` and `Ollama` vendors with the ability for HTTP communication.
 - `GenAIAmazonBedrockVendorBundle` - extends the `GenAIVendorBundle` with the ability to communicate with the `Amazon Bedrock` service for the `Claude` model.
 
-To set up the project use the `GenAIFramework` Gem and the appropriate vendor bundle Gems.
+Add `GenAIFramework` Gem and the appropriate vendor bundle Gems to your project to enable Generative AI in O3DE.
 
 ### Service and model distinction
 Each vendor has two main elements: the `Model component` and the `Service component`. 
