@@ -30,7 +30,7 @@ This repository contains two Gems that bundle multiple AI models and service def
 - `GenAIAmazonBedrockVendorBundle Gem` - this vendor Gem implements communication with [Amazon Bedrock service](https://aws.amazon.com/bedrock/) that offers a choice of high-performing models from leading AI companies. This gem is dependent on the `GenAIVendorBundle` Gem and allows for communication with the `Claude` model using the `Amazon Bedrock` service.
 - `GenAIMock`- this mocked vendor Gem can produce predictable responses based on given input options, that will give stable, cost-effective and fast tests.
 
-To learn more about the available vendors and find a guide for the configurations, see the [vendors.md](./vendors.md) file.
+To learn more about the available vendors and find a guide for the configurations, see the [docs/vendors.md](./docs/vendors.md) file.
 
 ## Contribute
 For information about contributing to O3DE, visit [https://o3de.org/docs/contributing/](https://o3de.org/docs/contributing/).
