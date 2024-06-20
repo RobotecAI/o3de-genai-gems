@@ -7,7 +7,7 @@
  *
  */
 
-#include "AIChatWidget.h"
+#include "ChatWidget.h"
 
 #include <AzCore/Component/ComponentApplicationBus.h>
 #include <AzCore/Component/Entity.h>
@@ -22,16 +22,18 @@
 #include <GenAIFramework/Feature/ConversationBus.h>
 #include <GenAIFramework/GenAIFrameworkBus.h>
 #include <QMessageBox>
+#include <QPushButton>
 #include <QScrollBar>
 #include <QSettings>
 #include <QStyle>
-#include <Source/UI/ui_AIChatWidget.h>
+#include <Source/UI/ui_ChatWidget.h>
+#include <UI/DetailsWidget.h>
 
 namespace GenAIFramework
 {
-    AIChatWidget::AIChatWidget(QWidget* parent, QString modelName, QString providerName, QString featureName)
+    ChatWidget::ChatWidget(QWidget* parent, QString modelName, QString providerName, QString featureName)
         : QWidget(parent)
-        , m_ui(new Ui::AIChatWidgetUI)
+        , m_ui(new Ui::ChatWidgetUI)
 
     {
         m_ui->setupUi(this);
@@ -54,8 +56,8 @@ namespace GenAIFramework
             {
                 m_ui->scrollArea->verticalScrollBar()->setValue(m_ui->scrollArea->verticalScrollBar()->maximum());
             });
-        connect(m_ui->SendBtn, &QPushButton::clicked, this, &AIChatWidget::OnRequestButton);
-        connect(m_ui->closeButton, &QPushButton::clicked, this, &AIChatWidget::OnCloseButton);
+        connect(m_ui->SendBtn, &QPushButton::clicked, this, &ChatWidget::OnRequestButton);
+        connect(m_ui->closeButton, &QPushButton::clicked, this, &ChatWidget::OnCloseButton);
 
         auto featureIdOutcome = GenAIFrameworkInterface::Get()->CreateNewFeatureConversation(
             providerName.toStdString().c_str(), modelName.toStdString().c_str(), featureName.toStdString().c_str());
@@ -72,12 +74,15 @@ namespace GenAIFramework
                 [=]()
                 {
                     QMessageBox::warning(
-                        AzToolsFramework::GetActiveWindow(), "AIChatWidget", QString("Failed to connect to AI Feature."), QMessageBox::Ok);
+                        AzToolsFramework::GetActiveWindow(),
+                        "ChatWidget",
+                        QString(tr("Failed to connect to AI Feature.")),
+                        QMessageBox::Ok);
                 });
         }
     }
 
-    AIChatWidget::~AIChatWidget()
+    ChatWidget::~ChatWidget()
     {
         if (ConversationNotificationBus::Handler::BusIsConnected())
         {
@@ -90,15 +95,30 @@ namespace GenAIFramework
         GenAIFrameworkInterface::Get()->RemoveFeatureConversation(m_featureId);
     }
 
-    void AIChatWidget::OnRequestButton()
+    void ChatWidget::OnDetailsButton()
+    {
+        QPushButton* buttonSender = qobject_cast<QPushButton*>(sender());
+        AZ_Assert(buttonSender != nullptr, "Cannot open DetailsWidget: event sender not known");
+        if (m_chatDetails.contains(buttonSender))
+        {
+            DetailsWidget* details = new DetailsWidget(m_chatDetails[buttonSender], this);
+            details->show();
+        }
+        else
+        {
+            AZ_Warning("ChatWidget", false, "Detailed chat message not available.");
+        }
+    }
+
+    void ChatWidget::OnRequestButton()
     {
         AZStd::string modelInput = m_ui->textEdit->toPlainText().toStdString().c_str();
         m_ui->textEdit->clear();
-        UiAppendChatMessage(modelInput);
+        UiAppendChatMessage({ modelInput, AZStd::vector<AZStd::string>() });
         ConversationNotificationBus::Event(m_featureId, &ConversationNotificationBus::Events::OnNewMessage, modelInput);
     }
 
-    void AIChatWidget::OnFeatureResponse(const AZStd::string& summary, const AZStd::vector<AZStd::string>& detailedResponse)
+    void ChatWidget::OnFeatureResponse(const AZStd::string& summary, const AZStd::vector<AZStd::string>& detailedResponse)
     {
         AZStd::lock_guard<AZStd::mutex> lock(m_chatMessagesQueueMutex);
         m_chatMessagesQueue.push({ { summary, detailedResponse }, true });
@@ -106,43 +126,51 @@ namespace GenAIFramework
 
     // This on tick function is required due to the fact that updating the QT UI must be done on the main thread
     // The OnFeatureResponse function can be called from any thread, so messages need to be queued
-    void AIChatWidget::OnTick(float deltaTime, AZ::ScriptTimePoint time)
+    void ChatWidget::OnTick(float deltaTime, AZ::ScriptTimePoint time)
     {
         AZ_UNUSED(deltaTime);
         AZ_UNUSED(time);
         if (!m_chatMessagesQueue.empty())
         {
             AZStd::lock_guard<AZStd::mutex> lock(m_chatMessagesQueueMutex);
-            auto message = m_chatMessagesQueue.front();
-            UiAppendChatMessage(message.first.first, message.second);
+            auto& message = m_chatMessagesQueue.front();
+            UiAppendChatMessage(message.first, message.second);
             m_chatMessagesQueue.pop();
         }
     }
 
-    void AIChatWidget::OnCloseButton()
+    void ChatWidget::OnCloseButton()
     {
         emit chatClosed();
     }
 
-    void AIChatWidget::UiAppendChatMessage(const AZStd::string& message, const bool response)
+    void ChatWidget::UiAppendChatMessage(const SummaryDetailedPair& message, const bool response)
     {
-        auto label = new QLabel(message.c_str());
+        auto label = new QLabel(message.first.c_str());
         label->setWordWrap(true);
         label->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
 
         if (response)
         {
             label->setStyleSheet("QLabel { background-color: #303030; margin-right: 100px; }");
+            m_uiChatLayout->addWidget(label);
+            if (!message.second.empty())
+            {
+                QPushButton* detailsButton = new QPushButton("?");
+                detailsButton->setFixedSize(26, 24);
+                m_uiChatLayout->addWidget(detailsButton);
+                m_chatDetails[detailsButton] = AZStd::move(message.second);
+                connect(detailsButton, &QPushButton::clicked, this, &ChatWidget::OnDetailsButton);
+            }
         }
         else
         {
             label->setStyleSheet("QLabel { background-color: #202020; margin-left: 100px; }");
+            m_uiChatLayout->addWidget(label);
         }
-
-        m_uiChatLayout->addWidget(label);
     }
 
-    void AIChatWidget::UiClearMessages()
+    void ChatWidget::UiClearMessages()
     {
         QLayoutItem* item;
         while ((item = m_uiChatLayout->takeAt(0)) != nullptr)
