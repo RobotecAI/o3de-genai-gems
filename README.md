@@ -41,7 +41,7 @@ This repository contains two Gems that bundle multiple AI models and service def
 
 To learn more about the available vendors and find a guide for the configurations, see the [docs/vendors.md](./docs/vendors.md) file.
 
-## Setting GenAIFrameworkGem
+## Setting up GenAIFrameworkGem
 `GenAIFrameworkGem` needs to be registered in the system so that O3DE can find the requested Gems. The same rule applies to vendor Gems and feature Gems. From the O3DE repo folder, register some or all objects using the `scripts/o3de` script with the `register` command. After registering all Gems in the system and in the project, rebuild your project and start using the AI capabilities with a dedicated [user interface](./docs/ui.md).
 
 The following command allows to register a single Gem (`GenAIFramework` Gem in this example):
