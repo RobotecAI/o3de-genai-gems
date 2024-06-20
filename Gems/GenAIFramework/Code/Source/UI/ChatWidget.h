@@ -61,6 +61,7 @@ namespace GenAIFramework
         AZStd::queue<AZStd::pair<SummaryDetailedPair, bool>> m_chatMessagesQueue;
         AZStd::mutex m_chatMessagesQueueMutex;
 
+        bool m_isMessageBeingProcessed = false;
         AZStd::unordered_map<QPushButton*, AZStd::vector<AZStd::string>> m_chatDetails;
     };
 } // namespace GenAIFramework

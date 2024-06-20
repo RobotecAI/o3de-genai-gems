@@ -112,16 +112,39 @@ namespace GenAIFramework
 
     void ChatWidget::OnRequestButton()
     {
-        AZStd::string modelInput = m_ui->textEdit->toPlainText().toStdString().c_str();
-        m_ui->textEdit->clear();
-        UiAppendChatMessage({ modelInput, AZStd::vector<AZStd::string>() });
-        ConversationNotificationBus::Event(m_featureId, &ConversationNotificationBus::Events::OnNewMessage, modelInput);
+        // Prevent sending a new message if the previous one is still being processed
+        if (m_isMessageBeingProcessed)
+        {
+            return;
+        }
+        // Only disable the button and send the prompt if there is a handler that can enable it later
+        if (ConversationNotificationBus::HasHandlers(m_featureId))
+        {
+            m_isMessageBeingProcessed = true;
+            m_ui->SendBtn->setEnabled(false);
+
+            AZStd::string modelInput = m_ui->textEdit->toPlainText().toStdString().c_str();
+            m_ui->textEdit->clear();
+            UiAppendChatMessage({ modelInput, AZStd::vector<AZStd::string>() });
+            ConversationNotificationBus::Event(m_featureId, &ConversationNotificationBus::Events::OnNewMessage, modelInput);
+        }
+        else
+        {
+            QMessageBox::warning(
+                AzToolsFramework::GetActiveWindow(),
+                "AIChatWidget",
+                QString("Error: The currently selected models are not connected to the EBuses"),
+                QMessageBox::Ok);
+            return;
+        }
     }
 
     void ChatWidget::OnFeatureResponse(const AZStd::string& summary, const AZStd::vector<AZStd::string>& detailedResponse)
     {
         AZStd::lock_guard<AZStd::mutex> lock(m_chatMessagesQueueMutex);
         m_chatMessagesQueue.push({ { summary, detailedResponse }, true });
+        m_isMessageBeingProcessed = false;
+        m_ui->SendBtn->setEnabled(true);
     }
 
     // This on tick function is required due to the fact that updating the QT UI must be done on the main thread
