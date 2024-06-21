@@ -16,11 +16,11 @@
 
 namespace GenAIFramework
 {
-    class AIModelAgentRequests : public AZ::EBusTraits
+    class AIAgentRequests : public AZ::EBusTraits
     {
     public:
-        AZ_RTTI(AIModelAgentRequests, AIModelAgentRequestsTypeId);
-        virtual ~AIModelAgentRequests() = default;
+        AZ_RTTI(AIAgentRequests, AIAgentRequestsTypeId);
+        virtual ~AIAgentRequests() = default;
 
         static constexpr AZ::EBusHandlerPolicy HandlerPolicy = AZ::EBusHandlerPolicy::Single;
         static constexpr AZ::EBusAddressPolicy AddressPolicy = AZ::EBusAddressPolicy::ById;
@@ -28,7 +28,7 @@ namespace GenAIFramework
 
         //! Send a prompt to the model agent.
         //! @param prompt The prompt to send.
-        //! The response will be sent to the OnPromptResponse notification.
+        //! The response will be sent to the OnAIResponse notification.
         virtual void SendPrompt(const AIMessages& prompt) = 0;
 
         //! Get the history of the model agent.
@@ -36,11 +36,11 @@ namespace GenAIFramework
         virtual AIHistory GetHistory() const = 0;
     };
 
-    class AIModelAgentNotifications : public AZ::EBusTraits
+    class AIAgentNotifications : public AZ::EBusTraits
     {
     public:
-        AZ_RTTI(AIModelAgentNotifications, AIModelAgentNotificationsTypeId);
-        virtual ~AIModelAgentNotifications() = default;
+        AZ_RTTI(AIAgentNotifications, AIAgentNotificationsTypeId);
+        virtual ~AIAgentNotifications() = default;
 
         static constexpr AZ::EBusHandlerPolicy HandlerPolicy = AZ::EBusHandlerPolicy::Single;
         static constexpr AZ::EBusAddressPolicy AddressPolicy = AZ::EBusAddressPolicy::ById;
@@ -48,12 +48,12 @@ namespace GenAIFramework
 
         //! Notification that the model agent has a response to the prompt.
         //! @param response The response from the model agent.
-        virtual void OnPromptResponse(ModelAPIExtractedResponse response)
+        virtual void OnAIResponse(ModelAPIExtractedResponse response)
         {
             AZ_UNUSED(response);
         };
     };
 
-    using AIModelAgentRequestBus = AZ::EBus<AIModelAgentRequests>;
-    using AIModelAgentNotificationBus = AZ::EBus<AIModelAgentNotifications>;
+    using AIAgentRequestBus = AZ::EBus<AIAgentRequests>;
+    using AIAgentNotificationBus = AZ::EBus<AIAgentNotifications>;
 } // namespace GenAIFramework

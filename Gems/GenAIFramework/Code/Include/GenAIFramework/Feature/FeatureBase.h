@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include <GenAIFramework/Communication/AIModelAgentBus.h>
+#include <GenAIFramework/Feature/AIAgentBus.h>
 #include <GenAIFramework/Feature/ConversationBus.h>
 #include <GenAIFramework/GenAIFrameworkTypeIds.h>
 
@@ -19,7 +19,7 @@ namespace GenAIFramework
 {
     class FeatureBase
         : public ConversationNotificationBus::Handler
-        , public AIModelAgentNotificationBus::Handler
+        , public AIAgentNotificationBus::Handler
     {
     public:
         AZ_RTTI(FeatureBase, FeatureBaseTypeId);
@@ -30,11 +30,11 @@ namespace GenAIFramework
             , m_conversationId(conversationId)
         {
             ConversationNotificationBus::Handler::BusConnect(conversationId);
-            AIModelAgentNotificationBus::Handler::BusConnect(agentId);
+            AIAgentNotificationBus::Handler::BusConnect(agentId);
         }
         virtual ~FeatureBase()
         {
-            AIModelAgentNotificationBus::Handler::BusDisconnect();
+            AIAgentNotificationBus::Handler::BusDisconnect();
             ConversationNotificationBus::Handler::BusDisconnect();
         }
 

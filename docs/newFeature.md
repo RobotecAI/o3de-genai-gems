@@ -3,7 +3,7 @@ Adding a new feature is similar to creating a vendor. The feature needs to be re
 
 ## Flow
 The feature gets the message from the user using the `OnNewMessage` EBus event. This message can be then modified and sent to the agent using `AIModelAgentBus::Events::SendPrompt` event.  
-The response from the agent is then received using the `OnPromptResponse` EBus event. This response can be further processed, sent back to the agent or the process can finish by calling
+The response from the agent is then received using the `OnAIResponse` EBus event. This response can be further processed, sent back to the agent or the process can finish by calling
 the `ConversationNotificationBus::Events::OnFeatureResponse` event.
 
 ## Implementing the feature
@@ -24,7 +24,7 @@ class MyFeature : public FeatureBase
 
         // FeatureBase overrides
         void OnNewMessage(const AZStd::string& message) override;
-        void OnPromptResponse(ModelAPIExtractedResponse response) override;
+        void OnAIResponse(ModelAPIExtractedResponse response) override;
     };
 ```
 The newly created feature needs to inherit from `FeatureBase` and have a constructor that takes `AZ::u64 agentId` and `AZ::u64 conversationId` as arguments. These arguments 
@@ -32,13 +32,13 @@ are the IDs of the agents and conversations that are needed for EBus communicati
 
 Two functions need to be overridden:
 - `OnNewMessage` - this function is called when a new message is received from the user.
-- `OnPromptResponse` - this function is called when the response from the agent is received.
+- `OnAIResponse` - this function is called when the response from the agent is received.
 
 After each of the `OnNewMessage` function calls there needs to to be a `ConversationNotificationBus::Events::OnFeatureResponse` call to finish the process and allow for the next message to be received.
 
 Usually in the `OnNewMessage` function a call to the `AIModelAgentBus::Events::SendPrompt` is made to send the message to the agent. The arguments of this bus call is AIMessages, a collection of AIMessage objects, consisting of the Role and the message itself.  
 
-In the `OnPromptResponse` function the response from the agent is received. Usually this function ends with a call to the `ConversationNotificationBus::Events::OnFeatureResponse` to notify the UI of the response. The arguments required for the `OnFeatureResponse` are the response message and a summary of the response. The user will see the response message in a conversation bubble. The role of the summary is to provide additional context of what the feature did. This can be a log of all the messages received and sent by the feature, error messages, or any other information that the user should know.
+In the `OnAIResponse` function the response from the agent is received. Usually this function ends with a call to the `ConversationNotificationBus::Events::OnFeatureResponse` to notify the UI of the response. The arguments required for the `OnFeatureResponse` are the response message and a summary of the response. The user will see the response message in a conversation bubble. The role of the summary is to provide additional context of what the feature did. This can be a log of all the messages received and sent by the feature, error messages, or any other information that the user should know.
 
 ## Registering the feature
 The feature needs to be registered with the `GenAIFramework` using the `GenAIFramework::SystemRegistrationContext`. This should be done in the `Reflect` function of the feature.
@@ -60,7 +60,7 @@ This Reflect function should be called in the system component of the Gem implem
 ```cpp
 #include "MyFeature.h"
 
-#include <GenAIFramework/Communication/AIModelAgentBus.h>
+#include <GenAIFramework/Feature/AIAgentBus.h>
 #include <GenAIFramework/Communication/AIModelRequestBus.h>
 #include <GenAIFramework/Feature/ConversationBus.h>
 #include <GenAIFramework/SystemRegistrationContext/SystemRegistrationContext.h>
@@ -91,7 +91,7 @@ namespace GenAIFramework
         AIModelAgentBus::Event(m_agentId, &AIModelAgentBus::Events::SendPrompt, messages);
     }
 
-    void O3DEAssistantFeature::OnPromptResponse(ModelAPIExtractedResponse response)
+    void O3DEAssistantFeature::OnAIResponse(ModelAPIExtractedResponse response)
     {
         if (!response.IsSuccess())
         {

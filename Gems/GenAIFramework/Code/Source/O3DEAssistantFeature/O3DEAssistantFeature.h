@@ -30,6 +30,6 @@ namespace GenAIFramework
 
         // FeatureBase overrides
         void OnNewMessage(const AZStd::string& message) override;
-        void OnPromptResponse(ModelAPIExtractedResponse response) override;
+        void OnAIResponse(ModelAPIExtractedResponse response) override;
     };
 } // namespace GenAIFramework
