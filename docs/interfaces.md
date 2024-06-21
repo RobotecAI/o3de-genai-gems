@@ -56,6 +56,13 @@ virtual void OnFeatureResponse(const AZStd::string& summary, const AZStd::vector
 
 The chat widget produces a single message, that is transmitted as a text. It expects single text message with a summary and an optional list of detailed text messages that are displayed in the user interface when requested. This interface could be extended in the future to support other types of data, such as images.
 
-### AIModelAgentBus
-`AIModelAgentRequestBus` transmits the requests from a feature to the AI Agent. 
+### AIAgentRequestBus
+`AIAgentRequestBus` transmits the requests from a feature to the AI Agent. 
+_TODO_
 
+### AIAgentNotificationBus
+_TODO_
+
+## AI Agent buses
+
+_TODO_
