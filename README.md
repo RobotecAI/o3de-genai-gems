@@ -1,8 +1,9 @@
 # O3DE Generative AI Gems collection
 
-This repository contains the implementation of O3DE Gems, as outlined in the [Request for Comments (RFC)](https://github.com/o3de/sig-simulation/issues/87). In particular, it contains the core Gem of the Generative AI O3DE Framework, a sample Generative AI Feature Gem for assisting with O3DE-related questions and a collection of Generative AI Vendor Gems to support the communication between the AI client and AI server.
+The `o3de-genai-gems` repository serves as a hub for the development and distribution of O3DE Gems developed to support Generative AI models within O3DE. In particular, it contains the core Gem of the Generative AI O3DE Framework, a sample Generative AI Feature Gem for assisting with O3DE-related questions and a collection of Generative AI Vendor Gems to support the communication between the AI client and AI server.
 
-## Context
+## Introduction
+
 [Open 3D Engine](https:://o3de.org) - an open-source game & simulation engine. O3DE is extendable through modules called Gems. This repository is a collection of such Gems related to one functionality.
 
 **Generative AI O3DE Framework** is a framework that enables employing Generative AI in specific tasks in O3DE. Three main components build this framework:
@@ -14,44 +15,48 @@ In other words, a feature Gem prepares the query to the Generative AI (e.g. asks
 
 ![Framework Design](docs/images/GenAIFramework.png)
 
-More details about the architecture of the system are given in the [RFC](https://github.com/o3de/sig-simulation/issues/87) document.
+More details about the architecture of the system are given in the [Request for Comments (RFC)](https://github.com/o3de/sig-simulation/issues/87) document.
 
-## Available Gems
+## Architecture details
 
-### `GenAIFramework Gem`
+### Framework Gem
+`GenAIFramework Gem` provides a centralized mechanism for integrating users with a diverse array of AI tools. To facilitate this connection, each AI tool - including vendor Gems and feature Gems - must first be registered within the O3DE ecosystem using the framework's standardized interface. The chat widget is available for creating conversations using a selected set of AI components: features, AI models, and AI service providers. This unified interface enables users to easily discover, select, and utilize various AI capabilities within their application. Developers can extend the system by adding support to more AI models and more service providers, or more AI features. Once registered, these AI tools become accessible via a user interface. 
 
-`GenAIFramework Gem` provides a centralized mechanism for integrating users with a diverse array of AI tools. To facilitate this connection, each AI tool - including vendor Gems and feature Gems - must first be registered within the O3DE ecosystem using the framework's standardized interface. Once registered, these AI tools become accessible via a user interface.
+The starting point for any AI pipeline within O3DE is a chat widget that creates a conversation. Each conversation defines a feature (this can be understood as a conversation topic) and the AI Agent used in that conversation (consisting of model configuration and a service provider). A sample configuration of such a conversation is given in a Getting Started [document](./docs/gettingStarted.md).
 
-The O3DE framework provides a set of Python interfaces that enable seamless integration of existing AI tools with the O3DE interface. This allows developers to leverage their existing knowledge and expertise in AI tool development in Python language while still benefiting from the O3DE ecosystem. To integrate an AI tool into O3DE, developers can implement a feature Gem entirely in Python, with minimal C++ effort required for registering the Gem. This approach provides maximum flexibility and ease of implementation.
+To integrate an AI tool into O3DE, developers can implement a feature Gem entirely in Python, with minimal C++ effort required for registering the Gem. This approach provides maximum flexibility and ease of implementation. There are two options to connect the AI feature with service providers. First, you can utilize the existing pipeline to connect with AI service providers via C++ vendor Gems. Alternatively, you can connect with the AI vendor of your choice directly from the feature Gem without interfering with vendor Gems. This option would be a better option if you plan to develop your feature in Python language, as it provides a more streamlined and Python-centric integration experience and allows for feature development tailored to a specific model's interface. The `GenAIFramework Gem` provides a set of Python interfaces that enable seamless integration of existing AI tools with the O3DE interface. This allows developers to leverage their existing knowledge and expertise in AI tool development in Python while still benefiting from the O3DE ecosystem. 
 
-Once the Gem is implemented and registered, developers have two options to connect with AI service providers. First, the developers can utilize the existing pipeline to connect with AI service providers via C++ vendor Gems. This allows the design of a feature Gem in Python language while providing the flexibility of the O3DE's user interface in connecting the feature to a wide range of AI services without needing to implement this connection themselves. Alternatively, developers can use the Python API to connect directly with a given AI vendor without interfering with C++ Gems. This approach provides a more streamlined and Python-centric integration experience and allows for feature development tailored to a specific model's interface.
-
-As part of the framework, the chat widget is available for creating conversations using a selected set of AI components, including features, AI models, and AI service providers' APIs. This unified interface enables users to easily discover, select, and utilize various AI capabilities within their application.
-
-The information about `GenAIFramework Gem` can be found on dedicated documentation pages. This includes a detailed description of [all interfaces](./docs/interfaces.md) available in `GenAIFramework Gem` connecting feature Gems with vendor Gems, the details about available [Python support](./docs/python.md) in `GenAIFramework Gem` and the tutorials for creating a [new feature](./docs/newFeature.md) or adding support for a [new vendor](./docs/newVendor.md). Finally, there is a page describing [the UI](./docs/ui.md) with the sample use.
+The information about `GenAIFramework Gem` can be found on dedicated documentation pages. This includes a detailed description of [all interfaces](./docs/interfaces.md) available in `GenAIFramework Gem` connecting feature Gems with vendor Gems, the details about available [Python support](./docs/python.md) in `GenAIFramework Gem` and [the UI documentation](./docs/ui.md) with the sample use.
 
 ### Vendor Gems
 Vendor Gems provide mechanisms to communicate with certain generative AI models running on certain servers. This repository contains two Gems that bundle multiple AI models and service definitions each:
-- `GenAIVendorBundle`: a vendor Gem that implements communication with [Anthropic](https://docs.anthropic.com/en/docs/welcome) service for running `Claude` model and [Ollama toolset](https://github.com/ollama/ollama) that allows getting up and running language models locally.
-- `GenAIAmazonBedrockVendorBundle Gem`: a vendor Gem that implements communication with [Amazon Bedrock service](https://aws.amazon.com/bedrock/) and that offers a choice of high-performing models from leading AI companies. This gem is dependent on the `GenAIVendorBundle` Gem and allows for communication with the `Claude` model using the `Amazon Bedrock` service in particular.
-- `GenAIMock`: a mocked vendor Gem that can produce predictable responses based on given input data in JSON format. This Gem is meant for cost-effective and fast tests as well as a sample implementation of a vendor Gem.
+- `GenAIVendorBundle`: a vendor Gem that implements communication with [Anthropic](https://docs.anthropic.com/en/docs/welcome) service for running `Claude` model and [Ollama toolset](https://github.com/ollama/ollama) that allows getting up and running various language models locally.
+- `GenAIAmazonBedrockVendorBundle Gem`: a vendor Gem that implements communication with [Amazon Bedrock service](https://aws.amazon.com/bedrock/) and that offers a choice of high-performing models from leading AI companies. This gem is dependent on the `GenAIVendorBundle` Gem and allows for communication with the `Claude` model using the `Amazon Bedrock` service.
+- `GenAIMock`: a mocked vendor Gem that can produce predictable responses based on the given input data in JSON format. This Gem is meant for cost-effective and fast tests as well as a sample implementation of a vendor Gem.
 
-To learn more about the available vendors and find a guide for the configurations, see the [docs/vendors.md](./docs/vendors.md) document.
+To learn more about the available vendors and find a guide for the configurations, see the [docs/vendors.md](./docs/vendors.md) document. There is also a page describing how to add a [new vendor Gem](./docs/newVendor.md). 
 
-## Getting started with Generative AI in O3DE
+### Feature Gems
+Feature Gems use Generative AI to deal with a certain problem in your workflow. For example, a _scene generation feature Gem_ might be responsible for creating a scene based on the user's prompt. Internally, it could connect to the asset processor to discover available assets and to the O3DE Editor to learn about the existing scene layout. Next, it could combine all necessary information and send a query to the AI. Based on the response, it could call some existing O3DE buses to add/move/remove the elements of the scene. The communication between the Generative AI and the feature is independent from the O3DE, hence the feature could iterate multiple times with the AI to find the best solution for the user's prompt. Finally, the feature should inform the user about the completion and send an answer to the prompt.
 
-To use generative AI in O3DE, you need to register the `GenAIFrameworkGem` in O3DE engine and add it to your project. The same rule applies to vendor Gems and feature Gems. From the O3DE repo folder, register some or all objects using the `scripts/o3de` script with the `register` command. After registering all Gems in the system and in the project, rebuild your project and start using the AI capabilities with a dedicated [user interface](./docs/ui.md).
+_O3DE Assistant_ feature is a part of the `GenAIFramework Gem` that can answer your questions related to the O3DE. It is implemented in C++ and serves as an example of how to implement a feature. It only does a simple modification to the user's prompt: it adds a system message for AI to inform about the context (being an _O3DE Assistant_). This implementation can be seen as documentation on how to implement a feature. More information can be found in a [new feature instruction](./docs/newFeature.md).
+
+## Installing Generative AI Gems in your O3DE project
+
+To use generative AI in O3DE, you need to register the `GenAIFramework Gem` in the engine and add it to your project. The same rule applies to vendor Gems and feature Gems that you might want to use. The only exception is _O3DE Assistant_ feature, which is available as a part of the `GenAIFramework Gem`. 
+
+From the O3DE repo folder, register some or all objects using the `scripts/o3de` script with the `register` command. After registering all Gems in the system and in the project, rebuild your project and start using the AI capabilities with a dedicated [user interface](./docs/ui.md).
 
 The following command allows to register a single Gem (`GenAIFramework` Gem in this example):
 ```bash
-scripts\o3de.bat register --gem-path <o3de-genai-gems>/Gems/GenAIFramework
+scripts/o3de.sh register --gem-path <o3de-genai-gems>/Gems/GenAIFramework
 ```
 The following command adds a registered Gem to the O3DE project:
 ```bash
-scripts\o3de.bat enable-gem --gem-name GenAIFrameworkGem --project-name <project name>
+scripts/o3de.sh enable-gem --gem-name GenAIFrameworkGem --project-name <project name>
 ```
 
-For a complete tutorial on project configuration, see [Creating Projects Using the Command Line Interface](https://o3de.org/docs/welcome-guide/create/creating-projects-using-cli/) in the documentation.
+For a complete tutorial on project configuration, see [Creating Projects Using the Command Line Interface](https://o3de.org/docs/welcome-guide/create/creating-projects-using-cli/) in the O3DE documentation.
 
 ## Contribute
 For information about contributing to O3DE, visit [https://o3de.org/docs/contributing/](https://o3de.org/docs/contributing/).
