@@ -24,7 +24,7 @@ More details about the architecture of the system are given in the [Request for 
 The starting point for any AI pipeline within O3DE is a chat widget that creates a conversation. Each conversation defines a feature (this can be understood as a conversation topic) and the AI Agent used in that conversation (consisting of model configuration and a service provider). A sample configuration of such a conversation is given in a Getting Started [document](./docs/gettingStarted.md).
 
 After the conversation is created, it is possible to prompt AI with any question via a feature Gem and a vendor Gem. The data flow looks as follows:
-![Data flow](docs/images/pipeline.svg)
+![Data flow](./docs/images/pipeline.svg)
 
 The interfaces marked in bold are implemented in `GenAIFramework Gem`. The data passed in the specific interfaces is the following:
 * (A): user input (text message)

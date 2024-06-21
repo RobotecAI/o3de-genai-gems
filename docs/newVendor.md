@@ -113,11 +113,11 @@ void MyServiceProvider::Reflect(AZ::ReflectContext* context) {
     if (auto serializeContext = azrtti_cast<AZ::SerializeContext*>(context))
     {
         serializeContext->Class<MyServiceProvider, AZ::Component>()->Version(0);
-        ...
+        // more code goes here
         if (auto editContext = serializeContext->GetEditContext())
         {
             editContext->Class<MyServiceProvider>("My Service Provider", "");
-            ...
+            // more code goes here
         }
     }
 
@@ -138,11 +138,11 @@ void MyModel::Reflect(AZ::ReflectContext* context) {
     if (auto serializeContext = azrtti_cast<AZ::SerializeContext*>(context))
     {
         serializeContext->Class<MyModel, AZ::Component>()->Version(0);
-        ...
+        // more code goes here
         if (auto editContext = serializeContext->GetEditContext())
         {
             editContext->Class<MyModel>("My Model", "");
-            ...
+            // more code goes here
         }
     }
 
