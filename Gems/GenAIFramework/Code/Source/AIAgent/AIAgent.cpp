@@ -6,13 +6,13 @@
  *
  */
 
-#include "ModelAgent.h"
+#include "AIAgent.h"
 #include <GenAIFramework/Communication/AIModelRequestBus.h>
 #include <GenAIFramework/Communication/AIServiceProviderBus.h>
 
 namespace GenAIFramework
 {
-    ModelAgent::ModelAgent(const AZ::EntityId& serviceProviderId, const AZ::EntityId& modelConfigurationId, AZ::u64 agentId)
+    AIAgent::AIAgent(const AZ::EntityId& serviceProviderId, const AZ::EntityId& modelConfigurationId, AZ::u64 agentId)
         : m_serviceProviderId(serviceProviderId)
         , m_modelConfigurationId(modelConfigurationId)
         , m_agentId(agentId)
@@ -20,12 +20,12 @@ namespace GenAIFramework
         AIAgentRequestBus::Handler::BusConnect(m_agentId);
     }
 
-    ModelAgent::~ModelAgent()
+    AIAgent::~AIAgent()
     {
         AIAgentRequestBus::Handler::BusDisconnect(m_agentId);
     }
 
-    void ModelAgent::SendPrompt(const AIMessages& prompt)
+    void AIAgent::SendPrompt(const AIMessages& prompt)
     {
         ModelAPIRequest preparedRequest;
         AIModelRequestBus::EventResult(preparedRequest, m_modelConfigurationId, &AIModelRequestBus::Events::PrepareRequest, prompt);
@@ -62,7 +62,7 @@ namespace GenAIFramework
         AIServiceProviderBus::Event(m_serviceProviderId, &AIServiceProviderBus::Events::SendRequest, preparedRequest, callbackWrapper);
     }
 
-    AIHistory ModelAgent::GetHistory() const
+    AIHistory AIAgent::GetHistory() const
     {
         if (m_systemMessage.second.empty())
         {
@@ -75,12 +75,12 @@ namespace GenAIFramework
         return historyWithSystemMessage;
     }
 
-    void ModelAgent::SetServiceProviderId(const AZ::EntityId& serviceProviderId)
+    void AIAgent::SetServiceProviderId(const AZ::EntityId& serviceProviderId)
     {
         m_serviceProviderId = serviceProviderId;
     }
 
-    void ModelAgent::SetModelConfigurationId(const AZ::EntityId& modelConfigurationId)
+    void AIAgent::SetModelConfigurationId(const AZ::EntityId& modelConfigurationId)
     {
         m_modelConfigurationId = modelConfigurationId;
     }

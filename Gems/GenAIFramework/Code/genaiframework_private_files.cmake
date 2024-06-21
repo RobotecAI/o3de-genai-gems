@@ -5,8 +5,8 @@ set(FILES
     Source/SettingsRegistryManager/SettingsRegistryManager.cpp
     Source/SettingsRegistryManager/SettingsRegistryManager.h
 
-    Source/ModelAgent/ModelAgent.cpp
-    Source/ModelAgent/ModelAgent.h
+    Source/AIAgent/AIAgent.cpp
+    Source/AIAgent/AIAgent.h
 
     Source/Clients/GenAIAsyncRequestSystemComponent.cpp
     Source/Clients/GenAIAsyncRequestSystemComponent.h

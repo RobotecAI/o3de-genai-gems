@@ -80,13 +80,13 @@ namespace GenAIFramework
         //! @param serviceProviderName Name of the service provider.
         //! @param modelModelConfigurationName Name of the model configuration.
         //! @return The model agent id used in EBuses.
-        virtual AZ::Outcome<AZ::u64, void> CreateModelAgent(
+        virtual AZ::Outcome<AZ::u64, void> CreateAIAgent(
             const AZStd::string& serviceProviderName, const AZStd::string& modelModelConfigurationName) = 0;
 
         //! Removes a model agent.
-        //! @param modelAgentId The model agent id.
+        //! @param agentId The model agent id.
         //! @return True if the model agent was removed, false otherwise.
-        virtual bool RemoveModelAgent(AZ::u64 modelAgentId) = 0;
+        virtual bool RemoveAIAgent(AZ::u64 agentId) = 0;
 
         //! Creates a new conversation with a specified feature. Communication with the feature is done through EBuses.
         //! Creates its own agent, and uses the same id as the agent.

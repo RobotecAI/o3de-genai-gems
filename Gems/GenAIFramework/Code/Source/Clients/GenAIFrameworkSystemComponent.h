@@ -8,10 +8,10 @@
 
 #pragma once
 
+#include <AIAgent/AIAgent.h>
 #include <Clients/GenAIFrameworkSystemComponentConfiguration.h>
 #include <GenAIFramework/GenAIFrameworkBus.h>
 #include <GenAIFramework/SystemRegistrationContext/SystemRegistrationContext.h>
-#include <ModelAgent/ModelAgent.h>
 #include <SettingsRegistryManager/SettingsRegistryManager.h>
 
 #include <AzCore/Component/Component.h>
@@ -54,9 +54,9 @@ namespace GenAIFramework
         void RemoveComponent(AZ::Component* component) override;
         void ActivateEntity(AZStd::shared_ptr<AZ::Entity> entity) override;
         void DeactivateEntity(AZStd::shared_ptr<AZ::Entity> entity) override;
-        AZ::Outcome<AZ::u64, void> CreateModelAgent(
+        AZ::Outcome<AZ::u64, void> CreateAIAgent(
             const AZStd::string& serviceProviderName, const AZStd::string& modelModelConfigurationName) override;
-        bool RemoveModelAgent(AZ::u64 modelAgentId) override;
+        bool RemoveAIAgent(AZ::u64 agentId) override;
         AZ::Outcome<AZ::u64, void> CreateNewFeatureConversation(
             const AZStd::string& serviceProviderName,
             const AZStd::string& modelModelConfigurationName,
@@ -88,7 +88,7 @@ namespace GenAIFramework
 
         AZ::EntityId GetEntityIdByName(const AZStd::string& name, const EntityIdToEntityMap& entities) const;
 
-        AZStd::unordered_map<AZ::u64, AZStd::shared_ptr<ModelAgent>> m_modelAgents;
+        AZStd::unordered_map<AZ::u64, AZStd::shared_ptr<AIAgent>> m_agents;
         AZStd::unordered_map<AZ::u64, AZStd::shared_ptr<FeatureBase>> m_featureConversations;
     };
 } // namespace GenAIFramework

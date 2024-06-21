@@ -330,7 +330,7 @@ namespace GenAIFramework
         return AZ::EntityId();
     }
 
-    AZ::Outcome<AZ::u64, void> GenAIFrameworkSystemComponent::CreateModelAgent(
+    AZ::Outcome<AZ::u64, void> GenAIFrameworkSystemComponent::CreateAIAgent(
         const AZStd::string& serviceProviderName, const AZStd::string& modelModelConfigurationName)
     {
         // Find service provider and model configuration
@@ -345,16 +345,16 @@ namespace GenAIFramework
         // Generate a unique id for the model agent
         auto currentTime = AZStd::chrono::system_clock::now();
         AZ::u32 idTime = static_cast<AZ::u64>(currentTime.time_since_epoch().count());
-        AZ::u64 id = m_modelAgents.size() << 32 | idTime;
+        AZ::u64 id = m_agents.size() << 32 | idTime;
 
-        m_modelAgents[id] = AZStd::make_shared<ModelAgent>(serviceProviderId, modelConfigurationId, id);
+        m_agents[id] = AZStd::make_shared<AIAgent>(serviceProviderId, modelConfigurationId, id);
 
         return AZ::Success(id);
     }
 
-    bool GenAIFrameworkSystemComponent::RemoveModelAgent(AZ::u64 modelAgentId)
+    bool GenAIFrameworkSystemComponent::RemoveAIAgent(AZ::u64 agentId)
     {
-        return (m_modelAgents.erase(modelAgentId) > 0);
+        return (m_agents.erase(agentId) > 0);
     }
 
     AZ::Outcome<AZ::u64, void> GenAIFrameworkSystemComponent::CreateNewFeatureConversation(
@@ -367,16 +367,15 @@ namespace GenAIFramework
             return AZ::Failure();
         }
 
-        auto modelAgentId = CreateModelAgent(serviceProviderName, modelModelConfigurationName);
-        if (!modelAgentId.IsSuccess())
+        auto agentId = CreateAIAgent(serviceProviderName, modelModelConfigurationName);
+        if (!agentId.IsSuccess())
         {
             return AZ::Failure();
         }
 
         // The system is currently limited to one feature (connected to one agent) per one conversation. Hence, the same id is used.
-        auto conversationId = modelAgentId;
-        auto feature =
-            GetSystemRegistrationContext()->CreateFeature(featureUuid->second, modelAgentId.GetValue(), conversationId.GetValue());
+        auto conversationId = agentId;
+        auto feature = GetSystemRegistrationContext()->CreateFeature(featureUuid->second, agentId.GetValue(), conversationId.GetValue());
         m_featureConversations[conversationId.GetValue()] = feature;
 
         return conversationId;
@@ -384,7 +383,7 @@ namespace GenAIFramework
 
     bool GenAIFrameworkSystemComponent::RemoveFeatureConversation(AZ::u64 featureConversationId)
     {
-        return RemoveModelAgent(featureConversationId) ? m_featureConversations.erase(featureConversationId) > 0 : false;
+        return RemoveAIAgent(featureConversationId) ? m_featureConversations.erase(featureConversationId) > 0 : false;
     }
 
 } // namespace GenAIFramework
