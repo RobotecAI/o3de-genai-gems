@@ -16,12 +16,12 @@
 
 namespace GenAIVendorBundle
 {
-    class OllamaModelConfiguration : public AZ::ComponentConfig
+    class OllamaGenerateModelConfiguration : public AZ::ComponentConfig
     {
     public:
-        AZ_RTTI(OllamaModelConfiguration, OllamaModelConfigurationTypeId);
-        OllamaModelConfiguration() = default;
-        ~OllamaModelConfiguration() = default;
+        AZ_RTTI(OllamaGenerateModelConfiguration, OllamaGenerateModelConfigurationTypeId);
+        OllamaGenerateModelConfiguration() = default;
+        ~OllamaGenerateModelConfiguration() = default;
 
         static void Reflect(AZ::ReflectContext* context);
 
@@ -40,16 +40,16 @@ namespace GenAIVendorBundle
         bool m_useDefaultKeepAlive = true;
     };
 
-    class OllamaModel
+    class OllamaGenerateModel
         : public AZ::Component
         , public GenAIFramework::AIModelRequestBus::Handler
     {
     public:
-        AZ_COMPONENT(OllamaModel, OllamaModelTypeId, AZ::Component);
+        AZ_COMPONENT(OllamaGenerateModel, OllamaGenerateModelTypeId, AZ::Component);
 
-        OllamaModel() = default;
-        OllamaModel(const OllamaModelConfiguration& other);
-        ~OllamaModel() = default;
+        OllamaGenerateModel() = default;
+        OllamaGenerateModel(const OllamaGenerateModelConfiguration& other);
+        ~OllamaGenerateModel() = default;
 
         static void Reflect(AZ::ReflectContext* context);
 
@@ -66,6 +66,6 @@ namespace GenAIVendorBundle
         GenAIFramework::ModelAPIExtractedResponse ExtractResult(const GenAIFramework::ModelAPIResponse& modelAPIResponse) override;
         //////////////////////////////////////////////////////////////////////////
 
-        OllamaModelConfiguration m_configuration;
+        OllamaGenerateModelConfiguration m_configuration;
     };
 } // namespace GenAIVendorBundle
