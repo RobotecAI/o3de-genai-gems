@@ -26,8 +26,8 @@ namespace GenAIVendorBundle
     inline constexpr const char* ClaudeModelTextCompletionsTypeId = "{0310426D-3035-4240-B9E5-D1556AF98B47}";
     inline constexpr const char* OllamaChatModelConfigurationTypeId = "{CE2D1912-94EE-4BCD-9015-E118900F4051}";
     inline constexpr const char* OllamaChatModelTypeId = "{E82C0C54-0658-419A-8170-033EF06AEA96}";
-    inline constexpr const char* OllamaModelConfigurationTypeId = "{C5FA34FF-2BBB-4DF4-9AA2-C27320B57F93}";
-    inline constexpr const char* OllamaModelTypeId = "{3782988D-058F-4943-9862-874EBC90A240}";
+    inline constexpr const char* OllamaGenerateModelConfigurationTypeId = "{C5FA34FF-2BBB-4DF4-9AA2-C27320B57F93}";
+    inline constexpr const char* OllamaGenerateModelTypeId = "{3782988D-058F-4943-9862-874EBC90A240}";
 
     // Providers TypeIds
     inline constexpr const char* ClaudeHttpProviderConfigurationTypeId = "{4822D5EC-F30A-4402-9FCE-48826B3183BF}";
