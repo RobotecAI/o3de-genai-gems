@@ -80,4 +80,4 @@ The communication protocol between AI Agents and features supports the cases in 
 
 ## AI Agent buses
 
-_TODO_
+`AI Agent` buses are the internal buses that allow for the communication between AI Models and AI service providers. The reason for such structure is making the code more reusable. E.g., the `Claude` model can be run on either `Anthropic` or `Amazon Bedrock` service. This means AI Model 
