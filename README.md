@@ -53,7 +53,7 @@ Vendor Gems provide mechanisms to communicate with certain generative AI models 
 - `GenAIAmazonBedrockVendorBundle Gem`: a vendor Gem that implements communication with [Amazon Bedrock service](https://aws.amazon.com/bedrock/) and that offers a choice of high-performing models from leading AI companies. This gem is dependent on the `GenAIVendorBundle` Gem and allows for communication with the `Claude` model using the `Amazon Bedrock` service.
 - `GenAIMock`: a mocked vendor Gem that can produce predictable responses based on the given input data in JSON format. This Gem is meant for cost-effective and fast tests as well as a sample implementation of a vendor Gem.
 
-To learn more about the available vendors and find a guide for the configurations, see the [docs/vendors.md](./docs/vendors.md) document. There is also a page describing how to add a [new vendor Gem](./docs/newVendor.md). 
+To learn more about the available vendors and find a guide for the configurations, see the [vendors'](./docs/vendors.md) documentation. There is also a page describing how to add a [new vendor Gem](./docs/newVendor.md). 
 
 ### Feature Gems
 Feature Gems use Generative AI to deal with a certain problem in your workflow. For example, a _scene generation feature Gem_ might be responsible for creating a scene based on the user's prompt. Internally, it could connect to the asset processor to discover available assets and to the O3DE Editor to learn about the existing scene layout. Next, it could combine all necessary information and send a query to the AI. Based on the response, it could call some existing O3DE buses to add/move/remove the elements of the scene. The communication between the Generative AI and the feature is independent from the O3DE, hence the feature could iterate multiple times with the AI to find the best solution for the user's prompt. Finally, the feature should inform the user about the completion and send an answer to the prompt.
@@ -72,7 +72,7 @@ scripts/o3de.sh register --gem-path <o3de-genai-gems>/Gems/GenAIFramework
 ```
 The following command adds a registered Gem to the O3DE project:
 ```bash
-scripts/o3de.sh enable-gem --gem-name GenAIFrameworkGem --project-name <project name>
+scripts/o3de.sh enable-gem --gem-name GenAIFramework --project-name <project name>
 ```
 
 For a complete tutorial on project configuration, see [Creating Projects Using the Command Line Interface](https://o3de.org/docs/welcome-guide/create/creating-projects-using-cli/) in the O3DE documentation.
