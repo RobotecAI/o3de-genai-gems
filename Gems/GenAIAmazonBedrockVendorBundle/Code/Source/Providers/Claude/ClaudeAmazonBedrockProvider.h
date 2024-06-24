@@ -7,6 +7,7 @@
  */
 
 #pragma once
+
 #include <GenAIAmazonBedrockVendorBundle/GenAIAmazonBedrockVendorBundleTypeIds.h>
 #include <GenAIFramework/Communication/AIServiceProviderBus.h>
 

@@ -39,7 +39,7 @@ namespace GenAIFramework
     class AIModelRequests : public AZ::ComponentBus
     {
     public:
-        AZ_RTTI(AIModelRequests, AIModelRequestTypeId, AZ::ComponentBus);
+        AZ_RTTI(AIModelRequests, AIModelRequestsTypeId, AZ::ComponentBus);
 
         static const AZ::EBusHandlerPolicy HandlerPolicy = AZ::EBusHandlerPolicy::Single;
         static const AZ::EBusAddressPolicy AddressPolicy = AZ::EBusAddressPolicy::ById;
