@@ -23,8 +23,8 @@ namespace GenAIFramework
     inline constexpr const char* AsyncRequestsTypeId = "{018E7A12-5DB2-7DAA-A764-78D7703C8EFA}";
     inline constexpr const char* AIServiceProviderRequestsTypeId = "{0BCAC4E2-09A9-4702-98DD-EF37006664A7}";
     inline constexpr const char* AIModelRequestsTypeId = "{8C140E10-E3A2-478B-9886-C7C24EB16816}";
-    inline constexpr const char* AIModelAgentRequestsTypeId = "{E66D5979-457B-4DFD-A749-AE722101649C}";
-    inline constexpr const char* AIModelAgentNotificationsTypeId = "{C317848A-4D75-4E3D-A3A0-E86E621DB350}";
+    inline constexpr const char* AIAgentRequestsTypeId = "{E66D5979-457B-4DFD-A749-AE722101649C}";
+    inline constexpr const char* AIAgentNotificationsTypeId = "{C317848A-4D75-4E3D-A3A0-E86E621DB350}";
     inline constexpr const char* ConversationNotificationsTypeId = "{B7B4645A-30F4-4BBF-92A6-1328C671B15F}";
 
     // Module derived classes TypeIds
