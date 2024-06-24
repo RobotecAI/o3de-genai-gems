@@ -8,13 +8,14 @@
 
 #pragma once
 
+#include <SettingsRegistryManager/SettingsRegistryManager.h>
+
 #include <AzCore/IO/ByteContainerStream.h>
 #include <AzCore/IO/TextStreamWriters.h>
 #include <AzCore/JSON/pointer.h>
 #include <AzCore/JSON/prettywriter.h>
 #include <AzCore/Utils/Utils.h>
 #include <AzToolsFramework/SourceControl/SourceControlAPI.h>
-#include <SettingsRegistryManager/SettingsRegistryManager.h>
 
 namespace GenAIFramework
 {
@@ -36,7 +37,6 @@ namespace GenAIFramework
             return [payloadBuffer = AZStd::move(configurationPayload),
                     postSaveCB = AZStd::move(postSaveCallback)](bool success, const AzToolsFramework::SourceControlFileInfo& info)
             {
-
                 if (info.IsLockedByOther())
                 {
                     AZ_Warning(

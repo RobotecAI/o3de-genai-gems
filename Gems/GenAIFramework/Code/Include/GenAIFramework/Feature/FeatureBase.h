@@ -8,10 +8,12 @@
 
 #pragma once
 
-#include <AzCore/RTTI/RTTI.h>
-#include <AzCore/Serialization/SerializeContext.h>
 #include <GenAIFramework/Communication/AIModelAgentBus.h>
 #include <GenAIFramework/Feature/ConversationBus.h>
+#include <GenAIFramework/GenAIFrameworkTypeIds.h>
+
+#include <AzCore/RTTI/RTTI.h>
+#include <AzCore/Serialization/SerializeContext.h>
 
 namespace GenAIFramework
 {
@@ -20,7 +22,7 @@ namespace GenAIFramework
         , public AIModelAgentNotificationBus::Handler
     {
     public:
-        AZ_RTTI(FeatureBase, "{4050040a-31c3-4949-8ce0-52fad7562f4d}");
+        AZ_RTTI(FeatureBase, FeatureBaseTypeId);
 
         FeatureBase() = default;
         FeatureBase(AZ::u64 agentId, AZ::u64 conversationId)

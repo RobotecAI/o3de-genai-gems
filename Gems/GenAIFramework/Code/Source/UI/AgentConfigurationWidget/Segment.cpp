@@ -28,7 +28,7 @@ namespace GenAIFramework
         AZ::ComponentApplicationBus::BroadcastResult(m_serializeContext, &AZ::ComponentApplicationRequests::GetSerializeContext);
         AZ_Assert(m_serializeContext, "Failed to retrieve serialize context.");
 
-	const AZStd::string name = component->GetNamedEntityId().GetName();
+        const AZStd::string name = component->GetNamedEntityId().GetName();
         m_componentName = new QLabel(name.c_str());
 
         const int propertyLabelWidth = 250;

@@ -1,10 +1,10 @@
 /*
-* Copyright (c) Contributors to the Open 3D Engine Project.
-* For complete copyright and license terms please see the LICENSE at the root of this distribution.
-*
-* SPDX-License-Identifier: Apache-2.0 OR MIT
-*
-*/
+ * Copyright (c) Contributors to the Open 3D Engine Project.
+ * For complete copyright and license terms please see the LICENSE at the root of this distribution.
+ *
+ * SPDX-License-Identifier: Apache-2.0 OR MIT
+ *
+ */
 
 #include <AzCore/Memory/Memory_fwd.h>
 #include <AzCore/Module/Module.h>
@@ -13,8 +13,7 @@
 
 namespace GenAIFramework
 {
-    class GenAIFrameworkModuleInterface
-        : public AZ::Module
+    class GenAIFrameworkModuleInterface : public AZ::Module
     {
     public:
         AZ_TYPE_INFO_WITH_NAME_DECL(GenAIFrameworkModuleInterface)
@@ -28,4 +27,4 @@ namespace GenAIFramework
          */
         AZ::ComponentTypeList GetRequiredSystemComponents() const override;
     };
-}// namespace GenAIFramework
+} // namespace GenAIFramework

@@ -23,4 +23,11 @@ namespace GenAIMock
 
     // Interface TypeIds
     inline constexpr const char* GenAIMockRequestsTypeId = "{F51BC484-EC06-4B28-A2EB-745E1B948EE0}";
+
+    // Communication TypeIds
+    inline constexpr const char* MockServiceComponentConfigurationTypeId = "{47AB736F-33F1-453B-9CDB-96FAFFD5D33E}";
+    inline constexpr const char* MockServiceComponentTypeId = "{DB01BE29-EC0B-41E1-BF68-12D70DD6B630}";
+
+    // ModelConfigurations TypeIds
+    inline constexpr const char* PassthroughModelComponentTypeId = "{B873470C-0CA8-49AF-82B6-4DE26C242C7B}";
 } // namespace GenAIMock

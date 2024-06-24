@@ -7,13 +7,14 @@
  */
 
 #include "GenAIAsyncRequestSystemComponent.h"
+#include <GenAIFramework/Communication/AIModelRequestBus.h>
+#include <GenAIFramework/Communication/AIServiceProviderBus.h>
+#include <GenAIFramework/GenAIFrameworkBus.h>
+
 #include <AzCore/Component/Entity.h>
 #include <AzCore/RTTI/BehaviorContext.h>
 #include <AzCore/Serialization/EditContext.h>
 #include <AzCore/Serialization/SerializeContext.h>
-#include <GenAIFramework/Communication/AIModelRequestBus.h>
-#include <GenAIFramework/Communication/AIServiceProviderBus.h>
-#include <GenAIFramework/GenAIFrameworkBus.h>
 
 namespace GenAIFramework
 {
@@ -340,8 +341,7 @@ namespace GenAIFramework
 
     AZStd::string GenAIAsyncRequestSystemComponent::GetServiceProviderTypename()
     {
-        return GetComponentTypename(
-            GenAIFrameworkInterface::Get()->GetServiceProviderNamesAndComponentTypeIds(), m_serviceProviderId);
+        return GetComponentTypename(GenAIFrameworkInterface::Get()->GetServiceProviderNamesAndComponentTypeIds(), m_serviceProviderId);
     }
 
 } // namespace GenAIFramework

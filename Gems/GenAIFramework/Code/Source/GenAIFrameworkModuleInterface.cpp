@@ -7,12 +7,13 @@
  */
 
 #include "GenAIFrameworkModuleInterface.h"
-#include <AzCore/Component/ComponentApplication.h>
-#include <AzCore/Memory/Memory.h>
 #include <Clients/GenAIAsyncRequestSystemComponent.h>
 #include <Clients/GenAIFrameworkSystemComponent.h>
 #include <GenAIFramework/GenAIFrameworkTypeIds.h>
 #include <GenAIFramework/SystemRegistrationContext/SystemRegistrationContext.h>
+
+#include <AzCore/Component/ComponentApplication.h>
+#include <AzCore/Memory/Memory.h>
 
 namespace GenAIFramework
 {
@@ -28,10 +29,7 @@ namespace GenAIFramework
         // This happens through the [MyComponent]::Reflect() function.
         m_descriptors.insert(
             m_descriptors.end(),
-            {
-                GenAIFrameworkSystemComponent::CreateDescriptor(),
-                GenAIAsyncRequestSystemComponent::CreateDescriptor(),
-            });
+            { GenAIFrameworkSystemComponent::CreateDescriptor(), GenAIAsyncRequestSystemComponent::CreateDescriptor() });
 
         // Create a new reflection context for reflecting serviceProviders and modelConfigurations
         AZ::ReflectionEnvironment::GetReflectionManager()->AddReflectContext<SystemRegistrationContext>();

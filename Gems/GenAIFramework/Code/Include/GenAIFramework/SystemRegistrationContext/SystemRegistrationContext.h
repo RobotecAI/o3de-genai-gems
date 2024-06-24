@@ -8,14 +8,16 @@
 
 #pragma once
 
+#include <GenAIFramework/Feature/FeatureBase.h>
+#include <GenAIFramework/GenAIFrameworkTypeIds.h>
+
 #include <AzCore/Math/Uuid.h>
 #include <AzCore/Memory/Memory_fwd.h>
 #include <AzCore/RTTI/RTTIMacros.h>
 #include <AzCore/RTTI/ReflectContext.h>
+#include <AzCore/std/containers/unordered_map.h>
 #include <AzCore/std/containers/unordered_set.h>
 #include <AzCore/std/smart_ptr/make_shared.h>
-#include <AzCore/std/smart_ptr/shared_ptr.h>
-#include <GenAIFramework/Feature/FeatureBase.h>
 
 namespace GenAIFramework
 {
@@ -26,7 +28,7 @@ namespace GenAIFramework
         ~SystemRegistrationContext() = default;
 
         AZ_CLASS_ALLOCATOR(SystemRegistrationContext, AZ::SystemAllocator);
-        AZ_RTTI(SystemRegistrationContext, "{e162937c-0177-4ced-87b3-3b037a44c394}", AZ::ReflectContext);
+        AZ_RTTI(SystemRegistrationContext, SystemRegistrationContextTypeId, AZ::ReflectContext);
 
         template<class C>
         void RegisterServiceProvider()

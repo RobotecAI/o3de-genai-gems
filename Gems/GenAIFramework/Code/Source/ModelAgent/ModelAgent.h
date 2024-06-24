@@ -8,23 +8,23 @@
 
 #pragma once
 
+#include <GenAIFramework/Communication/AIModelAgentBus.h>
+
 #include <AzCore/Component/EntityId.h>
 #include <AzCore/Outcome/Outcome.h>
 #include <AzCore/std/any.h>
 #include <AzCore/std/containers/vector.h>
-#include <GenAIFramework/Communication/AIModelAgentBus.h>
 
 namespace GenAIFramework
 {
-
-    class ModelAgent : public AIModelAgentBus::Handler
+    class ModelAgent : public AIModelAgentRequestBus::Handler
     {
     public:
         ModelAgent() = delete; // Do not allow to construct the agent without ids
         ModelAgent(const AZ::EntityId& serviceProviderId, const AZ::EntityId& modelConfigurationId, AZ::u64 agentId);
         ~ModelAgent();
 
-        // AIModelAgentBus::Handler
+        // AIModelAgentRequestBus::Handler
         void SendPrompt(const AIMessages& prompt) override;
         AIHistory GetHistory() const override;
 

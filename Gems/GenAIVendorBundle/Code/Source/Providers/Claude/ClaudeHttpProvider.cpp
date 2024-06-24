@@ -7,23 +7,22 @@
  */
 
 #include "ClaudeHttpProvider.h"
+#include <GenAIFramework/SystemRegistrationContext/SystemRegistrationContext.h>
 
 #include <AzCore/Component/Component.h>
 #include <AzCore/Serialization/EditContext.h>
 #include <AzCore/Serialization/SerializeContext.h>
 #include <AzCore/std/string/string.h>
-#include <GenAIFramework/SystemRegistrationContext/SystemRegistrationContext.h>
 #include <HttpRequestor/HttpRequestorBus.h>
 #include <HttpRequestor/HttpTypes.h>
+
 #include <aws/core/client/ClientConfiguration.h>
-#include <cstdlib>
 #include <rapidjson/document.h>
 #include <rapidjson/stringbuffer.h>
 #include <rapidjson/writer.h>
 
 namespace GenAIVendorBundle
 {
-
     void ClaudeHttpProviderConfiguration::Reflect(AZ::ReflectContext* context)
     {
         if (auto serializeContext = azrtti_cast<AZ::SerializeContext*>(context))

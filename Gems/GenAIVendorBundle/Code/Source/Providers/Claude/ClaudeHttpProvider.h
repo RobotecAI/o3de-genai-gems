@@ -8,17 +8,19 @@
 
 #pragma once
 
+#include <GenAIFramework/Communication/AIServiceProviderBus.h>
+#include <GenAIVendorBundle/GenAIVendorBundleTypeIds.h>
+
 #include <AzCore/Component/Component.h>
 #include <AzCore/std/string/string.h>
 #include <AzFramework/Components/ComponentAdapter.h>
-#include <GenAIFramework/Communication/AIServiceProviderBus.h>
 
 namespace GenAIVendorBundle
 {
     class ClaudeHttpProviderConfiguration : public AZ::ComponentConfig
     {
     public:
-        AZ_RTTI(ClaudeHttpProviderConfiguration, "{4822d5ec-f30a-4402-9fce-48826b3183bf}");
+        AZ_RTTI(ClaudeHttpProviderConfiguration, ClaudeHttpProviderConfigurationTypeId);
 
         ClaudeHttpProviderConfiguration();
         ~ClaudeHttpProviderConfiguration() = default;
@@ -41,7 +43,7 @@ namespace GenAIVendorBundle
 
     {
     public:
-        AZ_COMPONENT(ClaudeHttpProvider, "{ffa395bc-1d5b-46e3-b557-10ff550cfb34}", AZ::Component)
+        AZ_COMPONENT(ClaudeHttpProvider, ClaudeHttpProviderTypeId, AZ::Component)
 
         ClaudeHttpProvider() = default;
         ClaudeHttpProvider(const ClaudeHttpProviderConfiguration& config);

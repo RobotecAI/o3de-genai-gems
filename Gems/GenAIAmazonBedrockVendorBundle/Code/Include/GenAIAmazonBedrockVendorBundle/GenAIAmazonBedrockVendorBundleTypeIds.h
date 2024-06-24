@@ -19,4 +19,8 @@ namespace GenAIAmazonBedrockVendorBundle
 
     // Interface TypeIds
     inline constexpr const char* GenAIAmazonBedrockVendorBundleRequestsTypeId = "{6C8FBE18-3AC9-4436-B2E7-7BA943C26D69}";
+
+    // Providers/Claude TypeIds
+    inline constexpr const char* ClaudeAmazonBedrockProviderConfigurationTypeId = "{769166CB-BD18-4FB0-B9FF-93DBAAAF82A8}";
+    inline constexpr const char* ClaudeAmazonBedrockProviderTypeId = "{77F1B8E1-E616-44C0-A6C6-9D1BD26CF751}";
 } // namespace GenAIAmazonBedrockVendorBundle

@@ -9,14 +9,15 @@
 #pragma once
 
 #if !defined(Q_MOC_RUN)
-#include <QPushButton>
-#include <QVBoxLayout>
-#include <QWidget>
+#include <GenAIFramework/GenAIFrameworkBus.h>
 
 #include <AzCore/Component/Entity.h>
 #include <AzCore/Component/TickBus.h>
 #include <AzCore/std/parallel/mutex.h>
-#include <GenAIFramework/GenAIFrameworkBus.h>
+
+#include <QPushButton>
+#include <QVBoxLayout>
+#include <QWidget>
 #endif
 
 namespace Ui

@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include <GenAIFramework/GenAIFrameworkTypeIds.h>
+
 #include <AzCore/Component/ComponentBus.h>
 #include <AzCore/EBus/EBus.h>
 #include <AzCore/Name/Name.h>
@@ -34,10 +36,10 @@ namespace GenAIFramework
     using ModelAPIExtractedResponse = AZ::Outcome<AIMessage, AZStd::string>; //!< The type of extracted response from the model
     using AIHistory = AIMessages; //!< The type of AI history
 
-    class AIModelRequest : public AZ::ComponentBus
+    class AIModelRequests : public AZ::ComponentBus
     {
     public:
-        AZ_RTTI(AIModelRequest, "{8c140e10-e3a2-478b-9886-c7c24eb16816}", AZ::ComponentBus);
+        AZ_RTTI(AIModelRequests, AIModelRequestsTypeId, AZ::ComponentBus);
 
         static const AZ::EBusHandlerPolicy HandlerPolicy = AZ::EBusHandlerPolicy::Single;
         static const AZ::EBusAddressPolicy AddressPolicy = AZ::EBusAddressPolicy::ById;
@@ -80,5 +82,5 @@ namespace GenAIFramework
             return AZ::Failure("This model does not have any parameters to set.");
         }
     };
-    using AIModelRequestBus = AZ::EBus<AIModelRequest>;
+    using AIModelRequestBus = AZ::EBus<AIModelRequests>;
 } // namespace GenAIFramework

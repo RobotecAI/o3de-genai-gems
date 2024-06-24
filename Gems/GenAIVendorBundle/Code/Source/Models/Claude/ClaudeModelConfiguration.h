@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include <GenAIVendorBundle/GenAIVendorBundleTypeIds.h>
+
 #include <AzCore/Component/Component.h>
 #include <AzCore/RTTI/RTTIMacros.h>
 #include <AzCore/RTTI/ReflectContext.h>
@@ -19,7 +21,7 @@ namespace GenAIVendorBundle
     class ClaudeModelConfiguration : public AZ::ComponentConfig
     {
     public:
-        AZ_RTTI(ClaudeModelConfiguration, "{5a478ab3-8ac6-4c23-8768-03c2791d6b11}");
+        AZ_RTTI(ClaudeModelConfiguration, ClaudeModelConfigurationTypeId);
         AZ_CLASS_ALLOCATOR(ClaudeModelConfiguration, AZ::SystemAllocator);
 
         ClaudeModelConfiguration() = default;
@@ -76,6 +78,5 @@ namespace GenAIVendorBundle
         const static AZStd::map<AZStd::string_view, Parameters> m_parameterNameToEnum;
 
         AZ::Outcome<void, AZStd::string> SetModelParameter(const AZ::Name& parameterName, const AZStd::string& parameterValue);
-
-    }; // namespace GenAIVendorBundle
+    };
 } // namespace GenAIVendorBundle

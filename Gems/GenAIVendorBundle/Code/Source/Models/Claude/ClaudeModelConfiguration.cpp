@@ -7,6 +7,7 @@
  */
 
 #include "ClaudeModelConfiguration.h"
+
 #include <AzCore/Component/ComponentBus.h>
 #include <AzCore/Serialization/EditContext.h>
 #include <AzCore/Serialization/EditContextConstants.inl>
@@ -133,12 +134,12 @@ namespace GenAIVendorBundle
         AZStd::string lowerCaseParameterName = AZStd::tolower(parameterValue);
 
         lowerCaseParameterName.erase(
-            std::remove_if(
+            AZStd::remove_if(
                 lowerCaseParameterName.begin(),
                 lowerCaseParameterName.end(),
                 [](unsigned char c)
                 {
-                    return std::isspace(c);
+                    return AZStd::isspace(c);
                 }),
             lowerCaseParameterName.end());
 

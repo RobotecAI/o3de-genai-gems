@@ -16,7 +16,7 @@ namespace GenAIFramework
         if (auto serializeContext = azrtti_cast<AZ::SerializeContext*>(context))
         {
             serializeContext->Class<GenAIFrameworkSystemComponentConfiguration>()
-                ->Version(1)
+                ->Version(0)
                 ->Field("ServiceProviders", &GenAIFrameworkSystemComponentConfiguration::m_serviceProviders)
                 ->Field("ModelConfigurations", &GenAIFrameworkSystemComponentConfiguration::m_modelConfigurations);
         }

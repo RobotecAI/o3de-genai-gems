@@ -7,8 +7,6 @@
  */
 
 #include "GenAIAmazonBedrockVendorBundleModuleInterface.h"
-
-#include <AzCore/Memory/Memory.h>
 #include <GenAIAmazonBedrockVendorBundle/GenAIAmazonBedrockVendorBundleTypeIds.h>
 #include <Providers/Claude/ClaudeAmazonBedrockProvider.h>
 
@@ -27,11 +25,7 @@ namespace GenAIAmazonBedrockVendorBundle
         // Add ALL components descriptors associated with this gem to m_descriptors.
         // This will associate the AzTypeInfo information for the components with the the SerializeContext, BehaviorContext and EditContext.
         // This happens through the [MyComponent]::Reflect() function.
-        m_descriptors.insert(
-            m_descriptors.end(),
-            {
-                ClaudeAmazonBedrockProvider::CreateDescriptor(),
-            });
+        m_descriptors.insert(m_descriptors.end(), { ClaudeAmazonBedrockProvider::CreateDescriptor() });
     }
 
     AZ::ComponentTypeList GenAIAmazonBedrockVendorBundleModuleInterface::GetRequiredSystemComponents() const

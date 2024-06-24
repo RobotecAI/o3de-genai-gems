@@ -7,8 +7,6 @@
  */
 
 #include "GenAIVendorBundleModuleInterface.h"
-
-#include <AzCore/Memory/Memory.h>
 #include <GenAIVendorBundle/GenAIVendorBundleTypeIds.h>
 #include <Models/Claude/ClaudeModelMessagesAPI.h>
 #include <Models/Claude/ClaudeModelTextCompletions.h>
@@ -17,6 +15,7 @@
 #include <Providers/Claude/ClaudeHttpProvider.h>
 #include <Providers/Ollama/OllamaHttpProvider.h>
 
+#include <AzCore/Memory/Memory.h>
 namespace GenAIVendorBundle
 {
     AZ_TYPE_INFO_WITH_NAME_IMPL(
@@ -32,14 +31,12 @@ namespace GenAIVendorBundle
         // This happens through the [MyComponent]::Reflect() function.
         m_descriptors.insert(
             m_descriptors.end(),
-            {
-                ClaudeModelTextCompletions::CreateDescriptor(),
-                ClaudeModelMessagesAPI::CreateDescriptor(),
-                ClaudeHttpProvider::CreateDescriptor(),
-                OllamaHttpServiceComponent::CreateDescriptor(),
-                OllamaModel::CreateDescriptor(),
-                OllamaChatModel::CreateDescriptor(),
-            });
+            { ClaudeModelTextCompletions::CreateDescriptor(),
+              ClaudeModelMessagesAPI::CreateDescriptor(),
+              ClaudeHttpProvider::CreateDescriptor(),
+              OllamaHttpServiceComponent::CreateDescriptor(),
+              OllamaModel::CreateDescriptor(),
+              OllamaChatModel::CreateDescriptor() });
     }
 
     AZ::ComponentTypeList GenAIVendorBundleModuleInterface::GetRequiredSystemComponents() const

@@ -8,16 +8,18 @@
 
 #pragma once
 
+#include <GenAIFramework/Feature/FeatureBase.h>
+#include <GenAIFramework/GenAIFrameworkTypeIds.h>
+
 #include <AzCore/RTTI/RTTI.h>
 #include <AzCore/Serialization/SerializeContext.h>
-#include <GenAIFramework/Feature/FeatureBase.h>
 
 namespace GenAIFramework
 {
     class O3DEAssistantFeature : public FeatureBase
     {
     public:
-        AZ_RTTI(O3DEAssistantFeature, "{2c753228-4d1c-4632-9182-2f2e39970d9b}", FeatureBase);
+        AZ_RTTI(O3DEAssistantFeature, O3DEAssistantFeatureTypeId, FeatureBase);
         AZ_CLASS_ALLOCATOR(O3DEAssistantFeature, AZ::SystemAllocator, 0);
 
         O3DEAssistantFeature() = default;

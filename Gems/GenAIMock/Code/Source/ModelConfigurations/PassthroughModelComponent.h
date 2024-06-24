@@ -8,11 +8,12 @@
 
 #pragma once
 
+#include <GenAIFramework/Communication/AIModelRequestBus.h>
+#include <GenAIMock/GenAIMockTypeIds.h>
+
 #include <AzCore/Component/Component.h>
 #include <AzCore/RTTI/RTTIMacros.h>
 #include <AzCore/RTTI/ReflectContext.h>
-
-#include <GenAIFramework/Communication/AIModelRequestBus.h>
 
 namespace GenAIMock
 {
@@ -21,7 +22,7 @@ namespace GenAIMock
         , public GenAIFramework::AIModelRequestBus::Handler
     {
     public:
-        AZ_COMPONENT(PassthroughModelComponent, "{b873470c-0ca8-49af-82b6-4de26c242c7b}");
+        AZ_COMPONENT(PassthroughModelComponent, PassthroughModelComponentTypeId);
 
         static void Reflect(AZ::ReflectContext* context);
 

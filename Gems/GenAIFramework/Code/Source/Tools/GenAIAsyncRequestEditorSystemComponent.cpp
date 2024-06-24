@@ -7,15 +7,12 @@
  */
 
 #include "GenAIAsyncRequestEditorSystemComponent.h"
-#include "SettingsRegistryManager/SettingsRegistryManager.h"
-
-#include <API/ViewPaneOptions.h>
-#include <AzCore/Component/Entity.h>
-#include <AzCore/Serialization/SerializeContext.h>
-#include <AzCore/std/containers/vector.h>
-#include <AzCore/std/smart_ptr/make_shared.h>
 #include <GenAIFramework/GenAIFrameworkEditorBus.h>
 #include <GenAIFramework/GenAIFrameworkTypeIds.h>
+#include <SettingsRegistryManager/SettingsRegistryManager.h>
+
+#include <AzCore/Component/Entity.h>
+#include <AzCore/Serialization/SerializeContext.h>
 
 namespace GenAIFramework
 {

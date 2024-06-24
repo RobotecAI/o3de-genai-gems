@@ -8,21 +8,23 @@
  */
 
 #include "AIAssistantWidget.h"
-#include "ChatWidget.h"
-#include "NewChatWidget.h"
+#include <GenAIFramework/Communication/AIModelRequestBus.h>
+#include <GenAIFramework/Communication/AIServiceProviderBus.h>
+#include <GenAIFramework/Communication/AsyncRequestBus.h>
+#include <GenAIFramework/GenAIFrameworkBus.h>
+#include <UI/ChatWidget.h>
+#include <UI/NewChatWidget.h>
+
+#include <AzCore/Component/ComponentApplicationBus.h>
 #include <AzCore/Component/Entity.h>
 #include <AzCore/Component/TickBus.h>
 #include <AzCore/Serialization/SerializeContext.h>
 #include <AzCore/std/containers/vector.h>
 
-#include <AzCore/Component/ComponentApplicationBus.h>
-#include <GenAIFramework/Communication/AIModelRequestBus.h>
-#include <GenAIFramework/Communication/AIServiceProviderBus.h>
-#include <GenAIFramework/Communication/AsyncRequestBus.h>
-#include <GenAIFramework/GenAIFrameworkBus.h>
 #include <QMessageBox>
 #include <QScrollBar>
 #include <QSettings>
+
 #include <Source/UI/ui_AIAssistantWidget.h>
 
 namespace GenAIFramework

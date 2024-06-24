@@ -8,16 +8,17 @@
 
 #pragma once
 
-#include <AzCore/Component/Component.h>
-#include <AzCore/Component/Entity.h>
-#include <AzCore/Component/EntityId.h>
-#include <AzCore/base.h>
-#include <AzCore/std/smart_ptr/shared_ptr.h>
 #include <Clients/GenAIFrameworkSystemComponentConfiguration.h>
 #include <GenAIFramework/GenAIFrameworkBus.h>
 #include <GenAIFramework/SystemRegistrationContext/SystemRegistrationContext.h>
 #include <ModelAgent/ModelAgent.h>
 #include <SettingsRegistryManager/SettingsRegistryManager.h>
+
+#include <AzCore/Component/Component.h>
+#include <AzCore/Component/Entity.h>
+#include <AzCore/Component/EntityId.h>
+#include <AzCore/base.h>
+#include <AzCore/std/smart_ptr/shared_ptr.h>
 
 namespace GenAIFramework
 {

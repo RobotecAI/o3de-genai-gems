@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include <GenAIFramework/GenAIFrameworkTypeIds.h>
+
 #include <AzCore/EBus/EBus.h>
 #include <AzCore/RTTI/RTTI.h>
 #include <AzCore/std/string/string.h>
@@ -17,7 +19,7 @@ namespace GenAIFramework
     class ConversationNotifications : public AZ::EBusTraits
     {
     public:
-        AZ_RTTI(ConversationNotifications, "{b7b4645a-30f4-4bbf-92a6-1328c671b15f}");
+        AZ_RTTI(ConversationNotifications, ConversationNotificationsTypeId);
 
         ConversationNotifications() = default;
         virtual ~ConversationNotifications() = default;

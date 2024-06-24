@@ -8,11 +8,10 @@
 
 #pragma once
 
-#include "AzCore/std/string/string_view.h"
 #include "Clients/GenAIFrameworkSystemComponentConfiguration.h"
-#include <AzCore/Component/Entity.h>
-#include <AzCore/std/containers/map.h>
+
 #include <AzCore/std/optional.h>
+#include <AzCore/std/string/string_view.h>
 
 namespace GenAIFramework
 {
