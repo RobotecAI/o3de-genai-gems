@@ -4,7 +4,7 @@ The Generative AI Feature is based on the O3DE Component. It needs to be registe
 ## Flow
 Typically, the feature uses the `ConversationBus` to get the input data from the chat widget and `AIAgentBus` to communicate with the AI. In particular, the feature gets the message from the user using the `OnNewMessage` EBus event. This message can be then modified and sent to the agent using `SendPrompt` event from `AIAgentBus`.
 
-The response from the agent is then received using the `OnPromptResponse` EBus event. This response can be further processed, sent back to the agent or the process can finish by calling
+The response from the agent is then received using the `OnAIResponse` EBus event. This response can be further processed, sent back to the agent or the process can finish by calling
 the `ConversationNotificationBus::Events::OnFeatureResponse` event.
 
 Please see the [dedicated documentation](./interfaces.md) for more details on interfaces. Visit the [O3DE Component documentation](https://www.docs.o3de.org/docs/user-guide/programming/components/) for more information on creating a new component.
@@ -25,7 +25,7 @@ public:
     static void Reflect(AZ::ReflectContext* context);
     // FeatureBase overrides
     void OnNewMessage(const AZStd::string& message) override;
-    void OnPromptResponse(ModelAPIExtractedResponse response) override;
+    void OnAIResponse(ModelAPIExtractedResponse response) override;
 };
 ```
 
@@ -35,11 +35,11 @@ The newly created feature needs to inherit from `FeatureBase` and have a constru
 
 Two functions need to be overridden:
 - `OnNewMessage` - this function is called when a new message is received from the user (chat widget).
-- `OnPromptResponse` - this function is called when the response from the AI agent (model and service combination) is received.
+- `OnAIResponse` - this function is called when the response from the AI agent (model and service combination) is received.
 
 The first function, `OnNewMessage`, implements the feature's reactions to the user's prompt. Depending on the functionality of the given feature, it creates the context for the user's input to give more information to the AI. This means calling some O3DE buses to get the state of the O3DE Editor, read some information about the level, etc. All data is packed into `AIMessages` object and sent to AI Agent using `SendPrompt` event of the `AIAgentBus`.
 
-The response from the agent is received based on `OnPromptResponse` notification. This function implements the `ConversationNotificationBus::Events::OnFeatureResponse` call to notify the UI of the response. Before it happens, your feature might verify the correctness of the AI answer, execute some additional commands in O3DE or continue the conversation with the AI. The arguments required for the `OnFeatureResponse` are the response message and a summary of the response. The user will see the response message in a conversation bubble. The role of the summary is to provide additional context of what the feature did. This can be a log of all the messages received and sent by the feature, error messages, or any other information that the user should know.
+The response from the agent is received based on `OnAIResponse` notification. This function implements the `ConversationNotificationBus::Events::OnFeatureResponse` call to notify the UI of the response. Before it happens, your feature might verify the correctness of the AI answer, execute some additional commands in O3DE or continue the conversation with the AI. The arguments required for the `OnFeatureResponse` are the response message and a summary of the response. The user will see the response message in a conversation bubble. The role of the summary is to provide additional context of what the feature did. This can be a log of all the messages received and sent by the feature, error messages, or any other information that the user should know.
 
 ## Registering the feature
 
@@ -61,8 +61,8 @@ A complete implementation of a sample feature is given below:
 ```cpp
 #include "MyFeature.h"
 
-#include <GenAIFramework/Communication/AIModelAgentBus.h>
 #include <GenAIFramework/Communication/AIModelRequestBus.h>
+#include <GenAIFramework/Feature/AIAgentBus.h>
 #include <GenAIFramework/Feature/ConversationBus.h>
 #include <GenAIFramework/SystemRegistrationContext/SystemRegistrationContext.h>
 
@@ -89,10 +89,10 @@ namespace GenAIFramework
         AIMessage newMessage = { Role::User, { AZStd::any(message) } };
         messages.push_back(newMessage);
 
-        AIModelAgentBus::Event(m_agentId, &AIModelAgentBus::Events::SendPrompt, messages);
+        AIAgentBus::Event(m_agentId, &AIAgentBus::Events::SendPrompt, messages);
     }
 
-    void O3DEAssistantFeature::OnPromptResponse(ModelAPIExtractedResponse response)
+    void O3DEAssistantFeature::OnAIResponse(ModelAPIExtractedResponse response)
     {
         if (!response.IsSuccess())
         {
