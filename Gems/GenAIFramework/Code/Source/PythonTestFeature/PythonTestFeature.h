@@ -17,16 +17,21 @@
 
 namespace GenAIFramework
 {
-    class PythonTestFeature : public PythonFeatureBase
+    class PythonAssistantFeature : public PythonFeatureBase
     {
     public:
-        AZ_RTTI(PythonTestFeature, "{7c524a1b-a175-4c26-beb1-dbefb7f13f54}", PythonFeatureBase);
-        AZ_CLASS_ALLOCATOR(PythonTestFeature, AZ::SystemAllocator, 0);
+        AZ_RTTI(PythonAssistantFeature, "{7c524a1b-a175-4c26-beb1-dbefb7f13f54}", PythonFeatureBase);
+        AZ_CLASS_ALLOCATOR(PythonAssistantFeature, AZ::SystemAllocator, 0);
 
-        PythonTestFeature() = default;
-        PythonTestFeature(AZ::u64 agentId, AZ::u64 conversationId);
-        ~PythonTestFeature() = default;
+        PythonAssistantFeature() = default;
+        PythonAssistantFeature(AZ::u64 agentId, AZ::u64 conversationId);
+        ~PythonAssistantFeature() = default;
 
         static void Reflect(AZ::ReflectContext* context);
+
+    private:
+        constexpr static const char* PythonAssistantScript = "Editor/Scripts/assistant.py";
+
+        AZStd::string m_assistantPythonScriptLocation;
     };
 } // namespace GenAIFramework

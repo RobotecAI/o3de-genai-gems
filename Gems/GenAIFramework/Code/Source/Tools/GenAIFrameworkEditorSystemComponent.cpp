@@ -30,7 +30,7 @@ namespace GenAIFramework
 
     void GenAIFrameworkEditorSystemComponent::Reflect(AZ::ReflectContext* context)
     {
-        PythonTestFeature::Reflect(context);
+        PythonAssistantFeature::Reflect(context);
 
         if (auto serializeContext = azrtti_cast<AZ::SerializeContext*>(context))
         {

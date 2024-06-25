@@ -18,6 +18,5 @@ set(FILES
     Source/O3DEAssistantFeature/O3DEAssistantFeature.cpp
     Source/O3DEAssistantFeature/O3DEAssistantFeature.h
 
-    Source/PythonTestFeature/PythonTestFeature.cpp
-    Source/PythonTestFeature/PythonTestFeature.h
+
 )
