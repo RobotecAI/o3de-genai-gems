@@ -10,6 +10,6 @@ set(FILES
     Source/Clients/GenAIMockSystemComponent.h
     Source/Communication/MockServiceComponent.cpp
     Source/Communication/MockServiceComponent.h
-    Source/ModelConfigurations/PassthroughModelComponent.cpp
-    Source/ModelConfigurations/PassthroughModelComponent.h
+    Source/ModelConfigurations/MockModelComponent.cpp
+    Source/ModelConfigurations/MockModelComponent.h
 )

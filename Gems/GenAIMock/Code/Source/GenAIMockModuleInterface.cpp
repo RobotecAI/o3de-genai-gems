@@ -10,7 +10,7 @@
 #include <Clients/GenAIMockSystemComponent.h>
 #include <Communication/MockServiceComponent.h>
 #include <GenAIMock/GenAIMockTypeIds.h>
-#include <ModelConfigurations/PassthroughModelComponent.h>
+#include <ModelConfigurations/MockModelComponent.h>
 
 #include <AzCore/Memory/Memory.h>
 
@@ -29,7 +29,7 @@ namespace GenAIMock
         m_descriptors.insert(
             m_descriptors.end(),
             { GenAIMockSystemComponent::CreateDescriptor(),
-              PassthroughModelComponent::CreateDescriptor(),
+              MockModelComponent::CreateDescriptor(),
               MockServiceComponent::CreateDescriptor() });
     }
 
