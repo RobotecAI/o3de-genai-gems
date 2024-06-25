@@ -9,7 +9,7 @@ Two gems are available for vendor communication:
 
 The O3DE Generative AI framework also includes a mocked `GenAIMock` vendor Gem, which can generate predictable responses based on input data in JSON format. This gem serves as a cost-effective and efficient testing tool, allowing developers to quickly verify their implementations while also providing a sample implementation of a real-world vendor Gem.
 
-Add `GenAIFramework` Gem and the appropriate vendor bundle Gems to your project to enable Generative AI in O3DE. See the [getting started document](./gettingStarted.md) for a sample configuration of a `Claude` model using `Anthropic` service provider.
+Add `GenAIFramework` Gem and the appropriate vendor bundle Gems to your project to enable Generative AI in O3DE. See the [getting started document](./gettingStarted.md) for a sample configuration of a `Claude` model using `Anthropic` service provider. A quick tutorial on creating a new vendor for `GenAIFramework` is presented in [new vendor text](./newVendor.md).
 
 ### Service and model distinction
 Each vendor has two main elements: the `Model component` and the `Service component`. 
