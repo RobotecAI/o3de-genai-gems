@@ -64,18 +64,7 @@ _O3DE Assistant_ feature is a part of the `GenAIFramework Gem` that can answer y
 
 To use generative AI in O3DE, you need to register the `GenAIFramework Gem` in the engine and add it to your project. The same rule applies to vendor Gems and feature Gems that you might want to use. The only exception is _O3DE Assistant_ feature, which is available as a part of the `GenAIFramework Gem`. 
 
-From the O3DE repo folder, register some or all objects using the `scripts/o3de` script with the `register` command. After registering all Gems in the system and in the project, rebuild your project and start using the AI capabilities with a dedicated [user interface](./docs/ui.md).
-
-The following command allows to register a single Gem (`GenAIFramework` Gem in this example):
-```bash
-scripts/o3de.sh register --gem-path <o3de-genai-gems>/Gems/GenAIFramework
-```
-The following command adds a registered Gem to the O3DE project:
-```bash
-scripts/o3de.sh enable-gem --gem-name GenAIFramework --project-name <project name>
-```
-
-For a complete tutorial on project configuration, see [Creating Projects Using the Command Line Interface](https://o3de.org/docs/welcome-guide/create/creating-projects-using-cli/) in the O3DE documentation.
+You can find more information about getting started with `GenAIFramework Gem` on a [dedicated readme page](./docs/gettingStarted.md). A thorough explanation of the user interface is provided [separately](./docs/ui.md).
 
 ## Contribute
 For information about contributing to O3DE, visit [https://o3de.org/docs/contributing/](https://o3de.org/docs/contributing/).
