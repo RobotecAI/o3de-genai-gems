@@ -8,7 +8,9 @@
 
 #include "GenAIFrameworkSystemComponent.h"
 #include <Clients/GenAIFrameworkSystemComponentConfiguration.h>
+#include <GenAIFramework/Feature/CppFeatureBase.h>
 #include <GenAIFramework/Feature/FeatureBase.h>
+#include <GenAIFramework/Feature/PythonFeatureBase.h>
 #include <GenAIFramework/GenAIFrameworkTypeIds.h>
 #include <GenAIFramework/SystemRegistrationContext/SystemRegistrationContext.h>
 #include <O3DEAssistantFeature/O3DEAssistantFeature.h>
@@ -29,6 +31,8 @@ namespace GenAIFramework
     void GenAIFrameworkSystemComponent::Reflect(AZ::ReflectContext* context)
     {
         FeatureBase::Reflect(context);
+        CppFeatureBase::Reflect(context);
+        PythonFeatureBase::Reflect(context);
         GenAIFrameworkSystemComponentConfiguration::Reflect(context);
 
         O3DEAssistantFeature::Reflect(context);

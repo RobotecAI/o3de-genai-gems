@@ -7,6 +7,7 @@
  */
 
 #include "GenAIAsyncRequestEditorSystemComponent.h"
+#include <GenAIFramework/Feature/PythonFeatureBase.h>
 #include <GenAIFramework/GenAIFrameworkEditorBus.h>
 #include <GenAIFramework/GenAIFrameworkTypeIds.h>
 #include <SettingsRegistryManager/SettingsRegistryManager.h>

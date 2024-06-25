@@ -10,6 +10,7 @@
 #include <GenAIFramework/Communication/AIModelRequestBus.h>
 #include <GenAIFramework/Feature/AIAgentBus.h>
 #include <GenAIFramework/Feature/ConversationBus.h>
+#include <GenAIFramework/Feature/CppFeatureBase.h>
 #include <GenAIFramework/SystemRegistrationContext/SystemRegistrationContext.h>
 
 #include <AzCore/std/containers/vector.h>
@@ -17,7 +18,7 @@
 namespace GenAIFramework
 {
     O3DEAssistantFeature::O3DEAssistantFeature(AZ::u64 agentId, AZ::u64 conversationId)
-        : FeatureBase(agentId, conversationId)
+        : CppFeatureBase(agentId, conversationId)
     {
     }
 

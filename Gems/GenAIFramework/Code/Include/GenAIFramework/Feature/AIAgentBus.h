@@ -8,11 +8,14 @@
 
 #pragma once
 
+#include "AzCore/base.h"
 #include <GenAIFramework/Communication/AIModelRequestBus.h>
+#include <GenAIFramework/Feature/JsonConversionUtils.h>
 #include <GenAIFramework/GenAIFrameworkTypeIds.h>
 
 #include <AzCore/EBus/EBus.h>
 #include <AzCore/RTTI/RTTI.h>
+#include <AzCore/RTTI/TypeInfoSimple.h>
 
 namespace GenAIFramework
 {
@@ -31,9 +34,21 @@ namespace GenAIFramework
         //! The response will be sent to the OnAIResponse notification.
         virtual void SendPrompt(const AIMessages& prompt) = 0;
 
+        virtual void SendPromptAsJsonString(const AZStd::string& prompt)
+        {
+            AIMessages messages = Internal::JsonStringToAIMessages(prompt);
+            SendPrompt(messages);
+        }
+
         //! Get the history of the model agent.
         //! @return The history of the model agent.
         virtual AIHistory GetHistory() const = 0;
+
+        virtual AZStd::string GetHistoryAsJson() const
+        {
+            AIHistory history = GetHistory();
+            return Internal::AIMessagesToJsonString(history);
+        }
     };
 
     class AIAgentNotifications : public AZ::EBusTraits
@@ -52,6 +67,11 @@ namespace GenAIFramework
         {
             AZ_UNUSED(response);
         };
+
+        virtual void OnAIJsonStringResponse(const AZStd::string& response)
+        {
+            AZ_UNUSED(response);
+        }
     };
 
     using AIAgentRequestBus = AZ::EBus<AIAgentRequests>;

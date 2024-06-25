@@ -18,8 +18,6 @@
 namespace GenAIFramework
 {
     class FeatureBase
-        : public ConversationNotificationBus::Handler
-        , public AIAgentNotificationBus::Handler
     {
     public:
         AZ_RTTI(FeatureBase, FeatureBaseTypeId);
@@ -29,14 +27,8 @@ namespace GenAIFramework
             : m_agentId(agentId)
             , m_conversationId(conversationId)
         {
-            ConversationNotificationBus::Handler::BusConnect(conversationId);
-            AIAgentNotificationBus::Handler::BusConnect(agentId);
         }
-        virtual ~FeatureBase()
-        {
-            AIAgentNotificationBus::Handler::BusDisconnect();
-            ConversationNotificationBus::Handler::BusDisconnect();
-        }
+        virtual ~FeatureBase() = default;
 
         static void Reflect(AZ::ReflectContext* context)
         {

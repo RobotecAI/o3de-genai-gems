@@ -23,9 +23,9 @@ namespace GenAIFramework
 {
     enum class Role
     {
-        User,
-        Assistant,
-        System
+        User = 1,
+        Assistant = 2,
+        System = 3
     };
 
     using AIContent = AZStd::vector<AZStd::any>; //!< The type of content sent and received by the AI

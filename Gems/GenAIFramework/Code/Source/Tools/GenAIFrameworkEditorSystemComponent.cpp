@@ -7,6 +7,8 @@
  */
 
 #include "GenAIFrameworkEditorSystemComponent.h"
+
+#include "PythonTestFeature/PythonTestFeature.h"
 #include <SettingsRegistryManager/SettingsRegistryManager.h>
 #include <UI/AIAssistantWidget.h>
 
@@ -28,6 +30,8 @@ namespace GenAIFramework
 
     void GenAIFrameworkEditorSystemComponent::Reflect(AZ::ReflectContext* context)
     {
+        PythonTestFeature::Reflect(context);
+
         if (auto serializeContext = azrtti_cast<AZ::SerializeContext*>(context))
         {
             serializeContext->Class<GenAIFrameworkEditorSystemComponent, GenAIFrameworkSystemComponent>()->Version(0);
