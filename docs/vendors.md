@@ -1,16 +1,15 @@
 # Vendor Gems
-The following vendors are available:
-- `Anthropic`
-- `Ollama`  
 
-Each of these vendors supports text communication with their models.
+Vendor Gems provide mechanisms to communicate with certain generative AI models running on certain servers. Currently only text communication is supported.
 
 ## Available Gems
 Two gems are available for vendor communication:
 - `GenAIVendorBundle` - supports `Claude` and `Ollama` vendors with the ability for HTTP communication.
 - `GenAIAmazonBedrockVendorBundle` - extends the `GenAIVendorBundle` with the ability to communicate with the `Amazon Bedrock` service for the `Claude` model.
 
-Add `GenAIFramework` Gem and the appropriate vendor bundle Gems to your project to enable Generative AI in O3DE.
+The O3DE Generative AI framework also includes a mocked `GenAIMock` vendor Gem, which can generate predictable responses based on input data in JSON format. This gem serves as a cost-effective and efficient testing tool, allowing developers to quickly verify their implementations while also providing a sample implementation of a real-world vendor Gem.
+
+Add `GenAIFramework` Gem and the appropriate vendor bundle Gems to your project to enable Generative AI in O3DE. See the [getting started document](./gettingStarted.md) for a sample configuration of a `Claude` model using `Anthropic` service provider.
 
 ### Service and model distinction
 Each vendor has two main elements: the `Model component` and the `Service component`. 
@@ -39,7 +38,6 @@ Each `Model component` can be paired with the appropriate `Service component` to
 
 ### Using the `GenAIAmazonBedrockVendorBundle` Gem
 Claude models can be used with the `Amazon Bedrock` service provider. To set up the `Claude` model with `Amazon Bedrock` the `Service provider` needs to be changed. Select the `Claude Amazon Bedrock` service provider instead of the `Claude HTTP` service provider and set up the fields accordingly. Additionally, `Anthropic` version in the model configuration should be changed to match the versions specified in the [Claude Amazon Bedrock documentation](https://docs.aws.amazon.com/bedrock/latest/userguide/model-parameters-anthropic-claude-messages.html#model-parameters-anthropic-claude-messages-overview) (example `bedrock-2023-05-31`).
-
 
 ### Using the Ollama vendor
 The `Ollama` vendor configuration is similar to `Claude`. The main difference is that `Ollama` allows for the selection of prepared models. In the `Model configuration` input the appropriate
