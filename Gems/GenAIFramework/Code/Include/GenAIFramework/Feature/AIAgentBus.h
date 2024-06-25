@@ -8,14 +8,12 @@
 
 #pragma once
 
-#include "AzCore/base.h"
 #include <GenAIFramework/Communication/AIModelRequestBus.h>
 #include <GenAIFramework/Feature/JsonConversionUtils.h>
 #include <GenAIFramework/GenAIFrameworkTypeIds.h>
 
 #include <AzCore/EBus/EBus.h>
 #include <AzCore/RTTI/RTTI.h>
-#include <AzCore/RTTI/TypeInfoSimple.h>
 
 namespace GenAIFramework
 {
@@ -34,6 +32,11 @@ namespace GenAIFramework
         //! The response will be sent to the OnAIResponse notification.
         virtual void SendPrompt(const AIMessages& prompt) = 0;
 
+        //! Send a prompt to the model agent as a JSON string.
+        //! @param prompt The prompt to send as a JSON string.
+        //! The prompt is a JSON string that is an array of objects. Each object consists of a role and content.
+        //! The role is a string that can be "user", "assistant", or "system". Corrsponding to the user, assistant, and system roles.
+        //! The content is an array of strings that are the content of the message.
         virtual void SendPromptAsJsonString(const AZStd::string& prompt)
         {
             AIMessages messages = Internal::JsonStringToAIMessages(prompt);
@@ -44,6 +47,11 @@ namespace GenAIFramework
         //! @return The history of the model agent.
         virtual AIHistory GetHistory() const = 0;
 
+        //! Get the history of the model agent as a JSON string.
+        //! @return The history of the model agent as a JSON string.
+        //! The history is a JSON string that is an array of objects. Each object consists of a role and content.
+        //! The role is a string that can be "user", "assistant", or "system". Corrsponding to the user, assistant, and system roles.
+        //! The content is an array of strings that are the content of the message.
         virtual AZStd::string GetHistoryAsJson() const
         {
             AIHistory history = GetHistory();
@@ -67,11 +75,6 @@ namespace GenAIFramework
         {
             AZ_UNUSED(response);
         };
-
-        virtual void OnAIJsonStringResponse(const AZStd::string& response)
-        {
-            AZ_UNUSED(response);
-        }
     };
 
     using AIAgentRequestBus = AZ::EBus<AIAgentRequests>;

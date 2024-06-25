@@ -10,8 +10,6 @@
 #include <GenAIFramework/Communication/AIModelRequestBus.h>
 #include <GenAIFramework/Communication/AIServiceProviderBus.h>
 
-#include <iostream>
-
 namespace GenAIFramework
 {
     AIAgent::AIAgent(const AZ::EntityId& serviceProviderId, const AZ::EntityId& modelConfigurationId, AZ::u64 agentId)
@@ -29,8 +27,6 @@ namespace GenAIFramework
 
     void AIAgent::SendPrompt(const AIMessages& prompt)
     {
-        std::cout << "AIAgent::SendPrompt" << std::endl;
-
         ModelAPIRequest preparedRequest;
         AIModelRequestBus::EventResult(preparedRequest, m_modelConfigurationId, &AIModelRequestBus::Events::PrepareRequest, prompt);
         auto callbackWrapper = [this, prompt](ModelAPIResponse outcome)

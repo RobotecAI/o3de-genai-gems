@@ -28,6 +28,7 @@ namespace GenAIFramework
             , m_conversationId(conversationId)
         {
         }
+
         virtual ~FeatureBase() = default;
 
         static void Reflect(AZ::ReflectContext* context)

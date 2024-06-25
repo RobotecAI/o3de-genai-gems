@@ -8,8 +8,8 @@
 
 #pragma once
 
-#include "GenAIFramework/Feature/AIAgentBus.h"
 #include <GenAIFramework/Communication/AIModelRequestBus.h>
+#include <GenAIFramework/Feature/AIAgentBus.h>
 #include <GenAIFramework/Feature/ConversationBus.h>
 #include <GenAIFramework/Feature/FeatureBase.h>
 #include <GenAIFramework/GenAIFrameworkTypeIds.h>
@@ -17,8 +17,6 @@
 #include <AzCore/RTTI/BehaviorContext.h>
 #include <AzCore/RTTI/RTTI.h>
 #include <AzCore/Serialization/SerializeContext.h>
-
-#include <iostream>
 
 namespace GenAIFramework
 {
@@ -41,22 +39,12 @@ namespace GenAIFramework
     {
     public:
         AZ_EBUS_BEHAVIOR_BINDER(
-            BehaviourAIAgentNotificationsBusHandler,
-            BehaviourAIAgentNotificationsBusHandlerTypeId,
-            AZ::SystemAllocator,
-            OnAIResponse,
-            OnAIJsonStringResponse);
+            BehaviourAIAgentNotificationsBusHandler, BehaviourAIAgentNotificationsBusHandlerTypeId, AZ::SystemAllocator, OnAIResponse);
 
         void OnAIResponse(ModelAPIExtractedResponse response) override
         {
             AZStd::string stringResponse = Internal::ModelAPIExtractedResponseToString(response);
-            std::cout << "OnAIResponse: " << stringResponse.c_str() << std::endl;
             Call(FN_OnAIResponse, stringResponse);
-        }
-
-        void OnAIJsonStringResponse(const AZStd::string& response) override
-        {
-            Call(FN_OnAIJsonStringResponse, response);
         }
     };
 
@@ -70,6 +58,7 @@ namespace GenAIFramework
             : FeatureBase(agentId, conversationId)
         {
         }
+
         virtual ~PythonFeatureBase()
         {
         }
@@ -96,7 +85,7 @@ namespace GenAIFramework
                     ->Attribute(AZ::Script::Attributes::Scope, AZ::Script::Attributes::ScopeFlags::Common)
                     ->Attribute(AZ::Script::Attributes::Module, "ai")
                     ->Handler<BehaviourAIAgentNotificationsBusHandler>()
-                    ->Event("OnAIResponse", &AIAgentNotificationBus::Events::OnAIJsonStringResponse);
+                    ->Event("OnAIResponse", &AIAgentNotificationBus::Events::OnAIResponse);
 
                 behaviorContext->EBus<AIAgentRequestBus>("AIAgentRequestBus")
                     ->Attribute(AZ::Script::Attributes::Category, "AI")
@@ -104,14 +93,6 @@ namespace GenAIFramework
                     ->Attribute(AZ::Script::Attributes::Module, "ai")
                     ->Event("SendPrompt", &AIAgentRequestBus::Events::SendPromptAsJsonString)
                     ->Event("GetHistory", &AIAgentRequestBus::Events::GetHistoryAsJson);
-
-                behaviorContext->Class<PythonFeatureBase>("PythonFeature")
-                    ->Attribute(AZ::Script::Attributes::Category, "AI")
-                    ->Attribute(AZ::Script::Attributes::Scope, AZ::Script::Attributes::ScopeFlags::Common)
-                    ->Attribute(AZ::Script::Attributes::Module, "ai")
-                    ->Enum<static_cast<int>(Role::Assistant)>("Role_Assistant")
-                    ->Enum<static_cast<int>(Role::User)>("Role_User")
-                    ->Enum<static_cast<int>(Role::System)>("Role_System");
             }
         }
     };

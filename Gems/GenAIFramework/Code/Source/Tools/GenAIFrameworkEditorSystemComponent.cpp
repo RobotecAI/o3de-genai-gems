@@ -8,7 +8,7 @@
 
 #include "GenAIFrameworkEditorSystemComponent.h"
 
-#include "PythonTestFeature/PythonTestFeature.h"
+#include <PythonTestFeature/PythonTestFeature.h>
 #include <SettingsRegistryManager/SettingsRegistryManager.h>
 #include <UI/AIAssistantWidget.h>
 

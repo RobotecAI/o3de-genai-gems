@@ -33,6 +33,7 @@ namespace GenAIFramework
             ConversationNotificationBus::Handler::BusConnect(conversationId);
             AIAgentNotificationBus::Handler::BusConnect(agentId);
         }
+
         virtual ~CppFeatureBase()
         {
             AIAgentNotificationBus::Handler::BusDisconnect();
