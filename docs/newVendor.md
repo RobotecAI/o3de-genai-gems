@@ -12,7 +12,8 @@ Note, that you might want to implement only one. E.g., you might want to impleme
 
 ## Creating the components
 
-Create two components: one for the `Service provider` and one for the `Model`. The `Service provider` component should implement the `AIServiceProviderBus` and the `Model` component should implement the `AIModelRequestBus`.
+Create two components: one for the `Service provider` and one for the `Model`. The `Service provider` component should implement the `AIServiceProviderBus::Handler` and the `Model` component should implement the `AIModelRequestBus::Handler`.
+
 ### Service provider component
 ```cpp
 #include <GenAIFramework/Communication/AIModelRequestBus.h>

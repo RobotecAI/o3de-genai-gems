@@ -68,22 +68,22 @@ A complete implementation of a sample feature is given below:
 
 namespace GenAIFramework
 {
-    O3DEAssistantFeature::O3DEAssistantFeature(AZ::u64 agentId, AZ::u64 conversationId)
+    MyFeature::MyFeature(AZ::u64 agentId, AZ::u64 conversationId)
         : FeatureBase(agentId, conversationId)
     {
     }
 
-    void O3DEAssistantFeature::Reflect(AZ::ReflectContext* context)
+    void MyFeature::Reflect(AZ::ReflectContext* context)
     {
         ...
 
         if (auto registrationContext = azrtti_cast<GenAIFramework::SystemRegistrationContext*>(context))
         {
-            registrationContext->RegisterFeature<O3DEAssistantFeature>("O3DE Assistant");
+            registrationContext->RegisterFeature<MyFeature>("MyFeature");
         }
     }
 
-    void O3DEAssistantFeature::OnNewMessage(const AZStd::string& message)
+    void MyFeature::OnNewMessage(const AZStd::string& message)
     {
         AIMessages messages;
         AIMessage newMessage = { Role::User, { AZStd::any(message) } };
@@ -92,7 +92,7 @@ namespace GenAIFramework
         AIAgentBus::Event(m_agentId, &AIAgentBus::Events::SendPrompt, messages);
     }
 
-    void O3DEAssistantFeature::OnAIResponse(ModelAPIExtractedResponse response)
+    void MyFeature::OnAIResponse(ModelAPIExtractedResponse response)
     {
         if (!response.IsSuccess())
         {

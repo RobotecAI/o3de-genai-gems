@@ -1,4 +1,4 @@
-# O3DE Generative AI Gems collection: getting started
+# Getting started with O3DE Generative AI Gems
 
 This guide will walk you through the process of installing the necessary O3DE Gems, configuring a `Claude` model for `Anthropic` service, and running a basic AI Assistant using the configured model for helping with O3DE related problems.
 
@@ -16,12 +16,15 @@ scripts/o3de.sh enable-gem --all-gems-path <o3de-genai-gems>/Gems --project-name
 
 For a complete tutorial on project configuration, see [Creating Projects Using the Command Line Interface](https://o3de.org/docs/welcome-guide/create/creating-projects-using-cli/) in the O3DE documentation.
 
-## Setting up a new vendor and creating a AI Assistant chat
+## Setting up a new vendor and creating an AI Assistant chat
 
 This is an example of how to set up a vendor in O3DE. It explains how to create and use the `Claude 3` models with the `Claude HTTP` service. Other vendors can be set up similarly.
 1. Add `ANTHROPIC_API_KEY` to your environment variables. This can be done using the `export ANTHROPIC_API_KEY=<your_api_key>` command, where `<your_api_key>` is the key provided by `Anthropic`.
 2. Open a new project in O3DE with the `GenAIFramework` and `GenAIVendorBundle` Gems.
 3. Select the `AI` icon in the upper left corner to open the `Gen AI conversations` window.
+
+![AI icon](./images/frameworkIcon.png)
+
 4. An `AIAssistant` window will appear.  
 
 ![AIWindow](./vendors/chatCreation.png)

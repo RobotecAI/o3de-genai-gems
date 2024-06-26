@@ -4,7 +4,7 @@ The `o3de-genai-gems` repository serves as a hub for the development and distrib
 
 ## Introduction
 
-[Open 3D Engine](https:://o3de.org) - an open-source game & simulation engine. O3DE is extendable through modules called Gems. This repository is a collection of such Gems related to one functionality.
+[Open 3D Engine](https://o3de.org) - an open-source game & simulation engine. O3DE is extendable through modules called Gems. This repository is a collection of such Gems related to one functionality.
 
 **Generative AI O3DE Framework** is a framework that enables employing Generative AI in specific tasks in O3DE. Three main components build this framework:
 1. A core framework Gem that is intended for developers to build on. It is a bridge between the user, O3DE and the AI: other Gems will use it to build features powered by Generative AI.
@@ -52,7 +52,7 @@ Vendor Gems provide mechanisms to communicate with certain generative AI models 
 - `GenAIVendorBundle`: a vendor Gem that implements communication with [Anthropic](https://docs.anthropic.com/en/docs/welcome) service for running `Claude` model and [Ollama toolset](https://github.com/ollama/ollama) that allows getting up and running various language models locally.
 - `GenAIAmazonBedrockVendorBundle Gem`: a vendor Gem that implements communication with [Amazon Bedrock service](https://aws.amazon.com/bedrock/) and that offers a choice of high-performing models from leading AI companies. This gem is dependent on the `GenAIVendorBundle` Gem and allows for communication with the `Claude` model using the `Amazon Bedrock` service.
 
-Additionally, a mocked vendor Gem that can produce predictable responses based on the given input data in JSON format is provided in `GenAIMock`. This Gem is meant for cost-effective and fast tests as well as a sample implementation of a vendor Gem.
+Additionally, the `GenAIMock` vendor Gem is provided to respond in user-configurable responses. This Gem is meant for cost-effective and fast tests as well as a sample implementation of a vendor Gem.
 
 To learn more about the available vendors and find a guide for the configurations, see the [vendors'](./docs/vendors.md) documentation. There is also a page describing how to add a [new vendor Gem](./docs/newVendor.md). 
 
