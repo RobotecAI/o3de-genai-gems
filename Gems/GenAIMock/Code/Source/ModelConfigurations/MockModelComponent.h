@@ -9,13 +9,13 @@
 #pragma once
 
 #include <GenAIFramework/Communication/AIModelRequestBus.h>
-#include <GenAIMock/GenAIMockTypeIds.h>
+#include <GenAIMockVendor/GenAIMockVendorTypeIds.h>
 
 #include <AzCore/Component/Component.h>
 #include <AzCore/RTTI/RTTIMacros.h>
 #include <AzCore/RTTI/ReflectContext.h>
 
-namespace GenAIMock
+namespace GenAIMockVendor
 {
     class MockModelComponent
         : public AZ::Component
@@ -37,4 +37,4 @@ namespace GenAIMock
         GenAIFramework::ModelAPIRequest PrepareRequest(const GenAIFramework::AIMessages& prompt) override;
         GenAIFramework::ModelAPIExtractedResponse ExtractResult(const GenAIFramework::ModelAPIResponse& modelAPIResponse) override;
     };
-} // namespace GenAIMock
+} // namespace GenAIMockVendor

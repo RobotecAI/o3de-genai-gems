@@ -9,7 +9,7 @@
 #pragma once
 
 #include <GenAIFramework/Communication/AIServiceProviderBus.h>
-#include <GenAIMock/GenAIMockTypeIds.h>
+#include <GenAIMockVendor/GenAIMockVendorTypeIds.h>
 
 #include <AzCore/Asset/AssetCommon.h>
 #include <AzCore/Component/Component.h>
@@ -18,7 +18,7 @@
 #include <AzCore/std/containers/vector.h>
 #include <AzCore/std/string/string.h>
 
-namespace GenAIMock
+namespace GenAIMockVendor
 {
     class MockServiceComponentConfiguration : public AZ::ComponentConfig
     {
@@ -70,4 +70,4 @@ namespace GenAIMock
 
         void ReloadAsset();
     };
-} // namespace GenAIMock
+} // namespace GenAIMockVendor

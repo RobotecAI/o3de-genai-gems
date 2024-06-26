@@ -7,8 +7,8 @@
 # Get the platform specific folder ${pal_dir} for the current folder: ${CMAKE_CURRENT_LIST_DIR}/Platform/${PAL_PLATFORM_NAME}
 # Note: o3de_pal_dir will take care of the details for us, as this may be a restricted platform
 #       in which case it will see if that platform is present here or in the restricted folder.
-#       i.e. It could here in our gem : Gems/GenAIMock/Code/Platform/<platorm_name>  or
-#            <restricted_folder>/<platform_name>/Gems/GenAIMock/Code
+#       i.e. It could here in our gem : Gems/GenAIMockVendor/Code/Platform/<platorm_name>  or
+#            <restricted_folder>/<platform_name>/Gems/GenAIMockVendor/Code
 o3de_pal_dir(pal_dir ${CMAKE_CURRENT_LIST_DIR}/Platform/${PAL_PLATFORM_NAME} "${gem_restricted_path}" "${gem_path}" "${gem_parent_relative_path}")
 
 # Now that we have the platform abstraction layer (PAL) folder for this folder, thats where we will find the
@@ -26,8 +26,8 @@ ly_add_target(
     NAME ${gem_name}.API INTERFACE
     NAMESPACE Gem
     FILES_CMAKE
-        genaimock_api_files.cmake
-        ${pal_dir}/genaimock_api_files.cmake
+        genaimockvendor_api_files.cmake
+        ${pal_dir}/genaimockvendor_api_files.cmake
     INCLUDE_DIRECTORIES
         INTERFACE
             Include
@@ -42,8 +42,8 @@ ly_add_target(
     NAME ${gem_name}.Private.Object STATIC
     NAMESPACE Gem
     FILES_CMAKE
-        genaimock_private_files.cmake
-        ${pal_dir}/genaimock_private_files.cmake
+        genaimockvendor_private_files.cmake
+        ${pal_dir}/genaimockvendor_private_files.cmake
     TARGET_PROPERTIES
         O3DE_PRIVATE_TARGET TRUE
     INCLUDE_DIRECTORIES
@@ -62,8 +62,8 @@ ly_add_target(
     NAME ${gem_name} ${PAL_TRAIT_MONOLITHIC_DRIVEN_MODULE_TYPE}
     NAMESPACE Gem
     FILES_CMAKE
-        genaimock_shared_files.cmake
-        ${pal_dir}/genaimock_shared_files.cmake
+        genaimockvendor_shared_files.cmake
+        ${pal_dir}/genaimockvendor_shared_files.cmake
     INCLUDE_DIRECTORIES
         PUBLIC
             Include
@@ -84,7 +84,7 @@ ly_add_target(
 # is used to bootstrap the gem in monolithic builds to link to the new gem name
 ly_add_source_properties(
 SOURCES
-    Source/Clients/GenAIMockModule.cpp
+    Source/Clients/GenAIMockVendorModule.cpp
 PROPERTY COMPILE_DEFINITIONS
     VALUES
         O3DE_GEM_NAME=${gem_name}
@@ -113,8 +113,8 @@ if(PAL_TRAIT_BUILD_HOST_TOOLS)
         NAME ${gem_name}.Editor.API INTERFACE
         NAMESPACE Gem
         FILES_CMAKE
-            genaimock_editor_api_files.cmake
-            ${pal_dir}/genaimock_editor_api_files.cmake
+            genaimockvendor_editor_api_files.cmake
+            ${pal_dir}/genaimockvendor_editor_api_files.cmake
         INCLUDE_DIRECTORIES
             INTERFACE
                 Include
@@ -130,7 +130,7 @@ if(PAL_TRAIT_BUILD_HOST_TOOLS)
         NAME ${gem_name}.Editor.Private.Object STATIC
         NAMESPACE Gem
         FILES_CMAKE
-            genaimock_editor_private_files.cmake
+            genaimockvendor_editor_private_files.cmake
         TARGET_PROPERTIES
             O3DE_PRIVATE_TARGET TRUE
         INCLUDE_DIRECTORIES
@@ -149,7 +149,7 @@ if(PAL_TRAIT_BUILD_HOST_TOOLS)
         NAMESPACE Gem
         AUTOMOC
         FILES_CMAKE
-            genaimock_editor_shared_files.cmake
+            genaimockvendor_editor_shared_files.cmake
         INCLUDE_DIRECTORIES
             PRIVATE
                 Source
@@ -169,7 +169,7 @@ if(PAL_TRAIT_BUILD_HOST_TOOLS)
     # is used to bootstrap the gem in monolithic builds to link to the new gem name
     ly_add_source_properties(
     SOURCES
-        Source/Tools/GenAIMockEditorModule.cpp
+        Source/Tools/GenAIMockVendorEditorModule.cpp
     PROPERTY COMPILE_DEFINITIONS
         VALUES
             O3DE_GEM_NAME=${gem_name}
@@ -202,7 +202,7 @@ if(PAL_TRAIT_BUILD_TESTS_SUPPORTED)
             NAME ${gem_name}.Tests ${PAL_TRAIT_TEST_TARGET_TYPE}
             NAMESPACE Gem
             FILES_CMAKE
-                genaimock_tests_files.cmake
+                genaimockvendor_tests_files.cmake
             INCLUDE_DIRECTORIES
                 PRIVATE
                     Tests
@@ -231,7 +231,7 @@ if(PAL_TRAIT_BUILD_TESTS_SUPPORTED)
                 NAME ${gem_name}.Editor.Tests ${PAL_TRAIT_TEST_TARGET_TYPE}
                 NAMESPACE Gem
                 FILES_CMAKE
-                    genaimock_editor_tests_files.cmake
+                    genaimockvendor_editor_tests_files.cmake
                 INCLUDE_DIRECTORIES
                     PRIVATE
                         Tests

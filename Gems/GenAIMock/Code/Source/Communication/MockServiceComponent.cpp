@@ -22,7 +22,7 @@
 #include <AzCore/std/string/regex.h>
 #include <AzCore/std/string/string.h>
 
-namespace GenAIMock
+namespace GenAIMockVendor
 {
     void MockServiceComponentConfiguration::Reflect(AZ::ReflectContext* context)
     {
@@ -206,4 +206,4 @@ namespace GenAIMock
             callback(outcomeError);
         }
     }
-} // namespace GenAIMock
+} // namespace GenAIMockVendor

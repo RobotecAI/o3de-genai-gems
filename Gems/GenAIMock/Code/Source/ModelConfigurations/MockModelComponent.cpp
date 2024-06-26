@@ -16,7 +16,7 @@
 #include <AzCore/std/any.h>
 #include <AzCore/std/string/string.h>
 
-namespace GenAIMock
+namespace GenAIMockVendor
 {
     void MockModelComponent::Reflect(AZ::ReflectContext* context)
     {
@@ -86,4 +86,4 @@ namespace GenAIMock
         GenAIFramework::AIMessage message = { GenAIFramework::Role::Assistant, modelAPIResponseVector };
         return message;
     }
-} // namespace GenAIMock
+} // namespace GenAIMockVendor

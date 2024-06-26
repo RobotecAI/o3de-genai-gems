@@ -8,21 +8,21 @@
 
 #pragma once
 
-#include <GenAIMock/GenAIMockTypeIds.h>
+#include <GenAIMockVendor/GenAIMockVendorTypeIds.h>
 
 #include <AzCore/EBus/EBus.h>
 #include <AzCore/Interface/Interface.h>
 
-namespace GenAIMock
+namespace GenAIMockVendor
 {
-    class GenAIMockRequests
+    class GenAIMockVendorRequests
     {
     public:
-        AZ_RTTI(GenAIMockRequests, GenAIMockRequestsTypeId);
-        virtual ~GenAIMockRequests() = default;
+        AZ_RTTI(GenAIMockVendorRequests, GenAIMockVendorRequestsTypeId);
+        virtual ~GenAIMockVendorRequests() = default;
     };
 
-    class GenAIMockBusTraits : public AZ::EBusTraits
+    class GenAIMockVendorBusTraits : public AZ::EBusTraits
     {
     public:
         //////////////////////////////////////////////////////////////////////////
@@ -32,7 +32,7 @@ namespace GenAIMock
         //////////////////////////////////////////////////////////////////////////
     };
 
-    using GenAIMockRequestBus = AZ::EBus<GenAIMockRequests, GenAIMockBusTraits>;
-    using GenAIMockInterface = AZ::Interface<GenAIMockRequests>;
+    using GenAIMockVendorRequestBus = AZ::EBus<GenAIMockVendorRequests, GenAIMockVendorBusTraits>;
+    using GenAIMockVendorInterface = AZ::Interface<GenAIMockVendorRequests>;
 
-} // namespace GenAIMock
+} // namespace GenAIMockVendor
