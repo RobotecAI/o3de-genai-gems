@@ -11,9 +11,9 @@ The `o3de-genai-gems` repository serves as a hub for the development and distrib
 2. A collection of vendor Gems used to connect to specific AI services or models.
 3. A collection of feature Gems that execute certain functionalities in O3DE based on Gen AI responses, such as level generation/modification or character control.
 
-In other words, a feature Gem prepares the query to the Generative AI (e.g. asks to modify the level's layout given the current layout) based on the user's input and a vendor Gem is responsible for converting this query into a meaningful format and connecting with a given AI model. _GenAIFramework_ Gem connects the two, i.e., it ensures that all vendor Gems are available for feature Gems. Importantly, it also provides the user interface for AI communication. The framework is summarized in the picture below.
+In other words, a feature Gem prepares the query to the Generative AI (e.g. asks to modify the level's layout given the current layout) based on the user's input. A vendor Gem is responsible for converting this query into a meaningful format and connecting with a given AI model. _GenAIFramework_ Gem connects the two: it allows to register features and vendors, defines communication interfaces and provides the graphical user interface for AI communication. The framework is summarized in the picture below. Note, that vendor and feature gems listed in the diagram are just an example and are not a part of the framework.
 
-![Framework Design](./docs/images/GenAIFramework.png)
+![Framework Design](./docs/images/framework.svg)
 
 More details about the architecture of the system are given in the [Request for Comments (RFC)](https://github.com/o3de/sig-simulation/issues/87) document.
 
