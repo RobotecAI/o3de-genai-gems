@@ -203,7 +203,7 @@ namespace GenAIFramework
 
     void NewChatWidget::UpdateFeaturesList()
     {
-        auto registeredFeatures = GenAIFrameworkInterface::Get()->GetSystemRegistrationContext()->GetFeatureNamesAndUuids();
+        const auto& registeredFeatures = GenAIFrameworkInterface::Get()->GetSystemRegistrationContext()->GetFeatureNamesAndUuids();
         for (const auto& feature : registeredFeatures)
         {
             m_ui->features->addItem(QString::fromUtf8(feature.first.c_str(), feature.first.size()));
