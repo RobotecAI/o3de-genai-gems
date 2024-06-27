@@ -16,7 +16,7 @@ Create two components: one for the `Service provider` and one for the `Model`. T
 
 ### Service provider component
 ```cpp
-#include <GenAIFramework/Communication/AIModelRequestBus.h>
+#include <GenAIFramework/Communication/AIServiceProviderBus.h>
 #include <AzCore/Component/Component.h>
 
 class MyServiceProvider 

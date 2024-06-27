@@ -61,7 +61,7 @@ A complete implementation of a sample feature is given below:
 ```cpp
 #include "MyFeature.h"
 
-#include <GenAIFramework/Communication/AIModelRequestBus.h>
+#include <GenAIFramework/GenAIFrameworkTypes.h>
 #include <GenAIFramework/Feature/AIAgentBus.h>
 #include <GenAIFramework/Feature/ConversationBus.h>
 #include <GenAIFramework/SystemRegistrationContext/SystemRegistrationContext.h>

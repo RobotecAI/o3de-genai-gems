@@ -8,9 +8,9 @@
 
 #pragma once
 
-#include <GenAIFramework/Communication/AIModelRequestBus.h>
 #include <GenAIFramework/Feature/JsonUtils.h>
 #include <GenAIFramework/GenAIFrameworkTypeIds.h>
+#include <GenAIFramework/GenAIFrameworkTypes.h>
 
 #include <AzCore/EBus/EBus.h>
 #include <AzCore/RTTI/RTTI.h>

@@ -8,7 +8,6 @@
 
 #include "ClaudeModelMessagesAPI.h"
 #include "ClaudeModelConfiguration.h"
-#include <GenAIFramework/Communication/AIModelRequestBus.h>
 #include <GenAIFramework/SystemRegistrationContext/SystemRegistrationContext.h>
 
 #include <AzCore/RTTI/RTTIMacros.h>
