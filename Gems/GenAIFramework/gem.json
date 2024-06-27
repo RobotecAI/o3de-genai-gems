@@ -5,7 +5,7 @@
     "license": "Apache-2.0",
     "license_url": "https://opensource.org/licenses/Apache-2.0",
     "origin": "Robotec.ai",
-    "origin_url": "https:://robotec.ai",
+    "origin_url": "https://robotec.ai",
     "type": "Code",
     "summary": "A Gem enabling communication with and use of generative AI models with O3DE",
     "canonical_tags": [
