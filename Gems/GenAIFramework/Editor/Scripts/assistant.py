@@ -42,12 +42,27 @@ class Assistant:
         self.handlerAgent.connect(self.connectionId)
         self.handlerAgent.add_callback("OnAIResponse", self.OnAIResponse)
 
+        self.systemMessage = [
+            {
+                "role": "system",
+                "content": [
+                    "You are an AI assistant for the Open 3D Engine. You are here to help you with any questions regarding the "
+                    + "workings of the engine. Guidance on using specific features, troubleshooting issues, or understanding "
+                    + "the best practices are some things that you will help with."
+                ],
+            }
+        ]
+
     def OnNewMessage(self, message):
         history = AIAgentRequestBus(bus.Event, "GetHistory", connectionId)
 
         prompt = [{"role": "user", "content": [message[0]]}]
         jsonHistory = json.loads(history)
-        fullPrompt = jsonHistory + prompt
+
+        if len(jsonHistory) <= 0:
+            fullPrompt = self.systemMessage + prompt
+        else:
+            fullPrompt = jsonHistory + prompt
 
         fullJsonStringPrompt = json.dumps(fullPrompt)
         AIAgentRequestBus(

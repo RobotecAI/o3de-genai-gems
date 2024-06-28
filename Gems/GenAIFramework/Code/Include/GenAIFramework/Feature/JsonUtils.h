@@ -20,25 +20,20 @@ namespace GenAIFramework::JsonUtils
     {
         rapidjson::Value AIMessageJson(rapidjson::kObjectType);
 
-        rapidjson::Value entryJson(rapidjson::kObjectType);
-
-        AZStd::string role;
-
+        rapidjson::Value roleValue;
         switch (message.first)
         {
         case Role::User:
-            role = "user";
+            roleValue.SetString("user", allocator);
             break;
         case Role::Assistant:
-            role = "assistant";
+            roleValue.SetString("assistant", allocator);
             break;
         case Role::System:
-            role = "system";
+            roleValue.SetString("system", allocator);
             break;
         }
 
-        rapidjson::Value roleValue;
-        roleValue.SetString(role.c_str(), allocator);
         AIMessageJson.AddMember("role", roleValue, allocator);
 
         rapidjson::Value contentJson(rapidjson::kArrayType);
@@ -48,9 +43,9 @@ namespace GenAIFramework::JsonUtils
             if (content.type() == AZ::AzTypeInfo<AZStd::string>().Uuid())
             {
                 contentValue.SetString(AZStd::any_cast<AZStd::string>(content).c_str(), allocator);
-            }
 
-            contentJson.PushBack(contentValue, allocator);
+                contentJson.PushBack(contentValue, allocator);
+            }
         }
 
         AIMessageJson.AddMember("content", contentJson, allocator);

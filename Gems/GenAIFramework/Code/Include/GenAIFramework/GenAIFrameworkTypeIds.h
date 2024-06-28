@@ -46,4 +46,5 @@ namespace GenAIFramework
 
     // Feature TypeIds
     inline constexpr const char* O3DEAssistantFeatureTypeId = "{2C753228-4D1C-4632-9182-2F2E39970D9B}";
+    inline constexpr const char* O3DEAssistantPythonFeatureTypeId = "{7C524A1B-A175-4C26-BEB1-DBEFB7F13F54}";
 } // namespace GenAIFramework

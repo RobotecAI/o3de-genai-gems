@@ -17,6 +17,4 @@ set(FILES
 
     Source/O3DEAssistantFeature/O3DEAssistantFeature.cpp
     Source/O3DEAssistantFeature/O3DEAssistantFeature.h
-
-
 )
