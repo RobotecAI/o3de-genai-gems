@@ -13,9 +13,8 @@
 #include <AzCore/JSON/document.h>
 #include <AzCore/JSON/rapidjson.h>
 #include <AzCore/JSON/writer.h>
-#include <rapidjson/rapidjson.h>
 
-namespace GenAIFramework::Internal
+namespace GenAIFramework::JsonUtils
 {
     inline rapidjson::Value AIMessageToJsonValue(const AIMessage& message, rapidjson::Document::AllocatorType& allocator)
     {
@@ -149,7 +148,7 @@ namespace GenAIFramework::Internal
         return messages;
     }
 
-    inline AZStd::string ModelAPIExtractedResponseToString(const ModelAPIExtractedResponse& response)
+    inline AZStd::string ModelAPIExtractedResponseToJsonString(const ModelAPIExtractedResponse& response)
     {
         rapidjson::Document responseJson;
         responseJson.SetObject();

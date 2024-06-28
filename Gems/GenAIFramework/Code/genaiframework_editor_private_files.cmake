@@ -6,6 +6,6 @@ set(FILES
     Source/Tools/GenAIAsyncRequestEditorSystemComponent.cpp
     Source/Tools/GenAIAsyncRequestEditorSystemComponent.h
 
-    Source/PythonTestFeature/PythonTestFeature.cpp
-    Source/PythonTestFeature/PythonTestFeature.h
+    Source/O3DEAssistantPythonFeature/O3DEAssistantPythonFeature.cpp
+    Source/O3DEAssistantPythonFeature/O3DEAssistantPythonFeature.h
 )

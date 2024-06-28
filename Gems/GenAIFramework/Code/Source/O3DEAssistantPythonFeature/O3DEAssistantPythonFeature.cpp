@@ -6,8 +6,7 @@
  *
  */
 
-#include "PythonTestFeature.h"
-#include "AzCore/std/string/string.h"
+#include "O3DEAssistantPythonFeature.h"
 #include <GenAIFramework/Communication/AIModelRequestBus.h>
 #include <GenAIFramework/Feature/AIAgentBus.h>
 #include <GenAIFramework/Feature/ConversationBus.h>
@@ -19,13 +18,11 @@
 #include <AzCore/Utils/Utils.h>
 #include <AzCore/std/containers/vector.h>
 #include <AzToolsFramework/API/EditorPythonRunnerRequestsBus.h>
-#include <iostream>
-#include <string>
 
 namespace GenAIFramework
 {
 
-    PythonAssistantFeature::PythonAssistantFeature(AZ::u64 agentId, AZ::u64 conversationId)
+    O3DEAssistantPythonFeature::O3DEAssistantPythonFeature(AZ::u64 agentId, AZ::u64 conversationId)
         : PythonFeatureBase(agentId, conversationId)
     {
         const auto thisGemPath = AZ::Utils::GetGemPath("GenAIFramework");
@@ -50,16 +47,16 @@ namespace GenAIFramework
             });
     }
 
-    void PythonAssistantFeature::Reflect(AZ::ReflectContext* context)
+    void O3DEAssistantPythonFeature::Reflect(AZ::ReflectContext* context)
     {
         if (auto* serializeContext = azrtti_cast<AZ::SerializeContext*>(context))
         {
-            serializeContext->Class<PythonAssistantFeature, PythonFeatureBase>()->Version(0);
+            serializeContext->Class<O3DEAssistantPythonFeature, PythonFeatureBase>()->Version(0);
         }
 
         if (auto registrationContext = azrtti_cast<GenAIFramework::SystemRegistrationContext*>(context))
         {
-            registrationContext->RegisterFeature<PythonAssistantFeature>("O3DE Python assistant feature");
+            registrationContext->RegisterFeature<O3DEAssistantPythonFeature>("O3DE Assistant (Python)");
         }
     }
 

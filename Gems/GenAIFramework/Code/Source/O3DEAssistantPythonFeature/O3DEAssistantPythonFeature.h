@@ -8,8 +8,8 @@
 
 #pragma once
 
-#include "GenAIFramework/Feature/PythonFeatureBase.h"
 #include <GenAIFramework/Feature/FeatureBase.h>
+#include <GenAIFramework/Feature/PythonFeatureBase.h>
 #include <GenAIFramework/GenAIFrameworkTypeIds.h>
 
 #include <AzCore/RTTI/RTTI.h>
@@ -17,15 +17,15 @@
 
 namespace GenAIFramework
 {
-    class PythonAssistantFeature : public PythonFeatureBase
+    class O3DEAssistantPythonFeature : public PythonFeatureBase
     {
     public:
-        AZ_RTTI(PythonAssistantFeature, "{7c524a1b-a175-4c26-beb1-dbefb7f13f54}", PythonFeatureBase);
-        AZ_CLASS_ALLOCATOR(PythonAssistantFeature, AZ::SystemAllocator, 0);
+        AZ_RTTI(O3DEAssistantPythonFeature, "{7c524a1b-a175-4c26-beb1-dbefb7f13f54}", PythonFeatureBase);
+        AZ_CLASS_ALLOCATOR(O3DEAssistantPythonFeature, AZ::SystemAllocator, 0);
 
-        PythonAssistantFeature() = default;
-        PythonAssistantFeature(AZ::u64 agentId, AZ::u64 conversationId);
-        ~PythonAssistantFeature() = default;
+        O3DEAssistantPythonFeature() = default;
+        O3DEAssistantPythonFeature(AZ::u64 agentId, AZ::u64 conversationId);
+        ~O3DEAssistantPythonFeature() = default;
 
         static void Reflect(AZ::ReflectContext* context);
 

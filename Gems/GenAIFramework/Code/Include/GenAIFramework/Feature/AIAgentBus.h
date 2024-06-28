@@ -9,7 +9,7 @@
 #pragma once
 
 #include <GenAIFramework/Communication/AIModelRequestBus.h>
-#include <GenAIFramework/Feature/JsonConversionUtils.h>
+#include <GenAIFramework/Feature/JsonUtils.h>
 #include <GenAIFramework/GenAIFrameworkTypeIds.h>
 
 #include <AzCore/EBus/EBus.h>
@@ -39,7 +39,7 @@ namespace GenAIFramework
         //! The content is an array of strings that are the content of the message.
         virtual void SendPromptAsJsonString(const AZStd::string& prompt)
         {
-            AIMessages messages = Internal::JsonStringToAIMessages(prompt);
+            AIMessages messages = JsonUtils::JsonStringToAIMessages(prompt);
             SendPrompt(messages);
         }
 
@@ -52,10 +52,10 @@ namespace GenAIFramework
         //! The history is a JSON string that is an array of objects. Each object consists of a role and content.
         //! The role is a string that can be "user", "assistant", or "system". Corrsponding to the user, assistant, and system roles.
         //! The content is an array of strings that are the content of the message.
-        virtual AZStd::string GetHistoryAsJson() const
+        virtual AZStd::string GetHistoryAsJsonString() const
         {
             AIHistory history = GetHistory();
-            return Internal::AIMessagesToJsonString(history);
+            return JsonUtils::AIMessagesToJsonString(history);
         }
     };
 

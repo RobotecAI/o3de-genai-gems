@@ -43,7 +43,7 @@ namespace GenAIFramework
 
         void OnAIResponse(ModelAPIExtractedResponse response) override
         {
-            AZStd::string stringResponse = Internal::ModelAPIExtractedResponseToString(response);
+            AZStd::string stringResponse = JsonUtils::ModelAPIExtractedResponseToJsonString(response);
             Call(FN_OnAIResponse, stringResponse);
         }
     };
@@ -92,7 +92,7 @@ namespace GenAIFramework
                     ->Attribute(AZ::Script::Attributes::Scope, AZ::Script::Attributes::ScopeFlags::Common)
                     ->Attribute(AZ::Script::Attributes::Module, "ai")
                     ->Event("SendPrompt", &AIAgentRequestBus::Events::SendPromptAsJsonString)
-                    ->Event("GetHistory", &AIAgentRequestBus::Events::GetHistoryAsJson);
+                    ->Event("GetHistory", &AIAgentRequestBus::Events::GetHistoryAsJsonString);
             }
         }
     };

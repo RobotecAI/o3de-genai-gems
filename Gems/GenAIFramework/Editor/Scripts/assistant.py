@@ -1,4 +1,11 @@
-# assumes a level has been opened or created
+"""
+* Copyright (c) Contributors to the Open 3D Engine Project.
+* For complete copyright and license terms please see the LICENSE at the root of this distribution.
+*
+* SPDX-License-Identifier: Apache-2.0 OR MIT
+*
+"""
+
 import json
 import argparse
 import azlmbr.bus as bus

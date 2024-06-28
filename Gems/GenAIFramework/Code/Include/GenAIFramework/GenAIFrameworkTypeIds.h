@@ -39,10 +39,10 @@ namespace GenAIFramework
     inline constexpr const char* GenAIFrameworkActionRequestsTypeId = "{D2D195A2-C720-4961-9AEF-C00FCB0AA70D}";
     inline constexpr const char* GenAIFrameworkEditorRequestsTypeId = "{B20BA166-2237-4F0C-AFCD-FB17B63A9CF6}";
     inline constexpr const char* FeatureBaseTypeId = "{4050040A-31C3-4949-8CE0-52FAD7562F4D}";
-    inline constexpr const char* CppFeatureBaseTypeId = "{040a5281-e429-49b8-93fd-d76019cd6099}";
-    inline constexpr const char* PythonFeatureBaseTypeId = "{1a248923-79e4-4ec7-b90b-fa81289e95e7}";
-    inline constexpr const char* BehaviorConversationBusHandlerTypeId = "{bbec0750-3d2e-4631-a9fa-c5f2bac44632}";
-    inline constexpr const char* BehaviourAIAgentNotificationsBusHandlerTypeId = "{119148aa-e7a5-4520-97e0-602953969afb}";
+    inline constexpr const char* CppFeatureBaseTypeId = "{040A5281-E429-49B8-93FD-D76019CD6099}";
+    inline constexpr const char* PythonFeatureBaseTypeId = "{1A248923-79E4-4EC7-B90B-FA81289E95E7}";
+    inline constexpr const char* BehaviorConversationBusHandlerTypeId = "{BBEC0750-3D2E-4631-A9FA-C5F2BAC44632}";
+    inline constexpr const char* BehaviourAIAgentNotificationsBusHandlerTypeId = "{119148AA-E7A5-4520-97E0-602953969AFB}";
 
     // Feature TypeIds
     inline constexpr const char* O3DEAssistantFeatureTypeId = "{2C753228-4D1C-4632-9182-2F2E39970D9B}";
