@@ -27,27 +27,27 @@ This is an example of how to set up a vendor in O3DE. It explains how to create 
 
 4. An `AIAssistant` window will appear.  
 
-![AIWindow](./vendors/chatCreation.png)
+![AIWindow](./images/chatCreation.png)
 
 5. Click the burger button next to the `Model` dropdown box.  
 6. Using the dropdown box select the `Claude messages API` model (or any other appropriate model) give it a name and click create.
  
-![ModelConfiguration](./vendors/modelConfiguration.png)
+![ModelConfiguration](./images/modelConfiguration.png)
 
 7. Select the newly created model  
 
-![Configuration](./vendors/configuration.png)
+![Configuration](./images/configuration.png)
 
 8. Add the `Anthropic version` (example: `2023-06-01`) according to the [Anthropic documentation](https://docs.anthropic.com/en/api/messages). You can also change other fields but it is not necessary.
 9. Select the `AI Service Providers` tab and create the `Claude HTTP service provider`.
 10.  Select the newly created service and fill the fields with appropriate values. You can find all available models on the [Anthropic documentation](https://docs.anthropic.com/en/docs/about-claude/models).  
 > _Note_: If you see a message about a missing API key, make sure to include it in your environment variables.
 
-![ServiceConfiguration](./vendors/provider.png)
+![ServiceConfiguration](./images/provider.png)
 
 11.  You can now close the configuration window and the created models should be available for selection.
 
-![FinishedConfiguration](./vendors/finishedConfiguration.png)
+![FinishedConfiguration](./images/finishedConfiguration.png)
 
 12.  Name the chat, select the `O3DE Assistant` feature, and click create.
 
@@ -55,6 +55,6 @@ This is an example of how to set up a vendor in O3DE. It explains how to create 
 
 The chat window created in the previous steps is ready to use. You can see an example with the first question and AI reply in the screenshot below:
 
-![Chat](./vendors/chat.png)
+![Chat](./images/chat.png)
 
 Each chat window uses a separate context and history. Moreover, each conversation can be linked to a different AI model and serve a different feature. You can add more chat tabs by selecting the `+` tab or close the current one by clicking the `X` button in the top right corner of the chat.See more details on the user interface in a [separate documentation page](./ui.md).
