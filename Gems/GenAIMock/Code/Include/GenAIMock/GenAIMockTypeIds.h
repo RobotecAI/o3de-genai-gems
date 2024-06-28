@@ -29,5 +29,5 @@ namespace GenAIMock
     inline constexpr const char* MockServiceComponentTypeId = "{DB01BE29-EC0B-41E1-BF68-12D70DD6B630}";
 
     // ModelConfigurations TypeIds
-    inline constexpr const char* PassthroughModelComponentTypeId = "{B873470C-0CA8-49AF-82B6-4DE26C242C7B}";
+    inline constexpr const char* MockModelComponentTypeId = "{B873470C-0CA8-49AF-82B6-4DE26C242C7B}";
 } // namespace GenAIMock

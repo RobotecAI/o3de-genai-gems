@@ -195,14 +195,14 @@ namespace GenAIMock
 
         if (index < m_testData.size())
         {
-            AZ::Outcome<AZStd::string, AZStd::string> outcomeResult = AZ::Success(m_testData[index]);
+            GenAIFramework::ModelAPIResponse outcomeResult = AZ::Success(m_testData[index]);
             m_lastCompleted = index;
             callback(outcomeResult);
         }
         else
         {
             AZStd::string azStringResult("Out of range prompt for given mock data.");
-            AZ::Outcome<AZStd::string, AZStd::string> outcomeError = AZ::Failure(azStringResult);
+            GenAIFramework::ModelAPIResponse outcomeError = AZ::Failure(azStringResult);
             callback(outcomeError);
         }
     }

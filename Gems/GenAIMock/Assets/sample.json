@@ -6,11 +6,11 @@
         "three",
         "four",
         [
-            "multiline example:",
-            "the end",
-            "la fin",
-            "el fin",
-            "fine"
+            "five: multiline example:",
+            "second line",
+            "(the first one includes the 'multiline example' title)",
+            "fourth line",
+            "etc."
         ]
     ]
 }

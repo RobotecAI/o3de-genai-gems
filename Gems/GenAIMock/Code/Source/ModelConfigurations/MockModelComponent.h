@@ -17,17 +17,17 @@
 
 namespace GenAIMock
 {
-    class PassthroughModelComponent
+    class MockModelComponent
         : public AZ::Component
         , public GenAIFramework::AIModelRequestBus::Handler
     {
     public:
-        AZ_COMPONENT(PassthroughModelComponent, PassthroughModelComponentTypeId);
+        AZ_COMPONENT(MockModelComponent, MockModelComponentTypeId);
 
         static void Reflect(AZ::ReflectContext* context);
 
-        PassthroughModelComponent() = default;
-        ~PassthroughModelComponent() = default;
+        MockModelComponent() = default;
+        ~MockModelComponent() = default;
 
         void Activate() override;
         void Deactivate() override;

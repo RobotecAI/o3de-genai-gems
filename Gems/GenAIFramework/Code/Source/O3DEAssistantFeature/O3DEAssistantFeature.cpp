@@ -40,17 +40,22 @@ namespace GenAIFramework
         AIAgentRequestBus::EventResult(history, m_agentId, &AIAgentRequestBus::Events::GetHistory);
 
         AIMessages messages = history;
+
+        // System message is stored in the history; it should be added otherwise
+        if (messages.empty())
+        {
+            AIMessage systemMessage = {
+                Role::System,
+                { AZStd::any(AZStd::string(
+                    "You are an AI assistant for the Open 3D Engine. You are here to help you with any questions regarding the "
+                    "workings of the engine. Guidance on using specific features, troubleshooting issues, or understanding "
+                    "the best practices are some things that you will help with.")) }
+            };
+            messages.push_back(systemMessage);
+        }
+
         AIMessage newMessage = { Role::User, { AZStd::any(message) } };
         messages.push_back(newMessage);
-
-        AIMessage systemMessage = {
-            Role::System,
-            { AZStd::any(
-                AZStd::string("You are an AI assistant for the Open 3D Engine. You are here to help you with any questions regarding the "
-                              "workings of the engine. Guidance on using specific features, troubleshooting issues, or understanding "
-                              "the best practices are some things that you will help with.")) }
-        };
-        messages.push_back(systemMessage);
 
         AIAgentRequestBus::Event(m_agentId, &AIAgentRequestBus::Events::SendPrompt, messages);
     }
