@@ -39,7 +39,12 @@ namespace GenAIFramework
     inline constexpr const char* GenAIFrameworkActionRequestsTypeId = "{D2D195A2-C720-4961-9AEF-C00FCB0AA70D}";
     inline constexpr const char* GenAIFrameworkEditorRequestsTypeId = "{B20BA166-2237-4F0C-AFCD-FB17B63A9CF6}";
     inline constexpr const char* FeatureBaseTypeId = "{4050040A-31C3-4949-8CE0-52FAD7562F4D}";
+    inline constexpr const char* CppFeatureBaseTypeId = "{040A5281-E429-49B8-93FD-D76019CD6099}";
+    inline constexpr const char* PythonFeatureBaseTypeId = "{1A248923-79E4-4EC7-B90B-FA81289E95E7}";
+    inline constexpr const char* BehaviorConversationBusHandlerTypeId = "{BBEC0750-3D2E-4631-A9FA-C5F2BAC44632}";
+    inline constexpr const char* BehaviourAIAgentNotificationsBusHandlerTypeId = "{119148AA-E7A5-4520-97E0-602953969AFB}";
 
     // Feature TypeIds
     inline constexpr const char* O3DEAssistantFeatureTypeId = "{2C753228-4D1C-4632-9182-2F2E39970D9B}";
+    inline constexpr const char* O3DEAssistantPythonFeatureTypeId = "{7C524A1B-A175-4C26-BEB1-DBEFB7F13F54}";
 } // namespace GenAIFramework

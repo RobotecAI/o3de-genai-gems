@@ -9,6 +9,7 @@
 #pragma once
 
 #include <GenAIFramework/Communication/AIModelRequestBus.h>
+#include <GenAIFramework/Feature/JsonUtils.h>
 #include <GenAIFramework/GenAIFrameworkTypeIds.h>
 
 #include <AzCore/EBus/EBus.h>
@@ -31,9 +32,31 @@ namespace GenAIFramework
         //! The response will be sent to the OnAIResponse notification.
         virtual void SendPrompt(const AIMessages& prompt) = 0;
 
+        //! Send a prompt to the model agent as a JSON string.
+        //! @param prompt The prompt to send as a JSON string.
+        //! The prompt is a JSON string that is an array of objects. Each object consists of a role and content.
+        //! The role is a string that can be "user", "assistant", or "system". Corrsponding to the user, assistant, and system roles.
+        //! The content is an array of strings that are the content of the message.
+        virtual void SendPromptAsJsonString(const AZStd::string& prompt)
+        {
+            AIMessages messages = JsonUtils::JsonStringToAIMessages(prompt);
+            SendPrompt(messages);
+        }
+
         //! Get the history of the model agent.
         //! @return The history of the model agent.
         virtual AIHistory GetHistory() const = 0;
+
+        //! Get the history of the model agent as a JSON string.
+        //! @return The history of the model agent as a JSON string.
+        //! The history is a JSON string that is an array of objects. Each object consists of a role and content.
+        //! The role is a string that can be "user", "assistant", or "system". Corrsponding to the user, assistant, and system roles.
+        //! The content is an array of strings that are the content of the message.
+        virtual AZStd::string GetHistoryAsJsonString() const
+        {
+            AIHistory history = GetHistory();
+            return JsonUtils::AIMessagesToJsonString(history);
+        }
     };
 
     class AIAgentNotifications : public AZ::EBusTraits

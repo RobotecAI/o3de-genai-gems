@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include <GenAIFramework/Feature/FeatureBase.h>
+#include <GenAIFramework/Feature/CppFeatureBase.h>
 #include <GenAIFramework/GenAIFrameworkTypeIds.h>
 
 #include <AzCore/RTTI/RTTI.h>
@@ -16,7 +16,7 @@
 
 namespace GenAIFramework
 {
-    class O3DEAssistantFeature : public FeatureBase
+    class O3DEAssistantFeature : public CppFeatureBase
     {
     public:
         AZ_RTTI(O3DEAssistantFeature, O3DEAssistantFeatureTypeId, FeatureBase);
