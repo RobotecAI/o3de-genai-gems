@@ -14,6 +14,7 @@
 #include <GenAIFramework/Feature/PythonFeatureBase.h>
 #include <GenAIFramework/SystemRegistrationContext/SystemRegistrationContext.h>
 
+#include <AzCore/Component/TickBus.h>
 #include <AzCore/RTTI/BehaviorContext.h>
 #include <AzCore/Utils/Utils.h>
 #include <AzCore/std/containers/vector.h>
@@ -32,21 +33,21 @@ namespace GenAIFramework
         const auto pythonAssistantScriptPath = AZ::IO::Path(thisGemPath) / AZ::IO::Path(PythonAssistantScript);
         m_assistantPythonScriptLocation = pythonAssistantScriptPath.String();
 
-        bool isOk = false;
-        AZStd::string_view agentIdString = AZStd::to_string(m_conversationId);
-        AZStd::string_view conversationIdString = AZStd::to_string(m_conversationId);
+        AZ::SystemTickBus::QueueFunction(
+            [this]()
+            {
+                AZStd::string agentIdString = AZStd::to_string(m_conversationId);
+                AZStd::string conversationIdString = AZStd::to_string(m_conversationId);
 
-        std::cout << "Executing Python script with agentId: " << agentIdString.cbegin()
-                  << " and conversationId: " << conversationIdString.cbegin() << std::endl;
+                AZStd::vector<AZStd::string_view> params = { agentIdString, conversationIdString };
 
-        AZStd::vector<AZStd::string_view> params;
-        params.push_back(agentIdString);
-        params.push_back(conversationIdString);
-        AzToolsFramework::EditorPythonRunnerRequestBus::BroadcastResult(
-            isOk,
-            &AzToolsFramework::EditorPythonRunnerRequestBus::Events::ExecuteByFilenameWithArgs,
-            AZStd::string_view(m_assistantPythonScriptLocation),
-            params);
+                bool isOk = false;
+                AzToolsFramework::EditorPythonRunnerRequestBus::BroadcastResult(
+                    isOk,
+                    &AzToolsFramework::EditorPythonRunnerRequestBus::Events::ExecuteByFilenameWithArgs,
+                    AZStd::string_view(m_assistantPythonScriptLocation),
+                    params);
+            });
     }
 
     void PythonAssistantFeature::Reflect(AZ::ReflectContext* context)

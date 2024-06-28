@@ -17,39 +17,44 @@ parser.add_argument("agent_id", help="The agent id")
 parser.add_argument("conversation_id", help="The conversation id")
 args = parser.parse_args()
 
-connectionId = args.agent_id
+connectionId = int(args.agent_id)
 
-print("Agent ID: " + connectionId)
-
-
-def OnNewMessage(message):
-    history = AIAgentRequestBus(bus.Event, "GetHistory", connectionId)
-
-    prompt = [{"role": "user", "content": [message[0]]}]
-
-    history += prompt
-
-    jsonPrompt = json.dumps(history)
-
-    AIAgentRequestBus(bus.Event, "SendPrompt", connectionId, jsonPrompt)
-
-    print(message)
+if "assistants" not in globals():
+    assistants = []
 
 
-def OnAIResponse(message):
-    jsonMessage = json.loads(message[0])
-    if jsonMessage["isSuccess"] == True:
-        if jsonMessage["message"]["role"] == "assistant":
-            for elem in jsonMessage["message"]["content"]:
-                ConversationNotificationBus(
-                    bus.Event, "OnFeatureResponse", connectionId, elem, []
-                )
+class Assistant:
+    def __init__(self, id):
+        self.connectionId = id
+
+        self.handlerConversation = ConversationNotificationBusHandler()
+        self.handlerConversation.connect(self.connectionId)
+        self.handlerConversation.add_callback("OnNewMessage", self.OnNewMessage)
+
+        self.handlerAgent = AIAgentNotificationBusHandler()
+        self.handlerAgent.connect(self.connectionId)
+        self.handlerAgent.add_callback("OnAIResponse", self.OnAIResponse)
+
+    def OnNewMessage(self, message):
+        history = AIAgentRequestBus(bus.Event, "GetHistory", connectionId)
+
+        prompt = [{"role": "user", "content": [message[0]]}]
+        jsonHistory = json.loads(history)
+        fullPrompt = jsonHistory + prompt
+
+        fullJsonStringPrompt = json.dumps(fullPrompt)
+        AIAgentRequestBus(
+            bus.Event, "SendPrompt", self.connectionId, fullJsonStringPrompt
+        )
+
+    def OnAIResponse(self, message):
+        jsonMessage = json.loads(message[0])
+        if jsonMessage["isSuccess"] == True:
+            if jsonMessage["message"]["role"] == "assistant":
+                for elem in jsonMessage["message"]["content"]:
+                    ConversationNotificationBus(
+                        bus.Event, "OnFeatureResponse", self.connectionId, elem, []
+                    )
 
 
-handlerConversation = ConversationNotificationBusHandler()
-handlerConversation.connect(connectionId)  # connects to a singleton bus handler
-handlerConversation.add_callback("OnNewMessage", OnNewMessage)
-
-handlerAgent = AIAgentNotificationBusHandler()
-handlerAgent.connect(connectionId)
-handlerAgent.add_callback("OnAIResponse", OnAIResponse)
+assistants.append(Assistant(connectionId))
