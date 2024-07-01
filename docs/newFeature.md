@@ -10,8 +10,7 @@ the `ConversationNotificationBus::Events::OnFeatureResponse` event.
 Please see the [dedicated documentation](./interfaces.md) for more details on interfaces. Visit the [O3DE Component documentation](https://www.docs.o3de.org/docs/user-guide/programming/components/) for more information on creating a new component.
 
 ## C++ and Python features
-The feature can be implemented either in C++ or Python. The Python features require minimal code in C++. The C++ features inherit from the `CppFeatureBase` and 
-the Python features inherit from the `PythonFeatureBase`. The main difference between these interfaces is that the C++ features automatically connect to the `AIAgentBus` and `ConversationBus` while the Python features need to do this manually.
+The feature can be implemented in either C++ or Python. The Python features require minimal code in C++. The C++ features inherit from the `CppFeatureBase` and the Python features inherit from the `PythonFeatureBase`. The main difference between these interfaces is that the C++ features automatically connect to the `AIAgentBus` and `ConversationBus` while the Python features must do this manually.
 
 ## Implementing the C++ feature
 The sample header file for a generative AI C++ feature might look as follows:
@@ -157,9 +156,7 @@ class MyFeature:
 # It is important to add each feature as a separate instance to avoid redefinitions of the same feature and mismatching of the ids used for busses.
 myFeatures.append(MyFeature(agentId, conversationId))
 ```
-It is important to create the feature as a class and store its objects in some kind of data structure (like the `myFeatures` list). This script is called each
-time a new conversation is created with this feature and creating a class object prohibits overriding the previously declared function. This is done because of a limitation of Python interpreter in O3DE. The interpreter is global and all the scripts are executed in the same context.  
-
+It is important to create the feature as a class and store its objects in some kind of data structure (like the `myFeatures` list). This script is called each time a new conversation is created with this feature and creating a class object prohibits overriding the previously declared function. This is done because of a limitation of the Python interpreter in O3DE. The interpreter is global and all scripts are executed in the same context.
 
 More information on the available API and data formats which can be used in Python can be found in the [dedicated documentation](./docs/python.md).
 
