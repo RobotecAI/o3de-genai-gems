@@ -7,7 +7,6 @@
  */
 
 #include "GenAIFrameworkModuleInterface.h"
-#include <Clients/GenAIAsyncRequestSystemComponent.h>
 #include <Clients/GenAIFrameworkSystemComponent.h>
 #include <GenAIFramework/GenAIFrameworkTypeIds.h>
 #include <GenAIFramework/SystemRegistrationContext/SystemRegistrationContext.h>
@@ -27,9 +26,7 @@ namespace GenAIFramework
         // Add ALL components descriptors associated with this gem to m_descriptors.
         // This will associate the AzTypeInfo information for the components with the the SerializeContext, BehaviorContext and EditContext.
         // This happens through the [MyComponent]::Reflect() function.
-        m_descriptors.insert(
-            m_descriptors.end(),
-            { GenAIFrameworkSystemComponent::CreateDescriptor(), GenAIAsyncRequestSystemComponent::CreateDescriptor() });
+        m_descriptors.insert(m_descriptors.end(), { GenAIFrameworkSystemComponent::CreateDescriptor() });
 
         // Create a new reflection context for reflecting serviceProviders and modelConfigurations
         AZ::ReflectionEnvironment::GetReflectionManager()->AddReflectContext<SystemRegistrationContext>();
@@ -37,6 +34,6 @@ namespace GenAIFramework
 
     AZ::ComponentTypeList GenAIFrameworkModuleInterface::GetRequiredSystemComponents() const
     {
-        return AZ::ComponentTypeList{ azrtti_typeid<GenAIFrameworkSystemComponent>(), azrtti_typeid<GenAIAsyncRequestSystemComponent>() };
+        return AZ::ComponentTypeList{ azrtti_typeid<GenAIFrameworkSystemComponent>() };
     }
 } // namespace GenAIFramework

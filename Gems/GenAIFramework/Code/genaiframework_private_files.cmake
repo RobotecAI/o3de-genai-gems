@@ -8,8 +8,6 @@ set(FILES
     Source/AIAgent/AIAgent.cpp
     Source/AIAgent/AIAgent.h
 
-    Source/Clients/GenAIAsyncRequestSystemComponent.cpp
-    Source/Clients/GenAIAsyncRequestSystemComponent.h
     Source/Clients/GenAIFrameworkSystemComponent.cpp
     Source/Clients/GenAIFrameworkSystemComponent.h
     Source/Clients/GenAIFrameworkSystemComponentConfiguration.cpp
