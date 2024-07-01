@@ -12,6 +12,7 @@
 #include <Clients/GenAIFrameworkSystemComponentConfiguration.h>
 #include <GenAIFramework/GenAIFrameworkBus.h>
 #include <GenAIFramework/SystemRegistrationContext/SystemRegistrationContext.h>
+#include <GenAIFramework/UI/UIConversatonBus.h>
 #include <SettingsRegistryManager/SettingsRegistryManager.h>
 
 #include <AzCore/Component/Component.h>
@@ -25,6 +26,7 @@ namespace GenAIFramework
     class GenAIFrameworkSystemComponent
         : public AZ::Component
         , protected GenAIFrameworkRequestBus::Handler
+        , protected UIConversationsBus::Handler
     {
     public:
         AZ_COMPONENT_DECL(GenAIFrameworkSystemComponent);
@@ -87,6 +89,16 @@ namespace GenAIFramework
         AZStd::vector<AZStd::string> GetRegisteredComponentNames(const EntityIdToEntityMap& entities) const;
 
         AZ::EntityId GetEntityIdByName(const AZStd::string& name, const EntityIdToEntityMap& entities) const;
+
+        void OnNewChatWidgetCreated(
+            const AZStd::string& chatName,
+            const AZStd::string& modelName,
+            const AZStd::string& providerName,
+            const AZStd::string& featureName) override;
+
+        void OnChatWidgetClosed(const AZStd::string& chatName) override;
+
+        FeaturesConversationsStore GetStoredChats() override;
 
         AZStd::unordered_map<AZ::u64, AZStd::shared_ptr<AIAgent>> m_agents;
         AZStd::unordered_map<AZ::u64, AZStd::shared_ptr<FeatureBase>> m_featureConversations;

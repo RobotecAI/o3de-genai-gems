@@ -13,6 +13,7 @@
 #include <GenAIFramework/Feature/PythonFeatureBase.h>
 #include <GenAIFramework/GenAIFrameworkTypeIds.h>
 #include <GenAIFramework/SystemRegistrationContext/SystemRegistrationContext.h>
+#include <GenAIFramework/UI/UIConversatonBus.h>
 #include <O3DEAssistantFeature/O3DEAssistantFeature.h>
 
 #include <AzCore/Component/ComponentApplication.h>
@@ -278,7 +279,9 @@ namespace GenAIFramework
             "Activating GenAIFrameworkSystemComponent with %d service providers and %d model configurations\n",
             m_configuration.m_serviceProviders.size(),
             m_configuration.m_modelConfigurations.size());
+
         GenAIFrameworkRequestBus::Handler::BusConnect();
+        UIConversationsBus::Handler::BusConnect();
 
         ActivateEntities(m_configuration.m_serviceProviders);
         ActivateEntities(m_configuration.m_modelConfigurations);
@@ -289,6 +292,7 @@ namespace GenAIFramework
 
     void GenAIFrameworkSystemComponent::Deactivate()
     {
+        UIConversationsBus::Handler::BusDisconnect();
         GenAIFrameworkRequestBus::Handler::BusDisconnect();
 
         DeactivateEntities(m_configuration.m_serviceProviders);
@@ -387,6 +391,25 @@ namespace GenAIFramework
     bool GenAIFrameworkSystemComponent::RemoveFeatureConversation(AZ::u64 featureConversationId)
     {
         return RemoveAIAgent(featureConversationId) ? m_featureConversations.erase(featureConversationId) > 0 : false;
+    }
+
+    void GenAIFrameworkSystemComponent::OnNewChatWidgetCreated(
+        [[maybe_unused]] const AZStd::string& chatName,
+        [[maybe_unused]] const AZStd::string& modelName,
+        [[maybe_unused]] const AZStd::string& providerName,
+        [[maybe_unused]] const AZStd::string& featureName)
+    {
+        m_configuration.m_featuresConversationsStore[chatName] = FeatureTuple{ modelName, providerName, featureName };
+    }
+
+    void GenAIFrameworkSystemComponent::OnChatWidgetClosed(const AZStd::string& chatName)
+    {
+        m_configuration.m_featuresConversationsStore.erase(chatName);
+    }
+
+    FeaturesConversationsStore GenAIFrameworkSystemComponent::GetStoredChats()
+    {
+        return m_configuration.m_featuresConversationsStore;
     }
 
 } // namespace GenAIFramework

@@ -10,6 +10,7 @@
 
 #if !defined(Q_MOC_RUN)
 #include <GenAIFramework/GenAIFrameworkBus.h>
+#include <GenAIFramework/UI/UIConversatonBus.h>
 #include <UI/AgentConfigurationWidget/AgentConfigurationWidget.h>
 #include <UI/NewChatWidget.h>
 
@@ -40,6 +41,8 @@ namespace GenAIFramework
         // QWidget overrides
         void closeEvent(QCloseEvent* event) override;
         void showEvent(QShowEvent* event) override;
+
+        void CreateChat(const QString& chatName, const QString& modelName, const QString& providerName, const QString& featureName);
 
     private:
         Ui::AIAssistantUI* m_ui;

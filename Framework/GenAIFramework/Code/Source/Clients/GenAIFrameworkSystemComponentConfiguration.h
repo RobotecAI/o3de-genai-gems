@@ -9,6 +9,7 @@
 #pragma once
 
 #include <GenAIFramework/GenAIFrameworkTypeIds.h>
+#include <GenAIFramework/GenAIFrameworkTypes.h>
 
 #include <AzCore/Component/Entity.h>
 #include <AzCore/RTTI/RTTIMacros.h>
@@ -17,6 +18,7 @@
 namespace GenAIFramework
 {
     using EntityIdToEntityMap = AZStd::unordered_map<AZ::EntityId, AZStd::shared_ptr<AZ::Entity>>;
+
     //! Configuration for the GenAIFrameworkSystemComponent
     //! There should be only one instance of this class in existence. All other classes must be copies of the main one.
     class GenAIFrameworkSystemComponentConfiguration
@@ -32,5 +34,7 @@ namespace GenAIFramework
 
         EntityIdToEntityMap m_serviceProviders;
         EntityIdToEntityMap m_modelConfigurations;
+
+        FeaturesConversationsStore m_featuresConversationsStore;
     };
 } // namespace GenAIFramework
