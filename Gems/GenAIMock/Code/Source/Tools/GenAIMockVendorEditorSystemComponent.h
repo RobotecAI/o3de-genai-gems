@@ -8,26 +8,26 @@
 
 #pragma once
 
-#include <Clients/GenAIMockSystemComponent.h>
+#include <Clients/GenAIMockVendorSystemComponent.h>
 
 #include <AzToolsFramework/API/ToolsApplicationAPI.h>
 
-namespace GenAIMock
+namespace GenAIMockVendor
 {
-    /// System component for GenAIMock editor
-    class GenAIMockEditorSystemComponent
-        : public GenAIMockSystemComponent
+    /// System component for GenAIMockVendor editor
+    class GenAIMockVendorEditorSystemComponent
+        : public GenAIMockVendorSystemComponent
         , protected AzToolsFramework::EditorEvents::Bus::Handler
     {
-        using BaseSystemComponent = GenAIMockSystemComponent;
+        using BaseSystemComponent = GenAIMockVendorSystemComponent;
 
     public:
-        AZ_COMPONENT_DECL(GenAIMockEditorSystemComponent);
+        AZ_COMPONENT_DECL(GenAIMockVendorEditorSystemComponent);
 
         static void Reflect(AZ::ReflectContext* context);
 
-        GenAIMockEditorSystemComponent();
-        ~GenAIMockEditorSystemComponent();
+        GenAIMockVendorEditorSystemComponent();
+        ~GenAIMockVendorEditorSystemComponent();
 
     private:
         static void GetProvidedServices(AZ::ComponentDescriptor::DependencyArrayType& provided);
@@ -39,4 +39,4 @@ namespace GenAIMock
         void Activate() override;
         void Deactivate() override;
     };
-} // namespace GenAIMock
+} // namespace GenAIMockVendor

@@ -6,21 +6,21 @@
  *
  */
 
-#include "GenAIMockModuleInterface.h"
-#include <Clients/GenAIMockSystemComponent.h>
+#include "GenAIMockVendorModuleInterface.h"
+#include <Clients/GenAIMockVendorSystemComponent.h>
 #include <Communication/MockServiceComponent.h>
-#include <GenAIMock/GenAIMockTypeIds.h>
+#include <GenAIMockVendor/GenAIMockVendorTypeIds.h>
 #include <ModelConfigurations/MockModelComponent.h>
 
 #include <AzCore/Memory/Memory.h>
 
-namespace GenAIMock
+namespace GenAIMockVendor
 {
-    AZ_TYPE_INFO_WITH_NAME_IMPL(GenAIMockModuleInterface, "GenAIMockModuleInterface", GenAIMockModuleInterfaceTypeId);
-    AZ_RTTI_NO_TYPE_INFO_IMPL(GenAIMockModuleInterface, AZ::Module);
-    AZ_CLASS_ALLOCATOR_IMPL(GenAIMockModuleInterface, AZ::SystemAllocator);
+    AZ_TYPE_INFO_WITH_NAME_IMPL(GenAIMockVendorModuleInterface, "GenAIMockVendorModuleInterface", GenAIMockVendorModuleInterfaceTypeId);
+    AZ_RTTI_NO_TYPE_INFO_IMPL(GenAIMockVendorModuleInterface, AZ::Module);
+    AZ_CLASS_ALLOCATOR_IMPL(GenAIMockVendorModuleInterface, AZ::SystemAllocator);
 
-    GenAIMockModuleInterface::GenAIMockModuleInterface()
+    GenAIMockVendorModuleInterface::GenAIMockVendorModuleInterface()
     {
         // Push results of [MyComponent]::CreateDescriptor() into m_descriptors here.
         // Add ALL components descriptors associated with this gem to m_descriptors.
@@ -28,15 +28,15 @@ namespace GenAIMock
         // This happens through the [MyComponent]::Reflect() function.
         m_descriptors.insert(
             m_descriptors.end(),
-            { GenAIMockSystemComponent::CreateDescriptor(),
+            { GenAIMockVendorSystemComponent::CreateDescriptor(),
               MockModelComponent::CreateDescriptor(),
               MockServiceComponent::CreateDescriptor() });
     }
 
-    AZ::ComponentTypeList GenAIMockModuleInterface::GetRequiredSystemComponents() const
+    AZ::ComponentTypeList GenAIMockVendorModuleInterface::GetRequiredSystemComponents() const
     {
         return AZ::ComponentTypeList{
-            azrtti_typeid<GenAIMockSystemComponent>(),
+            azrtti_typeid<GenAIMockVendorSystemComponent>(),
         };
     }
-} // namespace GenAIMock
+} // namespace GenAIMockVendor

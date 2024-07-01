@@ -11,20 +11,20 @@
 #include <AzCore/RTTI/RTTIMacros.h>
 #include <AzCore/RTTI/TypeInfoSimple.h>
 
-namespace GenAIMock
+namespace GenAIMockVendor
 {
-    class GenAIMockModuleInterface : public AZ::Module
+    class GenAIMockVendorModuleInterface : public AZ::Module
     {
     public:
-        AZ_TYPE_INFO_WITH_NAME_DECL(GenAIMockModuleInterface)
+        AZ_TYPE_INFO_WITH_NAME_DECL(GenAIMockVendorModuleInterface)
         AZ_RTTI_NO_TYPE_INFO_DECL()
         AZ_CLASS_ALLOCATOR_DECL
 
-        GenAIMockModuleInterface();
+        GenAIMockVendorModuleInterface();
 
         /**
          * Add required SystemComponents to the SystemEntity.
          */
         AZ::ComponentTypeList GetRequiredSystemComponents() const override;
     };
-} // namespace GenAIMock
+} // namespace GenAIMockVendor

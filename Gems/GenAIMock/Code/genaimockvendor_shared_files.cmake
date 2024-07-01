@@ -4,6 +4,5 @@
 # SPDX-License-Identifier: Apache-2.0 OR MIT
 
 set(FILES
-    Source/Tools/GenAIMockEditorSystemComponent.cpp
-    Source/Tools/GenAIMockEditorSystemComponent.h
+    Source/Clients/GenAIMockVendorModule.cpp
 )

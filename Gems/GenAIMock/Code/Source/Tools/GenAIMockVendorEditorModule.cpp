@@ -6,25 +6,25 @@
  *
  */
 
-#include "GenAIMockEditorSystemComponent.h"
-#include <GenAIMock/GenAIMockTypeIds.h>
-#include <GenAIMockModuleInterface.h>
+#include "GenAIMockVendorEditorSystemComponent.h"
+#include <GenAIMockVendor/GenAIMockVendorTypeIds.h>
+#include <GenAIMockVendorModuleInterface.h>
 
-namespace GenAIMock
+namespace GenAIMockVendor
 {
-    class GenAIMockEditorModule : public GenAIMockModuleInterface
+    class GenAIMockVendorEditorModule : public GenAIMockVendorModuleInterface
     {
     public:
-        AZ_RTTI(GenAIMockEditorModule, GenAIMockEditorModuleTypeId, GenAIMockModuleInterface);
-        AZ_CLASS_ALLOCATOR(GenAIMockEditorModule, AZ::SystemAllocator);
+        AZ_RTTI(GenAIMockVendorEditorModule, GenAIMockVendorEditorModuleTypeId, GenAIMockVendorModuleInterface);
+        AZ_CLASS_ALLOCATOR(GenAIMockVendorEditorModule, AZ::SystemAllocator);
 
-        GenAIMockEditorModule()
+        GenAIMockVendorEditorModule()
         {
             // Push results of [MyComponent]::CreateDescriptor() into m_descriptors here.
             // Add ALL components descriptors associated with this gem to m_descriptors.
             // This will associate the AzTypeInfo information for the components with the the SerializeContext, BehaviorContext and
             // EditContext. This happens through the [MyComponent]::Reflect() function.
-            m_descriptors.insert(m_descriptors.end(), { GenAIMockEditorSystemComponent::CreateDescriptor() });
+            m_descriptors.insert(m_descriptors.end(), { GenAIMockVendorEditorSystemComponent::CreateDescriptor() });
         }
 
         /**
@@ -34,14 +34,14 @@ namespace GenAIMock
         AZ::ComponentTypeList GetRequiredSystemComponents() const override
         {
             return AZ::ComponentTypeList{
-                azrtti_typeid<GenAIMockEditorSystemComponent>(),
+                azrtti_typeid<GenAIMockVendorEditorSystemComponent>(),
             };
         }
     };
-} // namespace GenAIMock
+} // namespace GenAIMockVendor
 
 #if defined(O3DE_GEM_NAME)
-AZ_DECLARE_MODULE_CLASS(AZ_JOIN(Gem_, O3DE_GEM_NAME, _Editor), GenAIMock::GenAIMockEditorModule)
+AZ_DECLARE_MODULE_CLASS(AZ_JOIN(Gem_, O3DE_GEM_NAME, _Editor), GenAIMockVendor::GenAIMockVendorEditorModule)
 #else
-AZ_DECLARE_MODULE_CLASS(Gem_GenAIMock_Editor, GenAIMock::GenAIMockEditorModule)
+AZ_DECLARE_MODULE_CLASS(Gem_GenAIMockVendor_Editor, GenAIMockVendor::GenAIMockVendorEditorModule)
 #endif

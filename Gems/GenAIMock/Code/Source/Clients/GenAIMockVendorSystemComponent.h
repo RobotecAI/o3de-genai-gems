@@ -10,12 +10,12 @@
 
 #include <AzCore/Component/Component.h>
 
-namespace GenAIMock
+namespace GenAIMockVendor
 {
-    class GenAIMockSystemComponent : public AZ::Component
+    class GenAIMockVendorSystemComponent : public AZ::Component
     {
     public:
-        AZ_COMPONENT_DECL(GenAIMockSystemComponent);
+        AZ_COMPONENT_DECL(GenAIMockVendorSystemComponent);
 
         static void Reflect(AZ::ReflectContext* context);
 
@@ -24,8 +24,8 @@ namespace GenAIMock
         static void GetRequiredServices(AZ::ComponentDescriptor::DependencyArrayType& required);
         static void GetDependentServices(AZ::ComponentDescriptor::DependencyArrayType& dependent);
 
-        GenAIMockSystemComponent() = default;
-        ~GenAIMockSystemComponent() = default;
+        GenAIMockVendorSystemComponent() = default;
+        ~GenAIMockVendorSystemComponent() = default;
 
     protected:
         ////////////////////////////////////////////////////////////////////////
@@ -35,4 +35,4 @@ namespace GenAIMock
         ////////////////////////////////////////////////////////////////////////
     };
 
-} // namespace GenAIMock
+} // namespace GenAIMockVendor
