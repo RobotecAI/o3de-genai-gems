@@ -15,9 +15,6 @@ namespace GenAIFramework
     inline constexpr const char* GenAIFrameworkEditorSystemComponentTypeId = "{CD496C8B-7D2A-447B-A1F9-B449A9BFEC04}";
     inline constexpr const char* GenAIFrameworkSystemComponentConfigurationTypeId = "{6AB6E636-60DC-4377-BD45-2326CF6A0069}";
 
-    inline constexpr const char* GenAIAsyncRequestSystemComponentTypeId = "{D2D195A2-C720-4961-9AEF-C00FCB0AA70D}";
-    inline constexpr const char* GenAIAsyncRequestEditorSystemComponentTypeId = "{018E7A45-43AE-7E69-8BD9-0751B9170BF5}";
-
     // Communication TypeIds
     inline constexpr const char* SystemRegistrationContextTypeId = "{E162937C-0177-4CED-87B3-3B037A44C394}";
     inline constexpr const char* AsyncRequestsTypeId = "{018E7A12-5DB2-7DAA-A764-78D7703C8EFA}";
