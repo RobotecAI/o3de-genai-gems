@@ -8,7 +8,6 @@
 
 #include "ClaudeModelTextCompletions.h"
 #include "ClaudeModelConfiguration.h"
-#include <GenAIFramework/Communication/AIModelRequestBus.h>
 #include <GenAIFramework/SystemRegistrationContext/SystemRegistrationContext.h>
 
 #include <AzCore/Component/Component.h>

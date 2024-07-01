@@ -9,6 +9,7 @@
 #pragma once
 
 #include <GenAIFramework/GenAIFrameworkTypeIds.h>
+#include <GenAIFramework/GenAIFrameworkTypes.h>
 
 #include <AzCore/Component/ComponentBus.h>
 #include <AzCore/EBus/EBus.h>
@@ -21,21 +22,6 @@
 
 namespace GenAIFramework
 {
-    enum class Role
-    {
-        User,
-        Assistant,
-        System
-    };
-
-    using AIContent = AZStd::vector<AZStd::any>; //!< The type of content sent and received by the AI
-    using AIMessage = AZStd::pair<Role, AIContent>; //!< The type of message sent and received by the AI
-    using AIMessages = AZStd::vector<AIMessage>; //!< The array of messages received and sent to the AI
-    using ModelAPIRequest = AZStd::string; //!< The type of request to send to the model provider
-    using ModelAPIResponse = AZ::Outcome<AZStd::string, AZStd::string>; //!< The type of response from the model provider
-    using ModelAPIExtractedResponse = AZ::Outcome<AIMessage, AZStd::string>; //!< The type of extracted response from the model
-    using AIHistory = AIMessages; //!< The type of AI history
-
     class AIModelRequests : public AZ::ComponentBus
     {
     public:

@@ -13,9 +13,6 @@
 #include <UI/AgentConfigurationWidget/AgentConfigurationWidget.h>
 #include <UI/NewChatWidget.h>
 
-#include <AzCore/Component/Entity.h>
-#include <AzCore/std/containers/unordered_map.h>
-
 #include <QLabel>
 #include <QMainWindow>
 #include <QMap>

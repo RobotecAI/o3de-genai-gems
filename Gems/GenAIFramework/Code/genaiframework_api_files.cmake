@@ -1,6 +1,7 @@
 set(FILES
     Include/GenAIFramework/GenAIFrameworkBus.h
     Include/GenAIFramework/GenAIFrameworkTypeIds.h
+    Include/GenAIFramework/GenAIFrameworkTypes.h
 
     Include/GenAIFramework/Communication/AIServiceProviderBus.h
     Include/GenAIFramework/Communication/AIModelRequestBus.h

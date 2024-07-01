@@ -117,13 +117,13 @@ namespace GenAIFramework
 
     AZStd::vector<AZStd::pair<AZStd::string, AZ::Uuid>> GenAIFrameworkSystemComponent::GetModelConfigurationNamesAndComponentTypeIds() const
     {
-        const auto modelConfigurations = GetSystemRegistrationContext()->GetRegisteredModelConfigurations();
+        const auto& modelConfigurations = GetSystemRegistrationContext()->GetRegisteredModelConfigurations();
         return GetRegisteredComponentsNameAndComponentTypeId(modelConfigurations);
     }
 
     AZStd::vector<AZStd::pair<AZStd::string, AZ::Uuid>> GenAIFrameworkSystemComponent::GetServiceProviderNamesAndComponentTypeIds() const
     {
-        const auto registeredProviders = GetSystemRegistrationContext()->GetRegisteredServiceProviders();
+        const auto& registeredProviders = GetSystemRegistrationContext()->GetRegisteredServiceProviders();
         return GetRegisteredComponentsNameAndComponentTypeId(registeredProviders);
     }
 
@@ -283,7 +283,6 @@ namespace GenAIFramework
         ActivateEntities(m_configuration.m_serviceProviders);
         ActivateEntities(m_configuration.m_modelConfigurations);
 
-        auto registeredGenerators = GetSystemRegistrationContext()->GetRegisteredModelConfigurations();
         AZ::SerializeContext* serializeContext = nullptr;
         AZ::ComponentApplicationBus::BroadcastResult(serializeContext, &AZ::ComponentApplicationBus::Events::GetSerializeContext);
     }
@@ -364,14 +363,14 @@ namespace GenAIFramework
     AZ::Outcome<AZ::u64, void> GenAIFrameworkSystemComponent::CreateNewFeatureConversation(
         const AZStd::string& serviceProviderName, const AZStd::string& modelModelConfigurationName, const AZStd::string& featureName)
     {
-        auto features = GetSystemRegistrationContext()->GetFeatureNamesAndUuids();
-        auto featureUuid = features.find(featureName);
+        const auto& features = GetSystemRegistrationContext()->GetFeatureNamesAndUuids();
+        const auto featureUuid = features.find(featureName);
         if (featureUuid == features.end())
         {
             return AZ::Failure();
         }
 
-        auto agentId = CreateAIAgent(serviceProviderName, modelModelConfigurationName);
+        const auto agentId = CreateAIAgent(serviceProviderName, modelModelConfigurationName);
         if (!agentId.IsSuccess())
         {
             return AZ::Failure();

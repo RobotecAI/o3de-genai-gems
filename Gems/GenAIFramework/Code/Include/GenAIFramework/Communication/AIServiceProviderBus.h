@@ -8,8 +8,8 @@
 
 #pragma once
 
-#include <GenAIFramework/Communication/AIModelRequestBus.h>
 #include <GenAIFramework/GenAIFrameworkTypeIds.h>
+#include <GenAIFramework/GenAIFrameworkTypes.h>
 
 #include <AzCore/Component/ComponentBus.h>
 #include <AzCore/EBus/EBus.h>

@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include <GenAIFramework/Communication/AIModelRequestBus.h>
+#include <GenAIFramework/Communication/AIServiceProviderBus.h>
 #include <GenAIFramework/Feature/FeatureBase.h>
 #include <GenAIFramework/GenAIFrameworkTypeIds.h>
 
@@ -30,18 +32,29 @@ namespace GenAIFramework
         AZ_CLASS_ALLOCATOR(SystemRegistrationContext, AZ::SystemAllocator);
         AZ_RTTI(SystemRegistrationContext, SystemRegistrationContextTypeId, AZ::ReflectContext);
 
+        //! Register a service provider component. The component needs to implement a AIServiceProviderBus::Handler.
+        //! The components are stored within this class.
+        //! @tparam C service provider component type
         template<class C>
         void RegisterServiceProvider()
         {
+            static_assert(AZStd::is_base_of<GenAIFramework::AIServiceProviderBus::Handler, C>::value);
             m_registeredServiceProviders.emplace(C::RTTI_Type());
         }
 
+        //! Register a model configuration component. The component needs to implement a AIModelRequestBus::Handler.
+        //! The components are stored within this class.
+        //! @tparam C model configuration component type
         template<class C>
         void RegisterModelConfiguration()
         {
+            static_assert(AZStd::is_base_of<GenAIFramework::AIModelRequestBus::Handler, C>::value);
             m_registeredModelConfigurations.emplace(C::RTTI_Type());
         }
 
+        //! Register a feature component. The component needs to inherit a FeatureBase.
+        //! The components are stored within this class.
+        //! @tparam C feature component type
         template<class C>
         void RegisterFeature(const AZStd::string& name)
         {
@@ -60,6 +73,11 @@ namespace GenAIFramework
             }
         }
 
+        //! Create a feature of a certain uuid type based on the internal map of registered features.
+        //! @param feature type of the feature to create
+        //! @param agentId id of the agent connected to the feature
+        //! @param conversationId id of the conversation connected to the feature
+        //! @return a pointer to a newly created feature or nullptr when creating feature is not possible
         inline AZStd::shared_ptr<FeatureBase> CreateFeature(AZ::Uuid feature, AZ::u64 agentId, AZ::u64 conversationId) const
         {
             auto it = m_featuresFactory.find(feature);
@@ -70,17 +88,23 @@ namespace GenAIFramework
             return nullptr;
         }
 
-        inline AZStd::unordered_map<AZStd::string, AZ::Uuid> GetFeatureNamesAndUuids() const
+        //! Get a reference to the internal map of the registered features; each element consist of the feature name and its uuid
+        //! @return a reference to the internal map of the features
+        inline const AZStd::unordered_map<AZStd::string, AZ::Uuid>& GetFeatureNamesAndUuids() const
         {
             return m_featureNames;
         }
 
-        inline AZStd::unordered_set<AZ::Uuid> GetRegisteredServiceProviders() const
+        //! Get a reference to the internal list (set) of the registered service provider uuids
+        //! @return a reference to the set of the registered service provider uuids
+        inline const AZStd::unordered_set<AZ::Uuid>& GetRegisteredServiceProviders() const
         {
             return m_registeredServiceProviders;
         }
 
-        inline AZStd::unordered_set<AZ::Uuid> GetRegisteredModelConfigurations() const
+        //! Get a reference to the internal list (set) of the registered model configuration uuids
+        //! @return a reference to the set of the registered model configuration uuids
+        inline const AZStd::unordered_set<AZ::Uuid>& GetRegisteredModelConfigurations() const
         {
             return m_registeredModelConfigurations;
         }
