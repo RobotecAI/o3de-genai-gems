@@ -157,6 +157,10 @@ class MyFeature:
 # It is important to add each feature as a separate instance to avoid redefinitions of the same feature and mismatching of the ids used for busses.
 myFeatures.append(MyFeature(agentId, conversationId))
 ```
+It is important to create the feature as a class and store its objects in some kind of data structure (like the `myFeatures` list). This script is called each
+time a new conversation is created with this feature and creating a class object prohibits overriding the previously declared function. This is done because of a limitation of Python interpreter in O3DE. The interpreter is global and all the scripts are executed in the same context.  
+
+
 More information on the available API and data formats which can be used in Python can be found in the [dedicated documentation](./docs/python.md).
 
 ## Registering the feature
