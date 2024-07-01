@@ -7,11 +7,13 @@ This guide will walk you through the process of installing the necessary O3DE Ge
 First, register the `GenAIFramework` Gem and all vendor Gems in the O3DE engine. To do that, use `register` command of the `o3de` script in the engine's folder:
 ```bash
 cd <o3de-directory>
-scripts/o3de.sh register --all-gems-path <o3de-genai-gems>/Gems
+scripts/o3de.sh register --gem-path <o3de-genai-gems>/Framework/GenAIFramework
+scripts/o3de.sh register --all-gems-path <o3de-genai-gems>/Vendors
 ```
 Add the registered Gems to your O3DE project:
 ```bash
-scripts/o3de.sh enable-gem --all-gems-path <o3de-genai-gems>/Gems --project-name <project name>
+scripts/o3de.sh enable-gem --gem-path <o3de-genai-gems>/Framework/GenAIFramework --project-name <project name>
+scripts/o3de.sh enable-gem --all-gems-path <o3de-genai-gems>/Vendors --project-name <project name>
 ```
 
 For a complete tutorial on project configuration, see [Creating Projects Using the Command Line Interface](https://o3de.org/docs/welcome-guide/create/creating-projects-using-cli/) in the O3DE documentation.
