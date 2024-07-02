@@ -29,7 +29,7 @@ namespace GenAIVendorBundle
 
         static void Reflect(AZ::ReflectContext* context);
 
-        int m_maxTokensToSample = 200;
+        int m_maxTokensToSample = 2000;
         float m_temperature = 0.5f;
         bool m_useDefaultTemperature = true;
         float m_topP = 1.f;
