@@ -29,7 +29,7 @@ namespace GenAIFramework
         //! Get the stored chats model, provider and feature names
         //! @return The map of stored chats, where the key is the chat name and the value is tuple
         //! of model, provider and feature names
-        virtual FeaturesConversationsStore GetStoredChats() = 0;
+        virtual FeaturesConversationsMap GetStoredChats() = 0;
 
         //! EBus notification form the UI when a new chat widget is created
         //! @param chatName The name of the chat

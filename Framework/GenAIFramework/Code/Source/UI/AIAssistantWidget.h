@@ -10,7 +10,7 @@
 
 #if !defined(Q_MOC_RUN)
 #include <GenAIFramework/GenAIFrameworkBus.h>
-#include <GenAIFramework/UI/UIConversatonBus.h>
+#include <GenAIFramework/UI/UIConversationBus.h>
 #include <UI/AgentConfigurationWidget/AgentConfigurationWidget.h>
 #include <UI/NewChatWidget.h>
 

@@ -11,7 +11,7 @@
 
 #include <GenAIFramework/GenAIFrameworkEditorBus.h>
 #include <GenAIFramework/GenAIFrameworkTypes.h>
-#include <GenAIFramework/UI/UIConversatonBus.h>
+#include <GenAIFramework/UI/UIConversationBus.h>
 #include <UI/ChatWidget.h>
 
 #include <QMessageBox>
@@ -35,7 +35,7 @@ namespace GenAIFramework
 
         m_ui->conversations->addTab(m_newChatWidget, "+");
 
-        FeaturesConversationsStore storedChats;
+        FeaturesConversationsMap storedChats;
         UIConversationsBus::BroadcastResult(storedChats, &UIConversationsBus::Events::GetStoredChats);
 
         for (const auto& chat : storedChats)

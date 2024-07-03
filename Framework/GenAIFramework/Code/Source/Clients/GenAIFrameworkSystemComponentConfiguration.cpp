@@ -19,7 +19,7 @@ namespace GenAIFramework
                 ->Version(0)
                 ->Field("ServiceProviders", &GenAIFrameworkSystemComponentConfiguration::m_serviceProviders)
                 ->Field("ModelConfigurations", &GenAIFrameworkSystemComponentConfiguration::m_modelConfigurations)
-                ->Field("FeaturesConversations", &GenAIFrameworkSystemComponentConfiguration::m_featuresConversationsStore);
+                ->Field("FeaturesConversations", &GenAIFrameworkSystemComponentConfiguration::m_FeaturesConversationsMap);
         }
     }
 } // namespace GenAIFramework

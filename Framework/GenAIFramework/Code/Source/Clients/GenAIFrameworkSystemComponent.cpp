@@ -13,7 +13,7 @@
 #include <GenAIFramework/Feature/PythonFeatureBase.h>
 #include <GenAIFramework/GenAIFrameworkTypeIds.h>
 #include <GenAIFramework/SystemRegistrationContext/SystemRegistrationContext.h>
-#include <GenAIFramework/UI/UIConversatonBus.h>
+#include <GenAIFramework/UI/UIConversationBus.h>
 #include <O3DEAssistantFeature/O3DEAssistantFeature.h>
 
 #include <AzCore/Component/ComponentApplication.h>
@@ -399,17 +399,17 @@ namespace GenAIFramework
         [[maybe_unused]] const AZStd::string& providerName,
         [[maybe_unused]] const AZStd::string& featureName)
     {
-        m_configuration.m_featuresConversationsStore[chatName] = FeatureTuple{ modelName, providerName, featureName };
+        m_configuration.m_FeaturesConversationsMap[chatName] = FeatureTuple{ modelName, providerName, featureName };
     }
 
     void GenAIFrameworkSystemComponent::OnChatWidgetClosed(const AZStd::string& chatName)
     {
-        m_configuration.m_featuresConversationsStore.erase(chatName);
+        m_configuration.m_FeaturesConversationsMap.erase(chatName);
     }
 
-    FeaturesConversationsStore GenAIFrameworkSystemComponent::GetStoredChats()
+    FeaturesConversationsMap GenAIFrameworkSystemComponent::GetStoredChats()
     {
-        return m_configuration.m_featuresConversationsStore;
+        return m_configuration.m_FeaturesConversationsMap;
     }
 
 } // namespace GenAIFramework

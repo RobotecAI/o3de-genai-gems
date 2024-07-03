@@ -35,6 +35,6 @@ namespace GenAIFramework
         EntityIdToEntityMap m_serviceProviders;
         EntityIdToEntityMap m_modelConfigurations;
 
-        FeaturesConversationsStore m_featuresConversationsStore;
+        FeaturesConversationsMap m_FeaturesConversationsMap;
     };
 } // namespace GenAIFramework

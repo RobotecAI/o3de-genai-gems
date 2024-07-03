@@ -12,7 +12,7 @@
 #include <Clients/GenAIFrameworkSystemComponentConfiguration.h>
 #include <GenAIFramework/GenAIFrameworkBus.h>
 #include <GenAIFramework/SystemRegistrationContext/SystemRegistrationContext.h>
-#include <GenAIFramework/UI/UIConversatonBus.h>
+#include <GenAIFramework/UI/UIConversationBus.h>
 #include <SettingsRegistryManager/SettingsRegistryManager.h>
 
 #include <AzCore/Component/Component.h>
@@ -98,7 +98,7 @@ namespace GenAIFramework
 
         void OnChatWidgetClosed(const AZStd::string& chatName) override;
 
-        FeaturesConversationsStore GetStoredChats() override;
+        FeaturesConversationsMap GetStoredChats() override;
 
         AZStd::unordered_map<AZ::u64, AZStd::shared_ptr<AIAgent>> m_agents;
         AZStd::unordered_map<AZ::u64, AZStd::shared_ptr<FeatureBase>> m_featureConversations;

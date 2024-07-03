@@ -33,6 +33,6 @@ namespace GenAIFramework
     using AIHistory = AIMessages; //!< The type of AI history
 
     using FeatureTuple = AZStd::tuple<AZStd::string, AZStd::string, AZStd::string>; //!< The tuple of model, provider, and feature names
-    using FeaturesConversationsStore = AZStd::unordered_map<AZStd::string, FeatureTuple>; //!< The store of feature conversations
+    using FeaturesConversationsMap = AZStd::unordered_map<AZStd::string, FeatureTuple>; //!< The store of feature conversations
 
 } // namespace GenAIFramework
