@@ -10,6 +10,7 @@
 
 #include <AzCore/Outcome/Outcome.h>
 #include <AzCore/std/any.h>
+#include <AzCore/std/containers/unordered_map.h>
 #include <AzCore/std/containers/vector.h>
 #include <AzCore/std/string/string.h>
 #include <AzCore/std/utility/pair.h>
@@ -30,4 +31,8 @@ namespace GenAIFramework
     using ModelAPIResponse = AZ::Outcome<AZStd::string, AZStd::string>; //!< The type of response from the model provider
     using ModelAPIExtractedResponse = AZ::Outcome<AIMessage, AZStd::string>; //!< The type of extracted response from the model
     using AIHistory = AIMessages; //!< The type of AI history
+
+    using FeatureTuple = AZStd::tuple<AZStd::string, AZStd::string, AZStd::string>; //!< The tuple of model, provider, and feature names
+    using FeaturesConversationsMap = AZStd::unordered_map<AZStd::string, FeatureTuple>; //!< The store of feature conversations
+
 } // namespace GenAIFramework

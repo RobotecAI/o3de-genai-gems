@@ -18,7 +18,8 @@ namespace GenAIFramework
             serializeContext->Class<GenAIFrameworkSystemComponentConfiguration>()
                 ->Version(0)
                 ->Field("ServiceProviders", &GenAIFrameworkSystemComponentConfiguration::m_serviceProviders)
-                ->Field("ModelConfigurations", &GenAIFrameworkSystemComponentConfiguration::m_modelConfigurations);
+                ->Field("ModelConfigurations", &GenAIFrameworkSystemComponentConfiguration::m_modelConfigurations)
+                ->Field("FeaturesConversations", &GenAIFrameworkSystemComponentConfiguration::m_FeaturesConversationsMap);
         }
     }
 } // namespace GenAIFramework
