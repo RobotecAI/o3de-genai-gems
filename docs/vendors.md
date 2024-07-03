@@ -36,6 +36,17 @@ Service components:
 
 Each _model component_ can be paired with the appropriate _service provider component_ to pair an _AI Agent_. This _agent_ communicates with the model running on a given hardware (e.g. `Claude Messages API` with `Claude HTTP Service Provider` to run `Claude` model in a cloud).
 
+The table below shows the compatibility between the model components and service provider components.
+
+| Model component | Service provider component | Notes |
+| --- | --- | --- |
+| Claude Messages API | Claude HTTP | Supports `Claude 2.1` and all of `Claude 3` versions. The HTTP service provider should point to the appropriate URL for use with the messages API. A `ANTHROPIC_API_KEY` environment variable must be available. |
+| Claude Messages API | Claude Amazon Bedrock | Supports `Claude 2.1` and all of `Claude 3` versions available in the selected region. Needs to be used with a valid AWS SDK credentials sourced in the environment. |
+| Claude Text Completions | Claude HTTP | Supports `Claude 2.1` version. The HTTP service provider should point to the appropriate URL for use with the Text Completions API. A `ANTHROPIC_API_KEY` environment variable must be available. |
+| Claude Text Completions | Claude Amazon Bedrock | Supports `Claude 2.1` version. Needs to be used with a valid AWS SDK credentials sourced in the environment. |
+| Ollama Chat | Ollama HTTP | Supports the all text models available through `Ollama`. The model name needs to be inputted in the `Model component`. Use with the `chat` functionality of Ollama by setting the appropriate URL. |
+| Ollama Generate | Ollama HTTP | Supports the all text models available through `Ollama`. The model name needs to be inputted in the `Model component`. Use with the `generate` functionality of Ollama by setting the appropriate URL.|
+
 ### Using the `GenAIAmazonBedrockVendorBundle` Gem
 Claude models can be used with the `Amazon Bedrock` service provider. To set up the `Claude` model with `Amazon Bedrock` the `Service provider` needs to be changed. Select the `Claude Amazon Bedrock` service provider instead of the `Claude HTTP` service provider and set up the fields accordingly. Additionally, `Anthropic` version in the model configuration should be changed to match the versions specified in the [Claude Amazon Bedrock documentation](https://docs.aws.amazon.com/bedrock/latest/userguide/model-parameters-anthropic-claude-messages.html#model-parameters-anthropic-claude-messages-overview) (example `bedrock-2023-05-31`).
 
