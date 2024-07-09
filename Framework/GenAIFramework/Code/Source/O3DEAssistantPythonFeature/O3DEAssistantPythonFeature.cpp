@@ -7,10 +7,7 @@
  */
 
 #include "O3DEAssistantPythonFeature.h"
-#include <GenAIFramework/Communication/AIModelRequestBus.h>
-#include <GenAIFramework/Feature/AIAgentBus.h>
-#include <GenAIFramework/Feature/ConversationBus.h>
-#include <GenAIFramework/Feature/PythonFeatureBase.h>
+
 #include <GenAIFramework/SystemRegistrationContext/SystemRegistrationContext.h>
 
 #include <AzCore/Component/TickBus.h>

@@ -59,7 +59,7 @@ namespace GenAIFramework
         //! Optional method to set custom model parameters (e.g. stop sequence)
         //! @param parameterName The name of the parameter to set.
         //! @param parameterValue The value to set the parameter.
-        //! @return True if the parameter was set, false otherwise.
+        //! @return Success if the parameter was set, failure with the error message otherwise.
         //! @note This method is optional and can be implemented by the model configuration component - if the model configuration
         //! component does not have particular parameters to set, it should return failure.
         virtual AZ::Outcome<void, AZStd::string> SetModelParameter(

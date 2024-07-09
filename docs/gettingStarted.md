@@ -13,7 +13,7 @@ scripts/o3de.sh register --all-gems-path <o3de-genai-gems>/Vendors
 Add the registered Gems to your O3DE project:
 ```bash
 scripts/o3de.sh enable-gem --gem-path <o3de-genai-gems>/Framework/GenAIFramework --project-name <project name>
-scripts/o3de.sh enable-gem --all-gems-path <o3de-genai-gems>/Vendors --project-name <project name>
+scripts/o3de.sh enable-gem --all-gem-paths <o3de-genai-gems>/Vendors --project-name <project name>
 ```
 
 For a complete tutorial on project configuration, see [Creating Projects Using the Command Line Interface](https://o3de.org/docs/welcome-guide/create/creating-projects-using-cli/) in the O3DE documentation.
