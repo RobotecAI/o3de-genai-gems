@@ -169,4 +169,4 @@ namespace GenAIFramework::JsonUtils
         return buffer.GetString();
     }
 
-} // namespace GenAIFramework::Internal
+} // namespace GenAIFramework::JsonUtils

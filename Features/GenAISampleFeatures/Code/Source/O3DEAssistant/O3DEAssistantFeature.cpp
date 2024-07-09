@@ -37,10 +37,9 @@ namespace GenAISampleFeatures
 
     void O3DEAssistantFeature::OnNewMessage(const AZStd::string& message)
     {
-        GenAIFramework::AIHistory history;
-        GenAIFramework::AIAgentRequestBus::EventResult(history, m_agentId, &GenAIFramework::AIAgentRequestBus::Events::GetHistory);
-
-        GenAIFramework::AIMessages messages = history;
+        // Init AI Messages with the history
+        GenAIFramework::AIHistory messages;
+        GenAIFramework::AIAgentRequestBus::EventResult(messages, m_agentId, &GenAIFramework::AIAgentRequestBus::Events::GetHistory);
 
         // System message is stored in the history; it should be added otherwise
         if (messages.empty())

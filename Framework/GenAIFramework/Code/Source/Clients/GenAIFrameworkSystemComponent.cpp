@@ -348,7 +348,7 @@ namespace GenAIFramework
 
         // Generate a unique id for the model agent
         auto currentTime = AZStd::chrono::system_clock::now();
-        AZ::u32 idTime = static_cast<AZ::u64>(currentTime.time_since_epoch().count());
+        AZ::u32 idTime = static_cast<AZ::u32>(currentTime.time_since_epoch().count());
         AZ::u64 id = m_agents.size() << 32 | idTime;
 
         m_agents[id] = AZStd::make_shared<AIAgent>(serviceProviderId, modelConfigurationId, id);
