@@ -23,3 +23,5 @@ Configure the model as described in the [Getting Started](../../../../../docs/ge
 - *Remove small racks*
 - *Move the racks closer to the wall*
 - *Create the same warehouse next to the existing one*
+
+>NOTE: The available [system prompt](prompt_templates/layout_designer_system_prompt_template.md) has been prepared for strong Claude models. It is useful to adjust the prompt for other, especially weaker models. For best results Claude Sonnet 3.5 is recommended.
