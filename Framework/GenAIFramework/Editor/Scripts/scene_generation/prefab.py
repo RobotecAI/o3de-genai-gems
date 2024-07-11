@@ -7,7 +7,7 @@
 """
 
 from typing import Any
-from utils import  prefab_dict_to_xml
+from utils import prefab_dict_to_xml
 import azlmbr
 
 
@@ -51,11 +51,11 @@ class AvailablePrefab:
         description: str,
         size: list[float],
         outer_margin: list[float] = None,
-        anchor_transform=None,
-        excluded_from_overlap_check=False,
-        can_be_put_on=None,
-        shelves_zs=None,
-        accesibility_requirements=None,
+        anchor_transform: dict[str, list[float]] = None,
+        excluded_from_overlap_check: bool = False,
+        can_be_put_on: list[str] = None,
+        shelves_zs: list[float] = None,
+        accesibility_requirements: str = None,
     ) -> None:
         self.name = name
         self.path = path
@@ -72,7 +72,7 @@ class AvailablePrefab:
         self.excluded_from_overlap_check = excluded_from_overlap_check
 
     @property
-    def xml(self):
+    def xml(self) -> str:
         return prefab_dict_to_xml(self.to_dict())
 
     def to_dict(self) -> dict[str, Any]:
@@ -135,7 +135,7 @@ class SpawnedPrefab:
         translation: list[float],
         available_prefab: AvailablePrefab,
         overlapping_entity_ids: set[int] = None,
-        semantic_info="",
+        semantic_info: str = "",
     ) -> None:
         self.entity_id = entity_id
         self.translation = translation
@@ -144,50 +144,50 @@ class SpawnedPrefab:
         self.available_prefab = available_prefab
 
     @property
-    def name(self):
+    def name(self) -> str:
         return self.available_prefab.name
 
     @property
-    def size(self):
+    def size(self) -> list[float]:
         return self.available_prefab.size
 
     @property
-    def outer_margin(self):
+    def outer_margin(self) -> list[float]:
         return self.available_prefab.outer_margin
 
     @property
-    def path(self):
+    def path(self) -> str:
         return self.available_prefab.path
 
     @property
-    def description(self):
+    def description(self) -> str:
         return self.available_prefab.description
 
     @property
-    def anchor_transform(self):
+    def anchor_transform(self) -> dict[str, list[float]]:
         return self.available_prefab.anchor_transform
 
     @property
-    def excluded_from_overlap_check(self):
+    def excluded_from_overlap_check(self) -> bool:
         return self.available_prefab.excluded_from_overlap_check
 
     @property
-    def can_be_put_on(self):
+    def can_be_put_on(self) -> list[str]:
         return self.available_prefab.can_be_put_on
 
     # ----------------- Warehouse specific attributes -----------------
     # NOTE: These attributes should be created dynamically as they are specific to warehouses
     @property
-    def shelves_zs(self):
+    def shelves_zs(self) -> list[float]:
         return self.available_prefab.shelves_zs
 
     @property
-    def accesibility_requirements(self):
+    def accesibility_requirements(self) -> str:
         return self.available_prefab.accesibility_requirements
 
     # ----------------- Warehouse specific attributes -----------------
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return self.xml
 
     def __hash__(self) -> int:
@@ -216,26 +216,23 @@ class SpawnedPrefab:
         return d
 
     @property
-    def xml(self):
+    def xml(self) -> str:
         return prefab_dict_to_xml(self.to_dict())
 
     @property
-    def bounds(self):
+    def bounds(self) -> list[float]:
         x_min = self.translation[0]
         x_max = self.translation[0] + self.size[0]
         y_min = self.translation[1]
         y_max = self.translation[1] + self.size[1]
         return [x_min, x_max, y_min, y_max]
 
-    def intersects(self, other_prefab: "SpawnedPrefab"):
+    def intersects(self, other_prefab: "SpawnedPrefab") -> bool:
         bounds1 = self.bounds
         bounds2 = other_prefab.bounds
         x_overlap = max(0, min(bounds1[1], bounds2[1]) - max(bounds1[0], bounds2[0]))
         y_overlap = max(0, min(bounds1[3], bounds2[3]) - max(bounds1[2], bounds2[2]))
         return x_overlap > 0 and y_overlap > 0
-
-    def base_rect(self):
-        return (self.bbox.x, self.bbox.y), (self.bbox.w, self.bbox.l), 0
 
     def refresh_overlapping_entity_ids_only_for_this_prefab(
         self, prefabs_to_check: dict[int, "SpawnedPrefab"]

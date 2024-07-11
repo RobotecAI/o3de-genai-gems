@@ -14,7 +14,7 @@ import traceback
 exec_global_scope = {}
 
 
-def run_code(code):
+def run_code(code: str) -> str:
     exception = ""
     try:
         f = StringIO()

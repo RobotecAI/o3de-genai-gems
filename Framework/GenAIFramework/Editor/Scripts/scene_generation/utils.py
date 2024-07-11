@@ -13,7 +13,7 @@ from typing import Any
 import re
 
 
-def prefab_dicts_to_xml(prefabs: list[dict[str, Any]], root_name: str):
+def prefab_dicts_to_xml(prefabs: list[dict[str, Any]], root_name: str) -> str:
     def _to_xml(d, parent):
         for k, v in d.items():
             if isinstance(v, dict):
@@ -30,7 +30,7 @@ def prefab_dicts_to_xml(prefabs: list[dict[str, Any]], root_name: str):
     return xml_string.strip()
 
 
-def prefab_dict_to_xml(prefab: dict[str, Any]):
+def prefab_dict_to_xml(prefab: dict[str, Any]) -> str:
     def _to_xml(d, parent):
         for k, v in d.items():
             if isinstance(v, dict):
@@ -57,7 +57,7 @@ def parse_vector(vector_str) -> list[float]:
         raise ValueError(f"Invalid vector string: {vector_str}")
 
 
-def extract_text_from_xml_tags(text: str, tag: str = "python"):
+def extract_text_from_xml_tags(text: str, tag: str = "python") -> str:
     start_tag = f"<{tag}>"
     end_tag = f"</{tag}>"
     start_index = text.find(start_tag)

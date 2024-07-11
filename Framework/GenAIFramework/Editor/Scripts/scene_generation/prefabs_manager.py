@@ -20,7 +20,7 @@ import azlmbr
 
 
 class SpawnedPrefabsDict(dict):
-    def __getitem__(self, key: EditorEntityId | int):
+    def __getitem__(self, key: EditorEntityId | int) -> SpawnedPrefab:
         key = int(key)
         return super().__getitem__(key)
 
@@ -119,14 +119,14 @@ class PrefabsManager:
         return spawned_prefabs_list[::-1]
 
     @property
-    def overlapping_prefabs(self):
+    def overlapping_prefabs(self) -> list[SpawnedPrefab]:
         overlapping_prefabs = []
         for prefab in self.spawned_prefabs.values():
             if prefab.overlapping_entity_ids:
                 overlapping_prefabs.append(prefab)
         return overlapping_prefabs
 
-    def overlapping_prefabs_xml(self):
+    def overlapping_prefabs_xml(self) -> str:
         op = self.overlapping_prefabs
         if op:
             return prefab_dicts_to_xml([prefab.to_dict() for prefab in op], "overlapping_prefabs")
@@ -156,8 +156,8 @@ class PrefabsManager:
         self,
         entity_id: int | EditorEntityId,
         new_translation: list[float],
-        log_action=True,
-        raise_exception_on_overlap=False,
+        log_action: bool = True,
+        raise_exception_on_overlap: bool = False,
     ):
         spawned_prefab = self.spawned_prefabs[entity_id]
         previous_translation = spawned_prefab.translation
@@ -197,7 +197,9 @@ class PrefabsManager:
                 )
 
     @staticmethod
-    def transform_with_anchor_transform(translation, anchor_transform):
+    def transform_with_anchor_transform(
+        translation: list[float], anchor_transform: dict[str, list[float]]
+    ) -> tuple[list[float], list[float]]:
         "returns translation and rotation after applying anchor_transform"
         translation_anch = np.array(translation) - np.array(anchor_transform["translation"])
         # NOTE: no general rotation for now, so just from anchor_transform
@@ -205,7 +207,9 @@ class PrefabsManager:
         return translation_anch.tolist(), rotation_anch.tolist()
 
     @staticmethod
-    def transform_with_inv_anchor_transform(translation, anchor_transform):
+    def transform_with_inv_anchor_transform(
+        translation: list[float], anchor_transform: dict[str, list[float]]
+    ) -> tuple[list[float], list[float]]:
         "returns translation and rotation after applying anchor_transform"
         inv_translation_anch = np.array(translation) + np.array(anchor_transform["translation"])
         # NOTE: no general rotation for now, so just from anchor_transform
@@ -267,7 +271,7 @@ class PrefabsManager:
             )
             return spawned_prefab
 
-    def get_actions_log_xml(self, num_actions=0):
+    def get_actions_log_xml(self, num_actions: int = 0) -> str:
         actions_log = "\n".join(self.actions_log[-int(num_actions) :])
         return f"<actions_log>\n{actions_log}\n</actions_log>"
 
@@ -319,18 +323,18 @@ Before reacting to this problem think step by step in <thinking_how_to_solve_ove
 """
             raise OverlapException(message)
 
-    def positions_to_xml(self, l: list[list[float]], root_name: str):
+    def positions_to_xml(self, positions: list[list[float]], root_name: str) -> str:
         """
-        converts list of translations to xml in a form
+        converts list of positions to xml in a form
         <root_name>
             <pos>[l[0], l[1], l[2]]<pos>
             ...
         </root_name>
         """
         root = ET.Element(root_name)
-        for translation in l:
-            translation_element = ET.SubElement(root, "pos")
-            translation_element.text = str(translation)
+        for p in positions:
+            pos_el = ET.SubElement(root, "pos")
+            pos_el.text = str(p)
         xml_string = parseString(ET.tostring(root)).toprettyxml(indent="  ")
         xml_string = "\n".join(xml_string.split("\n")[1:])
         return xml_string
@@ -342,7 +346,9 @@ Before reacting to this problem think step by step in <thinking_how_to_solve_ove
                 f'<action>Removing {spawned_prefab.name} (id={entity_id}, semantic_info="{spawned_prefab.semantic_info}") from {spawned_prefab.translation}</action>'
             )
         azlmbr.editor.ToolsApplicationRequestBus(
-            azlmbr.bus.Broadcast, "DeleteEntityAndAllDescendants", spawned_prefab.entity_id.azlmbr_entity_id
+            azlmbr.bus.Broadcast,
+            "DeleteEntityAndAllDescendants",
+            spawned_prefab.entity_id.azlmbr_entity_id,
         )
 
         for prefab in self.spawned_prefabs.values():
@@ -367,7 +373,7 @@ Before reacting to this problem think step by step in <thinking_how_to_solve_ove
                 return prefab
         return None
 
-    def can_prefab_be_positioned_at(self, prefab_name: str, translation: list[float]):
+    def can_prefab_be_positioned_at(self, prefab_name: str, translation: list[float]) -> bool:
         "use spawned_prefab refresh_overlapping_entity_ids for decision"
         available_prefab = self.available_prefabs[prefab_name]
         if not available_prefab:
@@ -383,7 +389,9 @@ Before reacting to this problem think step by step in <thinking_how_to_solve_ove
             return False
         return True
 
-    def find_positions_along_x_and_along_y(self, prefab: SpawnedPrefab, area, step=0.1):
+    def find_positions_along_x_and_along_y(
+        self, prefab: SpawnedPrefab, area: list[float], step: float = 0.1
+    ) -> list[list[float]]:
         """
         Find all possible positions along translation.x and translation.y (floats) in given area for given prefab
         """
