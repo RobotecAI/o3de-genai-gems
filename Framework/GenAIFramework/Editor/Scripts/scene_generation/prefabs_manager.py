@@ -170,7 +170,7 @@ class PrefabsManager:
     def transform_with_inv_anchor_transform(
         translation: list[float], anchor_transform: dict[str, list[float]]
     ) -> tuple[list[float], list[float]]:
-        "returns translation and rotation after applying anchor_transform"
+        "returns translation and rotation after applying inverse anchor_transform"
         inv_translation_anch = np.array(translation) + np.array(anchor_transform["translation"])
         # NOTE: no general rotation for now, so just from anchor_transform
         inv_rotation_anch = -np.deg2rad(anchor_transform["rotation"])
@@ -358,7 +358,6 @@ Before reacting to this problem think step by step in <thinking_how_to_solve_ove
         return None
 
     def can_prefab_be_positioned_at(self, prefab_name: str, translation: list[float]) -> bool:
-        "use spawned_prefab refresh_overlapping_entity_ids for decision"
         available_prefab = self.available_prefabs[prefab_name]
         if not available_prefab:
             return False
