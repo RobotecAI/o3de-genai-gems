@@ -15,7 +15,7 @@ scripts/o3de.sh enable-gem -pp <project name> -gp <o3de-extras>/Gems/WarehouseAs
 
 ## Usage
 
-Configure the model as described in the [Getting Started](../../../../../docs/gettingStarted.md) guide. In 11. step select the "O3DE Scene Generation Assistant (Python)" feature.
+Configure the model as described in the [Getting Started](../../../../../docs/gettingStarted.md) guide. In 12. step select the "O3DE Scene Generation Assistant (Python)" feature.
 
 **Example questions**
 
