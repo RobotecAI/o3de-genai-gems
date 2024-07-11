@@ -41,16 +41,16 @@ if "scene_generation_assistants" not in globals():
 GenAIFrameworkMessage: TypeAlias = dict[str, list[str]]
 
 
-class SceneGenerationAssistant:
-    SYSTEM_PROMPT_TEMPLATE_FILE_PATH = (
-        Path(__file__).parent / "prompt_templates" / "layout_designer_system_prompt_template.md"
-    )
+SYSTEM_PROMPT_TEMPLATE_FILE_PATH = (
+    Path(__file__).parent / "prompt_templates" / "layout_designer_system_prompt_template.md"
+)
+PREFABS_YAML_FILE_PATH = Path(__file__).parent / "prefabs.yml"
 
+
+class SceneGenerationAssistant:
     def __init__(self, agent_id):
         self.agent_id = agent_id
-        self.pm = PrefabsManager.from_yaml(
-            Path(__file__).parent / "prefabs.yml"
-        )
+        self.pm = PrefabsManager.from_yaml(PREFABS_YAML_FILE_PATH)
         self.messages: list[GenAIFrameworkMessage] = []
         self.python_output: str = ""
         self.response_with_status: dict[str, bool | GenAIFrameworkMessage] = None
@@ -82,7 +82,7 @@ class SceneGenerationAssistant:
             "AVAILABLE_PREFABS_XML": self.pm.available_prefabs_xml,
         }
         self.system_prompt: str = setup_prompt(
-            self.SYSTEM_PROMPT_TEMPLATE_FILE_PATH, self.prompt_parts
+            SYSTEM_PROMPT_TEMPLATE_FILE_PATH, self.prompt_parts
         )
         self.system_message: GenAIFrameworkMessage = {
             "role": "system",
