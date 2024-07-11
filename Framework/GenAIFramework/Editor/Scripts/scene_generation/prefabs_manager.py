@@ -48,6 +48,10 @@ class PrefabsManager:
     def from_yaml(cls, prefabs_info_yaml_path: Path, *args, **kwargs) -> "PrefabsManager":
         return cls(prefabs_info_yaml_path=prefabs_info_yaml_path, *args, **kwargs)
 
+    def get_actions_log_xml(self, num_actions: int = 0) -> str:
+        actions_log = "\n".join(self.actions_log[-int(num_actions) :])
+        return f"<actions_log>\n{actions_log}\n</actions_log>"
+
     def refresh_prefabs(self):
         self.available_prefabs = self.get_available_prefabs()
         self.spawned_prefabs = self.get_spawned_prefabs()
@@ -73,16 +77,6 @@ class PrefabsManager:
         spawned_prefabs = SpawnedPrefabsDict({int(p.entity_id): p for p in spawned_prefabs_list})
         self.refresh_overlapping_entity_ids_for_prefabs(spawned_prefabs)
         return spawned_prefabs
-
-    def refresh_overlapping_entity_ids_for_prefabs(
-        self, spawned_prefabs: dict[int, SpawnedPrefab] = None
-    ):
-        if not spawned_prefabs:
-            spawned_prefabs = self.spawned_prefabs
-        overlapping_prefabs_pairs = get_overlapping_prefabs_pairs(set(spawned_prefabs.values()))
-        for p1, p2 in overlapping_prefabs_pairs:
-            p1.overlapping_entity_ids.add(int(p2.entity_id))
-            p2.overlapping_entity_ids.add(int(p1.entity_id))
 
     @property
     def spawned_prefabs_xml(self) -> str:
@@ -131,6 +125,16 @@ class PrefabsManager:
         if op:
             return prefab_dicts_to_xml([prefab.to_dict() for prefab in op], "overlapping_prefabs")
 
+    def refresh_overlapping_entity_ids_for_prefabs(
+        self, spawned_prefabs: dict[int, SpawnedPrefab] = None
+    ):
+        if not spawned_prefabs:
+            spawned_prefabs = self.spawned_prefabs
+        overlapping_prefabs_pairs = get_overlapping_prefabs_pairs(set(spawned_prefabs.values()))
+        for p1, p2 in overlapping_prefabs_pairs:
+            p1.overlapping_entity_ids.add(int(p2.entity_id))
+            p2.overlapping_entity_ids.add(int(p1.entity_id))
+
     def find_prefab_ids(self) -> list[azlmbr.entity.EntityId]:
         searchFilter = azlmbr.entity.SearchFilter()
         ids = azlmbr.entity.SearchBus(azlmbr.bus.Broadcast, "SearchEntities", searchFilter)
@@ -151,50 +155,6 @@ class PrefabsManager:
             if parent_name == "Level":
                 ids_with_parent_level[id] = name
         return ids_with_parent_level
-
-    def move_prefab(
-        self,
-        entity_id: int | EditorEntityId,
-        new_translation: list[float],
-        log_action: bool = True,
-        raise_exception_on_overlap: bool = False,
-    ):
-        spawned_prefab = self.spawned_prefabs[entity_id]
-        previous_translation = spawned_prefab.translation
-        new_translation = [round(float(p), 2) for p in new_translation]
-        new_translation_anch, _ = self.transform_with_anchor_transform(
-            new_translation, spawned_prefab.available_prefab.anchor_transform
-        )
-        new_translation_anch_azlmbr = azlmbr.math.Vector3(
-            *[float(p) for p in new_translation_anch]
-        )
-
-        azlmbr.components.TransformBus(
-            azlmbr.bus.Event,
-            "SetWorldTranslation",
-            spawned_prefab.entity_id.azlmbr_entity_id,
-            new_translation_anch_azlmbr,
-        )
-
-        spawned_prefab.translation = new_translation
-        self.refresh_overlapping_entity_ids_for_prefabs()
-
-        try:
-            if raise_exception_on_overlap:
-                self.raise_exception_on_overlap(entity_id)
-        except OverlapException as e:
-            self.move_prefab(
-                entity_id,
-                previous_translation,
-                log_action=False,
-                raise_exception_on_overlap=False,
-            )
-            raise e
-        else:
-            if log_action:
-                self.actions_log.append(
-                    f'<action>Moving {spawned_prefab.name} (id={entity_id}, semantic_info="{spawned_prefab.semantic_info}") from {spawned_prefab.translation} to {new_translation}</action>'
-                )
 
     @staticmethod
     def transform_with_anchor_transform(
@@ -271,9 +231,49 @@ class PrefabsManager:
             )
             return spawned_prefab
 
-    def get_actions_log_xml(self, num_actions: int = 0) -> str:
-        actions_log = "\n".join(self.actions_log[-int(num_actions) :])
-        return f"<actions_log>\n{actions_log}\n</actions_log>"
+    def move_prefab(
+        self,
+        entity_id: int | EditorEntityId,
+        new_translation: list[float],
+        log_action: bool = True,
+        raise_exception_on_overlap: bool = False,
+    ):
+        spawned_prefab = self.spawned_prefabs[entity_id]
+        previous_translation = spawned_prefab.translation
+        new_translation = [round(float(p), 2) for p in new_translation]
+        new_translation_anch, _ = self.transform_with_anchor_transform(
+            new_translation, spawned_prefab.available_prefab.anchor_transform
+        )
+        new_translation_anch_azlmbr = azlmbr.math.Vector3(
+            *[float(p) for p in new_translation_anch]
+        )
+
+        azlmbr.components.TransformBus(
+            azlmbr.bus.Event,
+            "SetWorldTranslation",
+            spawned_prefab.entity_id.azlmbr_entity_id,
+            new_translation_anch_azlmbr,
+        )
+
+        spawned_prefab.translation = new_translation
+        self.refresh_overlapping_entity_ids_for_prefabs()
+
+        try:
+            if raise_exception_on_overlap:
+                self.raise_exception_on_overlap(entity_id)
+        except OverlapException as e:
+            self.move_prefab(
+                entity_id,
+                previous_translation,
+                log_action=False,
+                raise_exception_on_overlap=False,
+            )
+            raise e
+        else:
+            if log_action:
+                self.actions_log.append(
+                    f'<action>Moving {spawned_prefab.name} (id={entity_id}, semantic_info="{spawned_prefab.semantic_info}") from {spawned_prefab.translation} to {new_translation}</action>'
+                )
 
     def raise_exception_on_overlap(self, entity_id: int | EditorEntityId):
         sp = self.spawned_prefabs[entity_id]
@@ -322,22 +322,6 @@ Before reacting to this problem think step by step in <thinking_how_to_solve_ove
 </helpful_advice>
 """
             raise OverlapException(message)
-
-    def positions_to_xml(self, positions: list[list[float]], root_name: str) -> str:
-        """
-        converts list of positions to xml in a form
-        <root_name>
-            <pos>[l[0], l[1], l[2]]<pos>
-            ...
-        </root_name>
-        """
-        root = ET.Element(root_name)
-        for p in positions:
-            pos_el = ET.SubElement(root, "pos")
-            pos_el.text = str(p)
-        xml_string = parseString(ET.tostring(root)).toprettyxml(indent="  ")
-        xml_string = "\n".join(xml_string.split("\n")[1:])
-        return xml_string
 
     def remove_prefab(self, entity_id: int, log_action=True):
         spawned_prefab = self.spawned_prefabs[entity_id]
@@ -412,6 +396,22 @@ Before reacting to this problem think step by step in <thinking_how_to_solve_ove
                     [round(prefab.translation[0], 2), round(y, 2), prefab.translation[2]]
                 )
         return available_positions
+
+    def positions_to_xml(self, positions: list[list[float]], root_name: str) -> str:
+        """
+        converts list of positions to xml in a form
+        <root_name>
+            <pos>[l[0], l[1], l[2]]<pos>
+            ...
+        </root_name>
+        """
+        root = ET.Element(root_name)
+        for p in positions:
+            pos_el = ET.SubElement(root, "pos")
+            pos_el.text = str(p)
+        xml_string = parseString(ET.tostring(root)).toprettyxml(indent="  ")
+        xml_string = "\n".join(xml_string.split("\n")[1:])
+        return xml_string
 
     def add_dirty_entities(self, spawned_prefabs: list[SpawnedPrefab] | None = None):
         if not spawned_prefabs:
