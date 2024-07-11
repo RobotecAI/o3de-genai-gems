@@ -342,7 +342,7 @@ Before reacting to this problem think step by step in <thinking_how_to_solve_ove
                 f'<action>Removing {spawned_prefab.name} (id={entity_id}, semantic_info="{spawned_prefab.semantic_info}") from {spawned_prefab.translation}</action>'
             )
         azlmbr.editor.ToolsApplicationRequestBus(
-            azlmbr.bus.Broadcast, "DeleteEntityById", spawned_prefab.entity_id.azlmbr_entity_id
+            azlmbr.bus.Broadcast, "DeleteEntityAndAllDescendants", spawned_prefab.entity_id.azlmbr_entity_id
         )
 
         for prefab in self.spawned_prefabs.values():
