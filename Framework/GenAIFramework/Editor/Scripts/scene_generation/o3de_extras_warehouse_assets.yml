@@ -1,0 +1,165 @@
+- name: Storage_2x2_Pack1
+  path: /data/workspace/o3de-extras/Gems/WarehouseAssets/Assets/Prefabs/Warehouse_storage/Storage_2x2_Pack1.prefab
+  description: Large rack with boxes. Has to lie on the floor. No storage space available.
+  accesibility_requirements: Needs to be accessible at least from one side - the longer side.
+  size: [6, 2, 5]
+  outer_margin: [0.5, 1.5]
+  can_be_put_on: [Warehouse_Floor]
+  anchor_transform:
+    translation: [-3, -1, 0]
+    rotation: [0, 0, 0]
+- name: Storage_2x2_Pack2
+  path: /data/workspace/o3de-extras/Gems/WarehouseAssets/Assets/Prefabs/Warehouse_storage/Storage_2x2_Pack2.prefab
+  description: Large rack with boxes. Has to lie on the floor. No storage space available.
+  accesibility_requirements: Needs to be accessible at least from one side - the longer side.
+  size: [6, 2, 5]
+  outer_margin: [0.5, 1.5]
+  can_be_put_on: [Warehouse_Floor]
+  anchor_transform:
+    translation: [-3, -1, 0]
+    rotation: [0, 0, 0]
+- name: Storage_2x2_Pack3
+  path: /data/workspace/o3de-extras/Gems/WarehouseAssets/Assets/Prefabs/Warehouse_storage/Storage_2x2_Pack3.prefab
+  description: Large rack with boxes. Has to lie on the floor. No storage space available.
+  accesibility_requirements: Needs to be accessible at least from one side - the longer side.
+  size: [6, 2, 5]
+  outer_margin: [0.5, 1.5]
+  can_be_put_on: [Warehouse_Floor]
+  anchor_transform:
+    translation: [-3, -1, 0]
+    rotation: [0, 0, 0]
+- name: WarehouseRack
+  path: /data/workspace/o3de-extras/Gems/WarehouseAssets/Assets/Prefabs/Warehouse_storage/Components/WarehouseRack.prefab
+  description: Small empty rack. Its shelves are perpendicular to shelves of the Storage_2x2_Pack racks. Has to lie on the floor. Shelves zs are relative to the rack's bottom, so floor z has to be added.
+  accesibility_requirements: Needs to be accessible at least from one side - the longer side.
+  size: [1.2, 3.2, 5]
+  outer_margin: [1.5, 0.5]
+  can_be_put_on: [Warehouse_Floor]
+  shelves_zs: [1.6, 3.15]
+  anchor_transform:
+    translation: [-0.6, -1.6, 0]
+    rotation: [0, 0, 0]
+- name: Storage_rack1
+  path: /data/workspace/o3de-extras/Gems/WarehouseAssets/Assets/Prefabs/Warehouse_storage/Storage_rack1.prefab
+  description: Small rack with boxes. Its shelves are perpendicular to shelves of the Storage_2x2_Pack racks. Has to lie on the floor. No storage space available.
+  accesibility_requirements: Needs to be accessible at least from one side - the longer side.
+  size: [1, 3, 5]
+  outer_margin: [1.5, 0.5]
+  can_be_put_on: [Warehouse_Floor]
+  anchor_transform:
+    translation: [-0.5, -1.5, 0]
+    rotation: [0, 0, 0]
+- name: Storage_rack2
+  path: /data/workspace/o3de-extras/Gems/WarehouseAssets/Assets/Prefabs/Warehouse_storage/Storage_rack2.prefab
+  description: Small rack with boxes. Its shelves are perpendicular to shelves of the Storage_2x2_Pack racks. Has to lie on the floor. No storage space available.
+  accesibility_requirements: Needs to be accessible at least from one side - the longer side.
+  size: [1, 3, 5]
+  outer_margin: [1.5, 0.5]
+  can_be_put_on: [Warehouse_Floor]
+  anchor_transform:
+    translation: [-0.5, -1.5, 0]
+    rotation: [0, 0, 0]
+- name: Storage_rack3
+  path: /data/workspace/o3de-extras/Gems/WarehouseAssets/Assets/Prefabs/Warehouse_storage/Storage_rack3.prefab
+  description: Small rack with boxes. Its shelves are perpendicular to shelves of the Storage_2x2_Pack racks. Has to lie on the floor. No storage space available.
+  accesibility_requirements: Needs to be accessible at least from one side - the longer side.
+  size: [1, 3, 5]
+  outer_margin: [1.5, 0.5]
+  can_be_put_on: [Warehouse_Floor]
+  anchor_transform:
+    translation: [-0.5, -1.5, 0]
+    rotation: [0, 0, 0]
+- name: Storage_rack4
+  path: /data/workspace/o3de-extras/Gems/WarehouseAssets/Assets/Prefabs/Warehouse_storage/Storage_rack4.prefab
+  description: Small rack with boxes. Its shelves are perpendicular to shelves of the Storage_2x2_Pack racks. Has to lie on the floor. No storage space available.
+  accesibility_requirements: Needs to be accessible at least from one side - the longer side.
+  size: [1, 3, 5]
+  outer_margin: [1.5, 0.5]
+  can_be_put_on: [Warehouse_Floor]
+  anchor_transform:
+    translation: [-0.5, -1.5, 0]
+    rotation: [0, 0, 0]
+- name: Storage_rack5
+  path: /data/workspace/o3de-extras/Gems/WarehouseAssets/Assets/Prefabs/Warehouse_storage/Storage_rack5.prefab
+  description: Small rack with boxes. Its shelves are perpendicular to shelves of the Storage_2x2_Pack1. Has to lie on the floor. No storage space available.
+  accesibility_requirements: Needs to be accessible at least from one side - the longer side.
+  size: [1, 3, 5]
+  outer_margin: [1.5, 0.5]
+  can_be_put_on: [Warehouse_Floor]
+  anchor_transform:
+    translation: [-0.5, -1.5, 0]
+    rotation: [0, 0, 0]
+- name: Storage_on_wheels
+  path: /data/workspace/o3de-extras/Gems/WarehouseAssets/Assets/Prefabs/Warehouse_storage/Storage_on_wheels.prefab
+  description: Shelves on wheels Has to lie on the floor. No more storage space available.
+  size: [0.7, 1.2, 2]
+  outer_margin: [0.1, 0.1]
+  can_be_put_on: [Warehouse_Floor]
+  anchor_transform:
+    translation: [-0.35, -0.6, 0]
+    rotation: [0, 0, 0]
+- name: WarehouseBox1
+  path: /data/workspace/o3de-extras/Gems/WarehouseAssets/Assets/Prefabs/Warehouse_storage/Components/WarehouseBox1.prefab
+  description: A box. Can be put on the floor, racks shelves and other boxes.
+  size: [1, 0.5, 0.7]
+  outer_margin: [0.1, 0.1]
+  can_be_put_on: [WarehouseRack, WarehouseBox1, WarehouseBox2, WarehouseBox3, WarehouseBox4, Warehouse_Floor]
+  anchor_transform:
+    translation: [-0.5, -0.25, 0]
+    rotation: [0, 0, 0]
+- name: WarehouseBox2
+  path: /data/workspace/o3de-extras/Gems/WarehouseAssets/Assets/Prefabs/Warehouse_storage/Components/WarehouseBox2.prefab
+  description: A box. Can be put on the floor, racks shelves and other boxes.
+  size: [0.4, 0.8, 0.64]
+  outer_margin: [0.1, 0.1]
+  can_be_put_on: [WarehouseRack, WarehouseBox1, WarehouseBox2, WarehouseBox3, WarehouseBox4, Warehouse_Floor]
+  anchor_transform:
+    translation: [-0.2, -0.4, 0]
+    rotation: [0, 0, 0]
+- name: WarehouseBox3
+  path: /data/workspace/o3de-extras/Gems/WarehouseAssets/Assets/Prefabs/Warehouse_storage/Components/WarehouseBox3.prefab
+  description: A box. Can be put on the floor, racks shelves and other boxes.
+  size: [0.35, 0.9, 0.26]
+  outer_margin: [0.1, 0.1]
+  can_be_put_on: [WarehouseRack, WarehouseBox1, WarehouseBox2, WarehouseBox3, WarehouseBox4, Warehouse_Floor]
+  anchor_transform:
+    translation: [-0.175, -0.45, 0]
+    rotation: [0, 0, 0]
+- name: WarehouseBox4
+  path: /data/workspace/o3de-extras/Gems/WarehouseAssets/Assets/Prefabs/Warehouse_storage/Components/WarehouseBox4.prefab
+  description: A box. Can be put on the floor, racks shelves and other boxes.
+  size: [0.5, 1, 1]
+  outer_margin: [0.1, 0.1]
+  can_be_put_on: [WarehouseRack, WarehouseBox1, WarehouseBox2, WarehouseBox3, WarehouseBox4, Warehouse_Floor]
+  anchor_transform:
+    translation: [-0.25, -0.5, 0]
+    rotation: [0, 0, 0]
+- name: Warehouse_Floor
+  path: /data/workspace/o3de-extras/Gems/WarehouseAssets/Assets/Prefabs/Warehouse_structural/Warehouse_Floor.prefab
+  description: Warehouse floor.
+  size: [60, 20, 0.2]
+  outer_margin: [0, 0]
+  can_be_put_on: []
+  anchor_transform:
+    translation: [-10, -10, -0.2]
+    rotation: [0, 0, 0]
+- name: Warehouse_Walls
+  path: /data/workspace/o3de-extras/Gems/WarehouseAssets/Assets/Prefabs/Warehouse_structural/Warehouse_Walls.prefab
+  description: 4 warehouse walls already tied together. They can ba combined with Warehouse_Roof prefab. They have an entrance in the middle of the right wall (largest x).
+  size: [60, 20, 6.9]
+  outer_margin: [0, 0]
+  can_be_put_on: [Warehouse_Floor]
+  excluded_from_overlap_check: true
+  anchor_transform:
+    translation: [-10, -10, 0]
+    rotation: [0, 0, 0]
+- name: Warehouse_Roof
+  path: /data/workspace/o3de-extras/Gems/WarehouseAssets/Assets/Prefabs/Warehouse_structural/Warehouse_Roof.prefab
+  description: Warehouse roof. To fit Warehouse_Walls prefab it has to be put 1.76m below the highest wall point (roof_prefab.translation[0] = wall_prefab.size[2] - 1.76).
+  size: [60, 20, 5]
+  outer_margin: [0, 0]
+  can_be_put_on: [Warehouse_Walls]
+  excluded_from_overlap_check: true
+  anchor_transform:
+    translation: [-10, -10, 5.14]
+    rotation: [0, 0, 0]
