@@ -49,7 +49,7 @@ class SceneGenerationAssistant:
     def __init__(self, agent_id):
         self.agent_id = agent_id
         self.pm = PrefabsManager.from_yaml(
-            Path(__file__).parent / "o3de_extras_warehouse_assets.yml"
+            Path(__file__).parent / "prefabs.yml"
         )
         self.messages: list[GenAIFrameworkMessage] = []
         self.python_output: str = ""
