@@ -30,7 +30,7 @@ namespace GenAIFramework
         static void Reflect(AZ::ReflectContext* context);
 
     private:
-        constexpr static const char* O3DEAssistantPythonScript = "Editor/Scripts/assistant.py";
+        constexpr static const char* O3DEAssistantPythonScript = "Editor/Scripts/o3de_assistant/o3de_assistant.py";
 
         AZStd::string m_pythonScriptLocation;
     };
