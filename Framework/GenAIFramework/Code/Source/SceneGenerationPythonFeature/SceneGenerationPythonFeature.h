@@ -17,20 +17,20 @@
 
 namespace GenAIFramework
 {
-    class O3DEAssistantPythonFeature : public PythonFeatureBase
+    class SceneGenerationPythonFeature : public PythonFeatureBase
     {
     public:
-        AZ_RTTI(O3DEAssistantPythonFeature, O3DEAssistantPythonFeatureTypeId, PythonFeatureBase);
-        AZ_CLASS_ALLOCATOR(O3DEAssistantPythonFeature, AZ::SystemAllocator, 0);
+        AZ_RTTI(SceneGenerationPythonFeature, SceneGenerationPythonFeatureTypeId, PythonFeatureBase);
+        AZ_CLASS_ALLOCATOR(SceneGenerationPythonFeature, AZ::SystemAllocator, 0);
 
-        O3DEAssistantPythonFeature() = default;
-        O3DEAssistantPythonFeature(AZ::u64 agentId, AZ::u64 conversationId);
-        ~O3DEAssistantPythonFeature() = default;
+        SceneGenerationPythonFeature() = default;
+        SceneGenerationPythonFeature(AZ::u64 agentId, AZ::u64 conversationId);
+        ~SceneGenerationPythonFeature() = default;
 
         static void Reflect(AZ::ReflectContext* context);
 
     private:
-        constexpr static const char* PythonAssistantScript = "Editor/Scripts/o3de_assistant/assistant.py";
+        constexpr static const char* PythonSceneGenerationScript = "Editor/Scripts/scene_generation/assistant.py";
 
         AZStd::string m_pythonScriptLocation;
     };

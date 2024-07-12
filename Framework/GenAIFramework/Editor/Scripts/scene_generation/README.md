@@ -1,6 +1,6 @@
 # Scene generation feature
 
-This feature demonstrates the use of the GenAIFramework for scene generation. Language model is used for Python code generation that manipulates prefabs through the interface available in [Python Editor Bindings](https://docs.o3de.org/docs/user-guide/editor/editor-automation/).
+This feature demonstrates the use of the GenAIFramework for scene generation. The language model is used for Python code generation that manipulates prefabs through the interface available in [Python Editor Bindings](https://docs.o3de.org/docs/user-guide/editor/editor-automation/).
 
 ## Prerequisites
 
