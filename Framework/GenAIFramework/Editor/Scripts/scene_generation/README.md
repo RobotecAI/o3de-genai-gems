@@ -1,3 +1,3 @@
-# Scene Generation chat
+# Scene Generation feature
 
-Please refer to the [Using Scene Generation chat](../../../../../docs/gettingStarted.md#using-scene-generation-chat) section.
+Please refer to [Scene Generation feature](../../../../../docs/gettingStarted.md#scene-generation-feature).
