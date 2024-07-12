@@ -145,7 +145,7 @@
     rotation: [0, 0, 0]
 - name: Warehouse_Walls
   path: Prefabs/Warehouse_structural/Warehouse_Walls.prefab
-  description: 4 warehouse walls already tied together. They can ba combined with Warehouse_Roof prefab. They have an entrance in the middle of the right wall (largest x).
+  description: 4 warehouse walls already tied together. They can be combined with Warehouse_Roof prefab. They have an entrance in the middle of the right wall (largest x).
   size: [60, 20, 6.9]
   outer_margin: [0, 0]
   can_be_put_on: [Warehouse_Floor]
