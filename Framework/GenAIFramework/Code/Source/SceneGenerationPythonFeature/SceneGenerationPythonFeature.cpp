@@ -6,7 +6,7 @@
  *
  */
 
-#include "O3DESceneGenerationAssistantPythonFeature.h"
+#include "SceneGenerationPythonFeature.h"
 #include <GenAIFramework/Communication/AIModelRequestBus.h>
 #include <GenAIFramework/Feature/AIAgentBus.h>
 #include <GenAIFramework/Feature/ConversationBus.h>
@@ -22,13 +22,13 @@
 namespace GenAIFramework
 {
 
-    O3DESceneGenerationAssistantPythonFeature::O3DESceneGenerationAssistantPythonFeature(AZ::u64 agentId, AZ::u64 conversationId)
+    SceneGenerationPythonFeature::SceneGenerationPythonFeature(AZ::u64 agentId, AZ::u64 conversationId)
         : PythonFeatureBase(agentId, conversationId)
     {
         const auto thisGemPath = AZ::Utils::GetGemPath("GenAIFramework");
 
-        const auto pythonSceneGenerationAssistantScriptPath = AZ::IO::Path(thisGemPath) / AZ::IO::Path(PythonSceneGenerationAssistantScript);
-        m_sceneGenerationAssistantPythonScriptLocation = pythonSceneGenerationAssistantScriptPath.String();
+        const auto pythonScriptPath = AZ::IO::Path(thisGemPath) / AZ::IO::Path(SceneGenerationPythonScript);
+        m_pythonScriptLocation = pythonScriptPath.String();
 
         AZ::SystemTickBus::QueueFunction(
             [this]()
@@ -42,21 +42,21 @@ namespace GenAIFramework
                 AzToolsFramework::EditorPythonRunnerRequestBus::BroadcastResult(
                     isOk,
                     &AzToolsFramework::EditorPythonRunnerRequestBus::Events::ExecuteByFilenameWithArgs,
-                    AZStd::string_view(m_sceneGenerationAssistantPythonScriptLocation),
+                    AZStd::string_view(m_pythonScriptLocation),
                     params);
             });
     }
 
-    void O3DESceneGenerationAssistantPythonFeature::Reflect(AZ::ReflectContext* context)
+    void SceneGenerationPythonFeature::Reflect(AZ::ReflectContext* context)
     {
         if (auto* serializeContext = azrtti_cast<AZ::SerializeContext*>(context))
         {
-            serializeContext->Class<O3DESceneGenerationAssistantPythonFeature, PythonFeatureBase>()->Version(0);
+            serializeContext->Class<SceneGenerationPythonFeature, PythonFeatureBase>()->Version(0);
         }
 
         if (auto registrationContext = azrtti_cast<GenAIFramework::SystemRegistrationContext*>(context))
         {
-            registrationContext->RegisterFeature<O3DESceneGenerationAssistantPythonFeature>("O3DE Scene Generation Assistant (Python)");
+            registrationContext->RegisterFeature<SceneGenerationPythonFeature>("Scene Generation (Python)");
         }
     }
 

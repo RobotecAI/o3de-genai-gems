@@ -27,8 +27,8 @@ namespace GenAIFramework
     {
         const auto thisGemPath = AZ::Utils::GetGemPath("GenAIFramework");
 
-        const auto pythonAssistantScriptPath = AZ::IO::Path(thisGemPath) / AZ::IO::Path(PythonAssistantScript);
-        m_assistantPythonScriptLocation = pythonAssistantScriptPath.String();
+        const auto pythonScriptPath = AZ::IO::Path(thisGemPath) / AZ::IO::Path(O3DEAssistantPythonScript);
+        m_pythonScriptLocation = pythonScriptPath.String();
 
         AZ::SystemTickBus::QueueFunction(
             [this]()
@@ -42,7 +42,7 @@ namespace GenAIFramework
                 AzToolsFramework::EditorPythonRunnerRequestBus::BroadcastResult(
                     isOk,
                     &AzToolsFramework::EditorPythonRunnerRequestBus::Events::ExecuteByFilenameWithArgs,
-                    AZStd::string_view(m_assistantPythonScriptLocation),
+                    AZStd::string_view(m_pythonScriptLocation),
                     params);
             });
     }

@@ -35,8 +35,8 @@ args = parser.parse_args()
 
 agent_id = int(args.agent_id)
 
-if "scene_generation_assistants" not in globals():
-    scene_generation_assistants = []
+if "scene_generation_instances" not in globals():
+    scene_generation_instances = []
 
 GenAIFrameworkMessage: TypeAlias = dict[str, list[str]]
 
@@ -47,7 +47,7 @@ SYSTEM_PROMPT_TEMPLATE_FILE_PATH = (
 PREFABS_YAML_FILE_PATH = Path(__file__).parent / "prefabs.yml"
 
 
-class SceneGenerationAssistant:
+class SceneGeneration:
     def __init__(self, agent_id):
         self.agent_id = agent_id
         self.pm = PrefabsManager.from_yaml(PREFABS_YAML_FILE_PATH)
@@ -61,7 +61,7 @@ class SceneGenerationAssistant:
         self.connect_tickbus_notification_handler()
         self.connect_conversation_notification_handler()
         self.connect_agent_notification_handler()
-        python_interpreter.exec_global_scope["a"] = self
+        python_interpreter.exec_global_scope["sg"] = self
 
     def connect_conversation_notification_handler(self):
         self.conversation_handler.connect(self.agent_id)
@@ -190,4 +190,4 @@ class SceneGenerationAssistant:
                 ]
 
 
-scene_generation_assistants.append(SceneGenerationAssistant(agent_id))
+scene_generation_instances.append(SceneGeneration(agent_id))
