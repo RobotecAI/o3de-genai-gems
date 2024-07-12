@@ -57,7 +57,7 @@ def parse_vector(vector_str) -> list[float]:
         raise ValueError(f"Invalid vector string: {vector_str}")
 
 
-def extract_text_from_xml_tags(text: str, tag: str = "python") -> str:
+def extract_text_from_xml_tags(text: str, tag: str = "python") -> str | None:
     start_tag = f"<{tag}>"
     end_tag = f"</{tag}>"
     start_index = text.find(start_tag)

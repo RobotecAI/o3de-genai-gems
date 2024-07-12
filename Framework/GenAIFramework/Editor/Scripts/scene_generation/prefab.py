@@ -49,13 +49,13 @@ class AvailablePrefab:
         path: str,
         description: str,
         size: list[float],
-        outer_margin: list[float] = None,
-        anchor_transform: dict[str, list[float]] = None,
+        outer_margin: list[float] | None = None,
+        anchor_transform: dict[str, list[float]] | None = None,
         excluded_from_overlap_check: bool = False,
-        can_be_put_on: list[str] = None,
-        shelves_zs: list[float] = None,
-        accesibility_requirements: str = None,
-    ) -> None:
+        can_be_put_on: list[str] | None = None,
+        shelves_zs: list[float] | None = None,
+        accesibility_requirements: str | None = None,
+    ):
         self.name = name
         self.path = path
         self.description = description
@@ -133,7 +133,7 @@ class SpawnedPrefab:
         entity_id: EditorEntityId,
         translation: list[float],
         available_prefab: AvailablePrefab,
-        overlapping_entity_ids: set[int] = None,
+        overlapping_entity_ids: set[int] | None = None,
         semantic_info: str = "",
     ) -> None:
         self.entity_id = entity_id

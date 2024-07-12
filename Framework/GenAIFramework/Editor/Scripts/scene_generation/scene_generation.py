@@ -53,7 +53,7 @@ class SceneGeneration:
         self.pm = PrefabsManager.from_yaml(PREFABS_YAML_FILE_PATH)
         self.messages: list[GenAIFrameworkMessage] = []
         self.python_output: str = ""
-        self.response_with_status: dict[str, bool | GenAIFrameworkMessage] = None
+        self.response_with_status: dict[str, bool | GenAIFrameworkMessage] | None = None
         self.python_code: str = ""
         self.tickbus_handler = bus.NotificationHandler("TickBus")
         self.conversation_handler = ConversationNotificationBusHandler()
