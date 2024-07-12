@@ -121,11 +121,13 @@ class SceneGeneration:
                     bus.Event, "OnFeatureResponse", self.agent_id, answer_text, []
                 )
         else:
-            failure_message = "Something went wrong. Please try again."
+            error_text = self.response_with_status["error"]
+            inform_about_error_text = f"Response from the AI has not been recieved due to an error:\n\n{error_text}"
             ConversationNotificationBus(
-                bus.Event, "OnFeatureResponse", self.agent_id, failure_message, []
+                bus.Event, "OnFeatureResponse", self.agent_id, inform_about_error_text, []
             )
-            self.messages.append({"role": "assistant", "content": [failure_message]})
+            self.messages.append({"role": "assistant", "content": [inform_about_error_text]})
+            self.r = self.response_with_status.copy()
         self.response_with_status = None
 
     def on_tick(self, args):
