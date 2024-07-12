@@ -12,10 +12,9 @@ import azlmbr
 
 
 def get_overlapping_prefabs_pairs(
-    prefabs: set["SpawnedPrefab"],
+    prefabs: list["SpawnedPrefab"],
 ) -> list[tuple["SpawnedPrefab", "SpawnedPrefab"]]:
     """Gets pairs of overlapping prefabs. Ignores prefabs with different z coord."""
-    prefabs = list(prefabs)
     overlapping_prefabs_pairs = []
     for i, prefab_1 in enumerate(prefabs):
         if i < len(prefabs) - 1:

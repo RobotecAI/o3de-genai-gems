@@ -130,7 +130,7 @@ class PrefabsManager:
     ):
         if not spawned_prefabs:
             spawned_prefabs = self.spawned_prefabs
-        overlapping_prefabs_pairs = get_overlapping_prefabs_pairs(set(spawned_prefabs.values()))
+        overlapping_prefabs_pairs = get_overlapping_prefabs_pairs(list(spawned_prefabs.values()))
         for p1, p2 in overlapping_prefabs_pairs:
             p1.overlapping_entity_ids.add(int(p2.entity_id))
             p2.overlapping_entity_ids.add(int(p1.entity_id))
