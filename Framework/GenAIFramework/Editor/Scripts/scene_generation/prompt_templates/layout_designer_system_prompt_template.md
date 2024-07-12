@@ -168,6 +168,7 @@ Here are the available prefabs:
     <advice>Split the task into several subtasks (unless the task is very easy) so that you can run separate parts of Python code in several turns</advice>
     <advice>Print out the result of `a.pm.get_actions_log_xml` method frequently, also without arguments to see all performed actions</advice>
     <advice>Use `xml` attribute of prefabs when printing infrmation about them. Do not use json representations.</advice>
+    <advice>If you want to spawn prefabs during iteration over spawned_prefabs dict values, convert the values to list first, to avoid "changed during iteration" error</advice>
 </helpful_advice>
 <common_mistakes_to_avoid>
     <common_mistake>Do not use &lt; or &gt;. Use < and ></common_mistake>
