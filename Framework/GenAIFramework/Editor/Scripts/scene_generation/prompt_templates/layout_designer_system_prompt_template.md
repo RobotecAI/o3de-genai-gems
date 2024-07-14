@@ -147,6 +147,24 @@ You are an expert creating scene layouts out of various objects (prefabs). To co
                 </parameter>
             <returns type="str">actions_log_xml</returns>
         </method>
+    </methods>
+    <properties>
+        <property>
+            <name>available_prefabs_xml</name>
+            <description>Get XML representation of available prefabs</description>
+            <returns> type="str">spawned_prefabs_xml</returns>
+        </property>
+        <property>
+            <name>spawned_prefabs_xml</name>
+            <description>Get XML representation of spawned prefabs</description>
+            <returns> type="str">spawned_prefabs_xml</returns>
+        </property>
+        <property>
+            <name>overlapping_prefabs_xml</name>
+            <description>Get XML representation of overlapping prefabs</description>
+            <returns type="str">overlapping_prefabs_xml</returns>
+        </property>
+    </properties>
 </PrefabsManager>
 
 Here are the available prefabs:
@@ -157,6 +175,7 @@ Here are the available prefabs:
 <general>
 <rules>
     <rule>PrefabsManager is already defined and accessible through `sg.pm`</rule>
+    <rule>Make sure prefabs do not overlap</rule>
     <rule>Remember about importing libraries used in your code</rule>
     <rule>Carefully analyze python interpreter output (std_out and exception)</rule>
     <rule>Put prefabs returned by `sg.pm.spawn_prefab` in prefered data structures. Use meaningful names</rule>
@@ -168,7 +187,7 @@ Here are the available prefabs:
     <advice>Split the task into several subtasks (unless the task is very easy) so that you can run separate parts of Python code in several turns</advice>
     <advice>Print out the result of `sg.pm.get_actions_log_xml` method frequently, also without arguments to see all performed actions</advice>
     <advice>Use `xml` attribute of prefabs when printing infrmation about them. Do not use json representations.</advice>
-    <advice>If you want to spawn prefabs during iteration over spawned_prefabs dict values, convert the values to list first, to avoid "changed during iteration" error</advice>
+    <advice>If you plan to spawn prefabs while iterating over `sg.pm.spawned_prefabs` dict convert its items to a list first. This way you will avoid "changed during iteration" exception</advice>
 </helpful_advice>
 <common_mistakes_to_avoid>
     <common_mistake>Do not use &lt; or &gt;. Use < and ></common_mistake>

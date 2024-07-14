@@ -7,22 +7,24 @@
 """
 
 from typing import Any
-from utils import prefab_dict_to_xml
 import azlmbr
+import xml.etree.ElementTree as ET
+from xml.dom.minidom import parseString
 
 
-def get_overlapping_prefabs_pairs(
-    prefabs: list["SpawnedPrefab"],
-) -> list[tuple["SpawnedPrefab", "SpawnedPrefab"]]:
-    """Gets pairs of overlapping prefabs. Ignores prefabs with different z coord."""
-    overlapping_prefabs_pairs = []
-    for i, prefab_1 in enumerate(prefabs):
-        if i < len(prefabs) - 1:
-            prefabs_to_check = prefabs[i + 1 :]
-            overlapping_prefabs = prefab_1.calculate_overlapping_prefabs(prefabs_to_check)
-            for prefab_2 in overlapping_prefabs:
-                overlapping_prefabs_pairs.append((prefab_1, prefab_2))
-    return overlapping_prefabs_pairs
+def prefab_dict_to_xml(prefab: dict[str, Any]) -> str:
+    def _to_xml(d, parent):
+        for k, v in d.items():
+            if isinstance(v, dict):
+                _to_xml(v, ET.SubElement(parent, k))
+            else:
+                ET.SubElement(parent, k).text = str(v)
+
+    prefab_element = ET.Element("prefab")
+    _to_xml(prefab, prefab_element)
+    xml_string = parseString(ET.tostring(prefab_element)).toprettyxml(indent="  ")
+    xml_string = "\n".join(xml_string.split("\n")[1:])
+    return xml_string.strip()
 
 
 class EditorEntityId:
@@ -76,7 +78,7 @@ class AvailablePrefab:
 
     def to_dict(self) -> dict[str, Any]:
         d = {}
-        l = [
+        keys = [
             "name",
             "path",
             "description",
@@ -86,9 +88,9 @@ class AvailablePrefab:
             "can_be_put_on",
             "accesibility_requirements",
         ]
-        for attr in l:
-            if getattr(self, attr):
-                d[attr] = getattr(self, attr)
+        for k in keys:
+            if getattr(self, k):
+                d[k] = getattr(self, k)
         return d
 
     @classmethod
@@ -197,7 +199,7 @@ class SpawnedPrefab:
 
     def to_dict(self) -> dict[str, Any]:
         d = {}
-        l = [
+        keys = [
             "entity_id",
             "name",
             "translation",
@@ -205,13 +207,14 @@ class SpawnedPrefab:
             "semantic_info",
             "overlapping_entity_ids",
         ]
-        for attr_name in l:
-            if isinstance(attr_name, property):
-                d[attr_name] = attr_name.fget(self)
+        #TODO: round floats to 2 decimal places
+        for k in keys:
+            if isinstance(k, property):
+                v = k.fget(self)
             else:
-                attr = getattr(self, attr_name)
-                if attr:
-                    d[attr_name] = attr if attr_name != "entity_id" else int(attr)
+                v = getattr(self, k)
+            if v:
+                d[k] = v
         return d
 
     @property

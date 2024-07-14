@@ -7,42 +7,7 @@
 """
 
 from pathlib import Path
-import xml.etree.ElementTree as ET
-from xml.dom.minidom import parseString
-from typing import Any
 import re
-
-
-def prefab_dicts_to_xml(prefabs: list[dict[str, Any]], root_name: str) -> str:
-    def _to_xml(d, parent):
-        for k, v in d.items():
-            if isinstance(v, dict):
-                _to_xml(v, ET.SubElement(parent, k))
-            else:
-                ET.SubElement(parent, k).text = str(v)
-
-    root = ET.Element(root_name)
-    for prefab in prefabs:
-        prefab_element = ET.SubElement(root, "prefab")
-        _to_xml(prefab, prefab_element)
-    xml_string = parseString(ET.tostring(root)).toprettyxml(indent="  ")
-    xml_string = "\n".join(xml_string.split("\n")[1:])
-    return xml_string.strip()
-
-
-def prefab_dict_to_xml(prefab: dict[str, Any]) -> str:
-    def _to_xml(d, parent):
-        for k, v in d.items():
-            if isinstance(v, dict):
-                _to_xml(v, ET.SubElement(parent, k))
-            else:
-                ET.SubElement(parent, k).text = str(v)
-
-    prefab_element = ET.Element("prefab")
-    _to_xml(prefab, prefab_element)
-    xml_string = parseString(ET.tostring(prefab_element)).toprettyxml(indent="  ")
-    xml_string = "\n".join(xml_string.split("\n")[1:])
-    return xml_string.strip()
 
 
 def parse_vector(vector_str) -> list[float]:
