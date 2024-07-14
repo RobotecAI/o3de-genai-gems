@@ -135,7 +135,9 @@ class PrefabsManager:
 
     def find_prefab_ids(self) -> list[azlmbr.entity.EntityId]:
         searchFilter = azlmbr.entity.SearchFilter()
-        azlmbr_entity_ids = azlmbr.entity.SearchBus(azlmbr.bus.Broadcast, "SearchEntities", searchFilter)
+        azlmbr_entity_ids = azlmbr.entity.SearchBus(
+            azlmbr.bus.Broadcast, "SearchEntities", searchFilter
+        )
         eids_names = {
             eid: azlmbr.editor.EditorEntityInfoRequestBus(azlmbr.bus.Event, "GetName", eid)
             for eid in azlmbr_entity_ids

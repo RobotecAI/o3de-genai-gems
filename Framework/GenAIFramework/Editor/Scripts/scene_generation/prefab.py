@@ -207,7 +207,6 @@ class SpawnedPrefab:
             "semantic_info",
             "overlapping_entity_ids",
         ]
-        #TODO: round floats to 2 decimal places
         for k in keys:
             if isinstance(k, property):
                 v = k.fget(self)
