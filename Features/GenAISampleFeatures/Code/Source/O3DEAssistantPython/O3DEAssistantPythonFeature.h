@@ -8,19 +8,20 @@
 
 #pragma once
 
+#include <GenAISampleFeatures/GenAISampleFeaturesTypeIds.h>
+
 #include <GenAIFramework/Feature/FeatureBase.h>
 #include <GenAIFramework/Feature/PythonFeatureBase.h>
-#include <GenAIFramework/GenAIFrameworkTypeIds.h>
 
 #include <AzCore/RTTI/RTTI.h>
 #include <AzCore/Serialization/SerializeContext.h>
 
-namespace GenAIFramework
+namespace GenAISampleFeatures
 {
-    class O3DEAssistantPythonFeature : public PythonFeatureBase
+    class O3DEAssistantPythonFeature : public GenAIFramework::PythonFeatureBase
     {
     public:
-        AZ_RTTI(O3DEAssistantPythonFeature, "{7c524a1b-a175-4c26-beb1-dbefb7f13f54}", PythonFeatureBase);
+        AZ_RTTI(O3DEAssistantPythonFeature, O3DEAssistantPythonFeatureTypeId, GenAIFramework::PythonFeatureBase);
         AZ_CLASS_ALLOCATOR(O3DEAssistantPythonFeature, AZ::SystemAllocator, 0);
 
         O3DEAssistantPythonFeature() = default;
@@ -34,4 +35,4 @@ namespace GenAIFramework
 
         AZStd::string m_pythonScriptLocation;
     };
-} // namespace GenAIFramework
+} // namespace GenAISampleFeatures

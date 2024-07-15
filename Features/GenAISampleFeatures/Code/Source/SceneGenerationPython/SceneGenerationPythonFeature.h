@@ -8,19 +8,20 @@
 
 #pragma once
 
+#include <GenAISampleFeatures/GenAISampleFeaturesTypeIds.h>
+
 #include <GenAIFramework/Feature/FeatureBase.h>
 #include <GenAIFramework/Feature/PythonFeatureBase.h>
-#include <GenAIFramework/GenAIFrameworkTypeIds.h>
 
 #include <AzCore/RTTI/RTTI.h>
 #include <AzCore/Serialization/SerializeContext.h>
 
-namespace GenAIFramework
+namespace GenAISampleFeatures
 {
-    class SceneGenerationPythonFeature : public PythonFeatureBase
+    class SceneGenerationPythonFeature : public GenAIFramework::PythonFeatureBase
     {
     public:
-        AZ_RTTI(SceneGenerationPythonFeature, SceneGenerationPythonFeatureTypeId, PythonFeatureBase);
+        AZ_RTTI(SceneGenerationPythonFeature, SceneGenerationPythonFeatureTypeId, GenAIFramework::PythonFeatureBase);
         AZ_CLASS_ALLOCATOR(SceneGenerationPythonFeature, AZ::SystemAllocator, 0);
 
         SceneGenerationPythonFeature() = default;
@@ -34,4 +35,4 @@ namespace GenAIFramework
 
         AZStd::string m_pythonScriptLocation;
     };
-} // namespace GenAIFramework
+} // namespace GenAISampleFeatures

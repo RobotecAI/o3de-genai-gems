@@ -50,6 +50,7 @@ ly_add_target(
         PUBLIC
             AZ::AzCore
             AZ::AzFramework
+            Gem::GenAIFramework.API
 )
 
 # Here add ${gem_name} target, it depends on the Private Object library and Public API interface
@@ -134,6 +135,7 @@ if(PAL_TRAIT_BUILD_HOST_TOOLS)
         BUILD_DEPENDENCIES
             PUBLIC
                 AZ::AzToolsFramework
+                Gem::GenAIFramework.API
                 ${gem_name}.Private.Object
     )
 

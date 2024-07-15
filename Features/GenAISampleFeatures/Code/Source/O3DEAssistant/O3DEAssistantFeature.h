@@ -8,15 +8,16 @@
 
 #pragma once
 
+#include <GenAISampleFeatures/GenAISampleFeaturesTypeIds.h>
+
 #include <GenAIFramework/Feature/CppFeatureBase.h>
-#include <GenAIFramework/GenAIFrameworkTypeIds.h>
 
 #include <AzCore/RTTI/RTTI.h>
 #include <AzCore/Serialization/SerializeContext.h>
 
-namespace GenAIFramework
+namespace GenAISampleFeatures
 {
-    class O3DEAssistantFeature : public CppFeatureBase
+    class O3DEAssistantFeature : public GenAIFramework::CppFeatureBase
     {
     public:
         AZ_RTTI(O3DEAssistantFeature, O3DEAssistantFeatureTypeId, FeatureBase);
@@ -30,6 +31,6 @@ namespace GenAIFramework
 
         // FeatureBase overrides
         void OnNewMessage(const AZStd::string& message) override;
-        void OnAIResponse(ModelAPIExtractedResponse response) override;
+        void OnAIResponse(GenAIFramework::ModelAPIExtractedResponse response) override;
     };
-} // namespace GenAIFramework
+} // namespace GenAISampleFeatures

@@ -15,7 +15,7 @@
 
 #include <AzCore/std/containers/vector.h>
 
-namespace GenAIFramework
+namespace GenAISampleFeatures
 {
     O3DEAssistantFeature::O3DEAssistantFeature(AZ::u64 agentId, AZ::u64 conversationId)
         : CppFeatureBase(agentId, conversationId)
@@ -26,7 +26,7 @@ namespace GenAIFramework
     {
         if (auto* serializeContext = azrtti_cast<AZ::SerializeContext*>(context))
         {
-            serializeContext->Class<O3DEAssistantFeature, FeatureBase>()->Version(0);
+            serializeContext->Class<O3DEAssistantFeature, GenAIFramework::FeatureBase>()->Version(0);
         }
 
         if (auto registrationContext = azrtti_cast<GenAIFramework::SystemRegistrationContext*>(context))
@@ -37,16 +37,16 @@ namespace GenAIFramework
 
     void O3DEAssistantFeature::OnNewMessage(const AZStd::string& message)
     {
-        AIHistory history;
-        AIAgentRequestBus::EventResult(history, m_agentId, &AIAgentRequestBus::Events::GetHistory);
+        GenAIFramework::AIHistory history;
+        GenAIFramework::AIAgentRequestBus::EventResult(history, m_agentId, &GenAIFramework::AIAgentRequestBus::Events::GetHistory);
 
-        AIMessages messages = history;
+        GenAIFramework::AIMessages messages = history;
 
         // System message is stored in the history; it should be added otherwise
         if (messages.empty())
         {
-            AIMessage systemMessage = {
-                Role::System,
+            GenAIFramework::AIMessage systemMessage = {
+                GenAIFramework::Role::System,
                 { AZStd::any(AZStd::string(
                     "You are an AI assistant for the Open 3D Engine. You are here to help you with any questions regarding the "
                     "workings of the engine. Guidance on using specific features, troubleshooting issues, or understanding "
@@ -55,20 +55,20 @@ namespace GenAIFramework
             messages.push_back(systemMessage);
         }
 
-        AIMessage newMessage = { Role::User, { AZStd::any(message) } };
+        GenAIFramework::AIMessage newMessage = { GenAIFramework::Role::User, { AZStd::any(message) } };
         messages.push_back(newMessage);
 
-        AIAgentRequestBus::Event(m_agentId, &AIAgentRequestBus::Events::SendPrompt, messages);
+        GenAIFramework::AIAgentRequestBus::Event(m_agentId, &GenAIFramework::AIAgentRequestBus::Events::SendPrompt, messages);
     }
 
-    void O3DEAssistantFeature::OnAIResponse(ModelAPIExtractedResponse response)
+    void O3DEAssistantFeature::OnAIResponse(GenAIFramework::ModelAPIExtractedResponse response)
     {
         if (!response.IsSuccess())
         {
             AZStd::string errorMessage = response.GetError().c_str();
             AZStd::vector<AZStd::string> summary = {};
-            ConversationNotificationBus::Event(
-                m_conversationId, &ConversationNotificationBus::Events::OnFeatureResponse, errorMessage, summary);
+            GenAIFramework::ConversationNotificationBus::Event(
+                m_conversationId, &GenAIFramework::ConversationNotificationBus::Events::OnFeatureResponse, errorMessage, summary);
             return;
         }
 
@@ -78,10 +78,10 @@ namespace GenAIFramework
             {
                 AZStd::string responseString = AZStd::any_cast<AZStd::string>(responseItem);
                 AZStd::vector<AZStd::string> summary = {};
-                ConversationNotificationBus::Event(
-                    m_conversationId, &ConversationNotificationBus::Events::OnFeatureResponse, responseString, summary);
+                GenAIFramework::ConversationNotificationBus::Event(
+                    m_conversationId, &GenAIFramework::ConversationNotificationBus::Events::OnFeatureResponse, responseString, summary);
             }
         }
     }
 
-} // namespace GenAIFramework
+} // namespace GenAISampleFeatures

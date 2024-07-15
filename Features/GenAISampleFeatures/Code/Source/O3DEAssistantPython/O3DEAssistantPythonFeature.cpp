@@ -6,7 +6,7 @@
  *
  */
 
-#include "SceneGenerationPythonFeature.h"
+#include "O3DEAssistantPythonFeature.h"
 #include <GenAIFramework/Communication/AIModelRequestBus.h>
 #include <GenAIFramework/Feature/AIAgentBus.h>
 #include <GenAIFramework/Feature/ConversationBus.h>
@@ -19,15 +19,15 @@
 #include <AzCore/std/containers/vector.h>
 #include <AzToolsFramework/API/EditorPythonRunnerRequestsBus.h>
 
-namespace GenAIFramework
+namespace GenAISampleFeatures
 {
 
-    SceneGenerationPythonFeature::SceneGenerationPythonFeature(AZ::u64 agentId, AZ::u64 conversationId)
+    O3DEAssistantPythonFeature::O3DEAssistantPythonFeature(AZ::u64 agentId, AZ::u64 conversationId)
         : PythonFeatureBase(agentId, conversationId)
     {
-        const auto thisGemPath = AZ::Utils::GetGemPath("GenAIFramework");
+        const auto thisGemPath = AZ::Utils::GetGemPath("GenAISampleFeatures");
 
-        const auto pythonScriptPath = AZ::IO::Path(thisGemPath) / AZ::IO::Path(SceneGenerationPythonScript);
+        const auto pythonScriptPath = AZ::IO::Path(thisGemPath) / AZ::IO::Path(O3DEAssistantPythonScript);
         m_pythonScriptLocation = pythonScriptPath.String();
 
         AZ::SystemTickBus::QueueFunction(
@@ -47,17 +47,17 @@ namespace GenAIFramework
             });
     }
 
-    void SceneGenerationPythonFeature::Reflect(AZ::ReflectContext* context)
+    void O3DEAssistantPythonFeature::Reflect(AZ::ReflectContext* context)
     {
         if (auto* serializeContext = azrtti_cast<AZ::SerializeContext*>(context))
         {
-            serializeContext->Class<SceneGenerationPythonFeature, PythonFeatureBase>()->Version(0);
+            serializeContext->Class<O3DEAssistantPythonFeature, GenAIFramework::PythonFeatureBase>()->Version(0);
         }
 
         if (auto registrationContext = azrtti_cast<GenAIFramework::SystemRegistrationContext*>(context))
         {
-            registrationContext->RegisterFeature<SceneGenerationPythonFeature>("Scene Generation (Python)");
+            registrationContext->RegisterFeature<O3DEAssistantPythonFeature>("O3DE Assistant (Python)");
         }
     }
 
-} // namespace GenAIFramework
+} // namespace GenAISampleFeatures

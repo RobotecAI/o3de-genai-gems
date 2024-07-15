@@ -8,8 +8,6 @@
 
 #include "GenAIFrameworkEditorSystemComponent.h"
 
-#include <O3DEAssistantPythonFeature/O3DEAssistantPythonFeature.h>
-#include <SceneGenerationPythonFeature/SceneGenerationPythonFeature.h>
 #include <SettingsRegistryManager/SettingsRegistryManager.h>
 #include <UI/AIAssistantWidget.h>
 
@@ -31,9 +29,6 @@ namespace GenAIFramework
 
     void GenAIFrameworkEditorSystemComponent::Reflect(AZ::ReflectContext* context)
     {
-        O3DEAssistantPythonFeature::Reflect(context);
-        SceneGenerationPythonFeature::Reflect(context);
-
         if (auto serializeContext = azrtti_cast<AZ::SerializeContext*>(context))
         {
             serializeContext->Class<GenAIFrameworkEditorSystemComponent, GenAIFrameworkSystemComponent>()->Version(0);

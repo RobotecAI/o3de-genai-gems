@@ -41,9 +41,4 @@ namespace GenAIFramework
     inline constexpr const char* PythonFeatureBaseTypeId = "{1A248923-79E4-4EC7-B90B-FA81289E95E7}";
     inline constexpr const char* BehaviorConversationBusHandlerTypeId = "{BBEC0750-3D2E-4631-A9FA-C5F2BAC44632}";
     inline constexpr const char* BehaviourAIAgentNotificationsBusHandlerTypeId = "{119148AA-E7A5-4520-97E0-602953969AFB}";
-
-    // Feature TypeIds
-    inline constexpr const char* O3DEAssistantFeatureTypeId = "{2C753228-4D1C-4632-9182-2F2E39970D9B}";
-    inline constexpr const char* O3DEAssistantPythonFeatureTypeId = "{7C524A1B-A175-4C26-BEB1-DBEFB7F13F54}";
-    inline constexpr const char* SceneGenerationPythonFeatureTypeId = "{B9E36297-8823-4544-B657-777E41E149AA}";
 } // namespace GenAIFramework

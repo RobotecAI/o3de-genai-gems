@@ -14,7 +14,6 @@
 #include <GenAIFramework/GenAIFrameworkTypeIds.h>
 #include <GenAIFramework/SystemRegistrationContext/SystemRegistrationContext.h>
 #include <GenAIFramework/UI/UIConversationBus.h>
-#include <O3DEAssistantFeature/O3DEAssistantFeature.h>
 
 #include <AzCore/Component/ComponentApplication.h>
 #include <AzCore/Component/ComponentApplicationBus.h>
@@ -35,8 +34,6 @@ namespace GenAIFramework
         CppFeatureBase::Reflect(context);
         PythonFeatureBase::Reflect(context);
         GenAIFrameworkSystemComponentConfiguration::Reflect(context);
-
-        O3DEAssistantFeature::Reflect(context);
 
         if (auto serializeContext = azrtti_cast<AZ::SerializeContext*>(context))
         {

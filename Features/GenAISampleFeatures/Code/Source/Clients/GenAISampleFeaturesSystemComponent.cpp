@@ -2,21 +2,21 @@
 #include "GenAISampleFeaturesSystemComponent.h"
 
 #include <GenAISampleFeatures/GenAISampleFeaturesTypeIds.h>
+#include <O3DEAssistant/O3DEAssistantFeature.h>
 
 #include <AzCore/Serialization/SerializeContext.h>
 
 namespace GenAISampleFeatures
 {
-    AZ_COMPONENT_IMPL(GenAISampleFeaturesSystemComponent, "GenAISampleFeaturesSystemComponent",
-        GenAISampleFeaturesSystemComponentTypeId);
+    AZ_COMPONENT_IMPL(GenAISampleFeaturesSystemComponent, "GenAISampleFeaturesSystemComponent", GenAISampleFeaturesSystemComponentTypeId);
 
     void GenAISampleFeaturesSystemComponent::Reflect(AZ::ReflectContext* context)
     {
+        O3DEAssistantFeature::Reflect(context);
+
         if (auto serializeContext = azrtti_cast<AZ::SerializeContext*>(context))
         {
-            serializeContext->Class<GenAISampleFeaturesSystemComponent, AZ::Component>()
-                ->Version(0)
-                ;
+            serializeContext->Class<GenAISampleFeaturesSystemComponent, AZ::Component>()->Version(0);
         }
     }
 
