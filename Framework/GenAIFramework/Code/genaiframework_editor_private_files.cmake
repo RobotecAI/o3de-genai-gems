@@ -6,4 +6,6 @@ set(FILES
 
     Source/O3DEAssistantPythonFeature/O3DEAssistantPythonFeature.cpp
     Source/O3DEAssistantPythonFeature/O3DEAssistantPythonFeature.h
+    Source/SceneGenerationPythonFeature/SceneGenerationPythonFeature.cpp
+    Source/SceneGenerationPythonFeature/SceneGenerationPythonFeature.h
 )
