@@ -26,11 +26,11 @@ args = parser.parse_args()
 
 connectionId = int(args.agent_id)
 
-if "assistants" not in globals():
-    assistants = []
+if "o3de_assistant_instances" not in globals():
+    o3de_assistant_instances = []
 
 
-class Assistant:
+class O3DEAssistant:
     def __init__(self, id):
         self.connectionId = id
 
@@ -79,4 +79,4 @@ class Assistant:
                     )
 
 
-assistants.append(Assistant(connectionId))
+o3de_assistant_instances.append(O3DEAssistant(connectionId))
