@@ -13,6 +13,7 @@ namespace GenAISampleFeatures
         , protected AzToolsFramework::EditorEvents::Bus::Handler
     {
         using BaseSystemComponent = GenAISampleFeaturesSystemComponent;
+
     public:
         AZ_COMPONENT_DECL(GenAISampleFeaturesEditorSystemComponent);
 

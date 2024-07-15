@@ -6,8 +6,7 @@
 
 namespace GenAISampleFeatures
 {
-    class GenAISampleFeaturesModuleInterface
-        : public AZ::Module
+    class GenAISampleFeaturesModuleInterface : public AZ::Module
     {
     public:
         AZ_TYPE_INFO_WITH_NAME_DECL(GenAISampleFeaturesModuleInterface)
@@ -21,4 +20,4 @@ namespace GenAISampleFeatures
          */
         AZ::ComponentTypeList GetRequiredSystemComponents() const override;
     };
-}// namespace GenAISampleFeatures
+} // namespace GenAISampleFeatures
