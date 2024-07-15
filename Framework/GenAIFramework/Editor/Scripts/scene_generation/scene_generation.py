@@ -123,7 +123,7 @@ class SceneGeneration:
         else:
             error_text = self.response_with_status["error"]
             inform_about_error_text = (
-                f"Response from the AI has not been recieved due to an error:\n\n{error_text}"
+                f"Response from the AI has not been received due to an error:\n\n{error_text}"
             )
             ConversationNotificationBus(
                 bus.Event, "OnFeatureResponse", self.agent_id, inform_about_error_text, []
