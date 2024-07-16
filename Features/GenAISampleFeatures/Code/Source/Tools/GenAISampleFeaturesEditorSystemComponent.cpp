@@ -7,11 +7,11 @@
  */
 
 #include "GenAISampleFeaturesEditorSystemComponent.h"
-#include <AzCore/Serialization/SerializeContext.h>
+#include <GenAISampleFeatures/GenAISampleFeaturesTypeIds.h>
 #include <O3DEAssistantPython/O3DEAssistantPythonFeature.h>
 #include <SceneGenerationPython/SceneGenerationPythonFeature.h>
 
-#include <GenAISampleFeatures/GenAISampleFeaturesTypeIds.h>
+#include <AzCore/Serialization/SerializeContext.h>
 
 namespace GenAISampleFeatures
 {

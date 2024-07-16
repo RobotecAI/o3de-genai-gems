@@ -7,11 +7,10 @@
  */
 
 #include "GenAISampleFeaturesModuleInterface.h"
-#include <AzCore/Memory/Memory.h>
-
+#include <Clients/GenAISampleFeaturesSystemComponent.h>
 #include <GenAISampleFeatures/GenAISampleFeaturesTypeIds.h>
 
-#include <Clients/GenAISampleFeaturesSystemComponent.h>
+#include <AzCore/Memory/Memory.h>
 
 namespace GenAISampleFeatures
 {

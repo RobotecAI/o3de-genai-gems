@@ -8,9 +8,9 @@
 
 #pragma once
 
-#include <AzToolsFramework/API/ToolsApplicationAPI.h>
-
 #include <Clients/GenAISampleFeaturesSystemComponent.h>
+
+#include <AzToolsFramework/API/ToolsApplicationAPI.h>
 
 namespace GenAISampleFeatures
 {
