@@ -37,41 +37,4 @@ namespace GenAISampleFeatures
     void GenAISampleFeaturesSystemComponent::GetDependentServices([[maybe_unused]] AZ::ComponentDescriptor::DependencyArrayType& dependent)
     {
     }
-
-    GenAISampleFeaturesSystemComponent::GenAISampleFeaturesSystemComponent()
-    {
-        if (GenAISampleFeaturesInterface::Get() == nullptr)
-        {
-            GenAISampleFeaturesInterface::Register(this);
-        }
-    }
-
-    GenAISampleFeaturesSystemComponent::~GenAISampleFeaturesSystemComponent()
-    {
-        if (GenAISampleFeaturesInterface::Get() == this)
-        {
-            GenAISampleFeaturesInterface::Unregister(this);
-        }
-    }
-
-    void GenAISampleFeaturesSystemComponent::Init()
-    {
-    }
-
-    void GenAISampleFeaturesSystemComponent::Activate()
-    {
-        GenAISampleFeaturesRequestBus::Handler::BusConnect();
-        AZ::TickBus::Handler::BusConnect();
-    }
-
-    void GenAISampleFeaturesSystemComponent::Deactivate()
-    {
-        AZ::TickBus::Handler::BusDisconnect();
-        GenAISampleFeaturesRequestBus::Handler::BusDisconnect();
-    }
-
-    void GenAISampleFeaturesSystemComponent::OnTick([[maybe_unused]] float deltaTime, [[maybe_unused]] AZ::ScriptTimePoint time)
-    {
-    }
-
 } // namespace GenAISampleFeatures
