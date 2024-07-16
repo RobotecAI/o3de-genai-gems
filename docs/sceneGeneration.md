@@ -8,7 +8,11 @@ The configured language model is used for Python code generation that manipulate
 
 ### Setting up a chat with the Scene Generation feature
 
-The setup procedure is the same as described in [this section](../../../../../docs/gettingStarted.md#setting-up-a-new-vendor-and-a-chat-with-o3de-assistant-feature). Just select `Scene Generation (Python)` feature in the 12. step. Also, for this feature, it is useful to increase the `Max tokens to sample` parameter to a large value as the responses containing code can be quite long. For example, for Claude models use `Max tokens to sample=4096`.
+The setup procedure is the same as described in [this section](../../../../../docs/gettingStarted.md#setting-up-a-new-vendor-and-a-chat-with-o3de-assistant-feature). Select `Scene Generation (Python)` feature in the 12. step.
+
+For this feature, it is also necessary to make some adjustments:
+-  in the 8. step increase the `Max tokens to sample` parameter to a large value as the responses containing code can be quite long. For example, for Claude models use `Max tokens to sample=4096`.
+- _(if you are using Anthropic API)_:  in the 10. step (AI Service Provider configuration) increase `Request timeout (ms)` to a large value, e.g. 30000ms (30s). Large models like Opus (which are recommended for this feature) can sometimes response quite slowly.
 
 ### Prerequisites
 
