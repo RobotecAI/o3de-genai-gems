@@ -1,0 +1,18 @@
+{
+    "Amazon": {
+        "AssetProcessor": {
+            "Settings": {
+                "ScanFolder GenAISampleFeatures/Assets": {
+                    "watch": "@GEMROOT:GenAISampleFeatures@/Assets",
+                    "recursive": 1,
+                    "order": 101
+                },
+                "ScanFolder GenAISampleFeatures/Registry": {
+                    "watch": "@GEMROOT:GenAISampleFeatures@/Registry",
+                    "recursive": 1,
+                    "order": 102
+                }
+            }
+        }
+    }
+}
