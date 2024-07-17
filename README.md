@@ -1,6 +1,6 @@
 # O3DE Generative AI Gems collection
 
-The `o3de-genai-gems` repository serves as a hub for the development and distribution of O3DE Gems developed to support Generative AI models within O3DE. In particular, it contains the core Gem of the Generative AI O3DE Framework, a sample Generative AI Feature Gem for assisting with O3DE-related questions and a collection of Generative AI Vendor Gems to support the communication between the AI client and AI server.
+The `o3de-genai-gems` repository serves as a hub for the development and distribution of O3DE Gems developed to support Generative AI models within O3DE. In particular, it contains the core Gem of the Generative AI O3DE Framework, sample Generative AI Feature Gems and a collection of Generative AI Vendor Gems to support the communication between the AI client and AI server.
 
 ## Introduction
 
@@ -59,7 +59,12 @@ To learn more about the available vendors and find a guide for the configuration
 ### Feature Gems
 Feature Gems use Generative AI to deal with a certain problem in your workflow. For example, a _scene generation feature Gem_ might be responsible for creating a scene based on the user's prompt. Internally, it could connect to the asset processor to discover available assets and to the O3DE Editor to learn about the existing scene layout. Next, it could combine all necessary information and send a query to the AI. Based on the response, it could call some existing O3DE buses to add/move/remove the elements of the scene. The communication between O3DE and features is *not* request-response based, hence the feature could iterate multiple times with the AI to find the best solution for the user's prompt. Finally, the feature should inform the user about the completion and send an answer to the prompt.
 
-_O3DE Assistant_ feature is a part of the `GenAIFramework Gem` that can answer your questions related to the O3DE. It is implemented in C++ and serves as an example of how to implement a feature. It only does a simple modification to the user's prompt: it adds a system message for AI to inform about the context (being an _O3DE Assistant_). This implementation can be seen as documentation on how to implement a feature. More information can be found in a [new feature instruction](./docs/newFeature.md).
+Three sample feature implementations are provided on this repository within `GenAISampleFeatures Gem`. These features can serve as a test for vendor Gems or as examples of how to implement a feature.
+- _O3DE Assistant_ feature can answer your questions related to the O3DE. It is a minimal implementation of a feature in C++. It passes the user's prompt to a vendor with the addition of a system message for AI to inform about the context (being an _O3DE Assistant_). 
+- _O3DE Assistant (Python)_ feature is a minimal implementation of a feature in Python language. It mirrors the implementation of the _O3DE Assistant_ feature.
+- _Scene Generation (Python)_ feature is a simple helper that lets you build a scene based on a list of available prefabs with a short description of each. More details about this feature can be found on the dedicated [documentation page](./docs/sceneGeneration.md).
+
+More information about implementing a new functionality can be found in a [new feature instruction](./docs/newFeature.md).
 
 ## Installing Generative AI Gems in your O3DE project
 

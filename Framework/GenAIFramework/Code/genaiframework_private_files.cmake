@@ -12,7 +12,4 @@ set(FILES
     Source/Clients/GenAIFrameworkSystemComponent.h
     Source/Clients/GenAIFrameworkSystemComponentConfiguration.cpp
     Source/Clients/GenAIFrameworkSystemComponentConfiguration.h
-
-    Source/O3DEAssistantFeature/O3DEAssistantFeature.cpp
-    Source/O3DEAssistantFeature/O3DEAssistantFeature.h
 )
