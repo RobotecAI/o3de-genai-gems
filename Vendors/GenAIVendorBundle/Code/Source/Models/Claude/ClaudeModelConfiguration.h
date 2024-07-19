@@ -75,8 +75,6 @@ namespace GenAIVendorBundle
             useSystemMessage
         };
 
-        const static AZStd::map<AZStd::string_view, Parameters> m_parameterNameToEnum;
-
         AZ::Outcome<void, AZStd::string> SetModelParameter(const AZ::Name& parameterName, const AZStd::string& parameterValue);
     };
 } // namespace GenAIVendorBundle

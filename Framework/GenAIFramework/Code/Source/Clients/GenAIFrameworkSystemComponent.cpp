@@ -128,11 +128,11 @@ namespace GenAIFramework
     AZStd::vector<AZ::Component*> GenAIFrameworkSystemComponent::GetActiveComponents(const EntityIdToEntityMap& entities) const
     {
         AZStd::vector<AZ::Component*> result;
-        for (const auto& [_, entity] : entities)
+        for (const auto& [_, entityPtr] : entities)
         {
-            if (entity)
+            if (entityPtr)
             {
-                const auto components = entity->GetComponents();
+                const auto components = entityPtr->GetComponents();
                 result.insert(result.end(), components.begin(), components.end());
             }
         }

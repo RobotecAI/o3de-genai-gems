@@ -113,21 +113,6 @@ namespace GenAIVendorBundle
         }
     }
 
-    const AZStd::map<AZStd::string_view, ClaudeModelConfiguration::Parameters> ClaudeModelConfiguration::m_parameterNameToEnum = {
-        { "temperature", Parameters::Temperature },
-        { "topp", Parameters::TopP },
-        { "topk", Parameters::TopK },
-        { "stopsequence", Parameters::StopSequence },
-        { "anthropicversion", Parameters::AnthropicVersion },
-        { "system", Parameters::SystemMessage },
-        { "maxtokens", Parameters::MaxTokensToSample },
-        { "usedefaulttemperature", Parameters::useDefaultTemperature },
-        { "usedefaulttopp", Parameters::useDefaultTopP },
-        { "usedefaulttopk", Parameters::useDefaultTopK },
-        { "usedefaultstopsequence", Parameters::useDefaultStopSequence },
-        { "usesystemmessage", Parameters::useSystemMessage },
-    };
-
     AZ::Outcome<void, AZStd::string> ClaudeModelConfiguration::SetModelParameter(
         const AZ::Name& parameterName, const AZStd::string& parameterValue)
     {
@@ -143,8 +128,23 @@ namespace GenAIVendorBundle
                 }),
             lowerCaseParameterName.end());
 
-        auto parameterEnum = m_parameterNameToEnum.find(lowerCaseParameterName);
-        if (parameterEnum == m_parameterNameToEnum.end())
+        const static AZStd::map<AZStd::string_view, ClaudeModelConfiguration::Parameters> ParameterNameToEnum = {
+            { "temperature", Parameters::Temperature },
+            { "topp", Parameters::TopP },
+            { "topk", Parameters::TopK },
+            { "stopsequence", Parameters::StopSequence },
+            { "anthropicversion", Parameters::AnthropicVersion },
+            { "system", Parameters::SystemMessage },
+            { "maxtokens", Parameters::MaxTokensToSample },
+            { "usedefaulttemperature", Parameters::useDefaultTemperature },
+            { "usedefaulttopp", Parameters::useDefaultTopP },
+            { "usedefaulttopk", Parameters::useDefaultTopK },
+            { "usedefaultstopsequence", Parameters::useDefaultStopSequence },
+            { "usesystemmessage", Parameters::useSystemMessage },
+        };
+
+        auto parameterEnum = ParameterNameToEnum.find(lowerCaseParameterName);
+        if (parameterEnum == ParameterNameToEnum.end())
         {
             return AZ::Failure(AZStd::string::format("Parameter %s is not supported", parameterName.GetCStr()));
         }

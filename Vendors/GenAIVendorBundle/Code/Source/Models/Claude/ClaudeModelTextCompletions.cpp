@@ -80,6 +80,10 @@ namespace GenAIVendorBundle
             {
                 oss << "\n\nAssistant: ";
             }
+            else
+            {
+                AZ_Error("ModelAPIRequest", false, "Unsupported Role selected");
+            }
             for (const auto& promptPart : element.second)
             {
                 if (promptPart.is<AZStd::string>())

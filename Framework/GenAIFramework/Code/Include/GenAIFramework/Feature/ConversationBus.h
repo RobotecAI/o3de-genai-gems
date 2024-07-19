@@ -39,7 +39,7 @@ namespace GenAIFramework
 
         //! Notification that a feature has a response to the user's message.
         //! @param summary A summary of the response.
-        //! @param detailedResponse A detailed response to the user's message.
+        //! @param detailedResponse A detailed response to the user's message (a list of messages).
         virtual void OnFeatureResponse(const AZStd::string& summary, const AZStd::vector<AZStd::string>& detailedResponse)
         {
             AZ_UNUSED(summary);

@@ -82,7 +82,6 @@ namespace GenAIVendorBundle
                         systemMessage += AZStd::any_cast<AZStd::string>(prompt[i].second[j]);
                     }
                 }
-                continue;
                 break;
 
             case GenAIFramework::Role::User:
@@ -91,6 +90,9 @@ namespace GenAIVendorBundle
 
             case GenAIFramework::Role::Assistant:
                 message.WithString("role", "assistant");
+                break;
+            default:
+                AZ_Error("ModelAPIRequest", false, "Unsupported Role selected");
                 break;
             }
             Aws::Utils::Array<Aws::Utils::Json::JsonValue> contentArray(prompt[i].second.size());

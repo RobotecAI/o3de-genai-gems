@@ -37,6 +37,9 @@ namespace GenAIFramework::JsonUtils
         case Role::System:
             roleValue.SetString("system", allocator);
             break;
+        default:
+            AZ_Error("ModelAPIRequest", false, "Unsupported Role selected");
+            break;
         }
 
         AIMessageJson.AddMember("role", roleValue, allocator);
@@ -103,17 +106,14 @@ namespace GenAIFramework::JsonUtils
         Role role;
         AZStd::string roleString = json["role"].GetString();
 
-        if (roleString == "user")
+        //! Map for converting string name to GenAIFramework::Role
+        static AZStd::unordered_map<AZStd::string, Role> nameToRoleMap = { { "user", Role::User },
+                                                                           { "assistant", Role::Assistant },
+                                                                           { "system", Role::System } };
+
+        if (const auto it = nameToRoleMap.find(roleString); it != nameToRoleMap.end())
         {
-            role = Role::User;
-        }
-        else if (roleString == "assistant")
-        {
-            role = Role::Assistant;
-        }
-        else if (roleString == "system")
-        {
-            role = Role::System;
+            role = it->second;
         }
         else
         {
