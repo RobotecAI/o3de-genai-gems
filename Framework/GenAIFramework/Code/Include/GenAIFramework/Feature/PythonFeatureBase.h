@@ -48,6 +48,7 @@ namespace GenAIFramework
         }
     };
 
+    //! Base class for all Generative AI Features implemented in Python programming language
     class PythonFeatureBase : public FeatureBase
     {
     public:

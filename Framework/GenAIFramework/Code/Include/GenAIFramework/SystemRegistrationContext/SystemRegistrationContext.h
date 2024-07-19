@@ -23,6 +23,7 @@
 
 namespace GenAIFramework
 {
+    //! This class manages all components of GenAIFramework that are available in the system.
     class SystemRegistrationContext : public AZ::ReflectContext
     {
     public:

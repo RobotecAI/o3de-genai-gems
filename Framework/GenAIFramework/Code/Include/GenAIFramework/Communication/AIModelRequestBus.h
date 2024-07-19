@@ -22,6 +22,8 @@
 
 namespace GenAIFramework
 {
+    //! Request bus enabling communication within an AI Agent. Requests are sent by an agent to a model, which converts the data to match a
+    //! format of a certain AI Model.
     class AIModelRequests : public AZ::ComponentBus
     {
     public:

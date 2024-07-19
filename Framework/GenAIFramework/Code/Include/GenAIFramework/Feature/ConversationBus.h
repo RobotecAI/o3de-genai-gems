@@ -16,6 +16,8 @@
 
 namespace GenAIFramework
 {
+    //! Notification bus enabling communication between Generative AI Feature and the UI (notifications are sent by a feature and handled
+    //! by the UI)
     class ConversationNotifications : public AZ::EBusTraits
     {
     public:

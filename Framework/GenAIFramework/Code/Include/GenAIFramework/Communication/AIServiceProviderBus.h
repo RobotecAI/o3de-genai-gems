@@ -19,6 +19,8 @@
 
 namespace GenAIFramework
 {
+    //! Request bus enabling communication within an AI Agent. Requests are sent by an agent to a service provider, which implements the
+    //! communication between Generative AI Framework and the external AI service.
     class AIServiceProviderRequests : public AZ::ComponentBus
     {
     public:

@@ -19,7 +19,7 @@
 
 namespace GenAIFramework
 {
-    //! EBus interface for non-blocking requests to LLM models.
+    //! Request bus enabling non-blocking communication between the UI and the Generative AI Framework.
     class AsyncRequests
     {
     public:

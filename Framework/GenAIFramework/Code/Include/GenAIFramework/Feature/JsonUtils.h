@@ -14,8 +14,13 @@
 #include <AzCore/JSON/rapidjson.h>
 #include <AzCore/JSON/writer.h>
 
+//! A collection of utilities to convert (back and forth) different message types into JSON strings for seamless Python integration.
 namespace GenAIFramework::JsonUtils
 {
+    //! Convert a single message (GenAIFramework type) into JSON data (rapidjson library type)
+    //! @param message a single message (GenAIFramework::message format)
+    //! @param allocator allocator used in conversion (part of rapidjson library)
+    //! @return a single message in JSON value (rapidjson library type)
     inline rapidjson::Value AIMessageToJsonValue(const AIMessage& message, rapidjson::Document::AllocatorType& allocator)
     {
         rapidjson::Value AIMessageJson(rapidjson::kObjectType);
@@ -53,6 +58,9 @@ namespace GenAIFramework::JsonUtils
         return AIMessageJson;
     }
 
+    //! Convert a single message (GenAIFramework type) into text in JSON format
+    //! @param message a single message (GenAIFramework::AIMessage format)
+    //! @return a single message in JSON format (plain text)
     inline AZStd::string AIMessageToJsonString(const AIMessage& message)
     {
         rapidjson::Document AIMessageJson;
@@ -66,12 +74,15 @@ namespace GenAIFramework::JsonUtils
         return buffer.GetString();
     }
 
-    inline AZStd::string AIMessagesToJsonString(const AIMessages& AIMessages)
+    //! Convert a list of messages (GenAIFramework type) into text in JSON format
+    //! @param messages a list of messages (GenAIFramework::AIMessages format)
+    //! @return a list of messages in JSON format (plain text)
+    inline AZStd::string AIMessagesToJsonString(const AIMessages& messages)
     {
         rapidjson::Document messagesDocument;
         messagesDocument.SetArray();
 
-        for (const auto& entry : AIMessages)
+        for (const auto& entry : messages)
         {
             rapidjson::Value entryJson = AIMessageToJsonValue(entry, messagesDocument.GetAllocator());
             messagesDocument.PushBack(entryJson, messagesDocument.GetAllocator());
@@ -84,6 +95,9 @@ namespace GenAIFramework::JsonUtils
         return buffer.GetString();
     }
 
+    //! Convert a single message in JSON document format (rapidjson library type) into a message (GenAIFramework type)
+    //! @param json a single message document (rapidjson library format)
+    //! @return a single message (GenAIFramework::AIMessage format)
     inline AIMessage JsonToAIMessage(const rapidjson::Document& json)
     {
         Role role;
@@ -118,6 +132,9 @@ namespace GenAIFramework::JsonUtils
         return message;
     }
 
+    //! Convert text (assuming JSON format) into a message (GenAIFramework type)
+    //! @param jsonString a single message in JSON format (in plain text)
+    //! @return message (GenAIFramework::AIMessage format)
     inline AIMessage JsonStringToAIMessage(const AZStd::string& jsonString)
     {
         rapidjson::Document json;
@@ -126,6 +143,9 @@ namespace GenAIFramework::JsonUtils
         return JsonToAIMessage(json);
     }
 
+    //! Convert text (assuming JSON format) into a message (GenAIFramework type)
+    //! @param jsonString a single message in JSON format (in plain text)
+    //! @return message (GenAIFramework::AIMessage format)
     inline AIMessages JsonStringToAIMessages(const AZStd::string& jsonString)
     {
         rapidjson::Document json;
@@ -143,6 +163,9 @@ namespace GenAIFramework::JsonUtils
         return messages;
     }
 
+    //! Convert a response message from AI Agent (GenAIFramework type) to JSON format (in plain text)
+    //! @param response a response message (response) from AI Agent (GenAIFramework type)
+    //! @return a response message in JSON format (in plain text)
     inline AZStd::string ModelAPIExtractedResponseToJsonString(const ModelAPIExtractedResponse& response)
     {
         rapidjson::Document responseJson;
