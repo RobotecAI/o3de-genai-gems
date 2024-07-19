@@ -32,10 +32,12 @@ The list of registered AI components is read by the chat widget, which allows yo
 ```cpp
 AZStd::unordered_set<AZ::Uuid> GetRegisteredServiceProviders() const;
 AZStd::unordered_set<AZ::Uuid> GetRegisteredModelConfigurations() const;
-AZStd::unordered_map<AZStd::string, AZ::Uuid> GetFeatureNamesAndUuids() const;
+
+using FeatureMakeShared = AZStd::function<AZStd::shared_ptr<FeatureBase>(AZ::u64, AZ::u64)>;
+AZStd::unordered_map<AZStd::string, FeatureMakeShared> GetFeatureFactory() const;
 ```
 
-In which the methods return the lists of registered service providers, model configurations and pairs of features with names respectively. All AI components are kept as class unique ids.
+In which the methods return the lists of registered service providers, model configurations and pairs of features names with methods to create a corresponding feature respectively. All AI components are kept as class unique ids.
 
 ## Conversation system
 The AI pipeline within O3DE consist of: (i) a chat widget that interfaces with the user; (ii) a feature that provides the context of the conversation to AI; and (iii) an AI Agent that specifies the model and service provider used to generate responses within the conversation. The three elements are connected with each other using a system of [buses and event handlers](https://docs.o3de.org/docs/user-guide/programming/messaging/ebus/). 

@@ -364,9 +364,8 @@ namespace GenAIFramework
     AZ::Outcome<AZ::u64, void> GenAIFrameworkSystemComponent::CreateNewFeatureConversation(
         const AZStd::string& serviceProviderName, const AZStd::string& modelModelConfigurationName, const AZStd::string& featureName)
     {
-        const auto& features = GetSystemRegistrationContext()->GetFeatureNamesAndUuids();
-        const auto featureUuid = features.find(featureName);
-        if (featureUuid == features.end())
+        const auto& features = GetSystemRegistrationContext()->GetFeatureFactory();
+        if (const auto featureUuid = features.find(featureName); featureUuid == features.end())
         {
             return AZ::Failure();
         }
@@ -379,7 +378,7 @@ namespace GenAIFramework
 
         // The system is currently limited to one feature (connected to one agent) per one conversation. Hence, the same id is used.
         auto conversationId = agentId;
-        auto feature = GetSystemRegistrationContext()->CreateFeature(featureUuid->second, agentId.GetValue(), conversationId.GetValue());
+        auto feature = GetSystemRegistrationContext()->CreateFeature(featureName, agentId.GetValue(), conversationId.GetValue());
         m_featureConversations[conversationId.GetValue()] = feature;
 
         return conversationId;
