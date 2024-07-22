@@ -139,7 +139,7 @@ namespace GenAIVendorBundle
         {
             jsonPrompt.WithString("system", systemMessage.c_str());
         }
-        else if (m_configuration.m_useSystemMessage)
+        else if (m_configuration.m_useDefaultSystemMessage)
         {
             jsonPrompt.WithString("system", m_configuration.m_systemMessage.c_str());
         }

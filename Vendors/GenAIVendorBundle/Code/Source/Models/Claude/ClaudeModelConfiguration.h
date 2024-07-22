@@ -40,7 +40,7 @@ namespace GenAIVendorBundle
         bool m_useDefaultStopSequence = true;
         AZStd::string m_anthropicVersion = "";
         AZStd::string m_systemMessage = "";
-        bool m_useSystemMessage = true;
+        bool m_useDefaultSystemMessage = true;
 
         inline bool IsDefaultTemperature() const
         {
