@@ -140,7 +140,7 @@ class PrefabsManager:
             eid: azlmbr.editor.EditorEntityInfoRequestBus(azlmbr.bus.Event, "GetName", eid)
             for eid in azlmbr_entity_ids
         }
-        ids_with_parent_level = {}
+        prefab_ids: list[azlmbr.entity.EntityId] = []
         for eid, name in eids_names.items():
             if name not in self.available_prefabs.keys():
                 continue
@@ -151,8 +151,8 @@ class PrefabsManager:
                 azlmbr.bus.Event, "GetName", parent_entity_id
             )
             if parent_name == "Level":
-                ids_with_parent_level[eid] = name
-        return ids_with_parent_level
+                prefab_ids.append(eid)
+        return prefab_ids
 
     @staticmethod
     def transform_with_anchor_transform(
