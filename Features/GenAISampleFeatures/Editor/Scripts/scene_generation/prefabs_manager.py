@@ -12,7 +12,6 @@ import yaml
 import xml.etree.ElementTree as ET
 from xml.dom.minidom import parseString
 import numpy as np
-from utils import parse_vector
 from prefab import AvailablePrefab, SpawnedPrefab, EditorEntityId
 import azlmbr
 
@@ -86,10 +85,9 @@ class PrefabsManager:
                 azlmbr.bus.Event, "GetName", azlmbr_entity_id
             )
             available_prefab = self.available_prefabs[name]
-            translation_azlmbr = azlmbr.components.TransformBus(
+            translation = azlmbr.components.TransformBus(
                 azlmbr.bus.Event, "GetWorldTranslation", azlmbr_entity_id
-            )
-            translation = parse_vector(str(translation_azlmbr))
+            ).to_json()
             translation_inv_anch, _ = self.transform_with_inv_anchor_transform(
                 translation, available_prefab.anchor_transform
             )
