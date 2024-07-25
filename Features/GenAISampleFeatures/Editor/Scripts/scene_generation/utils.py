@@ -7,19 +7,6 @@
 """
 
 from pathlib import Path
-import re
-
-
-def parse_vector(vector_str) -> list[float]:
-    match = re.match(r"\(x=(.*),y=(.*),z=(.*)\)", vector_str)
-    if match:
-        return [
-            round(float(match.group(1)), 2),
-            round(float(match.group(2)), 2),
-            round(float(match.group(3)), 2),
-        ]
-    else:
-        raise ValueError(f"Invalid vector string: {vector_str}")
 
 
 def extract_text_from_xml_tags(text: str, tag: str = "python") -> str | None:

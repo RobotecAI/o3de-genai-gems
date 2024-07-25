@@ -12,7 +12,6 @@ import yaml
 import xml.etree.ElementTree as ET
 from xml.dom.minidom import parseString
 import numpy as np
-from utils import parse_vector
 from prefab import AvailablePrefab, SpawnedPrefab, EditorEntityId
 import azlmbr
 
@@ -86,10 +85,9 @@ class PrefabsManager:
                 azlmbr.bus.Event, "GetName", azlmbr_entity_id
             )
             available_prefab = self.available_prefabs[name]
-            translation_azlmbr = azlmbr.components.TransformBus(
+            translation = azlmbr.components.TransformBus(
                 azlmbr.bus.Event, "GetWorldTranslation", azlmbr_entity_id
-            )
-            translation = parse_vector(str(translation_azlmbr))
+            ).to_json()
             translation_inv_anch, _ = self.transform_with_inv_anchor_transform(
                 translation, available_prefab.anchor_transform
             )
@@ -142,7 +140,7 @@ class PrefabsManager:
             eid: azlmbr.editor.EditorEntityInfoRequestBus(azlmbr.bus.Event, "GetName", eid)
             for eid in azlmbr_entity_ids
         }
-        ids_with_parent_level = {}
+        prefab_ids: list[azlmbr.entity.EntityId] = []
         for eid, name in eids_names.items():
             if name not in self.available_prefabs.keys():
                 continue
@@ -153,8 +151,8 @@ class PrefabsManager:
                 azlmbr.bus.Event, "GetName", parent_entity_id
             )
             if parent_name == "Level":
-                ids_with_parent_level[eid] = name
-        return ids_with_parent_level
+                prefab_ids.append(eid)
+        return prefab_ids
 
     @staticmethod
     def transform_with_anchor_transform(
