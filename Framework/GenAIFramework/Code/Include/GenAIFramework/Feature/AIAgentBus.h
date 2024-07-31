@@ -17,6 +17,7 @@
 
 namespace GenAIFramework
 {
+    //! Request bus enabling communication between Generative AI Feature and AI Agent (requests are sent by a feature to the given agent)
     class AIAgentRequests : public AZ::EBusTraits
     {
     public:
@@ -59,6 +60,8 @@ namespace GenAIFramework
         }
     };
 
+    //! Notification bus enabling communication between Generative AI Feature and AI Agent (notifications are sent by an agent and handled
+    //! by the given feature)
     class AIAgentNotifications : public AZ::EBusTraits
     {
     public:

@@ -40,7 +40,7 @@ namespace GenAIVendorBundle
         bool m_useDefaultStopSequence = true;
         AZStd::string m_anthropicVersion = "";
         AZStd::string m_systemMessage = "";
-        bool m_useSystemMessage = true;
+        bool m_useDefaultSystemMessage = true;
 
         inline bool IsDefaultTemperature() const
         {
@@ -74,8 +74,6 @@ namespace GenAIVendorBundle
             useDefaultStopSequence,
             useSystemMessage
         };
-
-        const static AZStd::map<AZStd::string_view, Parameters> m_parameterNameToEnum;
 
         AZ::Outcome<void, AZStd::string> SetModelParameter(const AZ::Name& parameterName, const AZStd::string& parameterValue);
     };

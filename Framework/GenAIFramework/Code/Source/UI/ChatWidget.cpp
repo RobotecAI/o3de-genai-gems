@@ -10,7 +10,6 @@
 #include "ChatWidget.h"
 #include <GenAIFramework/Communication/AIModelRequestBus.h>
 #include <GenAIFramework/Communication/AIServiceProviderBus.h>
-#include <GenAIFramework/Communication/AsyncRequestBus.h>
 #include <GenAIFramework/Feature/ConversationBus.h>
 #include <GenAIFramework/GenAIFrameworkBus.h>
 #include <UI/DetailsWidget.h>

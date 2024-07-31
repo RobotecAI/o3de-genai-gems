@@ -45,7 +45,7 @@ This is an example of how to set up a vendor in O3DE. It explains how to create 
 
 9.  Select the `AI Service Providers` tab and create the `Claude HTTP service provider`.
 
-10.  Select the newly created service and fill the fields with appropriate values. You can find all available models on the [Anthropic documentation](https://docs.anthropic.com/en/docs/about-claude/models).
+10.  Select the newly created service and fill the fields with appropriate values. You can find all available models on the [Anthropic documentation](https://docs.anthropic.com/en/docs/about-claude/models). The screenshot shows configuration for _Claude 3 Haiku_ model, but you might want to use the newer `claude-3-5-sonnet-20240620` instead.
 > _Note_: If you see a message about a missing API key, make sure to include it in your environment variables.
 
 ![ServiceConfiguration](./images/provider.png)

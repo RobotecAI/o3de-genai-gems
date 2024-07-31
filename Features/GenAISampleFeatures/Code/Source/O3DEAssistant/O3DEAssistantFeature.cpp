@@ -65,9 +65,9 @@ namespace GenAISampleFeatures
         if (!response.IsSuccess())
         {
             AZStd::string errorMessage = response.GetError().c_str();
-            AZStd::vector<AZStd::string> summary = {};
+            AZStd::vector<AZStd::string> details = {}; // no details to pass
             GenAIFramework::ConversationNotificationBus::Event(
-                m_conversationId, &GenAIFramework::ConversationNotificationBus::Events::OnFeatureResponse, errorMessage, summary);
+                m_conversationId, &GenAIFramework::ConversationNotificationBus::Events::OnFeatureResponse, errorMessage, details);
             return;
         }
 
@@ -76,9 +76,9 @@ namespace GenAISampleFeatures
             if (responseItem.is<AZStd::string>())
             {
                 AZStd::string responseString = AZStd::any_cast<AZStd::string>(responseItem);
-                AZStd::vector<AZStd::string> summary = {};
+                AZStd::vector<AZStd::string> details = {}; // no details to pass
                 GenAIFramework::ConversationNotificationBus::Event(
-                    m_conversationId, &GenAIFramework::ConversationNotificationBus::Events::OnFeatureResponse, responseString, summary);
+                    m_conversationId, &GenAIFramework::ConversationNotificationBus::Events::OnFeatureResponse, responseString, details);
             }
         }
     }

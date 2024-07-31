@@ -52,7 +52,7 @@ namespace GenAIVendorBundle
                         AZ::Edit::UIHandlers::MultiLineEdit,
                         &OllamaChatModelConfiguration::m_options,
                         "Options",
-                        "Additional model parameters listed in the documentation for the Modelfile such as temperature")
+                        "Additional model parameters listed in the documentation for the Model such as temperature")
                     ->Attribute(AZ::Edit::Attributes::ReadOnly, &OllamaChatModelConfiguration::m_useDefaultOptions)
                     ->DataElement(
                         AZ::Edit::UIHandlers::Default,
@@ -152,6 +152,9 @@ namespace GenAIVendorBundle
                 break;
             case GenAIFramework::Role::Assistant:
                 role = "assistant";
+                break;
+            default:
+                AZ_Error("ModelAPIRequest", false, "Unsupported Role selected");
                 break;
             }
 

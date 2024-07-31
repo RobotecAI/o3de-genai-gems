@@ -18,6 +18,7 @@
 
 namespace GenAIFramework
 {
+    //! Base class for all Generative AI Features implemented in C++ programming language
     class CppFeatureBase
         : public ConversationNotificationBus::Handler
         , public AIAgentNotificationBus::Handler
