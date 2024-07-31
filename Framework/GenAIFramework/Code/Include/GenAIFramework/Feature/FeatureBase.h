@@ -17,6 +17,8 @@
 
 namespace GenAIFramework
 {
+    //! Base class for all Generative AI Features; it is inherited by CppFeatureBase and PythonFeatureBase classes.
+    //! It should NOT be inherited directly, but only using the specializations listed earlier.
     class FeatureBase
     {
     public:

@@ -17,6 +17,8 @@
 
 namespace GenAIFramework
 {
+    //! Request bus enabling communication between UI and GenAIFramework interface. This bus is used when a new chat is created or
+    //! destroyed.
     class UIConversationRequests : public AZ::EBusTraits
     {
     public:

@@ -9,7 +9,6 @@
 #include "NewChatWidget.h"
 #include <GenAIFramework/Communication/AIModelRequestBus.h>
 #include <GenAIFramework/Communication/AIServiceProviderBus.h>
-#include <GenAIFramework/Communication/AsyncRequestBus.h>
 #include <GenAIFramework/GenAIFrameworkBus.h>
 
 #include <AzCore/Component/ComponentApplicationBus.h>
@@ -88,9 +87,7 @@ namespace GenAIFramework
         const auto modelName = m_ui->models->currentText();
         const auto chatName = m_ui->chatName->text();
 
-        SetModelAndProvider(modelName, providerName);
         SetToQSettings(providerName, modelName);
-
         emit chatCreated(chatName, modelName, providerName, featureName);
     }
 
@@ -157,19 +154,6 @@ namespace GenAIFramework
         }
     };
 
-    void NewChatWidget::SetModelAndProvider(const QString& modelName, const QString& providerName)
-    {
-        AZ_Assert(m_ServiceProviderNameToId.contains(providerName), "Provider name not found in the map");
-        AZ_Assert(m_modelConfigurationNameToId.contains(modelName), "Model name not found in the map");
-        if (m_ServiceProviderNameToId.contains(providerName) && m_modelConfigurationNameToId.contains(modelName))
-        {
-            AZ::EntityId selectedProviderId = m_ServiceProviderNameToId[providerName];
-            AZ::EntityId selectedModelConfigurationId = m_modelConfigurationNameToId[modelName];
-            GenAIFramework::AsyncRequestBus::Broadcast(
-                &GenAIFramework::AsyncRequestBus::Events::SetProviderAndModel, selectedModelConfigurationId, selectedProviderId);
-        }
-    }
-
     void NewChatWidget::UpdateModelAndProviderLists()
     {
         m_ServiceProviderNameToId.clear();
@@ -211,7 +195,7 @@ namespace GenAIFramework
 
     void NewChatWidget::UpdateFeaturesList()
     {
-        const auto& registeredFeatures = GenAIFrameworkInterface::Get()->GetSystemRegistrationContext()->GetFeatureNamesAndUuids();
+        const auto& registeredFeatures = GenAIFrameworkInterface::Get()->GetSystemRegistrationContext()->GetFeatureFactory();
         for (const auto& feature : registeredFeatures)
         {
             m_ui->features->addItem(QString::fromUtf8(feature.first.c_str(), feature.first.size()));
@@ -232,7 +216,6 @@ namespace GenAIFramework
                 m_ui->providers->setCurrentIndex(indexProvider);
                 m_ui->models->setCurrentIndex(indexModel);
             }
-            SetModelAndProvider(modelName, providerName);
         }
     }
 
