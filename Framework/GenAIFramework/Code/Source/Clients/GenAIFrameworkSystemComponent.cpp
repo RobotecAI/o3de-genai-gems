@@ -128,11 +128,11 @@ namespace GenAIFramework
     AZStd::vector<AZ::Component*> GenAIFrameworkSystemComponent::GetActiveComponents(const EntityIdToEntityMap& entities) const
     {
         AZStd::vector<AZ::Component*> result;
-        for (const auto& [_, entity] : entities)
+        for (const auto& [_, entityPtr] : entities)
         {
-            if (entity)
+            if (entityPtr)
             {
-                const auto components = entity->GetComponents();
+                const auto components = entityPtr->GetComponents();
                 result.insert(result.end(), components.begin(), components.end());
             }
         }
@@ -348,7 +348,7 @@ namespace GenAIFramework
 
         // Generate a unique id for the model agent
         auto currentTime = AZStd::chrono::system_clock::now();
-        AZ::u32 idTime = static_cast<AZ::u64>(currentTime.time_since_epoch().count());
+        AZ::u32 idTime = static_cast<AZ::u32>(currentTime.time_since_epoch().count());
         AZ::u64 id = m_agents.size() << 32 | idTime;
 
         m_agents[id] = AZStd::make_shared<AIAgent>(serviceProviderId, modelConfigurationId, id);
@@ -364,9 +364,8 @@ namespace GenAIFramework
     AZ::Outcome<AZ::u64, void> GenAIFrameworkSystemComponent::CreateNewFeatureConversation(
         const AZStd::string& serviceProviderName, const AZStd::string& modelModelConfigurationName, const AZStd::string& featureName)
     {
-        const auto& features = GetSystemRegistrationContext()->GetFeatureNamesAndUuids();
-        const auto featureUuid = features.find(featureName);
-        if (featureUuid == features.end())
+        const auto& features = GetSystemRegistrationContext()->GetFeatureFactory();
+        if (const auto featureUuid = features.find(featureName); featureUuid == features.end())
         {
             return AZ::Failure();
         }
@@ -379,7 +378,7 @@ namespace GenAIFramework
 
         // The system is currently limited to one feature (connected to one agent) per one conversation. Hence, the same id is used.
         auto conversationId = agentId;
-        auto feature = GetSystemRegistrationContext()->CreateFeature(featureUuid->second, agentId.GetValue(), conversationId.GetValue());
+        auto feature = GetSystemRegistrationContext()->CreateFeature(featureName, agentId.GetValue(), conversationId.GetValue());
         m_featureConversations[conversationId.GetValue()] = feature;
 
         return conversationId;

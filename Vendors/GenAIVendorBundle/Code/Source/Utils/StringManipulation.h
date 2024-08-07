@@ -5,20 +5,6 @@
 
 namespace GenAIVendorBundle::Utils
 {
-    inline AZStd::string RemoveWhitespace(const AZStd::string& input)
-    {
-        AZStd::string output;
-        output.reserve(input.size());
-        for (const char c : input)
-        {
-            if (!AZStd::isspace(c))
-            {
-                output.push_back(c);
-            }
-        }
-        return output;
-    }
-
     inline AZ::Outcome<bool, void> GetBooleanValue(const AZStd::string& value)
     {
         AZStd::string lowerCaseParameterValue = value;

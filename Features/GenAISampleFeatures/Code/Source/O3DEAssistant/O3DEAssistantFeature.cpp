@@ -37,10 +37,9 @@ namespace GenAISampleFeatures
 
     void O3DEAssistantFeature::OnNewMessage(const AZStd::string& message)
     {
-        GenAIFramework::AIHistory history;
-        GenAIFramework::AIAgentRequestBus::EventResult(history, m_agentId, &GenAIFramework::AIAgentRequestBus::Events::GetHistory);
-
-        GenAIFramework::AIMessages messages = history;
+        // Init AI Messages with the history
+        GenAIFramework::AIMessages messages;
+        GenAIFramework::AIAgentRequestBus::EventResult(messages, m_agentId, &GenAIFramework::AIAgentRequestBus::Events::GetHistory);
 
         // System message is stored in the history; it should be added otherwise
         if (messages.empty())
@@ -66,9 +65,9 @@ namespace GenAISampleFeatures
         if (!response.IsSuccess())
         {
             AZStd::string errorMessage = response.GetError().c_str();
-            AZStd::vector<AZStd::string> summary = {};
+            AZStd::vector<AZStd::string> details = {}; // no details to pass
             GenAIFramework::ConversationNotificationBus::Event(
-                m_conversationId, &GenAIFramework::ConversationNotificationBus::Events::OnFeatureResponse, errorMessage, summary);
+                m_conversationId, &GenAIFramework::ConversationNotificationBus::Events::OnFeatureResponse, errorMessage, details);
             return;
         }
 
@@ -77,9 +76,9 @@ namespace GenAISampleFeatures
             if (responseItem.is<AZStd::string>())
             {
                 AZStd::string responseString = AZStd::any_cast<AZStd::string>(responseItem);
-                AZStd::vector<AZStd::string> summary = {};
+                AZStd::vector<AZStd::string> details = {}; // no details to pass
                 GenAIFramework::ConversationNotificationBus::Event(
-                    m_conversationId, &GenAIFramework::ConversationNotificationBus::Events::OnFeatureResponse, responseString, summary);
+                    m_conversationId, &GenAIFramework::ConversationNotificationBus::Events::OnFeatureResponse, responseString, details);
             }
         }
     }

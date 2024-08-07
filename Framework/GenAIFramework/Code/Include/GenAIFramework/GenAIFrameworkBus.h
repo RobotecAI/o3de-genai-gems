@@ -21,6 +21,7 @@
 
 namespace GenAIFramework
 {
+    //! Request bus enabling communication between UI and GenAIFramework interface. This bus is used to handle the AI Agent configuration.
     class GenAIFrameworkRequests
     {
     public:

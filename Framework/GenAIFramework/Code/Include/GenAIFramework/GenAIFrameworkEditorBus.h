@@ -18,6 +18,8 @@
 
 namespace GenAIFramework
 {
+    //! Request bus enabling communication between UI and GenAIFramework interface. It is used to store the configuration of the
+    //! GenAIFramework in a registry file.
     class GenAIFrameworkEditorRequests
     {
     public:

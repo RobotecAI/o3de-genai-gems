@@ -147,11 +147,11 @@ class MyFeature:
         jsonMessage = json.loads(message[0])
 
         response = "..."
-        summary = ["...", "...", ...]
+        detailedResponse = ["...", "...", ...]
 
         # The response can be further processed, sent back to the agent or the process can finish by calling the OnFeatureResponse.
         # This function notifies the UI that the response is ready to be displayed and a new message can be sent. This always needs to be called.
-        ConversationNotificationBus(bus.Event, "OnFeatureResponse", self.connectionId, response, summary)
+        ConversationNotificationBus(bus.Event, "OnFeatureResponse", self.connectionId, response, detailedResponse)
 
 # It is important to add each feature as a separate instance to avoid redefinitions of the same feature and mismatching of the ids used for busses.
 myFeatures.append(MyFeature(agentId, conversationId))

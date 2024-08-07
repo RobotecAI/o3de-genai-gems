@@ -200,6 +200,9 @@ namespace GenAIVendorBundle
                 break;
             case GenAIFramework::Role::Assistant:
                 break;
+            default:
+                AZ_Error("OllamaChatModel", false, "Unsupported Role selected");
+                break;
             }
         }
 

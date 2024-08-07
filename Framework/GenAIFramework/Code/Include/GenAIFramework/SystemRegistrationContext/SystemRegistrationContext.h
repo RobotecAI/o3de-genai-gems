@@ -23,6 +23,7 @@
 
 namespace GenAIFramework
 {
+    //! This class manages all components of GenAIFramework that are available in the system.
     class SystemRegistrationContext : public AZ::ReflectContext
     {
     public:
@@ -59,10 +60,9 @@ namespace GenAIFramework
         void RegisterFeature(const AZStd::string& name)
         {
             static_assert(AZStd::is_base_of<FeatureBase, C>::value);
-            if (m_featuresFactory.find(C::RTTI_Type()) == m_featuresFactory.end())
+            if (m_featuresFactory.find(name) == m_featuresFactory.end())
             {
-                m_featureNames[name] = C::RTTI_Type();
-                m_featuresFactory[C::RTTI_Type()] = [](AZ::u64 agentId, AZ::u64 conversationId)
+                m_featuresFactory[name] = [](AZ::u64 agentId, AZ::u64 conversationId)
                 {
                     return AZStd::make_shared<C>(agentId, conversationId);
                 };
@@ -74,13 +74,13 @@ namespace GenAIFramework
         }
 
         //! Create a feature of a certain uuid type based on the internal map of registered features.
-        //! @param feature type of the feature to create
+        //! @param name name of the feature to create
         //! @param agentId id of the agent connected to the feature
         //! @param conversationId id of the conversation connected to the feature
         //! @return a pointer to a newly created feature or nullptr when creating feature is not possible
-        inline AZStd::shared_ptr<FeatureBase> CreateFeature(AZ::Uuid feature, AZ::u64 agentId, AZ::u64 conversationId) const
+        inline AZStd::shared_ptr<FeatureBase> CreateFeature(const AZStd::string& name, AZ::u64 agentId, AZ::u64 conversationId) const
         {
-            auto it = m_featuresFactory.find(feature);
+            auto it = m_featuresFactory.find(name);
             if (it != m_featuresFactory.end())
             {
                 return it->second(agentId, conversationId);
@@ -88,11 +88,14 @@ namespace GenAIFramework
             return nullptr;
         }
 
+        //! Function for creating a shared pointer of a feature object
+        using FeatureMakeShared = AZStd::function<AZStd::shared_ptr<FeatureBase>(AZ::u64, AZ::u64)>;
+
         //! Get a reference to the internal map of the registered features; each element consist of the feature name and its uuid
         //! @return a reference to the internal map of the features
-        inline const AZStd::unordered_map<AZStd::string, AZ::Uuid>& GetFeatureNamesAndUuids() const
+        inline const AZStd::unordered_map<AZStd::string, FeatureMakeShared>& GetFeatureFactory() const
         {
-            return m_featureNames;
+            return m_featuresFactory;
         }
 
         //! Get a reference to the internal list (set) of the registered service provider uuids
@@ -112,8 +115,6 @@ namespace GenAIFramework
     private:
         AZStd::unordered_set<AZ::Uuid> m_registeredServiceProviders;
         AZStd::unordered_set<AZ::Uuid> m_registeredModelConfigurations;
-
-        AZStd::unordered_map<AZ::Uuid, AZStd::function<AZStd::shared_ptr<FeatureBase>(AZ::u64, AZ::u64)>> m_featuresFactory;
-        AZStd::unordered_map<AZStd::string, AZ::Uuid> m_featureNames;
+        AZStd::unordered_map<AZStd::string, FeatureMakeShared> m_featuresFactory;
     };
 } // namespace GenAIFramework

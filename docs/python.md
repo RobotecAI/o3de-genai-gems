@@ -80,7 +80,7 @@ The message parameter is a list of length 1 containing the string message from t
 ```
 
 The `ConversationNotificationBus` is used to send a message to the UI. The `OnFeatureResponse` method sends a response to the UI. This method needs three 
-arguments: the conversation ID (usually passed as an argument), a string response, list of strings containing other information about the response. You can use the `ConversationNotificationBus` as follows:
+arguments: the conversation ID (usually passed as an argument), a string response, list of strings containing other information about the response (typically details). You can use the `ConversationNotificationBus` as follows:
 ```python
 from azlmbr.ai import ConversationNotificationBus
 from azlmbr.bus import bus

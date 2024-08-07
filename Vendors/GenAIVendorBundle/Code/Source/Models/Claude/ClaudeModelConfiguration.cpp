@@ -33,7 +33,7 @@ namespace GenAIVendorBundle
                 ->Field("useDefaultTopK", &ClaudeModelConfiguration::m_useDefaultTopK)
                 ->Field("useDefaultStopSequence", &ClaudeModelConfiguration::m_useDefaultStopSequence)
                 ->Field("systemMessage", &ClaudeModelConfiguration::m_systemMessage)
-                ->Field("useSystemMessage", &ClaudeModelConfiguration::m_useSystemMessage);
+                ->Field("useSystemMessage", &ClaudeModelConfiguration::m_useDefaultSystemMessage);
 
             if (auto* editContext = serializeContext->GetEditContext())
             {
@@ -102,31 +102,16 @@ namespace GenAIVendorBundle
                         "The version of Anthropic Claude to use")
                     ->DataElement(
                         AZ::Edit::UIHandlers::Default, &ClaudeModelConfiguration::m_systemMessage, "System Message", "A system prompt")
-                    ->Attribute(AZ::Edit::Attributes::Visibility, &ClaudeModelConfiguration::m_useSystemMessage)
+                    ->Attribute(AZ::Edit::Attributes::Visibility, &ClaudeModelConfiguration::m_useDefaultSystemMessage)
                     ->DataElement(
                         AZ::Edit::UIHandlers::Default,
-                        &ClaudeModelConfiguration::m_useSystemMessage,
+                        &ClaudeModelConfiguration::m_useDefaultSystemMessage,
                         "Use System Message",
                         "Use the system message")
                     ->Attribute(AZ::Edit::Attributes::ChangeNotify, AZ::Edit::PropertyRefreshLevels::EntireTree);
             }
         }
     }
-
-    const AZStd::map<AZStd::string_view, ClaudeModelConfiguration::Parameters> ClaudeModelConfiguration::m_parameterNameToEnum = {
-        { "temperature", Parameters::Temperature },
-        { "topp", Parameters::TopP },
-        { "topk", Parameters::TopK },
-        { "stopsequence", Parameters::StopSequence },
-        { "anthropicversion", Parameters::AnthropicVersion },
-        { "system", Parameters::SystemMessage },
-        { "maxtokens", Parameters::MaxTokensToSample },
-        { "usedefaulttemperature", Parameters::useDefaultTemperature },
-        { "usedefaulttopp", Parameters::useDefaultTopP },
-        { "usedefaulttopk", Parameters::useDefaultTopK },
-        { "usedefaultstopsequence", Parameters::useDefaultStopSequence },
-        { "usesystemmessage", Parameters::useSystemMessage },
-    };
 
     AZ::Outcome<void, AZStd::string> ClaudeModelConfiguration::SetModelParameter(
         const AZ::Name& parameterName, const AZStd::string& parameterValue)
@@ -143,8 +128,37 @@ namespace GenAIVendorBundle
                 }),
             lowerCaseParameterName.end());
 
-        auto parameterEnum = m_parameterNameToEnum.find(lowerCaseParameterName);
-        if (parameterEnum == m_parameterNameToEnum.end())
+        auto trySetBoolean = [&parameterValue](bool& target) -> AZ::Outcome<void, AZStd::string>
+        {
+            auto booleanOutcome = Utils::GetBooleanValue(parameterValue);
+            if (booleanOutcome.IsSuccess())
+            {
+                target = booleanOutcome.GetValue();
+            }
+            else
+            {
+                return AZ::Failure(AZStd::string::format("Parameter value is invalid"));
+            }
+            return AZ::Success();
+        };
+
+        const static AZStd::map<AZStd::string_view, ClaudeModelConfiguration::Parameters> ParameterNameToEnum = {
+            { "temperature", Parameters::Temperature },
+            { "topp", Parameters::TopP },
+            { "topk", Parameters::TopK },
+            { "stopsequence", Parameters::StopSequence },
+            { "anthropicversion", Parameters::AnthropicVersion },
+            { "system", Parameters::SystemMessage },
+            { "maxtokens", Parameters::MaxTokensToSample },
+            { "usedefaulttemperature", Parameters::useDefaultTemperature },
+            { "usedefaulttopp", Parameters::useDefaultTopP },
+            { "usedefaulttopk", Parameters::useDefaultTopK },
+            { "usedefaultstopsequence", Parameters::useDefaultStopSequence },
+            { "usesystemmessage", Parameters::useSystemMessage },
+        };
+
+        auto parameterEnum = ParameterNameToEnum.find(lowerCaseParameterName);
+        if (parameterEnum == ParameterNameToEnum.end())
         {
             return AZ::Failure(AZStd::string::format("Parameter %s is not supported", parameterName.GetCStr()));
         }
@@ -157,65 +171,25 @@ namespace GenAIVendorBundle
             m_temperature = AZStd::stof(parameterValue);
             break;
         case Parameters::useDefaultTemperature:
-            {
-                auto booleanOutcome = Utils::GetBooleanValue(parameterValue);
-                if (booleanOutcome.IsSuccess())
-                {
-                    m_useDefaultTemperature = booleanOutcome.GetValue();
-                }
-                else
-                {
-                    return AZ::Failure(AZStd::string::format("Parameter value is invalid"));
-                }
-            }
+            trySetBoolean(m_useDefaultTemperature);
             break;
         case Parameters::TopP:
             m_topP = AZStd::stof(parameterValue);
             break;
         case Parameters::useDefaultTopP:
-            {
-                auto booleanOutcome = Utils::GetBooleanValue(parameterValue);
-                if (booleanOutcome.IsSuccess())
-                {
-                    m_useDefaultTopP = booleanOutcome.GetValue();
-                }
-                else
-                {
-                    return AZ::Failure(AZStd::string::format("Parameter value is invalid"));
-                }
-            }
+            trySetBoolean(m_useDefaultTopP);
             break;
         case Parameters::TopK:
             m_topK = AZStd::stoi(parameterValue);
             break;
         case Parameters::useDefaultTopK:
-            {
-                auto booleanOutcome = Utils::GetBooleanValue(parameterValue);
-                if (booleanOutcome.IsSuccess())
-                {
-                    m_useDefaultTopK = booleanOutcome.GetValue();
-                }
-                else
-                {
-                    return AZ::Failure(AZStd::string::format("Parameter value is invalid"));
-                }
-            }
+            trySetBoolean(m_useDefaultTopK);
             break;
         case Parameters::StopSequence:
             m_stopSequence = parameterValue;
             break;
         case Parameters::useDefaultStopSequence:
-            {
-                auto booleanOutcome = Utils::GetBooleanValue(parameterValue);
-                if (booleanOutcome.IsSuccess())
-                {
-                    m_useDefaultStopSequence = booleanOutcome.GetValue();
-                }
-                else
-                {
-                    return AZ::Failure(AZStd::string::format("Parameter value is invalid"));
-                }
-            }
+            trySetBoolean(m_useDefaultStopSequence);
             break;
         case Parameters::AnthropicVersion:
             m_anthropicVersion = parameterValue;
@@ -224,17 +198,7 @@ namespace GenAIVendorBundle
             m_systemMessage = parameterValue;
             break;
         case Parameters::useSystemMessage:
-            {
-                auto booleanOutcome = Utils::GetBooleanValue(parameterValue);
-                if (booleanOutcome.IsSuccess())
-                {
-                    m_useSystemMessage = booleanOutcome.GetValue();
-                }
-                else
-                {
-                    return AZ::Failure(AZStd::string::format("Parameter value is invalid"));
-                }
-            }
+            trySetBoolean(m_useDefaultSystemMessage);
             break;
         }
 

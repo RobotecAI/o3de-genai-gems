@@ -62,11 +62,6 @@ namespace GenAIFramework
         //! Refresh the list of service providers and model configurations, loads the default model and provider from QSettings.
         void RefreshDefaultModelConfiguration();
 
-        //! Set the model and provider to the given names.
-        //! @param modelName The name of the model configuration.
-        //! @param providerName The name of the service provider.
-        void SetModelAndProvider(const QString& modelName, const QString& providerName);
-
         Ui::NewChatWidgetUI* m_ui;
         AgentConfigurationWidget* m_agentConfigurationWidget;
 
