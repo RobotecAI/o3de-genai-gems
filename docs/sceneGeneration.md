@@ -20,7 +20,6 @@ The feature is currently configured (with `prefabs.yaml` file) to use prefabs av
 
 ```sh
 cd <o3de-directory>
-scripts/o3de.sh
 scripts/o3de.sh register -gp <o3de-extras>/Gems/WarehouseAssets
 scripts/o3de.sh enable-gem -pp <project name> -gp <o3de-extras>/Gems/WarehouseAssets
 ```
